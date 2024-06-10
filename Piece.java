@@ -2,9 +2,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 public abstract class Piece {
-    public static int WHITE = 0;
-    public static int BLACK = 1;
-
     protected Icon icon;
     protected int x;
     protected int y;
@@ -18,4 +15,5 @@ public abstract class Piece {
     @Override
     public abstract String toString();
 
+    public Icon getIcon() {return icon;}
 }

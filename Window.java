@@ -11,9 +11,9 @@ public class Window extends JFrame {
         setSize(800,800);
 
         Color currentColour = Color.WHITE;
-        for(int i = 0; i < 8; i++){
-            for(int j = 0; j < 8; j++){
-                add(new Square(currentColour));
+        for(int y = 0; y < 8; y++){
+            for(int x = 0; x < 8; x++){
+                add(new Square(new Pawn(x, y, Pawn.black), currentColour));
                 currentColour = (currentColour == Color.WHITE) ? Color.BLACK : Color.WHITE;
             }
             currentColour = (currentColour == Color.WHITE) ? Color.BLACK : Color.WHITE;
