@@ -13,7 +13,7 @@ public class Queen extends Piece{
     }
 
     @Override
-    public ArrayList<Integer> possibleMoves() {
+    public ArrayList<Integer> possibleMoves(Board board) {
         ArrayList<Integer> moves = new ArrayList<>();
         return moves;
     }

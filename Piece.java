@@ -12,7 +12,7 @@ public abstract class Piece {
         this.icon = icon;
     }
 
-    public abstract ArrayList<Integer> possibleMoves();
+    public abstract ArrayList<Integer> possibleMoves(Board board);
 
     @Override
     public abstract String toString();

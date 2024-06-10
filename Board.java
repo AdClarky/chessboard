@@ -1,6 +1,3 @@
-import javax.swing.JFrame;
-import java.awt.Color;
-
 public class Board {
     private final Piece[][] board  =  new Piece[8][8];
 
