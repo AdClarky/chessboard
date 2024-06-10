@@ -40,7 +40,7 @@ public class Window extends JFrame implements MouseListener{
     public void mousePressed(MouseEvent e) {
         if(e.getSource() instanceof Square){
             for(int[] moves : ((Square) e.getSource()).getCurrentPiece().possibleMoves(board)) {
-                System.out.println(Arrays.toString(moves));
+                System.out.println(ChessUtils.coordsToChess(moves[0], moves[1]));
             }
         }
     }
