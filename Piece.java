@@ -22,4 +22,6 @@ public abstract class Piece {
     public abstract String toString();
 
     public Icon getIcon() {return icon;}
+
+    public int getDirection() {return direction;}
 }
