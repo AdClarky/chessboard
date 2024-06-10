@@ -1,9 +1,8 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 
 public class Mouse implements MouseListener {
-    private Square selectedSquare = null;
+    private Square previousSquare = null;
 
     private Board board;
 
@@ -15,17 +14,21 @@ public class Mouse implements MouseListener {
     public void mouseReleased(MouseEvent e) {
         if(!(e.getSource() instanceof Square clickedSquare))
             return;
-        if(selectedSquare == null) {
-            selectedSquare = clickedSquare;
-            return;
-        }
-        for(Coordinate move : selectedSquare.getCurrentPiece().possibleMoves(board))
-            System.out.println(move);
-        System.out.println(clickedSquare.getCoords());
-        if(selectedSquare.getCurrentPiece().possibleMoves(board).contains(clickedSquare.getCoords())) {
-            clickedSquare.setCurrentPiece(selectedSquare.getCurrentPiece());
-            selectedSquare.setCurrentPiece(null);
-            selectedSquare = null;
+        System.out.println("Clicked: "+clickedSquare.getCoords());
+
+        if(previousSquare == null){
+            if(clickedSquare.getCurrentPiece() != null) { // if clicked on a piece
+                previousSquare = clickedSquare;
+                previousSquare.clicked();
+            }
+        }else if(previousSquare.getCurrentPiece().possibleMoves(board).contains(clickedSquare.getCoords())){// if it is a possible move
+            clickedSquare.setCurrentPiece(previousSquare.getCurrentPiece());
+            previousSquare.setCurrentPiece(null);
+            previousSquare.clicked();
+            previousSquare = null;
+        }else{
+            previousSquare.clicked();
+            previousSquare = null;
         }
     }
     @Override
