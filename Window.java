@@ -1,12 +1,15 @@
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Arrays;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements MouseListener{
     private final Square[][] squares = new Square[8][8];
     private static Color light = new Color(180, 180, 180);
     private static Color dark = new Color(124, 124, 124);
-    private Board board = new Board();
+    private final Board board = new Board();
 
     public Window(){
         super();
@@ -19,11 +22,41 @@ public class Window extends JFrame {
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
                 squares[y][x] = new Square(board.getPiece(x,y), currentColour);
+                squares[y][x].addMouseListener(this);
                 add(squares[y][x]);
                 currentColour = (currentColour == light) ? dark : light;
             }
             currentColour = (currentColour == light) ? dark : light;
         }
         setVisible(true);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getSource() instanceof Square){
+            for(int[] moves : ((Square) e.getSource()).getCurrentPiece().possibleMoves(board)) {
+                System.out.println(Arrays.toString(moves));
+            }
+        }
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
