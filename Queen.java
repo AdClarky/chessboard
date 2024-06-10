@@ -11,8 +11,8 @@ public class Queen extends Piece{
     }
 
     @Override
-    public ArrayList<int[]> possibleMoves(Board board) {
-        ArrayList<int[]> moves = new ArrayList<>();
+    public ArrayList<Coordinate> possibleMoves(Board board) {
+        ArrayList<Coordinate> moves = new ArrayList<>();
         return moves;
     }
 

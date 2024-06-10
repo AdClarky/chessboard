@@ -11,16 +11,16 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<int[]> possibleMoves(Board board) {
-        ArrayList<int[]> moves = new ArrayList<>();
+    public ArrayList<Coordinate> possibleMoves(Board board) {
+        ArrayList<Coordinate> moves = new ArrayList<>();
         if(y != 7 && y != 0)
-            moves.add(new int[]{x, y+direction});
+            moves.add(new Coordinate(x, y+direction));
         if((y == 6 && direction == DOWN) || (y == 1 && direction == UP))
-            moves.add(new int[]{x, y+(direction<<1)});
+            moves.add(new Coordinate(x, y+(direction<<1)));
         if(x != 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x,y).getDirection() != direction)
-            moves.add(new int[]{x+1,y+direction});
+            moves.add(new Coordinate(x+1,y+direction));
         if(x != 0 && board.getPiece(x-1,y+direction) != null && board.getPiece(x,y).getDirection() != direction)
-            moves.add(new int[]{x-1,y+direction});
+            moves.add(new Coordinate(x-1,y+direction));
 
         return moves;
     }

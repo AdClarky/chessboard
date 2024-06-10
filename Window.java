@@ -19,7 +19,7 @@ public class Window extends JFrame {
         Color currentColour = light;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                squares[y][x] = new Square(board.getPiece(x,y), currentColour);
+                squares[y][x] = new Square(board.getPiece(x,y), currentColour, x, y);
                 squares[y][x].addMouseListener(mouse);
                 add(squares[y][x]);
                 currentColour = (currentColour == light) ? dark : light;

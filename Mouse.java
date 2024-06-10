@@ -1,6 +1,6 @@
-import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
 
 public class Mouse implements MouseListener {
     private Square selectedSquare = null;
@@ -13,13 +13,17 @@ public class Mouse implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(!(e.getSource() instanceof Square))
+        if(!(e.getSource() instanceof Square clickedSquare))
             return;
-
-        if(selectedSquare == null)
-            selectedSquare = (Square) e.getSource();
-        else {
-            ((Square) e.getSource()).setCurrentPiece(selectedSquare.getCurrentPiece());
+        if(selectedSquare == null) {
+            selectedSquare = clickedSquare;
+            return;
+        }
+        for(Coordinate move : selectedSquare.getCurrentPiece().possibleMoves(board))
+            System.out.println(move);
+        System.out.println(Arrays.toString(new int[]{clickedSquare.getxPos(), clickedSquare.getyPos()}));
+        if(selectedSquare.getCurrentPiece().possibleMoves(board).contains(new int[]{clickedSquare.getxPos(), clickedSquare.getyPos()})) {
+            clickedSquare.setCurrentPiece(selectedSquare.getCurrentPiece());
             selectedSquare.setCurrentPiece(null);
             selectedSquare = null;
         }
