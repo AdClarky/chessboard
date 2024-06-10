@@ -3,13 +3,11 @@ import java.awt.Color;
 
 public class Square extends JButton {
     private Piece currentPiece;
-    private final int xPos;
-    private final int yPos;
+    private Coordinate coordinate;
 
-    public Square(Piece currentPiece, Color color, int xPos, int yPos) {
+    public Square(Piece currentPiece, Color color, Coordinate coordinate) {
         super();
-        this.xPos = xPos;
-        this.yPos = yPos;
+        this.currentPiece = currentPiece;
         setBackground(color);
         setCurrentPiece(currentPiece);
     }
@@ -25,6 +23,5 @@ public class Square extends JButton {
         }
     }
 
-    public int getxPos() {return xPos;}
-    public int getyPos() {return yPos;}
+    public Coordinate getCoords() {return coordinate;}
 }

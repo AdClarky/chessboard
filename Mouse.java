@@ -21,8 +21,8 @@ public class Mouse implements MouseListener {
         }
         for(Coordinate move : selectedSquare.getCurrentPiece().possibleMoves(board))
             System.out.println(move);
-        System.out.println(Arrays.toString(new int[]{clickedSquare.getxPos(), clickedSquare.getyPos()}));
-        if(selectedSquare.getCurrentPiece().possibleMoves(board).contains(new int[]{clickedSquare.getxPos(), clickedSquare.getyPos()})) {
+        System.out.println(clickedSquare.getCoords());
+        if(selectedSquare.getCurrentPiece().possibleMoves(board).contains(clickedSquare.getCoords())) {
             clickedSquare.setCurrentPiece(selectedSquare.getCurrentPiece());
             selectedSquare.setCurrentPiece(null);
             selectedSquare = null;
