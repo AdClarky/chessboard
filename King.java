@@ -13,8 +13,8 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Integer> possibleMoves(Board board) {
-        ArrayList<Integer> moves = new ArrayList<>();
+    public ArrayList<int[]> possibleMoves(Board board) {
+        ArrayList<int[]> moves = new ArrayList<>();
         return moves;
     }
 
