@@ -8,8 +8,8 @@ public class King extends Piece{
     public static Icon black = ImageUtils.getStrechedImage("assets/black_king.png");
     public static Icon white = ImageUtils.getStrechedImage("assets/white_king.png");
 
-    public King(int x, int y, Icon icon) {
-        super(x, y, icon);
+    public King(int x, int y, Icon icon, int direction) {
+        super(x, y, icon, direction);
     }
 
     @Override
