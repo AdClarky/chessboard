@@ -40,6 +40,12 @@ public class Board {
 
     public Piece getPiece(int x, int y){return board[y][x];}
 
+    public void squareClicked(int x, int y){
+        Piece piece = getPiece(x, y);
+        if(piece.getDirection() == turn)
+            setSelectedPiece(piece);
+    }
+
     public void movePiece(int x, int y, Piece piece){
         board[piece.getY()][piece.getY()] = null;
         piece.setX(x);

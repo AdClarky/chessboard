@@ -11,6 +11,7 @@ public class Window extends JFrame implements BoardListener {
 
     public Window(){
         super();
+        board.addBoardListener(this);
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,6 +49,7 @@ public class Window extends JFrame implements BoardListener {
 
     @Override
     public void pieceSelected(Piece piece) {
-        findSquare(piece).clicked();
+        if(piece != null)
+            findSquare(piece).clicked();
     }
 }
