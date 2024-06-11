@@ -2,7 +2,7 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements BoardListener {
     private final Square[][] squares = new Square[8][8];
     private static Color light = new Color(180, 180, 180);
     private static Color dark = new Color(124, 124, 124);
@@ -27,5 +27,10 @@ public class Window extends JFrame {
             currentColour = (currentColour == light) ? dark : light;
         }
         setVisible(true);
+    }
+
+    @Override
+    public void boardChanged(Board board) {
+
     }
 }

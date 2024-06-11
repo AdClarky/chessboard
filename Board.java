@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 public class Board {
+    private ArrayList<BoardListener> boardListeners = new ArrayList<>(1);
     private final Piece[][] board  =  new Piece[8][8];
 
     public Board(){
@@ -25,4 +28,18 @@ public class Board {
     }
 
     public Piece getPiece(int x, int y){return board[y][x];}
+
+    public void movePiece(int x, int y, Piece piece){
+
+    }
+
+    public void addBoardListener(BoardListener listener){
+        boardListeners.add(listener);
+    }
+
+    public void notifyBoardListeners(){
+        for(BoardListener listener : boardListeners){
+            listener.boardChanged(this);
+        }
+    }
 }
