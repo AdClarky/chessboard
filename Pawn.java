@@ -17,9 +17,9 @@ public class Pawn extends Piece{
             moves.add(new Coordinate(x, y+direction));
         if((y == 6 && direction == DOWN) || (y == 1 && direction == UP))
             moves.add(new Coordinate(x, y+(direction<<1)));
-        if(x != 7 && board.getPiece(x-1,y+direction) != null && board.getPiece(x-1,y+direction).getDirection() != direction)
+        if(x != 0 && board.getPiece(x-1,y+direction) != null && board.getPiece(x-1,y+direction).getDirection() != direction)
             moves.add(new Coordinate(x-1,y+direction));
-        if(x != 0 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction)
+        if(x != 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction)
             moves.add(new Coordinate(x+1,y+direction));
 
         return moves;
