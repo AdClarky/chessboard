@@ -48,8 +48,8 @@ public class Board {
             movePiece(x, y, pieceSelected);
         } else if(piece.getDirection() == turn) { // if the player's piece
             setSelectedPiece(piece);
-        } else { // if enemy piece
-            movePiece(x, y, pieceSelected);
+        } else if(pieceSelected != null){ // if enemy piece
+            movePiece(x, y, piece);
         }
     }
 
