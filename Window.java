@@ -1,6 +1,7 @@
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 public class Window extends JFrame implements BoardListener {
     private final Square[][] squares = new Square[8][8];
@@ -8,6 +9,7 @@ public class Window extends JFrame implements BoardListener {
     private static Color dark = new Color(124, 124, 124);
     private final Board board = new Board();
     private final Mouse mouse = new Mouse(board);
+    private ArrayList<Coordinate> possibleMoves = new ArrayList<>();
 
     public Window(){
         super();
@@ -46,11 +48,22 @@ public class Window extends JFrame implements BoardListener {
         square.clicked();
         squares[square.getCurrentPiece().getY()][square.getCurrentPiece().getX()].setCurrentPiece(piece);
         square.setCurrentPiece(null);
+        for(Coordinate move : possibleMoves){
+            squares[move.getY()][move.getX()].setPossibleMove(false);
+        }
     }
 
     @Override
     public void pieceSelected(Piece piece) {
-        if(piece != null)
-            findSquare(piece).clicked();
+        if(piece == null)
+            return;
+        findSquare(piece).clicked();
+        for(Coordinate move : possibleMoves){
+            squares[move.getY()][move.getX()].setPossibleMove(false);
+        }
+        possibleMoves = piece.getPossibleMoves(board);
+        for(Coordinate move : possibleMoves){
+            squares[move.getY()][move.getX()].setPossibleMove(true);
+        }
     }
 }

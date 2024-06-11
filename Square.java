@@ -2,7 +2,8 @@ import javax.swing.JButton;
 import java.awt.Color;
 
 public class Square extends JButton {
-    public static Color selected = new Color(245, 246, 130);
+    public static Color SELECTED = new Color(245, 246, 130);
+    public static Color POSSIBLE_MOVE = new Color(200, 50, 50);
     private Color colour;
     private Piece currentPiece;
     private final Coordinate coordinate;
@@ -31,8 +32,16 @@ public class Square extends JButton {
 
     public void clicked(){
         if(colour.equals(getBackground()))
-            setBackground(selected);
+            setBackground(SELECTED);
         else
             setBackground(colour);
+    }
+
+    public void setPossibleMove(boolean possible){
+        if(possible){
+            setBackground(POSSIBLE_MOVE);
+        }else{
+            setBackground(colour);
+        }
     }
 }
