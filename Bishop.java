@@ -15,6 +15,23 @@ public class Bishop extends Piece{
     @Override
     public ArrayList<Coordinate> getPossibleMoves(Board board) {
         ArrayList<Coordinate> moves = new ArrayList<>();
+        for(int x = this.x+1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x++, y++) {
+            if(!canTake(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x--, y--) {
+            if(!canTake(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x+1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x++, y--) {
+            if(!canTake(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x--, y++) {
+            if(!canTake(x, y, board, moves))
+                break;
+        }
+
         return moves;
     }
 
