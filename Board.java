@@ -38,7 +38,11 @@ public class Board {
 
     public int getTurn(){return turn;}
 
-    public Piece getPiece(int x, int y){return board[y][x];}
+    public Piece getPiece(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return null;
+        return board[y][x];
+    }
 
     public void squareClicked(int x, int y){
         Piece piece = getPiece(x, y);
