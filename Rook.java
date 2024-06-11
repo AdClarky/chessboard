@@ -1,7 +1,5 @@
 import assets.ImageUtils;
-
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import java.util.ArrayList;
 
 public class Rook extends Piece{

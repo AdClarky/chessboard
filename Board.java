@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Board {
     private ArrayList<BoardListener> boardListeners = new ArrayList<>(1);
+    private Piece pieceSelected = null;
     private final Piece[][] board  =  new Piece[8][8];
 
     public Board(){
@@ -33,13 +34,21 @@ public class Board {
 
     }
 
+    public void setSelectedPiece(Piece piece){
+        pieceSelected = piece;
+    }
+
+    public void removeSelectedPiece(){
+        pieceSelected = null;
+    }
+
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
     }
 
-    public void notifyBoardListeners(){
+    public void notifyBoardListeners(Piece pieceChanged){
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(this);
+            listener.boardChanged(pieceChanged);
         }
     }
 }

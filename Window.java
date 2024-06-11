@@ -29,8 +29,24 @@ public class Window extends JFrame implements BoardListener {
         setVisible(true);
     }
 
-    @Override
-    public void boardChanged(Board board) {
+    public Square findSquare(Piece piece){
+        for(Square[] row : squares){
+            for(Square square : row){
+                if(piece.equals(square.getCurrentPiece()))
+                    return square;
+            }
+        }
+    }
 
+    @Override
+    public void boardChanged(Piece piece) {
+        Square square = findSquare(piece);
+        squares[square.getCurrentPiece().getY()][square.getCurrentPiece().getX()].setCurrentPiece(piece);
+        square.setCurrentPiece(null);
+    }
+
+    @Override
+    public void pieceSelected(Piece piece) {
+        findSquare(piece).clicked();
     }
 }

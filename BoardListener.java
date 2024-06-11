@@ -1,3 +1,5 @@
 public interface BoardListener {
-    void boardChanged(Board board);
+    void boardChanged(Piece piece);
+
+    void pieceSelected(Piece piece);
 }
