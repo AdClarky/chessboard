@@ -36,6 +36,7 @@ public class Window extends JFrame implements BoardListener {
                     return square;
             }
         }
+        return null;
     }
 
     @Override

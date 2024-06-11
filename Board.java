@@ -31,14 +31,22 @@ public class Board {
     public Piece getPiece(int x, int y){return board[y][x];}
 
     public void movePiece(int x, int y, Piece piece){
-
+        board[piece.getY()][piece.getY()] = null;
+        piece.setX(x);
+        piece.setY(y);
+        board[y][x] = piece;
+        notifyBoardChanged(piece);
     }
 
     public void setSelectedPiece(Piece piece){
         pieceSelected = piece;
+        notifyPieceSelected(piece);
     }
 
     public void removeSelectedPiece(){
+        if(pieceSelected != null){
+            notifyPieceSelected(pieceSelected);
+        }
         pieceSelected = null;
     }
 
@@ -46,9 +54,15 @@ public class Board {
         boardListeners.add(listener);
     }
 
-    public void notifyBoardListeners(Piece pieceChanged){
+    public void notifyBoardChanged(Piece pieceChanged){
         for(BoardListener listener : boardListeners){
             listener.boardChanged(pieceChanged);
+        }
+    }
+
+    public void notifyPieceSelected(Piece pieceSelected){
+        for(BoardListener listener : boardListeners){
+            listener.pieceSelected(pieceSelected);
         }
     }
 }
