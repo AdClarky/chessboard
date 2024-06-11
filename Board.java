@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Board {
     private ArrayList<BoardListener> boardListeners = new ArrayList<>(1);
     private Piece pieceSelected = null;
+    private int turn = Piece.UP;
     private final Piece[][] board  =  new Piece[8][8];
 
     public Board(){
@@ -28,6 +29,15 @@ public class Board {
         }
     }
 
+    public void nextTurn(){
+        if(turn == Piece.UP)
+            turn = Piece.DOWN;
+        else
+            turn = Piece.UP;
+    }
+
+    public int getTurn(){return turn;}
+
     public Piece getPiece(int x, int y){return board[y][x];}
 
     public void movePiece(int x, int y, Piece piece){
@@ -36,31 +46,28 @@ public class Board {
         piece.setY(y);
         board[y][x] = piece;
         notifyBoardChanged(piece);
+        nextTurn();
     }
 
     public void setSelectedPiece(Piece piece){
-        pieceSelected = piece;
-        notifyPieceSelected(piece);
-    }
-
-    public void removeSelectedPiece(){
         if(pieceSelected != null){
             notifyPieceSelected(pieceSelected);
         }
-        pieceSelected = null;
+        pieceSelected = piece;
+        notifyPieceSelected(piece);
     }
 
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
     }
 
-    public void notifyBoardChanged(Piece pieceChanged){
+    private void notifyBoardChanged(Piece pieceChanged){
         for(BoardListener listener : boardListeners){
             listener.boardChanged(pieceChanged);
         }
     }
 
-    public void notifyPieceSelected(Piece pieceSelected){
+    private void notifyPieceSelected(Piece pieceSelected){
         for(BoardListener listener : boardListeners){
             listener.pieceSelected(pieceSelected);
         }
