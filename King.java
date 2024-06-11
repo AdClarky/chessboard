@@ -13,7 +13,7 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> possibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves(Board board) {
         ArrayList<Coordinate> moves = new ArrayList<>();
         return moves;
     }

@@ -16,7 +16,7 @@ public abstract class Piece {
         this.direction = direction;
     }
 
-    public abstract ArrayList<Coordinate> possibleMoves(Board board);
+    public abstract ArrayList<Coordinate> getPossibleMoves(Board board);
 
     @Override
     public abstract String toString();

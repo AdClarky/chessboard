@@ -42,11 +42,22 @@ public class Board {
 
     public void squareClicked(int x, int y){
         Piece piece = getPiece(x, y);
-        if(piece.getDirection() == turn)
+        if(piece == null){ // if clicked a blank square
+            if(pieceSelected == null)
+                return;
+            movePiece(x, y, pieceSelected);
+        } else if(piece.getDirection() == turn) { // if the player's piece
             setSelectedPiece(piece);
+        } else { // if enemy piece
+            movePiece(x, y, pieceSelected);
+        }
     }
 
     public void movePiece(int x, int y, Piece piece){
+        if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
+            setSelectedPiece(null);
+            return;
+        }
         board[piece.getY()][piece.getY()] = null;
         piece.setX(x);
         piece.setY(y);

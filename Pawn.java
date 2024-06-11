@@ -11,7 +11,7 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> possibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves(Board board) {
         ArrayList<Coordinate> moves = new ArrayList<>();
         if(y != 7 && y != 0)
             moves.add(new Coordinate(x, y+direction));
