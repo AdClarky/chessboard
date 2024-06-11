@@ -18,14 +18,14 @@ public abstract class Piece {
 
     public abstract ArrayList<Coordinate> getPossibleMoves(Board board);
 
-    protected boolean canTake(int x, int y, Board board, ArrayList<Coordinate> moves) {
+    protected boolean cantMove(int x, int y, Board board, ArrayList<Coordinate> moves) {
         if(board.getPiece(x, y) != null){
             if(board.getPiece(x, y).getDirection() != direction)
                 moves.add(new Coordinate(x, y));
-            return false;
+            return true;
         }
         moves.add(new Coordinate(x, y));
-        return true;
+        return false;
     }
 
     @Override
