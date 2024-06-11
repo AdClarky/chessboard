@@ -43,6 +43,7 @@ public class Window extends JFrame implements BoardListener {
     @Override
     public void boardChanged(Piece piece) {
         Square square = findSquare(piece);
+        square.clicked();
         squares[square.getCurrentPiece().getY()][square.getCurrentPiece().getX()].setCurrentPiece(piece);
         square.setCurrentPiece(null);
     }
