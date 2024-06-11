@@ -2,8 +2,8 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public abstract class Piece {
-    public static int UP = 1;
-    public static int DOWN = -1;
+    public static int DOWN = 1;
+    public static int UP = -1;
     protected Icon icon;
     protected int x;
     protected int y;
