@@ -64,6 +64,7 @@ public class Board {
         piece.setX(x);
         piece.setY(y);
         board[y][x] = piece;
+        pieceSelected = null;
         notifyBoardChanged(piece);
         nextTurn();
     }

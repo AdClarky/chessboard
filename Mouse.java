@@ -17,9 +17,7 @@ public class Mouse implements MouseListener {
         board.squareClicked(clickedSquare.getCoords().getX(), clickedSquare.getCoords().getY());
     }
     @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
+    public void mouseClicked(MouseEvent e) {}
     @Override
     public void mousePressed(MouseEvent e) {
 

@@ -51,6 +51,7 @@ public class Window extends JFrame implements BoardListener {
         for(Coordinate move : possibleMoves){
             squares[move.getY()][move.getX()].setPossibleMove(false);
         }
+        possibleMoves.clear();
     }
 
     @Override
