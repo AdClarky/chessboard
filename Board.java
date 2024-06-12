@@ -7,6 +7,9 @@ public class Board {
     private final Piece[][] board  =  new Piece[8][8];
     private King whiteKing;
     private King blackKing;
+    private Piece tempPiece = null;
+    private int oldX;
+    private int oldY;
 
     public Board(){
         board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
@@ -49,16 +52,30 @@ public class Board {
         return whiteKing;
     }
 
-    public boolean inCheck(Coordinate kingPos, int opponent){
+    public boolean inCheck(Coordinate kingPos, int team){
         for(Piece[] row : board){
             for(Piece piece : row){
-                if(piece == null || piece.getDirection() != opponent)
+                if(piece == null || piece.getDirection() == team)
                     continue;
                 if(piece.getPossibleMoves(this).contains(kingPos))
                     return true;
             }
         }
         return false;
+    }
+
+    public void tempMove(int x, int y, Piece piece){
+        tempPiece = board[y][x];
+        piece.setX(x);
+        piece.setY(y);
+        board[y][x] = piece;
+    }
+
+    public void undoTempMove(Piece piece){
+        board[piece.getY()][piece.getX()] = tempPiece;
+        board[oldY][oldX] = piece;
+        piece.setY(oldY);
+        piece.setX(oldX);
     }
 
     public Piece getPiece(int x, int y){
@@ -109,7 +126,6 @@ public class Board {
             movePiece(x, y, piece);
         }
         pieceSelected = null;
-        System.out.println(inCheck(new Coordinate(whiteKing.getX(), whiteKing.getY()), Piece.UP));
         nextTurn();
     }
 
