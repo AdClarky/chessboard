@@ -19,8 +19,10 @@ public abstract class Piece {
     public abstract ArrayList<Coordinate> getPossibleMoves(Board board);
 
     protected boolean cantMove(int x, int y, Board board, ArrayList<Coordinate> moves) {
-        if(board.getPiece(x, y) != null){
-            if(board.getPiece(x, y).getDirection() != direction)
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        if(board.getPiece(x, y) != null){ // if there is a piece in the square
+            if(board.getPiece(x, y).getDirection() != direction) // if its an enemy piece
                 moves.add(new Coordinate(x, y));
             return true;
         }
