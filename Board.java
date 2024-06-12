@@ -81,7 +81,7 @@ public class Board {
                 notifyBoardChanged(pawn, board[y][x]);
             }else if(x != pawn.getX() && (board[y][x] == null)){ // if passanting
                 movePiece(x, y, board[y-pawn.getDirection()][x]);
-                movePiece(x, y, pawn);;
+                movePiece(x, y, pawn);
             }else{
                 pawn.setCanBePassanted(Math.abs(y - pawn.getY()) == 2);
                 movePiece(x, y, pawn);
@@ -107,8 +107,6 @@ public class Board {
         board[y][x] = piece;
         notifyBoardChanged(piece, piece);
     }
-
-
 
     private void setSelectedPiece(Piece piece){
         if(pieceSelected != null){

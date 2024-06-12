@@ -45,7 +45,7 @@ public class Window extends JFrame implements BoardListener {
     @Override
     public void boardChanged(Piece piece, Piece newPiece) {
         Square square = findSquare(piece);
-        square.clicked();
+        square.unselected();
         squares[newPiece.getY()][newPiece.getX()].setCurrentPiece(newPiece);
         square.setCurrentPiece(null);
         for(Coordinate move : possibleMoves){
@@ -58,7 +58,7 @@ public class Window extends JFrame implements BoardListener {
     public void pieceSelected(Piece piece) {
         if(piece == null)
             return;
-        findSquare(piece).clicked();
+        findSquare(piece).selected();
         for(Coordinate move : possibleMoves){
             squares[move.getY()][move.getX()].setPossibleMove(false);
         }

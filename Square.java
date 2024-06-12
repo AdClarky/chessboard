@@ -30,11 +30,12 @@ public class Square extends JButton {
 
     public Coordinate getCoords() {return coordinate;}
 
-    public void clicked(){
-        if(colour.equals(getBackground()))
-            setBackground(SELECTED);
-        else
-            setBackground(colour);
+    public void selected(){
+        setBackground(SELECTED);
+    }
+
+    public void unselected(){
+        setBackground(colour);
     }
 
     public void setPossibleMove(boolean possible){
