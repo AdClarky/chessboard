@@ -36,6 +36,6 @@ public class Bishop extends Piece{
 
     @Override
     public String toString() {
-        return "Bishop";
+        return "Bishop, " + x + "," + y + ", " + direction + "; ";
     }
 }

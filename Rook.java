@@ -33,7 +33,5 @@ public class Rook extends Piece{
     }
 
     @Override
-    public String toString() {
-        return "Rook";
-    }
+    public String toString() {return "Bishop, " + x + "," + y + ", " + direction + "; ";}
 }

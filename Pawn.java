@@ -27,6 +27,6 @@ public class Pawn extends Piece{
 
     @Override
     public String toString() {
-        return "Pawn";
+        return "Pawn, " + x + "," + y + ", " + direction + "; ";
     }
 }
