@@ -71,15 +71,22 @@ public class Board {
             setSelectedPiece(null);
             return;
         }
-        // if pawn promotion
-        if(piece instanceof Pawn && (y == 7 || y == 0)) {
-            board[piece.getY()][piece.getX()] = null;
-            if (piece.getDirection() == Piece.UP)
-                board[y][x] = new Queen(x, y, Queen.black, Piece.UP);
-            else if (piece.getDirection() == Piece.DOWN)
-                board[y][x] = new Queen(x, y, Queen.white, Piece.DOWN);
-            notifyBoardChanged(piece, board[y][x]);
-        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){
+        if(piece instanceof Pawn pawn) {
+            if(y == 7 || y == 0) { // if pawn promotion
+                board[pawn.getY()][pawn.getX()] = null;
+                if (pawn.getDirection() == Piece.UP)
+                    board[y][x] = new Queen(x, y, Queen.black, Piece.UP);
+                else if (pawn.getDirection() == Piece.DOWN)
+                    board[y][x] = new Queen(x, y, Queen.white, Piece.DOWN);
+                notifyBoardChanged(pawn, board[y][x]);
+            }else if(x != pawn.getX() && (board[y][x] == null)){ // if passanting
+                movePiece(x, y, board[y-pawn.getDirection()][x]);
+                movePiece(x, y, pawn);;
+            }else{
+                pawn.setCanBePassanted(Math.abs(y - pawn.getY()) == 2);
+                movePiece(x, y, pawn);
+            }
+        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){ // castling
             if(x - piece.getX() == -2) { // long castle
                 movePiece(3, y, board[y][0]);
             }else {

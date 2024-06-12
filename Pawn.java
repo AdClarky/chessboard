@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Pawn extends Piece{
     public static Icon black = ImageUtils.getStrechedImage("assets/black_pawn.png");
     public static Icon white = ImageUtils.getStrechedImage("assets/white_pawn.png");
+    private boolean canBePassanted = false;
 
     public Pawn(int x, int y, Icon icon, int direction) {
         super(x, y, icon, direction);
@@ -21,9 +22,20 @@ public class Pawn extends Piece{
             moves.add(new Coordinate(x-1,y+direction));
         if(x != 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction)
             moves.add(new Coordinate(x+1,y+direction));
+        if((direction == UP && y == 3) || (direction == DOWN && y == 4)){
+            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn.getPassantable())
+                moves.add(new Coordinate(x-1,y+direction));
+            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn.getPassantable()) {
+                moves.add(new Coordinate(x+1,y+direction));
+            }
+        }
 
         return moves;
     }
+
+    public boolean getPassantable(){return canBePassanted;}
+
+    public void setCanBePassanted(boolean canBePass) {this.canBePassanted = canBePass;}
 
     @Override
     public String toString() {
