@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Rook extends Piece{
     public static Icon black = ImageUtils.getStrechedImage("assets/black_rook.png");
     public static Icon white = ImageUtils.getStrechedImage("assets/white_rook.png");
+    private boolean notMoved = true;
 
     public Rook(int x, int y, Icon icon, int direction) {
         super(x, y, icon, direction);
@@ -30,6 +31,14 @@ public class Rook extends Piece{
                 break;
         }
         return moves;
+    }
+
+    public boolean getNotMoved(){return this.notMoved;}
+
+    @Override
+    public void setX(int x) {
+        notMoved = false;
+        super.setX(x);
     }
 
     @Override

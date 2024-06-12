@@ -58,35 +58,50 @@ public class Board {
         if(piece == null){ // if clicked a blank square
             if(pieceSelected == null)
                 return;
-            movePiece(x, y, pieceSelected);
+            moveValidPieces(x, y, pieceSelected);
         } else if(piece.getDirection() == turn) { // if the player's piece
             setSelectedPiece(piece);
         } else if(pieceSelected != null){ // if enemy piece
-            movePiece(x, y, pieceSelected);
+            moveValidPieces(x, y, pieceSelected);
         }
     }
 
-    private void movePiece(int x, int y, Piece piece){
+    private void moveValidPieces(int x, int y, Piece piece){
         if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
             setSelectedPiece(null);
             return;
         }
-        board[piece.getY()][piece.getX()] = null;
         // if pawn promotion
-        if(piece instanceof Pawn && (y == 7 || y == 0)){
-            if(piece.getDirection() == Piece.UP)
+        if(piece instanceof Pawn && (y == 7 || y == 0)) {
+            board[piece.getY()][piece.getX()] = null;
+            if (piece.getDirection() == Piece.UP)
                 board[y][x] = new Queen(x, y, Queen.black, Piece.UP);
-            else if(piece.getDirection() == Piece.DOWN)
+            else if (piece.getDirection() == Piece.DOWN)
                 board[y][x] = new Queen(x, y, Queen.white, Piece.DOWN);
+            notifyBoardChanged(piece, board[y][x]);
+        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){
+            if(x - piece.getX() == -2) { // long castle
+                movePiece(3, y, board[y][0]);
+            }else {
+                movePiece(5, y, board[y][7]);
+            }
+            movePiece(x, y, piece);
         }else{ // if not a pawn promotion
-            piece.setX(x);
-            piece.setY(y);
-            board[y][x] = piece;
+            movePiece(x, y, piece);
         }
-        notifyBoardChanged(piece, board[y][x]);
         pieceSelected = null;
         nextTurn();
     }
+
+    private void movePiece(int x, int y, Piece piece){
+        board[piece.getY()][piece.getX()] = null;
+        piece.setX(x);
+        piece.setY(y);
+        board[y][x] = piece;
+        notifyBoardChanged(piece, piece);
+    }
+
+
 
     private void setSelectedPiece(Piece piece){
         if(pieceSelected != null){
