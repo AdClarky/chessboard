@@ -49,6 +49,18 @@ public class Board {
         return whiteKing;
     }
 
+    public boolean inCheck(Coordinate kingPos, int opponent){
+        for(Piece[] row : board){
+            for(Piece piece : row){
+                if(piece == null || piece.getDirection() != opponent)
+                    continue;
+                if(piece.getPossibleMoves(this).contains(kingPos))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public Piece getPiece(int x, int y){
         return board[y][x];
     }
@@ -97,6 +109,7 @@ public class Board {
             movePiece(x, y, piece);
         }
         pieceSelected = null;
+        System.out.println(inCheck(new Coordinate(whiteKing.getX(), whiteKing.getY()), Piece.UP));
         nextTurn();
     }
 
