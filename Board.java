@@ -5,13 +5,16 @@ public class Board {
     private Piece pieceSelected = null;
     private int turn = Piece.DOWN;
     private final Piece[][] board  =  new Piece[8][8];
+    private King whiteKing;
+    private King blackKing;
 
     public Board(){
         board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
         board[0][1] = new Knight(1, 0, Knight.white, Piece.DOWN);
         board[0][2] = new Bishop(2, 0, Bishop.white, Piece.DOWN);
         board[0][3] = new Queen(3, 0, Queen.white, Piece.DOWN);
-        board[0][4] = new King(4, 0, King.white, Piece.DOWN);
+        whiteKing = new King(4, 0, King.white, Piece.DOWN);
+        board[0][4] = whiteKing;
         board[0][5] = new Bishop(5, 0, Bishop.white, Piece.DOWN);
         board[0][6] = new Knight(6, 0, Knight.white, Piece.DOWN);
         board[0][7] = new Rook(7, 0, Rook.white, Piece.DOWN);
@@ -19,7 +22,8 @@ public class Board {
         board[7][1] = new Knight(1, 7, Knight.black, Piece.UP);
         board[7][2] = new Bishop(2, 7, Bishop.black, Piece.UP);
         board[7][3] = new Queen(3, 7, Queen.black, Piece.UP);
-        board[7][4] = new King(4, 7, King.black, Piece.UP);
+        blackKing = new King(4, 7, King.black, Piece.UP);
+        board[7][4] = blackKing;
         board[7][5] = new Bishop(5, 7, Bishop.black, Piece.UP);
         board[7][6] = new Knight(6, 7, Knight.black, Piece.UP);
         board[7][7] = new Rook(7, 7, Rook.black, Piece.UP);
@@ -29,7 +33,7 @@ public class Board {
         }
     }
 
-    public void nextTurn(){
+    private void nextTurn(){
         if(turn == Piece.DOWN)
             turn = Piece.UP;
         else
@@ -37,6 +41,13 @@ public class Board {
     }
 
     public int getTurn(){return turn;}
+
+    public Piece getKing(){
+        if(turn == Piece.UP){
+            return blackKing;
+        }
+        return whiteKing;
+    }
 
     public Piece getPiece(int x, int y){
         return board[y][x];
@@ -55,7 +66,7 @@ public class Board {
         }
     }
 
-    public void movePiece(int x, int y, Piece piece){
+    private void movePiece(int x, int y, Piece piece){
         if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
             setSelectedPiece(null);
             return;
@@ -69,7 +80,7 @@ public class Board {
         nextTurn();
     }
 
-    public void setSelectedPiece(Piece piece){
+    private void setSelectedPiece(Piece piece){
         if(pieceSelected != null){
             notifyPieceSelected(pieceSelected);
         }
