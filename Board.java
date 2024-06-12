@@ -42,7 +42,7 @@ public class Board {
 
     public int getTurn(){return turn;}
 
-    public Piece getKing(){
+    public King getKing(){
         if(turn == Piece.UP){
             return blackKing;
         }
