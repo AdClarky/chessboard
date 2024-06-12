@@ -13,7 +13,7 @@ public class Pawn extends Piece{
     @Override
     public ArrayList<Coordinate> getPossibleMoves(Board board) {
         ArrayList<Coordinate> moves = new ArrayList<>();
-        if(y != 7 && y != 0) // if not at the end of a row
+        if(y != 7 && y != 0 && board.getPiece(x, y+direction) == null)
             moves.add(new Coordinate(x, y+direction));
         if((y == 6 && direction == UP) || (y == 1 && direction == DOWN))
             moves.add(new Coordinate(x, y+(direction<<1)));
