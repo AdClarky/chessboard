@@ -72,11 +72,19 @@ public class Board {
             return;
         }
         board[piece.getY()][piece.getX()] = null;
-        piece.setX(x);
-        piece.setY(y);
-        board[y][x] = piece;
+        // if pawn promotion
+        if(piece instanceof Pawn && (y == 7 || y == 0)){
+            if(piece.getDirection() == Piece.UP)
+                board[y][x] = new Queen(x, y, Queen.black, Piece.UP);
+            else if(piece.getDirection() == Piece.DOWN)
+                board[y][x] = new Queen(x, y, Queen.white, Piece.DOWN);
+        }else{ // if not a pawn promotion
+            piece.setX(x);
+            piece.setY(y);
+            board[y][x] = piece;
+        }
+        notifyBoardChanged(piece, board[y][x]);
         pieceSelected = null;
-        notifyBoardChanged(piece);
         nextTurn();
     }
 
@@ -92,9 +100,9 @@ public class Board {
         boardListeners.add(listener);
     }
 
-    private void notifyBoardChanged(Piece pieceChanged){
+    private void notifyBoardChanged(Piece piece, Piece newPiece){
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(pieceChanged);
+            listener.boardChanged(piece, newPiece);
         }
     }
 

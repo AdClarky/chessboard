@@ -12,8 +12,6 @@ public class Mouse implements MouseListener {
     public void mouseReleased(MouseEvent e) {
         if(!(e.getSource() instanceof Square clickedSquare))
             return;
-        System.out.println("Clicked: "+clickedSquare.getCoords());
-
         board.squareClicked(clickedSquare.getCoords().getX(), clickedSquare.getCoords().getY());
     }
     @Override
