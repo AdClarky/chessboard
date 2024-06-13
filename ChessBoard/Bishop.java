@@ -1,3 +1,5 @@
+package ChessBoard;
+
 import assets.ImageUtils;
 
 import javax.swing.Icon;
@@ -36,6 +38,6 @@ public class Bishop extends Piece{
 
     @Override
     public String toString() {
-        return "Bishop, " + x + "," + y + ", " + direction + "; ";
+        return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";
     }
 }

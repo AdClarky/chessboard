@@ -1,3 +1,5 @@
+package ChessBoard;
+
 public class Move {
     private Piece piece;
     private int x;

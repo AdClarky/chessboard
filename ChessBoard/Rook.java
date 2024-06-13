@@ -1,3 +1,5 @@
+package ChessBoard;
+
 import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
@@ -43,5 +45,5 @@ public class Rook extends Piece{
     }
 
     @Override
-    public String toString() {return "Bishop, " + x + "," + y + ", " + direction + "; ";}
+    public String toString() {return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";}
 }

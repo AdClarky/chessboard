@@ -1,3 +1,5 @@
+package ChessBoard;
+
 import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
@@ -25,6 +27,6 @@ public class Knight extends Piece{
 
     @Override
     public String toString() {
-        return "Knight, " + x + "," + y + ", " + direction + "; ";
+        return "ChessBoard.Knight, " + x + "," + y + ", " + direction + "; ";
     }
 }

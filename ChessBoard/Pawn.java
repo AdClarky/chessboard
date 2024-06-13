@@ -1,3 +1,5 @@
+package ChessBoard;
+
 import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
@@ -39,6 +41,6 @@ public class Pawn extends Piece{
 
     @Override
     public String toString() {
-        return "Pawn, " + x + "," + y + ", " + direction + "; ";
+        return "ChessBoard.Pawn, " + x + "," + y + ", " + direction + "; ";
     }
 }

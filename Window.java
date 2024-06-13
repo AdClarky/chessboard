@@ -1,3 +1,8 @@
+import ChessBoard.Board;
+import ChessBoard.BoardListener;
+import ChessBoard.Coordinate;
+import ChessBoard.Piece;
+
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;

@@ -1,3 +1,5 @@
+import ChessBoard.Piece;
+
 import javax.swing.JButton;
 import java.awt.Color;
 

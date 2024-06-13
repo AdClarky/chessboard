@@ -1,3 +1,5 @@
+package ChessBoard;
+
 import javax.swing.Icon;
 import java.util.ArrayList;
 
