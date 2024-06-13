@@ -7,9 +7,7 @@ public class Board {
     private final Piece[][] board  =  new Piece[8][8];
     private King whiteKing;
     private King blackKing;
-    private Piece tempPiece = null;
-    private int oldX;
-    private int oldY;
+    private final ArrayList<Move> tempMoves = new ArrayList<>(3);
 
     public Board(){
         board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
@@ -60,27 +58,36 @@ public class Board {
                 if(piece == null || piece.getDirection() == pieceToCheck.getDirection())
                     continue;
                 if(piece.getPossibleMoves(this).contains(kingPos)) {
-                    undoTempMove(pieceToCheck);
+                    undoTempMove();
                     return true;
                 }
             }
         }
-        undoTempMove(pieceToCheck);
+        undoTempMove();
         return false;
     }
 
     public void tempMove(int x, int y, Piece piece){
-        tempPiece = board[y][x];
-        piece.setX(x);
-        piece.setY(y);
-        board[y][x] = piece;
+        tempMoves.clear();
+        for(Move move : getMoves(x, y, piece)){
+            tempMoves.add(new Move(piece, piece.getX(), piece.getY()));
+            if(board[move.getY()][move.getX()] != null)
+                tempMoves.add(new Move(board[move.getY()][move.getX()], move.getX(), move.getY()));
+            board[move.getPiece().getY()][move.getPiece().getX()] = null;
+            move.getPiece().setX(move.getX());
+            move.getPiece().setY(move.getY());
+            board[move.getY()][move.getX()] = move.getPiece();
+        }
     }
 
-    public void undoTempMove(Piece piece){
-        board[piece.getY()][piece.getX()] = tempPiece;
-        board[oldY][oldX] = piece;
-        piece.setY(oldY);
-        piece.setX(oldX);
+    public void undoTempMove(){
+        for(Move move : tempMoves){
+            board[move.getPiece().getY()][move.getPiece().getX()] = null;
+            move.getPiece().setX(move.getX());
+            move.getPiece().setY(move.getY());
+            board[move.getY()][move.getX()] = move.getPiece();
+        }
+        tempMoves.clear();
     }
 
     public Piece getPiece(int x, int y){
