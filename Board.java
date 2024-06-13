@@ -142,7 +142,7 @@ public class Board {
             move.getPiece().setX(move.getX());
             move.getPiece().setY(move.getY());
             board[move.getY()][move.getX()] = move.getPiece();
-            notifyBoardChanged(move.getPiece(), move.getPiece());
+            notifyBoardChanged(move.getPiece());
         }
         pieceSelected = null;
         nextTurn();
@@ -160,9 +160,9 @@ public class Board {
         boardListeners.add(listener);
     }
 
-    private void notifyBoardChanged(Piece piece, Piece newPiece){
+    private void notifyBoardChanged(Piece piece){
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(piece, newPiece);
+            listener.boardChanged(piece);
         }
     }
 

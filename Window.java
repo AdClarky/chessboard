@@ -43,12 +43,15 @@ public class Window extends JFrame implements BoardListener {
     }
 
     @Override
-    public void boardChanged(Piece piece, Piece newPiece) {
+    public void boardChanged(Piece piece) {
         Square square = findSquare(piece);
-        square.unselected();
-        squares[newPiece.getY()][newPiece.getX()].setCurrentPiece(newPiece);
-        square.setCurrentPiece(null);
-        for(Coordinate move : possibleMoves){
+        if(square != null){ // if the piece already existed
+            square.unselected();
+            square.setCurrentPiece(null);
+        }
+        squares[piece.getY()][piece.getX()].setCurrentPiece(piece);
+
+        for(Coordinate move : possibleMoves){ // unhighlights the possible moves
             squares[move.getY()][move.getX()].setPossibleMove(false);
         }
         possibleMoves.clear();
