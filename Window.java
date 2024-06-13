@@ -64,19 +64,19 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     }
 
     public void unselectSquare(Square square){
-        square.unselected();
+        square.reset();
         pieceSelected = null;
         showPossibleMoves(null);
     }
 
     public void showPossibleMoves(Piece piece) {
         for (Coordinate move : possibleMoves) { // remove old possible moves
-            squares[move.getY()][move.getX()].setPossibleMove(false);
+            squares[move.getY()][move.getX()].reset();
         }
         if(piece != null) {
             possibleMoves = piece.getPossibleMoves(board);
             for(Coordinate move : possibleMoves){
-                squares[move.getY()][move.getX()].setPossibleMove(true);
+                squares[move.getY()][move.getX()].showPossibleMove();
             }
         }
     }
@@ -85,13 +85,13 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     public void boardChanged(Piece piece) {
         Square square = findSquare(piece);
         if(square != null){ // if the piece already existed
-            square.unselected();
+            square.reset();
             square.setCurrentPiece(null);
         }
         squares[piece.getY()][piece.getX()].setCurrentPiece(piece);
 
         for(Coordinate move : possibleMoves){ // unhighlights the possible moves
-            squares[move.getY()][move.getX()].setPossibleMove(false);
+            squares[move.getY()][move.getX()].reset();
         }
         possibleMoves.clear();
     }

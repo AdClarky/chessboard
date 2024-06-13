@@ -4,7 +4,7 @@ import java.awt.Color;
 public class Square extends JButton {
     public static Color SELECTED = new Color(245, 246, 130);
     public static Color POSSIBLE_MOVE = new Color(200, 50, 50);
-    private Color colour;
+    private final Color colour;
     private Piece currentPiece;
     private final int boardX;
     private final int boardY;
@@ -37,15 +37,11 @@ public class Square extends JButton {
         setBackground(SELECTED);
     }
 
-    public void unselected(){
+    public void reset(){
         setBackground(colour);
     }
 
-    public void setPossibleMove(boolean possible){
-        if(possible){
-            setBackground(POSSIBLE_MOVE);
-        }else{
-            setBackground(colour);
-        }
+    public void showPossibleMove(){
+        setBackground(POSSIBLE_MOVE);
     }
 }
