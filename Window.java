@@ -24,7 +24,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         Color currentColour = light;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                squares[y][x] = new Square(board.getPiece(x,y), currentColour, new Coordinate(x, y));
+                squares[y][x] = new Square(board.getPiece(x,y), currentColour, x, y);
                 squares[y][x].addMouseListener(this);
                 add(squares[y][x]);
                 currentColour = (currentColour == light) ? dark : light;
@@ -51,14 +51,14 @@ public class Window extends JFrame implements BoardListener, MouseListener {
                 unselectSquare(square);
                 return;
             }
-            if(!board.movePiece(square.getCoords().getX(), square.getCoords().getY(), pieceSelected))
+            if(!board.movePiece(square.getBoardX(), square.getBoardY(), pieceSelected))
                 unselectSquare(findSquare(pieceSelected));
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
             pieceSelected = piece;
             showPossibleMoves(piece);
             square.selected();
         } else if(pieceSelected != null){ // if enemy piece
-            if(!board.movePiece(square.getCoords().getX(), square.getCoords().getY(), pieceSelected))
+            if(!board.movePiece(square.getBoardX(), square.getBoardY(), pieceSelected))
                 unselectSquare(findSquare(pieceSelected));
         }
     }

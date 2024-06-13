@@ -6,11 +6,13 @@ public class Square extends JButton {
     public static Color POSSIBLE_MOVE = new Color(200, 50, 50);
     private Color colour;
     private Piece currentPiece;
-    private final Coordinate coordinate;
+    private final int boardX;
+    private final int boardY;
 
-    public Square(Piece currentPiece, Color color, Coordinate coordinate) {
+    public Square(Piece currentPiece, Color color, int boardX, int boardY) {
         super();
-        this.coordinate = coordinate;
+        this.boardX = boardX;
+        this.boardY = boardY;
         this.currentPiece = currentPiece;
         this.colour = color;
         setBackground(color);
@@ -28,7 +30,8 @@ public class Square extends JButton {
         }
     }
 
-    public Coordinate getCoords() {return coordinate;}
+    public int getBoardX() {return boardX;}
+    public int getBoardY() {return boardY;}
 
     public void selected(){
         setBackground(SELECTED);
