@@ -44,19 +44,19 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         return null;
     }
 
-    public void squareClicked(int x, int y){
-        Piece piece = squares[y][x].getCurrentPiece();
+    public void squareClicked(Square square){
+        Piece piece = square.getCurrentPiece();
         if(piece == null){ // if clicked a blank square
             if(pieceSelected == null) {
-                squares[y][x].unselected();
+                square.unselected();
             }
-            board.movePiece(x, y, pieceSelected);
+            board.movePiece(square.getX(), square.getY(), pieceSelected);
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
             pieceSelected = piece;
             showPossibleMoves(piece);
-            squares[y][x].selected();
+            square.selected();
         } else if(pieceSelected != null){ // if enemy piece
-            board.movePiece(x, y, pieceSelected);
+            board.movePiece(square.getX(), square.getY(), pieceSelected);
         }
     }
 
@@ -91,7 +91,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     public void mouseReleased(MouseEvent e) {
         if(!(e.getSource() instanceof Square clickedSquare))
             return;
-        squareClicked(clickedSquare.getCoords().getX(), clickedSquare.getCoords().getY());
+        squareClicked(clickedSquare);
     }
     @Override
     public void mouseClicked(MouseEvent e) {}
