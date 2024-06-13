@@ -30,6 +30,12 @@ public abstract class Piece {
         return false;
     }
 
+    protected void checkMovesForCheck(Board board, ArrayList<Coordinate> moves) {
+        if(board.getTurn() != direction)
+            return;
+        moves.removeIf(move -> board.inCheck(move.getX(), move.getY(), this));
+    }
+
     @Override
     public abstract String toString();
 

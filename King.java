@@ -29,6 +29,7 @@ public class King extends Piece{
                     moves.add(new Coordinate(x-2, y));
             }
         }
+        checkMovesForCheck(board, moves);
         return moves;
     }
 

@@ -19,6 +19,7 @@ public class Knight extends Piece{
         for(int i = 0; i<8; i++){
             cantMove(x+possibleX[i], y+possibleY[i], board, moves);
         }
+        checkMovesForCheck(board, moves);
         return moves;
     }
 
