@@ -52,15 +52,20 @@ public class Board {
         return whiteKing;
     }
 
-    public boolean inCheck(Coordinate kingPos, int team){
+    public boolean inCheck(int x, int y, Piece pieceToCheck){
+        tempMove(x, y, pieceToCheck);
+        Coordinate kingPos = new Coordinate(getKing().getX(), getKing().getY());
         for(Piece[] row : board){
             for(Piece piece : row){
-                if(piece == null || piece.getDirection() == team)
+                if(piece == null || piece.getDirection() == pieceToCheck.getDirection())
                     continue;
-                if(piece.getPossibleMoves(this).contains(kingPos))
+                if(piece.getPossibleMoves(this).contains(kingPos)) {
+                    undoTempMove(pieceToCheck);
                     return true;
+                }
             }
         }
+        undoTempMove(pieceToCheck);
         return false;
     }
 
