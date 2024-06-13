@@ -33,11 +33,8 @@ public class Board {
         }
     }
 
-    private void nextTurn(){
-        if(turn == Piece.DOWN)
-            turn = Piece.UP;
-        else
-            turn = Piece.DOWN;
+    public Piece getPiece(int x, int y){
+        return board[y][x];
     }
 
     public int getTurn(){return turn;}
@@ -66,7 +63,29 @@ public class Board {
         return false;
     }
 
-    public void tempMove(int x, int y, Piece piece){
+    public boolean movePiece(int x, int y, Piece piece){
+        if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
+            return false;
+        }
+        for(Move move : getMoves(x, y, piece)){
+            board[move.getPiece().getY()][move.getPiece().getX()] = null;
+            move.getPiece().setX(move.getX());
+            move.getPiece().setY(move.getY());
+            board[move.getY()][move.getX()] = move.getPiece();
+            notifyBoardChanged(move.getPiece());
+        }
+        nextTurn();
+        return true;
+    }
+
+    private void nextTurn(){
+        if(turn == Piece.DOWN)
+            turn = Piece.UP;
+        else
+            turn = Piece.DOWN;
+    }
+
+    private void tempMove(int x, int y, Piece piece){
         tempMoves.clear();
         for(Move move : getMoves(x, y, piece)){
             tempMoves.add(new Move(piece, piece.getX(), piece.getY()));
@@ -79,7 +98,7 @@ public class Board {
         }
     }
 
-    public void undoTempMove(){
+    private void undoTempMove(){
         for(Move move : tempMoves){
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
             move.getPiece().setX(move.getX());
@@ -87,10 +106,6 @@ public class Board {
             board[move.getY()][move.getX()] = move.getPiece();
         }
         tempMoves.clear();
-    }
-
-    public Piece getPiece(int x, int y){
-        return board[y][x];
     }
 
     private ArrayList<Move> getMoves(int x, int y, Piece piece){
@@ -123,21 +138,6 @@ public class Board {
             moves.add(new Move(piece, x, y));
         }
         return moves;
-    }
-
-    public boolean movePiece(int x, int y, Piece piece){
-        if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
-            return false;
-        }
-        for(Move move : getMoves(x, y, piece)){
-            board[move.getPiece().getY()][move.getPiece().getX()] = null;
-            move.getPiece().setX(move.getX());
-            move.getPiece().setY(move.getY());
-            board[move.getY()][move.getX()] = move.getPiece();
-            notifyBoardChanged(move.getPiece());
-        }
-        nextTurn();
-        return true;
     }
 
     public void addBoardListener(BoardListener listener){
