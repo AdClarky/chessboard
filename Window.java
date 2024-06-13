@@ -48,16 +48,25 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         Piece piece = square.getCurrentPiece();
         if(piece == null){ // if clicked a blank square
             if(pieceSelected == null) {
-                square.unselected();
+                unselectSquare(square);
+                return;
             }
-            board.movePiece(square.getX(), square.getY(), pieceSelected);
+            if(!board.movePiece(square.getCoords().getX(), square.getCoords().getY(), pieceSelected))
+                unselectSquare(findSquare(pieceSelected));
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
             pieceSelected = piece;
             showPossibleMoves(piece);
             square.selected();
         } else if(pieceSelected != null){ // if enemy piece
-            board.movePiece(square.getX(), square.getY(), pieceSelected);
+            if(!board.movePiece(square.getCoords().getX(), square.getCoords().getY(), pieceSelected))
+                unselectSquare(findSquare(pieceSelected));
         }
+    }
+
+    public void unselectSquare(Square square){
+        square.unselected();
+        pieceSelected = null;
+        showPossibleMoves(null);
     }
 
     public void showPossibleMoves(Piece piece) {
