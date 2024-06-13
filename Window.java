@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Window extends JFrame implements BoardListener {
     private final Square[][] squares = new Square[8][8];
+    private Piece pieceSelected = null;
     private static Color light = new Color(180, 180, 180);
     private static Color dark = new Color(124, 124, 124);
     private final Board board = new Board();
@@ -42,6 +43,33 @@ public class Window extends JFrame implements BoardListener {
         return null;
     }
 
+    public void squareClicked(int x, int y){
+        Piece piece = squares[y][x].getCurrentPiece();
+        if(piece == null){ // if clicked a blank square
+            if(pieceSelected == null) {
+                squares[y][x].unselected();
+            }
+            board.movePiece(x, y, pieceSelected);
+        } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
+            showPossibleMoves(piece);
+            squares[y][x].selected();
+        } else if(pieceSelected != null){ // if enemy piece
+            board.movePiece(x, y, pieceSelected);
+        }
+    }
+
+    public void showPossibleMoves(Piece piece) {
+        for (Coordinate move : possibleMoves) { // remove old possible moves
+            squares[move.getY()][move.getX()].setPossibleMove(false);
+        }
+        if(piece != null) {
+            possibleMoves = piece.getPossibleMoves(board);
+            for(Coordinate move : possibleMoves){
+                squares[move.getY()][move.getX()].setPossibleMove(true);
+            }
+        }
+    }
+
     @Override
     public void boardChanged(Piece piece) {
         Square square = findSquare(piece);
@@ -55,19 +83,5 @@ public class Window extends JFrame implements BoardListener {
             squares[move.getY()][move.getX()].setPossibleMove(false);
         }
         possibleMoves.clear();
-    }
-
-    @Override
-    public void pieceSelected(Piece piece) {
-        if(piece == null)
-            return;
-        findSquare(piece).selected();
-        for(Coordinate move : possibleMoves){
-            squares[move.getY()][move.getX()].setPossibleMove(false);
-        }
-        possibleMoves = piece.getPossibleMoves(board);
-        for(Coordinate move : possibleMoves){
-            squares[move.getY()][move.getX()].setPossibleMove(true);
-        }
     }
 }
