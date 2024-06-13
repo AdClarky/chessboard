@@ -2,11 +2,10 @@ import java.util.ArrayList;
 
 public class Board {
     private final ArrayList<BoardListener> boardListeners = new ArrayList<>(1);
-    private Piece pieceSelected = null;
     private int turn = Piece.DOWN;
     private final Piece[][] board  =  new Piece[8][8];
-    private King whiteKing;
-    private King blackKing;
+    private final King whiteKing;
+    private final King blackKing;
     private final ArrayList<Move> tempMoves = new ArrayList<>(3);
 
     public Board(){
@@ -94,19 +93,6 @@ public class Board {
         return board[y][x];
     }
 
-    public void squareClicked(int x, int y){
-        Piece piece = getPiece(x, y);
-        if(piece == null){ // if clicked a blank square
-            if(pieceSelected == null)
-                return;
-            movePiece(x, y, pieceSelected);
-        } else if(piece.getDirection() == turn) { // if the player's piece
-            setSelectedPiece(piece);
-        } else if(pieceSelected != null){ // if enemy piece
-            movePiece(x, y, pieceSelected);
-        }
-    }
-
     private ArrayList<Move> getMoves(int x, int y, Piece piece){
         ArrayList<Move> moves = new ArrayList<>(2);
         if(piece instanceof Pawn pawn) {
@@ -139,10 +125,9 @@ public class Board {
         return moves;
     }
 
-    private void movePiece(int x, int y, Piece piece){
+    public boolean movePiece(int x, int y, Piece piece){
         if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
-            setSelectedPiece(null);
-            return;
+            return false;
         }
         for(Move move : getMoves(x, y, piece)){
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
@@ -151,16 +136,8 @@ public class Board {
             board[move.getY()][move.getX()] = move.getPiece();
             notifyBoardChanged(move.getPiece());
         }
-        pieceSelected = null;
         nextTurn();
-    }
-
-    private void setSelectedPiece(Piece piece){
-        if(pieceSelected != null){
-            notifyPieceSelected(pieceSelected);
-        }
-        pieceSelected = piece;
-        notifyPieceSelected(piece);
+        return true;
     }
 
     public void addBoardListener(BoardListener listener){
@@ -170,12 +147,6 @@ public class Board {
     private void notifyBoardChanged(Piece piece){
         for(BoardListener listener : boardListeners){
             listener.boardChanged(piece);
-        }
-    }
-
-    private void notifyPieceSelected(Piece pieceSelected){
-        for(BoardListener listener : boardListeners){
-            listener.pieceSelected(pieceSelected);
         }
     }
 }
