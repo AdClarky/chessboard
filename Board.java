@@ -92,54 +92,60 @@ public class Board {
         if(piece == null){ // if clicked a blank square
             if(pieceSelected == null)
                 return;
-            moveValidPieces(x, y, pieceSelected);
+            movePiece(x, y, pieceSelected);
         } else if(piece.getDirection() == turn) { // if the player's piece
             setSelectedPiece(piece);
         } else if(pieceSelected != null){ // if enemy piece
-            moveValidPieces(x, y, pieceSelected);
+            movePiece(x, y, pieceSelected);
         }
     }
 
-    private void moveValidPieces(int x, int y, Piece piece){
+    private ArrayList<Move> getMoves(int x, int y, Piece piece){
+        ArrayList<Move> moves = new ArrayList<>(2);
+        if(piece instanceof Pawn pawn) {
+            if(y == 7 || y == 0) { // if pawn promotion
+                Queen queen;
+                if (pawn.getDirection() == Piece.UP)
+                    queen = new Queen(x, y, Queen.black, Piece.UP);
+                else
+                    queen = new Queen(x, y, Queen.white, Piece.DOWN);
+                moves.add(new Move(pawn, x, y));
+                moves.add(new Move(queen, x, y));
+            }else if(x != pawn.getX() && (board[y][x] == null)){ // if passanting
+                moves.add(new Move(board[y-pawn.getDirection()][x], x, y));
+                moves.add(new Move(pawn, x, y));
+            }else{
+                pawn.setCanBePassanted(Math.abs(y - pawn.getY()) == 2);
+                moves.add(new Move(pawn, x, y));
+            }
+        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){ // castling
+            if(x - piece.getX() == -2) { // long castle
+                moves.add(new Move(board[y][0], 3, y));
+            }else {
+                moves.add(new Move(board[y][7], 5, y));
+
+            }
+            moves.add(new Move(piece, x, y));
+        }else{ // if not a pawn promotion
+            moves.add(new Move(piece, x, y));
+        }
+        return moves;
+    }
+
+    private void movePiece(int x, int y, Piece piece){
         if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
             setSelectedPiece(null);
             return;
         }
-        if(piece instanceof Pawn pawn) {
-            if(y == 7 || y == 0) { // if pawn promotion
-                board[pawn.getY()][pawn.getX()] = null;
-                if (pawn.getDirection() == Piece.UP)
-                    board[y][x] = new Queen(x, y, Queen.black, Piece.UP);
-                else if (pawn.getDirection() == Piece.DOWN)
-                    board[y][x] = new Queen(x, y, Queen.white, Piece.DOWN);
-                notifyBoardChanged(pawn, board[y][x]);
-            }else if(x != pawn.getX() && (board[y][x] == null)){ // if passanting
-                movePiece(x, y, board[y-pawn.getDirection()][x]);
-                movePiece(x, y, pawn);
-            }else{
-                pawn.setCanBePassanted(Math.abs(y - pawn.getY()) == 2);
-                movePiece(x, y, pawn);
-            }
-        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){ // castling
-            if(x - piece.getX() == -2) { // long castle
-                movePiece(3, y, board[y][0]);
-            }else {
-                movePiece(5, y, board[y][7]);
-            }
-            movePiece(x, y, piece);
-        }else{ // if not a pawn promotion
-            movePiece(x, y, piece);
+        for(Move move : getMoves(x, y, piece)){
+            board[move.getPiece().getY()][move.getPiece().getX()] = null;
+            move.getPiece().setX(move.getX());
+            move.getPiece().setY(move.getY());
+            board[move.getY()][move.getX()] = move.getPiece();
+            notifyBoardChanged(move.getPiece(), move.getPiece());
         }
         pieceSelected = null;
         nextTurn();
-    }
-
-    private void movePiece(int x, int y, Piece piece){
-        board[piece.getY()][piece.getX()] = null;
-        piece.setX(x);
-        piece.setY(y);
-        board[y][x] = piece;
-        notifyBoardChanged(piece, piece);
     }
 
     private void setSelectedPiece(Piece piece){
