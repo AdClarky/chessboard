@@ -3,7 +3,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.spi.InetAddressResolver;
 import java.util.Scanner;
 
 public class Client {
@@ -79,7 +83,7 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter your username for the group chat: ");
         String username = scanner.nextLine();
-        Socket socket = new Socket("localhost", 1234);
+        Socket socket = new Socket(InetAddress.getByName("192.168.1.91"), 1234);
         Client client = new Client(socket, username);
         client.listenForMessage();
         client.sendMessage();
