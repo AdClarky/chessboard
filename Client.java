@@ -80,9 +80,8 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your username for the group chat: ");
-        String username = scanner.nextLine();
+        String username = args[0];
+        System.out.println(username);
         Socket socket = new Socket(InetAddress.getByName("192.168.1.91"), 1234);
         Client client = new Client(socket, username);
         client.listenForMessage();
