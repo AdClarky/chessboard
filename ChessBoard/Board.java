@@ -68,11 +68,12 @@ public class Board {
         return false;
     }
 
-    public boolean movePiece(int x, int y, Piece piece){
-        if(!piece.getPossibleMoves(this).contains(new Coordinate(x, y))){ // if invalid move
+    public boolean movePiece(int x, int y, int newX, int newY){
+        Piece piece = getPiece(x, y);
+        if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))){ // if invalid move
             return false;
         }
-        for(Move move : getMoves(x, y, piece)){
+        for(Move move : getMoves(newX, newY, piece)){
             int oldX = move.getPiece().getX();
             int oldY = move.getPiece().getY();
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
