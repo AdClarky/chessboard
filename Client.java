@@ -79,7 +79,6 @@ public class Client {
         String username = args[0];
         String hostName = args[1];
         int portNumber = Integer.parseInt(args[2]);
-        System.out.println(username);
         Socket socket = new Socket(hostName, portNumber);
         Client client = new Client(socket, username);
         client.listenForMessage();

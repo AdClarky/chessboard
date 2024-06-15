@@ -15,11 +15,12 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     private Piece pieceSelected = null;
     private static Color light = new Color(180, 180, 180);
     private static Color dark = new Color(124, 124, 124);
-    private final Board board = new Board();
+    private final Board board;
     private ArrayList<Coordinate> possibleMoves = new ArrayList<>();
 
-    public Window(){
+    public Window(Board board){
         super();
+        this.board = board;
         board.addBoardListener(this);
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
