@@ -39,7 +39,7 @@ public class Square extends JButton {
         setBackground(SELECTED);
     }
 
-    public void reset(){
+    public void unhighlight(){
         setBackground(colour);
     }
 
