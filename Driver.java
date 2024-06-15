@@ -6,7 +6,7 @@ public class Driver {
         new Thread(() -> {
                 Window window = new Window(board);
         }).start();
-        Client client = new Client("192.168.1.157", 4444, "temp", board);
+        Client client = new Client("192.168.1.91", 4444, "temp", board);
         client.listenForMessage();
     }
 }
