@@ -68,19 +68,14 @@ public class Board {
         return false;
     }
 
-    public boolean movePiece(int x, int y, int newX, int newY){
+    public boolean moveAndValidatePiece(int x, int y, int newX, int newY){
+        System.out.println(x + " " + y + " " + newX + " " + newY);
         Piece piece = getPiece(x, y);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))){ // if invalid move
             return false;
         }
         for(Move move : getMoves(newX, newY, piece)){
-            int oldX = move.getPiece().getX();
-            int oldY = move.getPiece().getY();
-            board[move.getPiece().getY()][move.getPiece().getX()] = null;
-            move.getPiece().setX(move.getX());
-            move.getPiece().setY(move.getY());
-            board[move.getY()][move.getX()] = move.getPiece();
-            notifyBoardChanged(oldX, oldY, move.getX(), move.getY());
+            movePiece(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
         }
         passantable = null;
         if(piece instanceof King king)
@@ -91,6 +86,21 @@ public class Board {
             passantable = pawn;
         nextTurn();
         return true;
+    }
+
+    public void movePiece(int oldX, int oldY, int newX, int newY){
+        if(oldX == newX && oldY == newY){ // if a promotion
+            if(oldY == 0)
+                board[oldY][oldX] = new Queen(oldX, oldY, Queen.black, Piece.UP);
+            else
+                board[oldY][oldX] = new Queen(oldX, oldY, Queen.white, Piece.DOWN);
+        }else {
+            board[newY][newX] = board[oldY][oldX];
+            board[oldY][oldX] = null;
+        }
+        board[newY][newX].setX(newX);
+        board[newY][newX].setY(newY);
+        notifyBoardChanged(oldX, oldY, newX, newY);
     }
 
     private void nextTurn(){
