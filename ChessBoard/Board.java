@@ -9,6 +9,7 @@ public class Board {
     private final King whiteKing;
     private final King blackKing;
     private final ArrayList<Move> tempMoves = new ArrayList<>(3);
+    private Pawn passantable;
 
     public Board(){
         board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
@@ -48,6 +49,8 @@ public class Board {
         return whiteKing;
     }
 
+    public Pawn getPassantable(){return passantable;}
+
     public boolean inCheck(int x, int y, Piece pieceToCheck){
         tempMove(x, y, pieceToCheck);
         Coordinate kingPos = new Coordinate(getKing().getX(), getKing().getY());
@@ -70,12 +73,21 @@ public class Board {
             return false;
         }
         for(Move move : getMoves(x, y, piece)){
+            int oldX = move.getPiece().getX();
+            int oldY = move.getPiece().getY();
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
             move.getPiece().setX(move.getX());
             move.getPiece().setY(move.getY());
             board[move.getY()][move.getX()] = move.getPiece();
-            notifyBoardChanged(move.getPiece());
+            notifyBoardChanged(oldX, oldY, move.getX(), move.getY());
         }
+        passantable = null;
+        if(piece instanceof King king)
+            king.moved();
+        if (piece instanceof Rook rook)
+            rook.moved();
+        if (piece instanceof Pawn pawn)
+            passantable = pawn;
         nextTurn();
         return true;
     }
@@ -90,9 +102,9 @@ public class Board {
     private void tempMove(int x, int y, Piece piece){
         tempMoves.clear();
         for(Move move : getMoves(x, y, piece)){
-            tempMoves.add(new Move(piece, piece.getX(), piece.getY()));
             if(board[move.getY()][move.getX()] != null)
                 tempMoves.add(new Move(board[move.getY()][move.getX()], move.getX(), move.getY()));
+            tempMoves.add(new Move(move.getPiece(), move.getPiece().getX(), move.getPiece().getY()));
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
             move.getPiece().setX(move.getX());
             move.getPiece().setY(move.getY());
@@ -101,7 +113,7 @@ public class Board {
     }
 
     private void undoTempMove(){
-        for(Move move : tempMoves){
+        for(Move move : tempMoves.reversed()){
             board[move.getPiece().getY()][move.getPiece().getX()] = null;
             move.getPiece().setX(move.getX());
             move.getPiece().setY(move.getY());
@@ -125,7 +137,6 @@ public class Board {
                 moves.add(new Move(board[y-pawn.getDirection()][x], x, y));
                 moves.add(new Move(pawn, x, y));
             }else{
-                pawn.setCanBePassanted(Math.abs(y - pawn.getY()) == 2);
                 moves.add(new Move(pawn, x, y));
             }
         }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){ // castling
@@ -146,9 +157,9 @@ public class Board {
         boardListeners.add(listener);
     }
 
-    private void notifyBoardChanged(Piece piece){
+    private void notifyBoardChanged(int oldX, int oldY, int newX, int newY){
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(piece);
+            listener.boardChanged(oldX, oldY, newX, newY);
         }
     }
 }

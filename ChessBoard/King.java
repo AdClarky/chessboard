@@ -35,11 +35,7 @@ public class King extends Piece{
         return moves;
     }
 
-    @Override
-    public void setX(int x) {
-        notMoved = false;
-        super.setX(x);
-    }
+    public void moved(){notMoved = false;}
 
     @Override
     public String toString() {

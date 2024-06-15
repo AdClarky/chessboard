@@ -38,11 +38,7 @@ public class Rook extends Piece{
 
     public boolean getNotMoved(){return this.notMoved;}
 
-    @Override
-    public void setX(int x) {
-        notMoved = false;
-        super.setX(x);
-    }
+    public void moved(){notMoved = false;}
 
     @Override
     public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
