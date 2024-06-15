@@ -45,5 +45,5 @@ public class Rook extends Piece{
     }
 
     @Override
-    public String toString() {return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";}
+    public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
 }
