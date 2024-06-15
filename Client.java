@@ -1,30 +1,25 @@
 import ChessBoard.Board;
 import ChessBoard.BoardListener;
-import ChessBoard.Piece;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Client implements BoardListener {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String username;
     private final Board board;
 
-    public Client(String hostName, int portNumber, String username, Board board) {
+    public Client(String hostName, int portNumber, Board board) {
         this.board = board;
         board.addBoardListener(this);
         try{
             this.socket = new Socket(hostName, portNumber);
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.username = username;
         } catch(IOException e){
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
@@ -34,7 +29,7 @@ public class Client implements BoardListener {
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         try{
             if(socket.isConnected()){
-                bufferedWriter.write(username + ": " + oldX + ", " + oldY + ", " + newX + ", " + newY + "\n");
+                bufferedWriter.write(oldX + "," + oldY + "," + newX + "," + newY);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
