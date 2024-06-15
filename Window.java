@@ -70,14 +70,14 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     }
 
     public void unselectSquare(Square square){
-        square.reset();
+        square.unhighlight();
         pieceSelected = null;
         showPossibleMoves(null);
     }
 
     public void showPossibleMoves(Piece piece) {
         for (Coordinate move : possibleMoves) { // remove old possible moves
-            squares[move.getY()][move.getX()].reset();
+            squares[move.getY()][move.getX()].unhighlight();
         }
         if(piece != null) {
             possibleMoves = piece.getPossibleMoves(board);
@@ -88,16 +88,19 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     }
 
     @Override
-    public void boardChanged(Piece piece) {
-        Square square = findSquare(piece);
-        if(square != null){ // if the piece already existed
-            square.reset();
+    public void boardChanged(int oldX, int oldY, int newX, int newY) {
+        Square square = squares[oldY][oldX];
+        if(oldX == newX && oldY == newY){ // if the piece didnt exist
+            System.out.println(board.getPiece(newX, newY));
+            squares[newY][newX].setCurrentPiece(board.getPiece(newX, newY));
+        }else{ // if the piece already existed
+            square.unhighlight();
+            squares[newY][newX].setCurrentPiece(square.getCurrentPiece());
             square.setCurrentPiece(null);
         }
-        squares[piece.getY()][piece.getX()].setCurrentPiece(piece);
 
         for(Coordinate move : possibleMoves){ // unhighlights the possible moves
-            squares[move.getY()][move.getX()].reset();
+            squares[move.getY()][move.getX()].unhighlight();
         }
         possibleMoves.clear();
     }

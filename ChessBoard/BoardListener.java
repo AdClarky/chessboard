@@ -1,5 +1,5 @@
 package ChessBoard;
 
 public interface BoardListener {
-    void boardChanged(Piece piece);
+    void boardChanged(int oldX, int oldY, int newX, int newY);
 }

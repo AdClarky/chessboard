@@ -31,10 +31,10 @@ public class Client implements BoardListener {
     }
 
     @Override
-    public void boardChanged(Piece piece) {
+    public void boardChanged(int oldX, int oldY, int newX, int newY) {
         try{
             if(socket.isConnected()){
-                bufferedWriter.write(username + ": " + piece);
+                bufferedWriter.write(username + ": " + oldX + ", " + oldY + ", " + newX + ", " + newY + "\n");
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
