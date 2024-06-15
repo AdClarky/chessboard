@@ -42,12 +42,12 @@ public class Client implements BoardListener {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String messageFromGroupChat;
+                char[] move;
 
                 while(socket.isConnected()){
                     try {
-                        messageFromGroupChat = bufferedReader.readLine();
-                        System.out.println(messageFromGroupChat);
+                        move = bufferedReader.readLine().toCharArray();
+                        board.movePiece(move[0]-'0', move[2]-'0', move[4]-'0', move[6]-'0');
                     } catch (IOException e) {
                         closeEverything(socket, bufferedReader, bufferedWriter);
                     }
