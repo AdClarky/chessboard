@@ -77,8 +77,10 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         String username = args[0];
+        String hostName = args[1];
+        int portNumber = Integer.parseInt(args[2]);
         System.out.println(username);
-        Socket socket = new Socket("192.168.1.91", 1234);
+        Socket socket = new Socket(hostName, portNumber);
         Client client = new Client(socket, username);
         client.listenForMessage();
         client.sendMessage();

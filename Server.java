@@ -34,7 +34,8 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(1234);
+        int portNumber = Integer.parseInt(args[0]);
+        ServerSocket serverSocket = new ServerSocket(portNumber);
         Server server = new Server(serverSocket);
         server.startServer();
     }
