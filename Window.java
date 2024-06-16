@@ -1,6 +1,7 @@
 import ChessBoard.Board;
 import ChessBoard.BoardListener;
 import ChessBoard.Coordinate;
+import ChessBoard.Move;
 import ChessBoard.Piece;
 
 import javax.swing.JFrame;
@@ -90,11 +91,13 @@ public class Window extends JFrame implements BoardListener, MouseListener {
 
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
-        Square square = squares[oldY][oldX];
-        square.unhighlight();
-        squares[oldY][oldX].setCurrentPiece(board.getPiece(oldX, oldY));
-        squares[newY][newX].setCurrentPiece(board.getPiece(newX, newY));
+        squares[oldY][oldX].unhighlight();
+        for(Move move : board.getMoves(oldX, oldY, newX, newY)) {
+            squares[move.getOldY()][move.getOldX()].setCurrentPiece(board.getPiece(move.getOldX(), move.getOldY()));
+            squares[move.getNewY()][move.getNewX()].setCurrentPiece(board.getPiece(move.getNewX(), move.getNewY()));
+        }
         showPossibleMoves(null);
+        pieceSelected = null;
     }
 
     @Override
