@@ -1,5 +1,3 @@
 # Chess
-Still a work in progress.
-Features yet to be added:
-* Castle through check 
-  
+Includes a Chess Board api and GUI for a chess board.
+All Chess rules implemented (as far as I am aware).  

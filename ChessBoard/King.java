@@ -21,7 +21,7 @@ public class King extends Piece{
                 cantMove(x, y, board, moves);
             }
         }
-        if(notMoved){
+        if(notMoved){ // castling
             if(board.getPiece(x+3, y) instanceof Rook rook && rook.getNotMoved()){
                 if(board.getPiece(x+1, y) == null && board.getPiece(x+2, y) == null)
                     moves.add(new Coordinate(x+2, y));
@@ -32,6 +32,11 @@ public class King extends Piece{
             }
         }
         checkMovesForCheck(board, moves);
+        // stops castling through check
+        if(!moves.contains(new Coordinate(x-1, y)))
+            moves.remove(new Coordinate(x-2, y));
+        if(!moves.contains(new Coordinate(x+1, y)))
+            moves.remove(new Coordinate(x+2, y));
         return moves;
     }
 
