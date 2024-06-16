@@ -9,6 +9,7 @@ public class Board {
     private final King whiteKing;
     private final King blackKing;
     private final ArrayList<Move> tempMoves = new ArrayList<>(3);
+    private Piece tempPiece = null;
     private Pawn passantable;
 
     public Board(){
@@ -68,14 +69,13 @@ public class Board {
         return false;
     }
 
-    public boolean moveAndValidatePiece(int x, int y, int newX, int newY){
-        System.out.println(x + " " + y + " " + newX + " " + newY);
-        Piece piece = getPiece(x, y);
+    public boolean moveAndValidatePiece(int oldX, int oldY, int newX, int newY){
+        Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))){ // if invalid move
             return false;
         }
-        for(Move move : getMoves(newX, newY, piece)){
-            movePiece(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        for(Move move : getMoves(oldX, oldY, newX, newY)){
+            movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
         }
         passantable = null;
         if(piece instanceof King king)
@@ -84,6 +84,7 @@ public class Board {
             rook.moved();
         if (piece instanceof Pawn pawn)
             passantable = pawn;
+        notifyBoardChanged(oldX, oldY, newX, newY);
         nextTurn();
         return true;
     }
@@ -100,7 +101,6 @@ public class Board {
         }
         board[newY][newX].setX(newX);
         board[newY][newX].setY(newY);
-        notifyBoardChanged(oldX, oldY, newX, newY);
     }
 
     private void nextTurn(){
@@ -112,54 +112,54 @@ public class Board {
 
     private void tempMove(int x, int y, Piece piece){
         tempMoves.clear();
-        for(Move move : getMoves(x, y, piece)){
-            if(board[move.getY()][move.getX()] != null)
-                tempMoves.add(new Move(board[move.getY()][move.getX()], move.getX(), move.getY()));
-            tempMoves.add(new Move(move.getPiece(), move.getPiece().getX(), move.getPiece().getY()));
-            board[move.getPiece().getY()][move.getPiece().getX()] = null;
-            move.getPiece().setX(move.getX());
-            move.getPiece().setY(move.getY());
-            board[move.getY()][move.getX()] = move.getPiece();
+        for(Move move : getMoves(piece.getX(), piece.getY(), x, y)){
+            if(board[move.getNewY()][move.getNewX()] != null) { // if taking
+                tempMoves.add(new Move(move.getNewX(), move.getNewY(), move.getNewX(), move.getNewY()));
+                tempPiece = board[move.getNewY()][move.getNewX()];
+            }
+            tempMoves.add(new Move(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY()));
+            Piece tempPiece = getPiece(move.getOldX(), move.getOldY());
+            board[move.getOldY()][move.getOldX()] = null;
+            tempPiece.setX(move.getNewX());
+            tempPiece.setY(move.getNewY());
+            board[move.getNewY()][move.getNewX()] = tempPiece;
         }
     }
 
     private void undoTempMove(){
-        for(Move move : tempMoves.reversed()){
-            board[move.getPiece().getY()][move.getPiece().getX()] = null;
-            move.getPiece().setX(move.getX());
-            move.getPiece().setY(move.getY());
-            board[move.getY()][move.getX()] = move.getPiece();
+        for(Move move : tempMoves){
+            if(move.getOldY() == move.getNewY() && move.getNewX() == move.getOldX())
+                board[move.getNewY()][move.getNewX()] = tempPiece;
+            board[move.getOldX()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
+            board[move.getNewY()][move.getNewX()] = null;
+            board[move.getOldX()][move.getOldX()].setX(move.getOldX());
+            board[move.getOldX()][move.getOldX()].setY(move.getOldY());
         }
         tempMoves.clear();
     }
 
-    private ArrayList<Move> getMoves(int x, int y, Piece piece){
+    public ArrayList<Move> getMoves(int oldX, int oldY, int newX, int newY){
+        Piece piece = getPiece(oldX, oldY);
         ArrayList<Move> moves = new ArrayList<>(2);
         if(piece instanceof Pawn pawn) {
-            if(y == 7 || y == 0) { // if pawn promotion
-                Queen queen;
-                if (pawn.getDirection() == Piece.UP)
-                    queen = new Queen(x, y, Queen.black, Piece.UP);
-                else
-                    queen = new Queen(x, y, Queen.white, Piece.DOWN);
-                moves.add(new Move(pawn, x, y));
-                moves.add(new Move(queen, x, y));
-            }else if(x != pawn.getX() && (board[y][x] == null)){ // if passanting
-                moves.add(new Move(board[y-pawn.getDirection()][x], x, y));
-                moves.add(new Move(pawn, x, y));
+            if(newY == 7 || newY == 0) { // if pawn promotion
+                moves.add(new Move(oldX, oldY, newX, newY));
+                moves.add(new Move(newX, newY, newX, newY));
+            }else if(newX != pawn.getX() && (board[newY][newX] == null)){ // if passanting
+                moves.add(new Move(newX, newY-pawn.getDirection(), newX, newY));
+                moves.add(new Move(oldX, oldY, newX, newY));
             }else{
-                moves.add(new Move(pawn, x, y));
+                moves.add(new Move(oldX, oldY, newX, newY));
             }
-        }else if(piece instanceof King && Math.abs(x - piece.getX()) == 2){ // castling
-            if(x - piece.getX() == -2) { // long castle
-                moves.add(new Move(board[y][0], 3, y));
+        }else if(piece instanceof King && Math.abs(newX - piece.getX()) == 2){ // castling
+            if(newX - piece.getX() == -2) { // long castle
+                moves.add(new Move(0, newY, 3, newY));
             }else {
-                moves.add(new Move(board[y][7], 5, y));
-
+                moves.add(new Move(7, newY, 5, newY));
             }
-            moves.add(new Move(piece, x, y));
+            moves.add(new Move(oldX, oldY, newX, newY));
         }else{ // if not a pawn promotion
-            moves.add(new Move(piece, x, y));
+            moves.add(new Move(oldX, oldY, newX, newY));
         }
         return moves;
     }
