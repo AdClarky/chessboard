@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class Window extends JFrame implements BoardListener, MouseListener {
     private final Square[][] squares = new Square[8][8];
-    private Piece pieceSelected = null;
+    private Square squareSelected = null;
     private static Color light = new Color(180, 180, 180);
     private static Color dark = new Color(124, 124, 124);
     private final Board board;
@@ -54,25 +54,28 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     public void squareClicked(Square square){
         Piece piece = square.getCurrentPiece();
         if(piece == null){ // if clicked a blank square
-            if(pieceSelected == null) {
-                unselectSquare(square);
+            if(squareSelected == null)
                 return;
-            }
-            if(!board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY()))
-                unselectSquare(findPiece(pieceSelected));
+            Piece pieceSelected = squareSelected.getCurrentPiece();
+            board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
+            unselectSquare();
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
-            pieceSelected = piece;
+            unselectSquare();
+            squareSelected = square;
             showPossibleMoves(piece);
-            square.selected();
-        } else if(pieceSelected != null){ // if enemy piece
-            if(!board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY()))
-                unselectSquare(findPiece(pieceSelected));
+            squareSelected.selected();
+        } else if(squareSelected != null){ // if enemy piece
+            Piece pieceSelected = squareSelected.getCurrentPiece();
+            board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
+            unselectSquare();
         }
     }
 
-    public void unselectSquare(Square square){
-        square.unhighlight();
-        pieceSelected = null;
+    public void unselectSquare(){
+        if(squareSelected == null)
+            return;
+        squareSelected.unhighlight();
+        squareSelected = null;
         showPossibleMoves(null);
     }
 
@@ -91,13 +94,10 @@ public class Window extends JFrame implements BoardListener, MouseListener {
 
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
-        squares[oldY][oldX].unhighlight();
         for(Move move : board.getMovesMade()) {
             squares[move.getOldY()][move.getOldX()].setCurrentPiece(null);
             squares[move.getNewY()][move.getNewX()].setCurrentPiece(board.getPiece(move.getNewX(), move.getNewY()));
         }
-        showPossibleMoves(null);
-        pieceSelected = null;
     }
 
     @Override
