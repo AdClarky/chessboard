@@ -5,6 +5,7 @@ public class Driver {
         Board board = new Board();
         new Thread(() -> {
                 GameWindow gameWindow = new GameWindow(board);
+                board.addBoardListener(gameWindow);
         }).start();
     }
 }

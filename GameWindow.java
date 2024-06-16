@@ -18,37 +18,37 @@ import java.util.Collection;
  * Member of BoardListener and is updated when boardChanged is called.
  */
 public class GameWindow extends JFrame implements BoardListener, MouseListener {
-    private static final Color light = new Color(180, 180, 180);
-    private static final Color dark = new Color(124, 124, 124);
+    private static final Color LIGHT_SQUARE = new Color(180, 180, 180);
+    private static final Color DARK_SQUARE = new Color(124, 124, 124);
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 800;
     private final Square[][] squares = new Square[8][8];
-    private Square squareSelected = null;
+    private Square squareSelected;
     private final Board board;
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
 
     /**
      * Creates a new window and populates it with squares which icons are set based on the board input.
-     * @param board the board to be linked with - adds itself as a listener.
+     * @param board the board to be linked with.
      */
     public GameWindow(Board board){
         super();
         this.board = board;
-        board.addBoardListener(this);
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        Color currentColour = light;
+        Color currentColour = LIGHT_SQUARE;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                squares[y][x] = new Square(board.getPiece(x,y), currentColour, x, y);
+                Piece piece = board.getPiece(x, y);
+                squares[y][x] = new Square(piece, currentColour, x, y);
                 squares[y][x].addMouseListener(this);
                 add(squares[y][x]);
-                currentColour = (currentColour == light) ? dark : light;
+                currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
             }
-            currentColour = (currentColour == light) ? dark : light;
+            currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
         }
         setVisible(true);
     }
@@ -61,9 +61,9 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
      */
     private void squareClicked(Square square){
         Piece piece = square.getCurrentPiece();
+        if(squareSelected == null && piece == null)
+            return;
         if(piece == null){ // if clicked a blank square
-            if(squareSelected == null)
-                return;
             Piece pieceSelected = squareSelected.getCurrentPiece();
             board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
