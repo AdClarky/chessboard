@@ -1,7 +1,6 @@
 package ChessBoard;
 
 public class Move {
-    private Piece piece;
     private int oldX;
     private int oldY;
     private int newX;
