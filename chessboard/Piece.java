@@ -42,6 +42,8 @@ public abstract class Piece {
      */
     public abstract ArrayList<Coordinate> getPossibleMoves(Board board);
 
+    public abstract void firstMove();
+
     @Override
     public abstract String toString();
 
@@ -69,7 +71,7 @@ public abstract class Piece {
     }
 
     protected void removeMovesInCheck(Board board, Collection<Coordinate> moves) {
-        if(board.getTurn() != direction)
+        if(board.getCurrentTurn() != direction)
             return;
         moves.removeIf(move -> board.isInCheck(move.getX(), move.getY(), this));
     }

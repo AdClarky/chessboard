@@ -40,7 +40,10 @@ public class King extends Piece{
         return moves;
     }
 
-    public void moved(){notMoved = false;}
+    @Override
+    public void firstMove(){
+        notMoved = false;
+    }
 
     @Override
     public String toString() {

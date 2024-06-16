@@ -26,15 +26,24 @@ public class Pawn extends Piece{
         if(x != 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction) // can take right
             moves.add(new Coordinate(x+1,y+direction));
         if((direction == UP && y == 3) || (direction == DOWN && y == 4)){ // en passant
-            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn == board.getPassantable())
+            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn.canBePassanted())
                 moves.add(new Coordinate(x-1,y+direction));
-            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn == board.getPassantable()) {
+            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn.canBePassanted()) {
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
         removeMovesInCheck(board, moves);
         return moves;
     }
+
+    @Override
+    public void firstMove() {
+        canBePassanted = true;
+    }
+
+    public void setCanBePassanted(boolean passantable) {canBePassanted = passantable;}
+
+    public boolean canBePassanted() {return canBePassanted;}
 
     @Override
     public String toString() {

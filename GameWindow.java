@@ -67,7 +67,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
             Piece pieceSelected = squareSelected.getCurrentPiece();
             board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
-        } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
+        } else if(piece.getDirection() == board.getCurrentTurn()) { // if the player's piece
             unselectSquare();
             squareSelected = square;
             showPossibleMoves(piece);

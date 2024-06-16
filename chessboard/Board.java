@@ -6,14 +6,14 @@ import java.util.List;
 
 public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private int turn = Piece.DOWN;
+    private int currentTurn = Piece.DOWN;
     private final Piece[][] board  =  new Piece[8][8];
     private final King whiteKing;
     private final King blackKing;
-    private final ArrayList<Move> movesMade = new ArrayList<>(5);
+    private ArrayList<Move> movesMade;
     private final List<Move> tempMoves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
-    private Pawn passantable;
+    private Pawn lastPawn;
 
     public Board(){
         board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
@@ -44,20 +44,19 @@ public class Board {
         return board[y][x];
     }
 
-    public int getTurn(){return turn;}
+    public int getCurrentTurn(){return currentTurn;}
 
-    public King getKing(){
-        if(turn == Piece.UP){
+    private King getKing(){
+        if(currentTurn == Piece.UP){
             return blackKing;
         }
         return whiteKing;
     }
 
-    public Pawn getPassantable(){return passantable;}
-
     public boolean isInCheck(int newX, int newY, Piece pieceToCheck){
         tempMove(newX, newY, pieceToCheck);
-        Coordinate kingPos = new Coordinate(getKing().getX(), getKing().getY());
+        King king = getKing();
+        Coordinate kingPos = new Coordinate(king.getX(), king.getY());
         for(Piece[] row : board){
             for(Piece piece : row){
                 if(piece == null || piece.getDirection() == pieceToCheck.getDirection())
@@ -76,20 +75,20 @@ public class Board {
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-
-        movesMade.addAll(getMoves(oldX, oldY, newX, newY));
+        movesMade = getMoves(oldX, oldY, newX, newY);
         for(Move move : movesMade){
             movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
         }
-        passantable = null;
-        if(piece instanceof King king)
-            king.moved();
-        if (piece instanceof Rook rook)
-            rook.moved();
-        if (piece instanceof Pawn pawn)
-            passantable = pawn;
+        piece.firstMove();
+        if(lastPawn != null)
+            lastPawn.setCanBePassanted(false);
+        if(piece instanceof Pawn pawn) {
+            lastPawn = pawn;
+        }
+        else {
+            lastPawn = null;
+        }
         notifyBoardChanged(oldX, oldY, newX, newY);
-        movesMade.clear();
         nextTurn();
     }
 
@@ -108,10 +107,10 @@ public class Board {
     }
 
     private void nextTurn(){
-        if(turn == Piece.DOWN)
-            turn = Piece.UP;
+        if(currentTurn == Piece.DOWN)
+            currentTurn = Piece.UP;
         else
-            turn = Piece.DOWN;
+            currentTurn = Piece.DOWN;
     }
 
     private void tempMove(int x, int y, Piece piece){
