@@ -40,7 +40,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         setVisible(true);
     }
 
-    public Square findSquare(Piece piece){
+    public Square findPiece(Piece piece){
         for(Square[] row : squares){
             for(Square square : row){
                 if(piece.equals(square.getCurrentPiece()))
@@ -58,14 +58,14 @@ public class Window extends JFrame implements BoardListener, MouseListener {
                 return;
             }
             if(!board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY()))
-                unselectSquare(findSquare(pieceSelected));
+                unselectSquare(findPiece(pieceSelected));
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
             pieceSelected = piece;
             showPossibleMoves(piece);
             square.selected();
         } else if(pieceSelected != null){ // if enemy piece
             if(!board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY()))
-                unselectSquare(findSquare(pieceSelected));
+                unselectSquare(findPiece(pieceSelected));
         }
     }
 
@@ -79,6 +79,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         for (Coordinate move : possibleMoves) { // remove old possible moves
             squares[move.getY()][move.getX()].unhighlight();
         }
+        possibleMoves.clear();
         if(piece != null) {
             possibleMoves = piece.getPossibleMoves(board);
             for(Coordinate move : possibleMoves){
@@ -90,19 +91,10 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         Square square = squares[oldY][oldX];
-        if(oldX == newX && oldY == newY){ // if the piece didnt exist
-            System.out.println(board.getPiece(newX, newY));
-            squares[newY][newX].setCurrentPiece(board.getPiece(newX, newY));
-        }else{ // if the piece already existed
-            square.unhighlight();
-            squares[newY][newX].setCurrentPiece(square.getCurrentPiece());
-            square.setCurrentPiece(null);
-        }
-
-        for(Coordinate move : possibleMoves){ // unhighlights the possible moves
-            squares[move.getY()][move.getX()].unhighlight();
-        }
-        possibleMoves.clear();
+        square.unhighlight();
+        squares[oldY][oldX].setCurrentPiece(board.getPiece(oldX, oldY));
+        squares[newY][newX].setCurrentPiece(board.getPiece(newX, newY));
+        showPossibleMoves(null);
     }
 
     @Override
