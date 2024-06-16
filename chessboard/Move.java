@@ -1,4 +1,4 @@
-package ChessBoard;
+package chessboard;
 
 public class Move {
     private int oldX;

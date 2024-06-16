@@ -1,8 +1,8 @@
-import ChessBoard.Board;
-import ChessBoard.BoardListener;
-import ChessBoard.Coordinate;
-import ChessBoard.Move;
-import ChessBoard.Piece;
+import chessboard.Board;
+import chessboard.BoardListener;
+import chessboard.Coordinate;
+import chessboard.Move;
+import chessboard.Piece;
 
 import javax.swing.JFrame;
 import java.awt.Color;

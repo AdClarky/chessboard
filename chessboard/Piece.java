@@ -1,10 +1,16 @@
-package ChessBoard;
+package chessboard;
 
 import javax.swing.Icon;
 import java.util.ArrayList;
 
 public abstract class Piece {
+    /**
+     * Flag for a piece being white
+     */
     public static int DOWN = 1;
+    /**
+     * Flag for a piece being black
+     */
     public static int UP = -1;
     protected Icon icon;
     protected int x;

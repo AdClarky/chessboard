@@ -1,4 +1,4 @@
-package ChessBoard;
+package chessboard;
 
 public class Coordinate {
     private final int x;

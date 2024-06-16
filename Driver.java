@@ -1,4 +1,4 @@
-import ChessBoard.Board;
+import chessboard.Board;
 
 public class Driver {
     public static void main(String[] args) {

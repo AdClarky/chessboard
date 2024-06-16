@@ -1,15 +1,14 @@
-package ChessBoard;
+package chessboard;
 
 import assets.ImageUtils;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 
-public class Bishop extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_bishop.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_bishop.png");
+public class Queen extends Piece{
+    public static Icon black = ImageUtils.getStrechedImage("assets/black_queen.png");
+    public static Icon white = ImageUtils.getStrechedImage("assets/white_queen.png");
 
-    public Bishop(int x, int y, Icon icon, int direction) {
+    public Queen(int x, int y, Icon icon, int direction) {
         super(x, y, icon, direction);
     }
 
@@ -32,12 +31,29 @@ public class Bishop extends Piece{
             if(cantMove(x, y, board, moves))
                 break;
         }
+
+        for(int x = this.x+1; x < 8 && x >= 0; x++){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1; x < 8 && x >= 0; x--){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int y = this.y+1; y < 8 && y >= 0; y++){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int y = this.y-1; y < 8 && y >= 0; y--){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
         checkMovesForCheck(board, moves);
         return moves;
     }
 
     @Override
     public String toString() {
-        return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";
+        return "ChessBoard.Queen, " + x + "," + y + ", " + direction + "; ";
     }
 }
