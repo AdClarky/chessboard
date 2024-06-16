@@ -79,19 +79,24 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
         }
     }
 
+    /**
+     * Unselects the selected square tracked by {@link #squareSelected}.
+     * Also, unhighlights any possible moves.
+     */
     private void unselectSquare(){
         if(squareSelected == null)
             return;
         squareSelected.unhighlight();
         squareSelected = null;
-        showPossibleMoves(null);
+        unhighlightPossibleMoves();
     }
 
+    /**
+     * Unhighlights the previously highlighted squares then highlights the new possible squares.
+     * @param piece the piece whose possible moves will be calculated
+     */
     private void showPossibleMoves(Piece piece) {
-        for (Coordinate move : possibleMoves) { // remove old possible moves
-            squares[move.getY()][move.getX()].unhighlight();
-        }
-        possibleMoves.clear();
+        unhighlightPossibleMoves();
         if(piece != null) {
             possibleMoves = piece.getPossibleMoves(board);
             for(Coordinate move : possibleMoves){
@@ -100,11 +105,22 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
         }
     }
 
+    /**
+     * Removes the highlighting of possible move squares.
+     */
+    private void unhighlightPossibleMoves(){
+        for (Coordinate move : possibleMoves) { // remove old possible moves
+            squares[move.getY()][move.getX()].unhighlight();
+        }
+        possibleMoves.clear();
+    }
+
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         for(Move move : board.getMovesMade()) {
+            Piece piece = board.getPiece(move.getNewX(), move.getNewY());
             squares[move.getOldY()][move.getOldX()].setCurrentPiece(null);
-            squares[move.getNewY()][move.getNewX()].setCurrentPiece(board.getPiece(move.getNewX(), move.getNewY()));
+            squares[move.getNewY()][move.getNewX()].setCurrentPiece(piece);
         }
     }
 
