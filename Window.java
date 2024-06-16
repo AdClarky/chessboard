@@ -92,8 +92,8 @@ public class Window extends JFrame implements BoardListener, MouseListener {
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         squares[oldY][oldX].unhighlight();
-        for(Move move : board.getMoves(oldX, oldY, newX, newY)) {
-            squares[move.getOldY()][move.getOldX()].setCurrentPiece(board.getPiece(move.getOldX(), move.getOldY()));
+        for(Move move : board.getMovesMade()) {
+            squares[move.getOldY()][move.getOldX()].setCurrentPiece(null);
             squares[move.getNewY()][move.getNewX()].setCurrentPiece(board.getPiece(move.getNewX(), move.getNewY()));
         }
         showPossibleMoves(null);

@@ -8,6 +8,7 @@ public class Board {
     private final Piece[][] board  =  new Piece[8][8];
     private final King whiteKing;
     private final King blackKing;
+    private final ArrayList<Move> movesMade = new ArrayList<>(5);
     private final ArrayList<Move> tempMoves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private Pawn passantable;
@@ -74,7 +75,8 @@ public class Board {
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))){ // if invalid move
             return false;
         }
-        for(Move move : getMoves(oldX, oldY, newX, newY)){
+        movesMade.addAll(getMoves(oldX, oldY, newX, newY));
+        for(Move move : movesMade){
             movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
         }
         passantable = null;
@@ -85,6 +87,7 @@ public class Board {
         if (piece instanceof Pawn pawn)
             passantable = pawn;
         notifyBoardChanged(oldX, oldY, newX, newY);
+        movesMade.clear();
         nextTurn();
         return true;
     }
@@ -149,7 +152,24 @@ public class Board {
         tempMoves.clear();
     }
 
-    public ArrayList<Move> getMoves(int oldX, int oldY, int newX, int newY){
+    /**
+     * During a board change event, contains the moves performed on the board.
+     * @return a list of individual moves taken to reach the new board state.
+     */
+    public ArrayList<Move> getMovesMade(){return movesMade;}
+
+    /**
+     * Calculates what individual moves must be made to complete a single chess move.
+     * Moves that are split into multiple moves are promotion, castling and en passanting.
+     * When promoting, the pawn moves first then the Queen 'takes' the pawn.
+     * When passanting, the enemy pawn moves backwards then the pawn takes that.
+     * @param oldX current x position
+     * @param oldY current y position
+     * @param newX x to move to
+     * @param newY y to move to
+     * @return a list of moves to be completed.
+     */
+    private ArrayList<Move> getMoves(int oldX, int oldY, int newX, int newY){
         Piece piece = getPiece(oldX, oldY);
         ArrayList<Move> moves = new ArrayList<>(2);
         if(piece instanceof Pawn pawn) {
@@ -169,7 +189,7 @@ public class Board {
                 moves.add(new Move(7, newY, 5, newY));
             }
             moves.add(new Move(oldX, oldY, newX, newY));
-        }else{ // if not a pawn promotion
+        }else{ // normal moves
             moves.add(new Move(oldX, oldY, newX, newY));
         }
         return moves;
