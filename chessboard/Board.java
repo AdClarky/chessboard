@@ -1,15 +1,17 @@
 package chessboard;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Board {
-    private final ArrayList<BoardListener> boardListeners = new ArrayList<>(1);
+    private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int turn = Piece.DOWN;
     private final Piece[][] board  =  new Piece[8][8];
     private final King whiteKing;
     private final King blackKing;
     private final ArrayList<Move> movesMade = new ArrayList<>(5);
-    private final ArrayList<Move> tempMoves = new ArrayList<>(3);
+    private final List<Move> tempMoves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private Pawn passantable;
 
@@ -53,7 +55,7 @@ public class Board {
 
     public Pawn getPassantable(){return passantable;}
 
-    public boolean inCheck(int newX, int newY, Piece pieceToCheck){
+    public boolean isInCheck(int newX, int newY, Piece pieceToCheck){
         tempMove(newX, newY, pieceToCheck);
         Coordinate kingPos = new Coordinate(getKing().getX(), getKing().getY());
         for(Piece[] row : board){
