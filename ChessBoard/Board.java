@@ -9,7 +9,7 @@ public class Board {
     private final King whiteKing;
     private final King blackKing;
     private final ArrayList<Move> tempMoves = new ArrayList<>(3);
-    private Piece tempPiece = null;
+    private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private Pawn passantable;
 
     public Board(){
@@ -115,7 +115,14 @@ public class Board {
         for(Move move : getMoves(piece.getX(), piece.getY(), x, y)){
             if(board[move.getNewY()][move.getNewX()] != null) { // if taking
                 tempMoves.add(new Move(move.getNewX(), move.getNewY(), move.getNewX(), move.getNewY()));
-                tempPiece = board[move.getNewY()][move.getNewX()];
+                tempPieces.add(board[move.getNewY()][move.getNewX()]);
+            }
+            if(move.getNewX() == move.getOldX() && move.getNewY() == move.getOldY()){ // promotion
+                tempPieces.add(board[move.getNewY()][move.getNewX()]);
+                if(move.getNewY() == 0)
+                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.black, Piece.UP);
+                else
+                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.white, Piece.DOWN);
             }
             tempMoves.add(new Move(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY()));
             Piece temp = getPiece(move.getOldX(), move.getOldY());
@@ -127,11 +134,15 @@ public class Board {
     }
 
     private void undoTempMove(){
-        for(Move move : tempMoves){
-            if(move.getOldY() == move.getNewY() && move.getNewX() == move.getOldX())
-                board[move.getNewY()][move.getNewX()] = tempPiece;
-            board[move.getOldY()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
-            board[move.getNewY()][move.getNewX()] = null;
+        for(Move move : tempMoves.reversed()){
+            if(move.getOldY() == move.getNewY() && move.getNewX() == move.getOldX()) {
+                board[move.getNewY()][move.getNewX()] = tempPieces.getLast();
+                tempPieces.removeLast();
+            }
+            else {
+                board[move.getOldY()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
+                board[move.getNewY()][move.getNewX()] = null;
+            }
             board[move.getOldY()][move.getOldX()].setX(move.getOldX());
             board[move.getOldY()][move.getOldX()].setY(move.getOldY());
         }
