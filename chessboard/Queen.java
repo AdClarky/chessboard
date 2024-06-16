@@ -48,7 +48,7 @@ public class Queen extends Piece{
             if(cantMove(x, y, board, moves))
                 break;
         }
-        checkMovesForCheck(board, moves);
+        removeMovesInCheck(board, moves);
         return moves;
     }
 

@@ -32,7 +32,7 @@ public class Pawn extends Piece{
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
-        checkMovesForCheck(board, moves);
+        removeMovesInCheck(board, moves);
         return moves;
     }
 
