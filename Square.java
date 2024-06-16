@@ -28,7 +28,7 @@ public class Square extends JButton {
         if(currentPiece == null){
             setIcon(null);
         }else{
-            setIcon(currentPiece.getIcon());
+            setIcon(currentPiece.getPieceIcon());
         }
     }
 

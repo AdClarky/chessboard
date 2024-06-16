@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private int currentTurn = Piece.DOWN;
+    private int currentTurn = Piece.WHITE_PIECE;
     private final Piece[][] board  =  new Piece[8][8];
     private final King whiteKing;
     private final King blackKing;
@@ -16,27 +16,27 @@ public class Board {
     private Pawn lastPawn;
 
     public Board(){
-        board[0][0] = new Rook(0, 0, Rook.white, Piece.DOWN);
-        board[0][1] = new Knight(1, 0, Knight.white, Piece.DOWN);
-        board[0][2] = new Bishop(2, 0, Bishop.white, Piece.DOWN);
-        board[0][3] = new Queen(3, 0, Queen.white, Piece.DOWN);
-        whiteKing = new King(4, 0, King.white, Piece.DOWN);
+        board[0][0] = new Rook(0, 0, Rook.white, Piece.WHITE_PIECE);
+        board[0][1] = new Knight(1, 0, Knight.white, Piece.WHITE_PIECE);
+        board[0][2] = new Bishop(2, 0, Bishop.white, Piece.WHITE_PIECE);
+        board[0][3] = new Queen(3, 0, Queen.white, Piece.WHITE_PIECE);
+        whiteKing = new King(4, 0, King.white, Piece.WHITE_PIECE);
         board[0][4] = whiteKing;
-        board[0][5] = new Bishop(5, 0, Bishop.white, Piece.DOWN);
-        board[0][6] = new Knight(6, 0, Knight.white, Piece.DOWN);
-        board[0][7] = new Rook(7, 0, Rook.white, Piece.DOWN);
-        board[7][0] = new Rook(0, 7, Rook.black, Piece.UP);
-        board[7][1] = new Knight(1, 7, Knight.black, Piece.UP);
-        board[7][2] = new Bishop(2, 7, Bishop.black, Piece.UP);
-        board[7][3] = new Queen(3, 7, Queen.black, Piece.UP);
-        blackKing = new King(4, 7, King.black, Piece.UP);
+        board[0][5] = new Bishop(5, 0, Bishop.white, Piece.WHITE_PIECE);
+        board[0][6] = new Knight(6, 0, Knight.white, Piece.WHITE_PIECE);
+        board[0][7] = new Rook(7, 0, Rook.white, Piece.WHITE_PIECE);
+        board[7][0] = new Rook(0, 7, Rook.black, Piece.BLACK_PIECE);
+        board[7][1] = new Knight(1, 7, Knight.black, Piece.BLACK_PIECE);
+        board[7][2] = new Bishop(2, 7, Bishop.black, Piece.BLACK_PIECE);
+        board[7][3] = new Queen(3, 7, Queen.black, Piece.BLACK_PIECE);
+        blackKing = new King(4, 7, King.black, Piece.BLACK_PIECE);
         board[7][4] = blackKing;
-        board[7][5] = new Bishop(5, 7, Bishop.black, Piece.UP);
-        board[7][6] = new Knight(6, 7, Knight.black, Piece.UP);
-        board[7][7] = new Rook(7, 7, Rook.black, Piece.UP);
+        board[7][5] = new Bishop(5, 7, Bishop.black, Piece.BLACK_PIECE);
+        board[7][6] = new Knight(6, 7, Knight.black, Piece.BLACK_PIECE);
+        board[7][7] = new Rook(7, 7, Rook.black, Piece.BLACK_PIECE);
         for(int x = 0; x < 8; x++){
-            board[6][x] = new Pawn(x, 6, Pawn.black, Piece.UP);
-            board[1][x] = new Pawn(x, 1, Pawn.white, Piece.DOWN);
+            board[6][x] = new Pawn(x, 6, Pawn.black, Piece.BLACK_PIECE);
+            board[1][x] = new Pawn(x, 1, Pawn.white, Piece.WHITE_PIECE);
         }
     }
 
@@ -47,7 +47,7 @@ public class Board {
     public int getCurrentTurn(){return currentTurn;}
 
     private King getKing(){
-        if(currentTurn == Piece.UP){
+        if(currentTurn == Piece.BLACK_PIECE){
             return blackKing;
         }
         return whiteKing;
@@ -95,9 +95,9 @@ public class Board {
     public void movePiece(int oldX, int oldY, int newX, int newY){
         if(oldX == newX && oldY == newY){ // if a promotion
             if(oldY == 0)
-                board[oldY][oldX] = new Queen(oldX, oldY, Queen.black, Piece.UP);
+                board[oldY][oldX] = new Queen(oldX, oldY, Queen.black, Piece.BLACK_PIECE);
             else
-                board[oldY][oldX] = new Queen(oldX, oldY, Queen.white, Piece.DOWN);
+                board[oldY][oldX] = new Queen(oldX, oldY, Queen.white, Piece.WHITE_PIECE);
         }else {
             board[newY][newX] = board[oldY][oldX];
             board[oldY][oldX] = null;
@@ -107,10 +107,10 @@ public class Board {
     }
 
     private void nextTurn(){
-        if(currentTurn == Piece.DOWN)
-            currentTurn = Piece.UP;
+        if(currentTurn == Piece.WHITE_PIECE)
+            currentTurn = Piece.BLACK_PIECE;
         else
-            currentTurn = Piece.DOWN;
+            currentTurn = Piece.WHITE_PIECE;
     }
 
     private void tempMove(int x, int y, Piece piece){
@@ -123,9 +123,9 @@ public class Board {
             if(move.getNewX() == move.getOldX() && move.getNewY() == move.getOldY()){ // promotion
                 tempPieces.add(board[move.getNewY()][move.getNewX()]);
                 if(move.getNewY() == 0)
-                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.black, Piece.UP);
+                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.black, Piece.BLACK_PIECE);
                 else
-                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.white, Piece.DOWN);
+                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Queen.white, Piece.WHITE_PIECE);
             }
             tempMoves.add(new Move(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY()));
             Piece temp = getPiece(move.getOldX(), move.getOldY());

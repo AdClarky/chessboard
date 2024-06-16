@@ -1,8 +1,8 @@
 package chessboard;
 
 import javax.swing.Icon;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An abstract class which parents all chess pieces.
@@ -11,12 +11,12 @@ public abstract class Piece {
     /**
      * Flag for a piece being white
      */
-    public static final int DOWN = 1;
+    public static final int WHITE_PIECE = 1;
     /**
      * Flag for a piece being black
      */
-    public static final int UP = -1;
-    protected Icon icon;
+    public static final int BLACK_PIECE = -1;
+    private final Icon pieceIcon;
     protected int x;
     protected int y;
     protected int direction;
@@ -25,13 +25,13 @@ public abstract class Piece {
      * Initialises the position and whether the piece is white or black
      * @param x starting x value
      * @param y starting y value
-     * @param icon image of the piece
-     * @param direction value should be the flag {@link #UP} or {@link #DOWN}
+     * @param pieceIcon image of the piece
+     * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
-    public Piece(int x, int y, Icon icon, int direction) {
+    protected Piece(int x, int y, Icon pieceIcon, int direction) {
         this.x = x;
         this.y = y;
-        this.icon = icon;
+        this.pieceIcon = pieceIcon;
         this.direction = direction;
     }
 
@@ -40,14 +40,18 @@ public abstract class Piece {
      * @param board the board which the piece is on
      * @return a list of coordinates the piece can move to.
      */
-    public abstract ArrayList<Coordinate> getPossibleMoves(Board board);
+    public abstract List<Coordinate> getPossibleMoves(Board board);
 
+    /**
+     * For pieces where the first move must be tracked.
+     * Implementations in Pawn, King and Rook.
+     */
     public abstract void firstMove();
 
     @Override
     public abstract String toString();
 
-    public Icon getIcon() {return icon;}
+    public Icon getPieceIcon() {return pieceIcon;}
 
     public int getDirection() {return direction;}
 
@@ -58,18 +62,31 @@ public abstract class Piece {
     public int getX() {return x;}
     public int getY() {return y;}
 
+    /**
+     * Calculates if a move to a specific square is valid.
+     * Validates the coords are within the board and then checks if it's a friendly piece.
+     * @param x new x position
+     * @param y new y position
+     * @param board the board this piece is on
+     * @param moves a collection of possible moves
+     * @return if the move is valid
+     */
     protected boolean cantMove(int x, int y, Board board, Collection<Coordinate> moves) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
-        if(board.getPiece(x, y) != null){ // if there is a piece in the square
-            if(board.getPiece(x, y).direction != direction) // if it's an enemy piece
-                moves.add(new Coordinate(x, y));
+        Piece piece = board.getPiece(x, y);
+        if(piece != null && piece.getDirection() == direction){ // if a friendly piece
             return true;
         }
         moves.add(new Coordinate(x, y));
         return false;
     }
 
+    /**
+     * Removes moves which would put the king in check.
+     * @param board the board this piece is on
+     * @param moves the possible moves not considering checks
+     */
     protected void removeMovesInCheck(Board board, Collection<Coordinate> moves) {
         if(board.getCurrentTurn() != direction)
             return;
