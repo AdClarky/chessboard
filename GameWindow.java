@@ -17,7 +17,7 @@ import java.util.Collection;
  * Click once to select, click again to either deselect or move.
  * Member of BoardListener and is updated when boardChanged is called.
  */
-public class Window extends JFrame implements BoardListener, MouseListener {
+public class GameWindow extends JFrame implements BoardListener, MouseListener {
     private static final Color light = new Color(180, 180, 180);
     private static final Color dark = new Color(124, 124, 124);
     private static final int WINDOW_WIDTH = 800;
@@ -31,7 +31,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
      * Creates a new window and populates it with squares which icons are set based on the board input.
      * @param board the board to be linked with - adds itself as a listener.
      */
-    public Window(Board board){
+    public GameWindow(Board board){
         super();
         this.board = board;
         board.addBoardListener(this);
