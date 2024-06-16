@@ -25,7 +25,6 @@ public abstract class Piece {
      * Initialises the position and whether the piece is white or black
      * @param x starting x value
      * @param y starting y value
-     * @param pieceIcon image of the piece
      * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
     protected Piece(int x, int y, Icon pieceIcon, int direction) {

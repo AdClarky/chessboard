@@ -5,12 +5,10 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class King extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_king.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_king.png");
     private boolean notMoved = true;
 
-    public King(int x, int y, Icon icon, int direction) {
-        super(x, y, icon, direction);
+    public King(int x, int y, int direction) {
+        super(x, y, getIcon(direction), direction);
     }
 
     @Override
@@ -48,5 +46,12 @@ public class King extends Piece{
     @Override
     public String toString() {
         return "ChessBoard.King, " + x + "," + y + ", " + direction + "; ";
+    }
+
+    private static Icon getIcon(int direction){
+        if(direction == BLACK_PIECE)
+            return ImageUtils.getStrechedImage("assets/black_king.png");
+        else
+            return ImageUtils.getStrechedImage("assets/white_king.png");
     }
 }

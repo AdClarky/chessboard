@@ -5,12 +5,12 @@ import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 
+/**
+ * Bishop for Chess. Only moves diagonally.
+ */
 public class Bishop extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_bishop.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_bishop.png");
-
-    public Bishop(int x, int y, Icon icon, int direction) {
-        super(x, y, icon, direction);
+    public Bishop(int x, int y, int direction) {
+        super(x, y, getIcon(direction), direction);
     }
 
     @Override
@@ -42,5 +42,12 @@ public class Bishop extends Piece{
     @Override
     public String toString() {
         return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";
+    }
+
+    private static Icon getIcon(int direction){
+        if(direction == BLACK_PIECE)
+            return ImageUtils.getStrechedImage("assets/black_bishop.png");
+        else
+            return ImageUtils.getStrechedImage("assets/white_bishop.png");
     }
 }

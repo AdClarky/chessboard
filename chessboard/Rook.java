@@ -5,12 +5,10 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class Rook extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_rook.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_rook.png");
     private boolean notMoved = true;
 
-    public Rook(int x, int y, Icon icon, int direction) {
-        super(x, y, icon, direction);
+    public Rook(int x, int y, int direction) {
+        super(x, y, getIcon(direction), direction);
     }
 
     @Override
@@ -45,4 +43,11 @@ public class Rook extends Piece{
 
     @Override
     public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
+
+    private static Icon getIcon(int direction){
+        if(direction == BLACK_PIECE)
+            return ImageUtils.getStrechedImage("assets/black_rook.png");
+        else
+            return ImageUtils.getStrechedImage("assets/white_rook.png");
+    }
 }

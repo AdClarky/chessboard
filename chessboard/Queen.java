@@ -5,11 +5,8 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class Queen extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_queen.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_queen.png");
-
-    public Queen(int x, int y, Icon icon, int direction) {
-        super(x, y, icon, direction);
+    public Queen(int x, int y, int direction) {
+        super(x, y, getIcon(direction), direction);
     }
 
     @Override
@@ -58,5 +55,12 @@ public class Queen extends Piece{
     @Override
     public String toString() {
         return "ChessBoard.Queen, " + x + "," + y + ", " + direction + "; ";
+    }
+
+    private static Icon getIcon(int direction){
+        if(direction == BLACK_PIECE)
+            return ImageUtils.getStrechedImage("assets/black_queen.png");
+        else
+            return ImageUtils.getStrechedImage("assets/white_queen.png");
     }
 }

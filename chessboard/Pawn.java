@@ -5,12 +5,10 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class Pawn extends Piece{
-    public static Icon black = ImageUtils.getStrechedImage("assets/black_pawn.png");
-    public static Icon white = ImageUtils.getStrechedImage("assets/white_pawn.png");
     private boolean canBePassanted = false;
 
-    public Pawn(int x, int y, Icon icon, int direction) {
-        super(x, y, icon, direction);
+    public Pawn(int x, int y, int direction) {
+        super(x, y, getIcon(direction), direction);
     }
 
     @Override
@@ -48,5 +46,12 @@ public class Pawn extends Piece{
     @Override
     public String toString() {
         return "ChessBoard.Pawn, " + x + "," + y + ", " + direction + "; ";
+    }
+
+    private static Icon getIcon(int direction) {
+        if (direction == BLACK_PIECE)
+            return ImageUtils.getStrechedImage("assets/black_pawn.png");
+        else
+            return ImageUtils.getStrechedImage("assets/white_pawn.png");
     }
 }
