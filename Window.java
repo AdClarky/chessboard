@@ -10,15 +10,27 @@ import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 
+/**
+ * Window which links with chessboard package to display a chess board.
+ * Click once to select, click again to either deselect or move.
+ * Member of BoardListener and is updated when boardChanged is called.
+ */
 public class Window extends JFrame implements BoardListener, MouseListener {
+    private static final Color light = new Color(180, 180, 180);
+    private static final Color dark = new Color(124, 124, 124);
+    private static final int WINDOW_WIDTH = 800;
+    private static final int WINDOW_HEIGHT = 800;
     private final Square[][] squares = new Square[8][8];
     private Square squareSelected = null;
-    private static Color light = new Color(180, 180, 180);
-    private static Color dark = new Color(124, 124, 124);
     private final Board board;
-    private ArrayList<Coordinate> possibleMoves = new ArrayList<>();
+    private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
 
+    /**
+     * Creates a new window and populates it with squares which icons are set based on the board input.
+     * @param board the board to be linked with - adds itself as a listener.
+     */
     public Window(Board board){
         super();
         this.board = board;
@@ -26,7 +38,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800,800);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Color currentColour = light;
         for(int y = 0; y < 8; y++){
@@ -41,17 +53,13 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         setVisible(true);
     }
 
-    public Square findPiece(Piece piece){
-        for(Square[] row : squares){
-            for(Square square : row){
-                if(piece.equals(square.getCurrentPiece()))
-                    return square;
-            }
-        }
-        return null;
-    }
-
-    public void squareClicked(Square square){
+    /**
+     * Run when a square is clicked.
+     * Window tracks which square is currently highlighted.
+     * Logic is handled here for clicking e.g. clicked on an enemy square etc
+     * @param square the square which has been clicked
+     */
+    private void squareClicked(Square square){
         Piece piece = square.getCurrentPiece();
         if(piece == null){ // if clicked a blank square
             if(squareSelected == null)
@@ -71,7 +79,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         }
     }
 
-    public void unselectSquare(){
+    private void unselectSquare(){
         if(squareSelected == null)
             return;
         squareSelected.unhighlight();
@@ -79,7 +87,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
         showPossibleMoves(null);
     }
 
-    public void showPossibleMoves(Piece piece) {
+    private void showPossibleMoves(Piece piece) {
         for (Coordinate move : possibleMoves) { // remove old possible moves
             squares[move.getY()][move.getX()].unhighlight();
         }
