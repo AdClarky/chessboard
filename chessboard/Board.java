@@ -72,11 +72,11 @@ public class Board {
         return false;
     }
 
-    public boolean moveAndValidatePiece(int oldX, int oldY, int newX, int newY){
+    public void moveWithValidation(int oldX, int oldY, int newX, int newY){
         Piece piece = getPiece(oldX, oldY);
-        if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))){ // if invalid move
-            return false;
-        }
+        if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
+            return;
+
         movesMade.addAll(getMoves(oldX, oldY, newX, newY));
         for(Move move : movesMade){
             movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
@@ -91,7 +91,6 @@ public class Board {
         notifyBoardChanged(oldX, oldY, newX, newY);
         movesMade.clear();
         nextTurn();
-        return true;
     }
 
     public void movePiece(int oldX, int oldY, int newX, int newY){

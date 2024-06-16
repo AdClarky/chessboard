@@ -57,7 +57,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
             if(squareSelected == null)
                 return;
             Piece pieceSelected = squareSelected.getCurrentPiece();
-            board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
+            board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
         } else if(piece.getDirection() == board.getTurn()) { // if the player's piece
             unselectSquare();
@@ -66,7 +66,7 @@ public class Window extends JFrame implements BoardListener, MouseListener {
             squareSelected.selected();
         } else if(squareSelected != null){ // if enemy piece
             Piece pieceSelected = squareSelected.getCurrentPiece();
-            board.moveAndValidatePiece(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
+            board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
         }
     }
