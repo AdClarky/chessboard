@@ -52,8 +52,8 @@ public class Board {
 
     public Pawn getPassantable(){return passantable;}
 
-    public boolean inCheck(int x, int y, Piece pieceToCheck){
-        tempMove(x, y, pieceToCheck);
+    public boolean inCheck(int newX, int newY, Piece pieceToCheck){
+        tempMove(newX, newY, pieceToCheck);
         Coordinate kingPos = new Coordinate(getKing().getX(), getKing().getY());
         for(Piece[] row : board){
             for(Piece piece : row){
@@ -118,11 +118,11 @@ public class Board {
                 tempPiece = board[move.getNewY()][move.getNewX()];
             }
             tempMoves.add(new Move(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY()));
-            Piece tempPiece = getPiece(move.getOldX(), move.getOldY());
+            Piece temp = getPiece(move.getOldX(), move.getOldY());
             board[move.getOldY()][move.getOldX()] = null;
-            tempPiece.setX(move.getNewX());
-            tempPiece.setY(move.getNewY());
-            board[move.getNewY()][move.getNewX()] = tempPiece;
+            temp.setX(move.getNewX());
+            temp.setY(move.getNewY());
+            board[move.getNewY()][move.getNewX()] = temp;
         }
     }
 
@@ -130,10 +130,10 @@ public class Board {
         for(Move move : tempMoves){
             if(move.getOldY() == move.getNewY() && move.getNewX() == move.getOldX())
                 board[move.getNewY()][move.getNewX()] = tempPiece;
-            board[move.getOldX()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
+            board[move.getOldY()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
             board[move.getNewY()][move.getNewX()] = null;
-            board[move.getOldX()][move.getOldX()].setX(move.getOldX());
-            board[move.getOldX()][move.getOldX()].setY(move.getOldY());
+            board[move.getOldY()][move.getOldX()].setX(move.getOldX());
+            board[move.getOldY()][move.getOldX()].setY(move.getOldY());
         }
         tempMoves.clear();
     }
