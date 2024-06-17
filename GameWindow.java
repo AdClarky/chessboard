@@ -62,23 +62,18 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
      * @param square the square which has been clicked
      */
     private void squareClicked(@NotNull Square square){
-        // TODO: rework this logic
         if(squareSelected == null && square.isBlank())
             return;
         Piece piece = square.getCurrentPiece();
-        if(square.isBlank()){ // if clicked a blank square
+        if(square.isBlank() || piece.getDirection() != board.getCurrentTurn()){ // if clicked a blank or enemy square
             Piece pieceSelected = squareSelected.getCurrentPiece();
             board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
-        } else if(piece.getDirection() == board.getCurrentTurn()) { // if the player's piece
+        } else { // if the player's piece
             unselectSquare();
-            squareSelected = square;
             showPossibleMoves(piece);
+            squareSelected = square;
             squareSelected.selected();
-        } else if(squareSelected != null){ // if enemy piece
-            Piece pieceSelected = squareSelected.getCurrentPiece();
-            board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
-            unselectSquare();
         }
     }
 
