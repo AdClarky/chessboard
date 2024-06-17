@@ -25,6 +25,7 @@ public abstract class Piece {
      * Initialises the position and whether the piece is white or black
      * @param x starting x value
      * @param y starting y value
+     * @param pieceIcon image of the piece
      * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
     protected Piece(int x, int y, Icon pieceIcon, int direction) {
@@ -90,5 +91,53 @@ public abstract class Piece {
         if(board.getCurrentTurn() != direction)
             return;
         moves.removeIf(move -> board.isInCheck(move.getX(), move.getY(), this));
+    }
+
+    /**
+     * Calculates how far a piece can move in each diagonal direction.
+     * @param board the board being worked on
+     * @param moves a list of possible moves
+     */
+    protected void calculateDiagonalMoves(Board board, Collection<Coordinate> moves){
+        for(int x = this.x+1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x++, y++) {
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x--, y--) {
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x+1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x++, y--) {
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x--, y++) {
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+    }
+
+    /**
+     * Calculates how far a piece can move in each straight direction.
+     * @param board the board being worked on
+     * @param moves a list of possible moves
+     */
+    protected void calculateStraightMoves(Board board, Collection<Coordinate> moves) {
+        for(int x = this.x+1; x < 8 && x >= 0; x++){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int x = this.x-1; x < 8 && x >= 0; x--){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int y = this.y+1; y < 8 && y >= 0; y++){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
+        for(int y = this.y-1; y < 8 && y >= 0; y--){
+            if(cantMove(x, y, board, moves))
+                break;
+        }
     }
 }
