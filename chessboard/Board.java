@@ -130,6 +130,25 @@ public class Board {
         }
         notifyBoardChanged(oldX, oldY, newX, newY);
         nextTurn();
+        if(isCheckmate()) {
+            King king = (King) getColourPieces(currentTurn).getFirst();
+            notifyCheckmate(king.getX(), king.getY());
+        }
+    }
+
+    /**
+     * Checks all possible moves that can be made and if any result in non-check.
+     * @return if in checkmate.
+     */
+    private boolean isCheckmate(){
+        Iterable<Piece> enemyPieces = getColourPieces(currentTurn);
+        for(Piece piece : enemyPieces){
+            for(Coordinate move : piece.getPossibleMoves(this)){
+                if(!isInCheck(move.x(), move.y(), piece))
+                    return false;
+            }
+        }
+        return true;
     }
 
     private void movePiece(int oldX, int oldY, int newX, int newY){
@@ -221,5 +240,10 @@ public class Board {
         for(BoardListener listener : boardListeners){
             listener.boardChanged(oldX, oldY, newX, newY);
         }
+    }
+
+    private void notifyCheckmate(int x, int y){
+        for(BoardListener listener : boardListeners)
+            listener.checkmate(x, y);
     }
 }

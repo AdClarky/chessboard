@@ -120,6 +120,11 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
     }
 
     @Override
+    public void checkmate(int x, int y) {
+        squares[y][x].showPossibleMove();
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         if(!(e.getSource() instanceof Square clickedSquare))
             return;

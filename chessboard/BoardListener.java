@@ -14,4 +14,6 @@ public interface BoardListener {
      * @param newY the new y position of the piece
      */
     void boardChanged(int oldX, int oldY, int newX, int newY);
+
+    void checkmate(int x, int y);
 }
