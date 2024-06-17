@@ -89,7 +89,9 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         Piece piece = board.getPiece(x, y);
-        if(piece != null && piece.getDirection() == direction){ // if a friendly piece
+        if(piece != null){ // if there is a piece in the square
+            if(piece.direction != direction) // if it's an enemy piece
+                moves.add(new Coordinate(x, y));
             return true;
         }
         moves.add(new Coordinate(x, y));

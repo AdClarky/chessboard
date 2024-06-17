@@ -4,9 +4,19 @@ import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 
+/**
+ * Chess board king piece.
+ * Only one per side.
+ */
 public class King extends Piece{
-    private boolean moved = false;
+    private boolean notMoved = true;
 
+    /**
+     * Initialises the king piece.
+     * @param x starting x value
+     * @param y starting y value
+     * @param direction white or black
+     */
     public King(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
     }
@@ -19,7 +29,7 @@ public class King extends Piece{
                 cantMove(x, y, board, moves);
             }
         }
-        if(!moved){ // castling
+        if(notMoved){ // castling
             if(board.getPiece(x+3, y) instanceof Rook rook && rook.hasNotMoved()){
                 if(board.getPiece(x+1, y) == null && board.getPiece(x+2, y) == null)
                     moves.add(new Coordinate(x+2, y));
@@ -52,7 +62,7 @@ public class King extends Piece{
 
     @Override
     public void firstMove(){
-        moved = true;
+        notMoved = false;
     }
 
     @Override
