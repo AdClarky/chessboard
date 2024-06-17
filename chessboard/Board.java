@@ -77,7 +77,7 @@ public class Board {
             return;
         movesMade = piece.getMoves(newX, newY, this);
         for(Move move : movesMade){
-            movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
+            movePiece(move.oldX(), move.oldY(), move.newX(), move.newY());
         }
         piece.firstMove();
         if(lastPawn != null)
@@ -117,38 +117,38 @@ public class Board {
         tempMoves.clear();
         Iterable<Move> moves = piece.getMoves(x, y, this);
         for(Move move : moves){
-            if(board[move.getNewY()][move.getNewX()] != null) { // if taking
-                tempMoves.add(new Move(move.getNewX(), move.getNewY(), move.getNewX(), move.getNewY()));
-                tempPieces.add(board[move.getNewY()][move.getNewX()]);
+            if(board[move.newY()][move.newX()] != null) { // if taking
+                tempMoves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
+                tempPieces.add(board[move.newY()][move.newX()]);
             }
-            if(move.getNewX() == move.getOldX() && move.getNewY() == move.getOldY()){ // promotion
-                tempPieces.add(board[move.getNewY()][move.getNewX()]);
-                if(move.getNewY() == 0)
-                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Piece.BLACK_PIECE);
+            if(move.newX() == move.oldX() && move.newY() == move.oldY()){ // promotion
+                tempPieces.add(board[move.newY()][move.newX()]);
+                if(move.newY() == 0)
+                    board[move.newY()][move.newX()] = new Queen(move.newX(), move.newY(), Piece.BLACK_PIECE);
                 else
-                    board[move.getNewY()][move.getNewX()] = new Queen(move.getNewX(), move.getNewY(), Piece.WHITE_PIECE);
+                    board[move.newY()][move.newX()] = new Queen(move.newX(), move.newY(), Piece.WHITE_PIECE);
             }
-            tempMoves.add(new Move(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY()));
-            Piece temp = getPiece(move.getOldX(), move.getOldY());
-            board[move.getOldY()][move.getOldX()] = null;
-            temp.setX(move.getNewX());
-            temp.setY(move.getNewY());
-            board[move.getNewY()][move.getNewX()] = temp;
+            tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
+            Piece temp = getPiece(move.oldX(), move.oldY());
+            board[move.oldY()][move.oldX()] = null;
+            temp.setX(move.newX());
+            temp.setY(move.newY());
+            board[move.newY()][move.newX()] = temp;
         }
     }
 
     private void undoTempMove(){
         for(Move move : tempMoves.reversed()){
-            if(move.getOldY() == move.getNewY() && move.getNewX() == move.getOldX()) {
-                board[move.getNewY()][move.getNewX()] = tempPieces.getLast();
+            if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
+                board[move.newY()][move.newX()] = tempPieces.getLast();
                 tempPieces.removeLast();
             }
             else {
-                board[move.getOldY()][move.getOldX()] = board[move.getNewY()][move.getNewX()];
-                board[move.getNewY()][move.getNewX()] = null;
+                board[move.oldY()][move.oldX()] = board[move.newY()][move.newX()];
+                board[move.newY()][move.newX()] = null;
             }
-            board[move.getOldY()][move.getOldX()].setX(move.getOldX());
-            board[move.getOldY()][move.getOldX()].setY(move.getOldY());
+            board[move.oldY()][move.oldX()].setX(move.oldX());
+            board[move.oldY()][move.oldX()].setY(move.oldY());
         }
         tempMoves.clear();
     }

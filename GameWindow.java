@@ -118,9 +118,9 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         for(Move move : board.getMovesMade()) {
-            Piece piece = board.getPiece(move.getNewX(), move.getNewY());
-            squares[move.getOldY()][move.getOldX()].setCurrentPiece(null);
-            squares[move.getNewY()][move.getNewX()].setCurrentPiece(piece);
+            Piece piece = board.getPiece(move.newX(), move.newY());
+            squares[move.oldY()][move.oldX()].setCurrentPiece(null);
+            squares[move.newY()][move.newX()].setCurrentPiece(piece);
         }
     }
 
