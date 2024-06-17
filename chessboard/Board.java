@@ -10,7 +10,7 @@ public class Board {
     private final Piece[][] board  =  new Piece[8][8];
     private final King whiteKing;
     private final King blackKing;
-    private ArrayList<Move> movesMade;
+    private Iterable<Move> movesMade;
     private final List<Move> tempMoves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private Pawn lastPawn;

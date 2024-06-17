@@ -100,7 +100,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
         if(piece != null) {
             possibleMoves = piece.getPossibleMoves(board);
             for(Coordinate move : possibleMoves){
-                squares[move.getY()][move.getX()].showPossibleMove();
+                squares[move.y()][move.x()].showPossibleMove();
             }
         }
     }
@@ -110,7 +110,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
      */
     private void unhighlightPossibleMoves(){
         for (Coordinate move : possibleMoves) { // remove old possible moves
-            squares[move.getY()][move.getX()].unhighlight();
+            squares[move.y()][move.x()].unhighlight();
         }
         possibleMoves.clear();
     }
