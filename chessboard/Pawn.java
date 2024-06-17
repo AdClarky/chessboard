@@ -33,9 +33,9 @@ public class Pawn extends Piece{
         if(x < 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction) // can take right
             moves.add(new Coordinate(x+1,y+direction));
         if((direction == BLACK_PIECE && y == 3) || (direction == WHITE_PIECE && y == 4)){ // en passant
-            if(board.getPiece(x-1,y).hadFirstMove())
+            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn.hadFirstMove())
                 moves.add(new Coordinate(x-1,y+direction));
-            else if (board.getPiece(x+1,y).hadFirstMove()) {
+            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn.hadFirstMove()) {
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
@@ -69,8 +69,6 @@ public class Pawn extends Piece{
     }
 
     public void setCanBePassanted(boolean passantable) {canBePassanted = passantable;}
-
-    private boolean canBePassanted() {return canBePassanted;}
 
     @Override
     public String toString() {

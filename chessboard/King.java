@@ -30,11 +30,11 @@ public class King extends Piece{
             }
         }
         if(notMoved){ // castling
-            if(board.getPiece(x+3, y) instanceof Rook rook && rook.hasNotMoved()){
+            if(board.getPiece(x+3, y) instanceof Rook rook && rook.hadFirstMove()){
                 if(board.getPiece(x+1, y) == null && board.getPiece(x+2, y) == null)
                     moves.add(new Coordinate(x+2, y));
             }
-            if(board.getPiece(x-4, y) instanceof Rook rook && rook.hasNotMoved()){
+            if(board.getPiece(x-4, y) instanceof Rook rook && rook.hadFirstMove()){
                 if(board.getPiece(x-1, y) == null && board.getPiece(x-2, y) == null && board.getPiece(x-3, y) == null)
                     moves.add(new Coordinate(x-2, y));
             }

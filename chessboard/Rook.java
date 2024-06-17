@@ -4,16 +4,25 @@ import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 
+/**
+ * Chess Rook piece
+ */
 public class Rook extends Piece{
     private boolean notMoved = false;
 
+    /**
+     * Initialises Rook piece
+     * @param x starting x
+     * @param y starting y
+     * @param direction black or white
+     */
     public Rook(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
     }
 
     @Override
     public ArrayList<Coordinate> getPossibleMoves(Board board) {
-        ArrayList<Coordinate> moves = new ArrayList<>();
+        ArrayList<Coordinate> moves = new ArrayList<>(10);
         calculateStraightMoves(board, moves);
         removeMovesInCheck(board, moves);
         return moves;

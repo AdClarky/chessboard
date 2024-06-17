@@ -4,14 +4,23 @@ import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 
+/**
+ * Queen chess piece
+ */
 public class Queen extends Piece{
+    /**
+     * Initialises the Queen.
+     * @param x starting x position
+     * @param y starting y position
+     * @param direction black or white
+     */
     public Queen(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
     }
 
     @Override
     public ArrayList<Coordinate> getPossibleMoves(Board board) {
-        ArrayList<Coordinate> moves = new ArrayList<>();
+        ArrayList<Coordinate> moves = new ArrayList<>(10);
         calculateDiagonalMoves(board, moves);
         calculateStraightMoves(board, moves);
         removeMovesInCheck(board, moves);
