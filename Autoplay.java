@@ -23,11 +23,11 @@ public class Autoplay {
         this.board = board;
     }
 
-    public void play(){
+    public void play(int delay){
         for(Move move : moves){
             board.moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(delay);
             }catch (InterruptedException e){
                 return;
             }

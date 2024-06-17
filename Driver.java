@@ -18,6 +18,6 @@ public final class Driver {
                 board.addBoardListener(gameWindow);
         }).start();
         Autoplay autoplay = new Autoplay(board);
-        autoplay.play();
+        autoplay.play(0);
     }
 }
