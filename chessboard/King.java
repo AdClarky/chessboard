@@ -1,6 +1,6 @@
 package chessboard;
 
-import assets.ImageUtils;
+import chessboard.assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 

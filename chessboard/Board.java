@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * A regular chess board.
+ * Only method for interaction is the moveWithValidation function.
+ * At the end of a move boardChanged is called.
+ * Can use getMoves to find the individual moves made - e.g. in castling what moves were made.
+ */
 public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
@@ -15,6 +21,10 @@ public class Board {
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private Pawn lastPawn;
 
+    /**
+     * Initialises the board with the pieces in default positions.
+     * Blank squares are null.
+     */
     public Board(){
         board[0][0] = new Rook(0, 0, Piece.WHITE_PIECE);
         board[0][1] = new Knight(1, 0, Piece.WHITE_PIECE);
@@ -40,6 +50,12 @@ public class Board {
         }
     }
 
+    /**
+     * Finds the piece in a specific square
+     * @param x x position
+     * @param y y position
+     * @return the piece on that square.
+     */
     public Piece getPiece(int x, int y){
         return board[y][x];
     }
@@ -53,6 +69,14 @@ public class Board {
         return whiteKing;
     }
 
+    /**
+     * Calculates if moving a piece to a position would put the king in check.
+     * This assumes the piece moving to the new position is a valid move.
+     * @param newX the x position to move to.
+     * @param newY the y position to move to.
+     * @param pieceToCheck the piece being moved.
+     * @return true if in check, false if not
+     */
     public boolean isInCheck(int newX, int newY, Piece pieceToCheck){
         tempMove(newX, newY, pieceToCheck);
         King king = getKing();
@@ -71,6 +95,15 @@ public class Board {
         return false;
     }
 
+    /**
+     * Moves a piece to a new location while validating it is a valid move.
+     * Assumes the provided old coordinates are valid coordinates for a piece.
+     * After a move has been made, it notifies all listeners then moves on to the next turn.
+     * @param oldX current x position of the piece
+     * @param oldY current y position of the piece
+     * @param newX new x position of the piece
+     * @param newY new y position of the piece
+     */
     public void moveWithValidation(int oldX, int oldY, int newX, int newY){
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
@@ -79,14 +112,10 @@ public class Board {
         for(Move move : movesMade){
             movePiece(move.oldX(), move.oldY(), move.newX(), move.newY());
         }
-        piece.firstMove();
-        if(lastPawn != null)
-            lastPawn.setCanBePassanted(false);
+        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king
+        lastPawn.setCanBePassanted(false);
         if(piece instanceof Pawn pawn) {
             lastPawn = pawn;
-        }
-        else {
-            lastPawn = null;
         }
         notifyBoardChanged(oldX, oldY, newX, newY);
         nextTurn();
@@ -124,7 +153,7 @@ public class Board {
             if(move.newX() == move.oldX() && move.newY() == move.oldY()){ // promotion
                 tempPieces.add(board[move.newY()][move.newX()]);
                 if(move.newY() == 0)
-                    board[move.newY()][move.newX()] = new Queen(move.newX(), move.newY(), Piece.BLACK_PIECE);
+                    board[move.newY()][move.newX()] = new Queen(move.newX(), 0, Piece.BLACK_PIECE);
                 else
                     board[move.newY()][move.newX()] = new Queen(move.newX(), move.newY(), Piece.WHITE_PIECE);
             }
@@ -159,6 +188,10 @@ public class Board {
      */
     public Iterable<Move> getMovesMade(){return movesMade;}
 
+    /**
+     * Adds a board listener to receive events from this board.
+     * @param listener the board listener
+     */
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
     }
