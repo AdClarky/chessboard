@@ -28,19 +28,19 @@ public class Board {
      * Blank squares are null.
      */
     public Board(){
-        whitePieces.add(new King(4, 0, Piece.WHITE_PIECE));
+        whitePieces.add(new King(3, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Knight(1, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Bishop(2, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Queen(3, 0, Piece.WHITE_PIECE));
+        whitePieces.add(new Queen(4, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Bishop(5, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Knight(6, 0, Piece.WHITE_PIECE));
         whitePieces.add(new Rook(7, 0, Piece.WHITE_PIECE));
-        blackPieces.add(new King(4, 7, Piece.BLACK_PIECE));
+        blackPieces.add(new King(3, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Rook(0, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Knight(1, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Bishop(2, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Queen(3, 7, Piece.BLACK_PIECE));
+        blackPieces.add(new Queen(4, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Bishop(5, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Knight(6, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Rook(7, 7, Piece.BLACK_PIECE));
