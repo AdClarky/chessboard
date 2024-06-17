@@ -176,10 +176,7 @@ public class Board {
     }
 
     private void nextTurn(){
-        if(currentTurn == Piece.WHITE_PIECE)
-            currentTurn = Piece.BLACK_PIECE;
-        else
-            currentTurn = Piece.WHITE_PIECE;
+        currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
     }
 
     private void tempMove(int x, int y, Piece piece){

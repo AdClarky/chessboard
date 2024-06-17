@@ -29,13 +29,13 @@ public class King extends Piece{
             }
         }
         if(notMoved){ // castling
-            if(board.getPiece(x+3, y) instanceof Rook rook && rook.hadFirstMove()){
-                if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y))
-                    moves.add(new Coordinate(x+2, y));
-            }
-            if(board.getPiece(x-4, y) instanceof Rook rook && rook.hadFirstMove()){
-                if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y) && board.isSquareBlank(x-3, y))
+            if(board.getPiece(x-3, y) instanceof Rook rook && rook.hadFirstMove()){
+                if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
                     moves.add(new Coordinate(x-2, y));
+            }
+            if(board.getPiece(x+4, y) instanceof Rook rook && rook.hadFirstMove()){
+                if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
+                    moves.add(new Coordinate(x+2, y));
             }
         }
         removeMovesInCheck(board, moves);
@@ -50,8 +50,8 @@ public class King extends Piece{
     @Override
     public ArrayList<Move> getMoves(int newX, int newY, Board board) {
         ArrayList<Move> moves = new ArrayList<>(2);
-        if(newX - x == -2) { // long castle
-            moves.add(new Move(0, newY, 3, newY));
+        if(newX - x == -2) { // short castle
+            moves.add(new Move(0, newY, 2   , newY));
         }else if(x - newX == -2) {
             moves.add(new Move(7, newY, 5, newY));
         }

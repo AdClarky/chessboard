@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Chess Rook piece
  */
 public class Rook extends Piece{
-    private boolean notMoved = false;
+    private boolean moved = true;
 
     /**
      * Initialises Rook piece
@@ -29,11 +29,11 @@ public class Rook extends Piece{
 
     @Override
     public void firstMove(){
-        notMoved = false;
+        moved = true;
     }
 
     @Override
-    public boolean hadFirstMove(){return notMoved;}
+    public boolean hadFirstMove(){return moved;}
 
     @Override
     public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
