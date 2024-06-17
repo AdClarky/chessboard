@@ -35,6 +35,21 @@ public class Pawn extends Piece{
     }
 
     @Override
+    public ArrayList<Move> getMoves(int newX, int newY, Board board) {
+        ArrayList<Move> moves = new ArrayList<>(2);
+        if(newY == 7 || newY == 0) { // if pawn promotion
+            moves.add(new Move(x, y, newX, newY));
+            moves.add(new Move(newX, newY, newX, newY));
+        }else if(newX != x && (board.getPiece(newX, newY)== null)){ // if passanting
+            moves.add(new Move(newX, newY-direction, newX, newY));
+            moves.add(new Move(x, y, newX, newY));
+        }else{
+            moves.add(new Move(x, y, newX, newY));
+        }
+        return moves;
+    }
+
+    @Override
     public void firstMove() {
         canBePassanted = true;
     }

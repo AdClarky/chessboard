@@ -9,6 +9,12 @@ import java.util.ArrayList;
  * Bishop for Chess. Only moves diagonally.
  */
 public class Bishop extends Piece{
+    /**
+     * Constructor for a bishop.
+     * @param x starting x position
+     * @param y starting y position
+     * @param direction flags are {@link Piece#BLACK_PIECE} and {@link Piece#WHITE_PIECE}
+     */
     public Bishop(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
     }
@@ -29,8 +35,13 @@ public class Bishop extends Piece{
         return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";
     }
 
-    private static Icon getIcon(int direction){
-        if(direction == BLACK_PIECE)
+    /**
+     * Returns an icon based on the piece colour.
+     * @param colour the colour of the piece
+     * @return an icon which is white or black.
+     */
+    private static Icon getIcon(int colour){
+        if(colour == BLACK_PIECE)
             return ImageUtils.getStrechedImage("assets/black_bishop.png");
         else
             return ImageUtils.getStrechedImage("assets/white_bishop.png");

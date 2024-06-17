@@ -1,6 +1,7 @@
 package chessboard;
 
 import javax.swing.Icon;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,6 +48,12 @@ public abstract class Piece {
      * Implementations in Pawn, King and Rook.
      */
     public abstract void firstMove();
+
+    public ArrayList<Move> getMoves(int newX, int newY, Board board) {
+        ArrayList<Move> moves = new ArrayList<>(1);
+        moves.add(new Move(x, y, newX, newY));
+        return moves;
+    }
 
     @Override
     public abstract String toString();

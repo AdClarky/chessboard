@@ -75,7 +75,7 @@ public class Board {
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-        movesMade = getMoves(oldX, oldY, newX, newY);
+        movesMade = piece.getMoves(newX, newY, this);
         for(Move move : movesMade){
             movePiece(move.getOldX(), move.getOldY(), move.getNewX(), move.getNewY());
         }
@@ -92,10 +92,10 @@ public class Board {
         nextTurn();
     }
 
-    public void movePiece(int oldX, int oldY, int newX, int newY){
+    private void movePiece(int oldX, int oldY, int newX, int newY){
         if(oldX == newX && oldY == newY){ // if a promotion
             if(oldY == 0)
-                board[oldY][oldX] = new Queen(oldX, oldY, Piece.BLACK_PIECE);
+                board[0][oldX] = new Queen(oldX, 0, Piece.BLACK_PIECE);
             else
                 board[oldY][oldX] = new Queen(oldX, oldY, Piece.WHITE_PIECE);
         }else {
@@ -115,7 +115,8 @@ public class Board {
 
     private void tempMove(int x, int y, Piece piece){
         tempMoves.clear();
-        for(Move move : getMoves(piece.getX(), piece.getY(), x, y)){
+        Iterable<Move> moves = piece.getMoves(x, y, this);
+        for(Move move : moves){
             if(board[move.getNewY()][move.getNewX()] != null) { // if taking
                 tempMoves.add(new Move(move.getNewX(), move.getNewY(), move.getNewX(), move.getNewY()));
                 tempPieces.add(board[move.getNewY()][move.getNewX()]);
@@ -156,44 +157,7 @@ public class Board {
      * During a board change event, contains the moves performed on the board.
      * @return a list of individual moves taken to reach the new board state.
      */
-    public ArrayList<Move> getMovesMade(){return movesMade;}
-
-    /**
-     * Calculates what individual moves must be made to complete a single chess move.
-     * Moves that are split into multiple moves are promotion, castling and en passanting.
-     * When promoting, the pawn moves first then the Queen 'takes' the pawn.
-     * When passanting, the enemy pawn moves backwards then the pawn takes that.
-     * @param oldX current x position
-     * @param oldY current y position
-     * @param newX x to move to
-     * @param newY y to move to
-     * @return a list of moves to be completed.
-     */
-    private ArrayList<Move> getMoves(int oldX, int oldY, int newX, int newY){
-        Piece piece = getPiece(oldX, oldY);
-        ArrayList<Move> moves = new ArrayList<>(2);
-        if(piece instanceof Pawn pawn) {
-            if(newY == 7 || newY == 0) { // if pawn promotion
-                moves.add(new Move(oldX, oldY, newX, newY));
-                moves.add(new Move(newX, newY, newX, newY));
-            }else if(newX != pawn.getX() && (board[newY][newX] == null)){ // if passanting
-                moves.add(new Move(newX, newY-pawn.getDirection(), newX, newY));
-                moves.add(new Move(oldX, oldY, newX, newY));
-            }else{
-                moves.add(new Move(oldX, oldY, newX, newY));
-            }
-        }else if(piece instanceof King && Math.abs(newX - piece.getX()) == 2){ // castling
-            if(newX - piece.getX() == -2) { // long castle
-                moves.add(new Move(0, newY, 3, newY));
-            }else {
-                moves.add(new Move(7, newY, 5, newY));
-            }
-            moves.add(new Move(oldX, oldY, newX, newY));
-        }else{ // normal moves
-            moves.add(new Move(oldX, oldY, newX, newY));
-        }
-        return moves;
-    }
+    public Iterable<Move> getMovesMade(){return movesMade;}
 
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);

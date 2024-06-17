@@ -39,6 +39,18 @@ public class King extends Piece{
     }
 
     @Override
+    public ArrayList<Move> getMoves(int newX, int newY, Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
+        if(newX - x == -2) { // long castle
+            moves.add(new Move(0, newY, 3, newY));
+        }else if(x - newX == -2) {
+            moves.add(new Move(7, newY, 5, newY));
+        }
+        moves.add(new Move(x, y, newX, newY));
+        return moves;
+    }
+
+    @Override
     public void firstMove(){
         notMoved = false;
     }
