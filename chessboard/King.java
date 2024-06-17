@@ -66,6 +66,9 @@ public class King extends Piece{
     }
 
     @Override
+    public boolean hadFirstMove(){return notMoved;}
+
+    @Override
     public String toString() {
         return "ChessBoard.King, " + x + "," + y + ", " + direction + "; ";
     }

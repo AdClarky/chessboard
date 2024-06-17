@@ -36,6 +36,9 @@ public class Knight extends Piece{
     public void firstMove() {}
 
     @Override
+    public boolean hadFirstMove(){return false;}
+
+    @Override
     public String toString() {
         return "ChessBoard.Knight, " + x + "," + y + ", " + direction + "; ";
     }

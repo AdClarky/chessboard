@@ -31,6 +31,9 @@ public class Bishop extends Piece{
     public void firstMove() {}
 
     @Override
+    public boolean hadFirstMove(){return false;}
+
+    @Override
     public String toString() {
         return "ChessBoard.Bishop, " + x + "," + y + ", " + direction + "; ";
     }

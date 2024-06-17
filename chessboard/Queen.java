@@ -22,6 +22,9 @@ public class Queen extends Piece{
     public void firstMove() {}
 
     @Override
+    public boolean hadFirstMove(){return false;}
+
+    @Override
     public String toString() {
         return "ChessBoard.Queen, " + x + "," + y + ", " + direction + "; ";
     }

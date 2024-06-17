@@ -4,9 +4,18 @@ import assets.ImageUtils;
 import javax.swing.Icon;
 import java.util.ArrayList;
 
+/**
+ * Pawn chess piece
+ */
 public class Pawn extends Piece{
     private boolean canBePassanted = false;
 
+    /**
+     * Initialises the pawn to a set position
+     * @param x starting x position
+     * @param y starting y position
+     * @param direction black or white
+     */
     public Pawn(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
     }
@@ -24,9 +33,9 @@ public class Pawn extends Piece{
         if(x < 7 && board.getPiece(x+1,y+direction) != null && board.getPiece(x+1,y+direction).getDirection() != direction) // can take right
             moves.add(new Coordinate(x+1,y+direction));
         if((direction == BLACK_PIECE && y == 3) || (direction == WHITE_PIECE && y == 4)){ // en passant
-            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn.canBePassanted())
+            if(board.getPiece(x-1,y).hadFirstMove())
                 moves.add(new Coordinate(x-1,y+direction));
-            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn.canBePassanted()) {
+            else if (board.getPiece(x+1,y).hadFirstMove()) {
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
@@ -52,6 +61,11 @@ public class Pawn extends Piece{
     @Override
     public void firstMove() {
         canBePassanted = true;
+    }
+
+    @Override
+    public boolean hadFirstMove(){
+        return canBePassanted;
     }
 
     public void setCanBePassanted(boolean passantable) {canBePassanted = passantable;}

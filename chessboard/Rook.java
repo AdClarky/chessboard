@@ -5,7 +5,7 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class Rook extends Piece{
-    private boolean moved = true;
+    private boolean notMoved = false;
 
     public Rook(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
@@ -19,12 +19,13 @@ public class Rook extends Piece{
         return moves;
     }
 
-    public boolean hasNotMoved(){return !moved;}
-
     @Override
     public void firstMove(){
-        moved = true;
+        notMoved = false;
     }
+
+    @Override
+    public boolean hadFirstMove(){return notMoved;}
 
     @Override
     public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
