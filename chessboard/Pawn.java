@@ -77,8 +77,8 @@ public class Pawn extends Piece{
 
     private static Icon getIcon(int direction) {
         if (direction == BLACK_PIECE)
-            return ImageUtils.getStrechedImage("chessboard/assets/black_pawn.png");
+            return ImageUtils.getStretchedImage("chessboard/assets/black_pawn.png");
         else
-            return ImageUtils.getStrechedImage("chessboard/assets/white_pawn.png");
+            return ImageUtils.getStretchedImage("chessboard/assets/white_pawn.png");
     }
 }

@@ -75,8 +75,8 @@ public class King extends Piece{
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
-            return ImageUtils.getStrechedImage("chessboard/assets/black_king.png");
+            return ImageUtils.getStretchedImage("chessboard/assets/black_king.png");
         else
-            return ImageUtils.getStrechedImage("chessboard/assets/white_king.png");
+            return ImageUtils.getStretchedImage("chessboard/assets/white_king.png");
     }
 }
