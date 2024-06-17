@@ -5,7 +5,7 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class King extends Piece{
-    private boolean notMoved = true;
+    private boolean moved = false;
 
     public King(int x, int y, int direction) {
         super(x, y, getIcon(direction), direction);
@@ -13,18 +13,18 @@ public class King extends Piece{
 
     @Override
     public ArrayList<Coordinate> getPossibleMoves(Board board) {
-        ArrayList<Coordinate> moves = new ArrayList<>();
+        ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
                 cantMove(x, y, board, moves);
             }
         }
-        if(notMoved){ // castling
-            if(board.getPiece(x+3, y) instanceof Rook rook && rook.getNotMoved()){
+        if(!moved){ // castling
+            if(board.getPiece(x+3, y) instanceof Rook rook && rook.hasNotMoved()){
                 if(board.getPiece(x+1, y) == null && board.getPiece(x+2, y) == null)
                     moves.add(new Coordinate(x+2, y));
             }
-            if(board.getPiece(x-4, y) instanceof Rook rook && rook.getNotMoved()){
+            if(board.getPiece(x-4, y) instanceof Rook rook && rook.hasNotMoved()){
                 if(board.getPiece(x-1, y) == null && board.getPiece(x-2, y) == null && board.getPiece(x-3, y) == null)
                     moves.add(new Coordinate(x-2, y));
             }
@@ -40,7 +40,7 @@ public class King extends Piece{
 
     @Override
     public ArrayList<Move> getMoves(int newX, int newY, Board board) {
-        ArrayList<Move> moves = new ArrayList<>();
+        ArrayList<Move> moves = new ArrayList<>(2);
         if(newX - x == -2) { // long castle
             moves.add(new Move(0, newY, 3, newY));
         }else if(x - newX == -2) {
@@ -52,7 +52,7 @@ public class King extends Piece{
 
     @Override
     public void firstMove(){
-        notMoved = false;
+        moved = true;
     }
 
     @Override
