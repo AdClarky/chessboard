@@ -1,6 +1,5 @@
 import chessboard.Blank;
 import chessboard.Piece;
-import chessboard.assets.ImageUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;

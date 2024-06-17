@@ -15,5 +15,10 @@ public interface BoardListener {
      */
     void boardChanged(int oldX, int oldY, int newX, int newY);
 
+    /**
+     * Called when its checkmate with the position of the king as the param.
+     * @param x king x position
+     * @param y king y position
+     */
     void checkmate(int x, int y);
 }

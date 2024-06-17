@@ -1,7 +1,5 @@
 package chessboard;
 
-import chessboard.assets.ImageUtils;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +24,7 @@ public abstract class Piece {
     private final Icon pieceIcon;
     protected int x;
     protected int y;
-    protected int direction;
+    protected final int direction;
 
     /**
      * Initialises the position and whether the piece is white or black

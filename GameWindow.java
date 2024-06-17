@@ -3,7 +3,6 @@ import chessboard.BoardListener;
 import chessboard.Coordinate;
 import chessboard.Move;
 import chessboard.Piece;
-import chessboard.assets.ImageUtils;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;

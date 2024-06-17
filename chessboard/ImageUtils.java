@@ -1,4 +1,4 @@
-package chessboard.assets;
+package chessboard;
 
 import javax.swing.ImageIcon;
 
