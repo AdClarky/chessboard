@@ -17,5 +17,7 @@ public final class Driver {
                 BoardListener gameWindow = new GameWindow(board);
                 board.addBoardListener(gameWindow);
         }).start();
+        Autoplay autoplay = new Autoplay(board);
+        autoplay.play();
     }
 }
