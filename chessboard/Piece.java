@@ -49,6 +49,13 @@ public abstract class Piece {
      */
     public abstract void firstMove();
 
+    /**
+     * Calculates a list of moves required to move a piece to a new place.
+     * @param newX the new x position
+     * @param newY the new y position
+     * @param board the board
+     * @return the moves needed
+     */
     public ArrayList<Move> getMoves(int newX, int newY, Board board) {
         ArrayList<Move> moves = new ArrayList<>(1);
         moves.add(new Move(x, y, newX, newY));
