@@ -1,5 +1,7 @@
 package chessboard;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,6 +50,11 @@ public class Board {
             board[6][x] = new Pawn(x, 6, Piece.BLACK_PIECE);
             board[1][x] = new Pawn(x, 1, Piece.WHITE_PIECE);
         }
+        for(int y = 2; y < 6; y++){
+            for(int x = 0; x < 8; x++){
+                board[y][x] = new Blank(x, y);
+            }
+        }
     }
 
     /**
@@ -56,12 +63,16 @@ public class Board {
      * @param y y position
      * @return the piece on that square.
      */
+    @NotNull
     public Piece getPiece(int x, int y){
         return board[y][x];
     }
 
+    public boolean isSquareBlank(int x, int y){return board[y][x] instanceof Blank;}
+
     public int getCurrentTurn(){return currentTurn;}
 
+    @NotNull
     private King getKing(){
         if(currentTurn == Piece.BLACK_PIECE){
             return blackKing;
@@ -83,7 +94,8 @@ public class Board {
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
         for(Piece[] row : board){
             for(Piece piece : row){
-                if(piece == null || piece.getDirection() == pieceToCheck.getDirection())
+                // TODO: make array of pieces
+                if(piece instanceof Blank || piece.getDirection() == pieceToCheck.getDirection())
                     continue;
                 if(piece.getPossibleMoves(this).contains(kingPos)) {
                     undoTempMove();
@@ -113,7 +125,8 @@ public class Board {
             movePiece(move.oldX(), move.oldY(), move.newX(), move.newY());
         }
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king
-        lastPawn.setCanBePassanted(false);
+        if(lastPawn != null)
+            lastPawn.setCanBePassanted(false);
         if(piece instanceof Pawn pawn) {
             lastPawn = pawn;
         }
@@ -129,7 +142,7 @@ public class Board {
                 board[oldY][oldX] = new Queen(oldX, oldY, Piece.WHITE_PIECE);
         }else {
             board[newY][newX] = board[oldY][oldX];
-            board[oldY][oldX] = null;
+            board[oldY][oldX] = new Blank(oldX, oldY);
         }
         board[newY][newX].setX(newX);
         board[newY][newX].setY(newY);
@@ -146,7 +159,7 @@ public class Board {
         tempMoves.clear();
         Iterable<Move> moves = piece.getMoves(x, y, this);
         for(Move move : moves){
-            if(board[move.newY()][move.newX()] != null) { // if taking
+            if(!isSquareBlank(move.newX(), move.newY())){ // if taking
                 tempMoves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
                 tempPieces.add(board[move.newY()][move.newX()]);
             }
@@ -159,7 +172,7 @@ public class Board {
             }
             tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
             Piece temp = getPiece(move.oldX(), move.oldY());
-            board[move.oldY()][move.oldX()] = null;
+            board[move.oldY()][move.oldX()] = new Blank(move.oldX(), move.oldY());
             temp.setX(move.newX());
             temp.setY(move.newY());
             board[move.newY()][move.newX()] = temp;
@@ -174,7 +187,7 @@ public class Board {
             }
             else {
                 board[move.oldY()][move.oldX()] = board[move.newY()][move.newX()];
-                board[move.newY()][move.newX()] = null;
+                board[move.newY()][move.newX()] = new Blank(move.newX(), move.newY());
             }
             board[move.oldY()][move.oldX()].setX(move.oldX());
             board[move.oldY()][move.oldX()].setY(move.oldY());

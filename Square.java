@@ -1,4 +1,7 @@
+import chessboard.Blank;
 import chessboard.Piece;
+import chessboard.assets.ImageUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;
 import java.awt.Color;
@@ -31,16 +34,15 @@ public class Square extends JButton {
         setCurrentPiece(currentPiece);
     }
 
+    @NotNull
     public Piece getCurrentPiece() {return currentPiece;}
 
     public void setCurrentPiece(Piece currentPiece) {
         this.currentPiece = currentPiece;
-        if(currentPiece == null){
-            setIcon(null);
-        }else{
-            setIcon(currentPiece.getPieceIcon());
-        }
+        setIcon(currentPiece.getPieceIcon());
     }
+
+    public boolean isBlank(){return currentPiece instanceof Blank;}
 
     public int getBoardX() {return boardX;}
     public int getBoardY() {return boardY;}

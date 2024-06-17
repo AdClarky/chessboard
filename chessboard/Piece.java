@@ -1,5 +1,7 @@
 package chessboard;
 
+import chessboard.assets.ImageUtils;
+
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,6 +19,10 @@ public abstract class Piece {
      * Flag for a piece being black
      */
     public static final int BLACK_PIECE = -1;
+    /**
+     * Flag for a blank piece.
+     */
+    public static final int BLANK_PIECE = 0;
     private final Icon pieceIcon;
     protected int x;
     protected int y;
@@ -94,9 +100,8 @@ public abstract class Piece {
     protected boolean cantMove(int x, int y, Board board, Collection<Coordinate> moves) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
-        Piece piece = board.getPiece(x, y);
-        if(piece != null){ // if there is a piece in the square
-            if(piece.direction != direction) // if it's an enemy piece
+        if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
+            if(board.getPiece(x, y).direction != direction) // if it's an enemy piece
                 moves.add(new Coordinate(x, y));
             return true;
         }

@@ -45,8 +45,8 @@ public class Bishop extends Piece{
      */
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)
-            return ImageUtils.getStrechedImage("assets/black_bishop.png");
+            return ImageUtils.getStrechedImage("chessboard/assets/black_bishop.png");
         else
-            return ImageUtils.getStrechedImage("assets/white_bishop.png");
+            return ImageUtils.getStrechedImage("chessboard/assets/white_bishop.png");
     }
 }

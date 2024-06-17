@@ -31,11 +31,11 @@ public class King extends Piece{
         }
         if(notMoved){ // castling
             if(board.getPiece(x+3, y) instanceof Rook rook && rook.hadFirstMove()){
-                if(board.getPiece(x+1, y) == null && board.getPiece(x+2, y) == null)
+                if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y))
                     moves.add(new Coordinate(x+2, y));
             }
             if(board.getPiece(x-4, y) instanceof Rook rook && rook.hadFirstMove()){
-                if(board.getPiece(x-1, y) == null && board.getPiece(x-2, y) == null && board.getPiece(x-3, y) == null)
+                if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y) && board.isSquareBlank(x-3, y))
                     moves.add(new Coordinate(x-2, y));
             }
         }
@@ -75,8 +75,8 @@ public class King extends Piece{
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
-            return ImageUtils.getStrechedImage("assets/black_king.png");
+            return ImageUtils.getStrechedImage("chessboard/assets/black_king.png");
         else
-            return ImageUtils.getStrechedImage("assets/white_king.png");
+            return ImageUtils.getStrechedImage("chessboard/assets/white_king.png");
     }
 }

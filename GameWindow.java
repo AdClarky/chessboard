@@ -3,6 +3,8 @@ import chessboard.BoardListener;
 import chessboard.Coordinate;
 import chessboard.Move;
 import chessboard.Piece;
+import chessboard.assets.ImageUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -59,11 +61,12 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
      * Logic is handled here for clicking e.g. clicked on an enemy square etc
      * @param square the square which has been clicked
      */
-    private void squareClicked(Square square){
-        Piece piece = square.getCurrentPiece();
-        if(squareSelected == null && piece == null)
+    private void squareClicked(@NotNull Square square){
+        // TODO: rework this logic
+        if(squareSelected == null && square.isBlank())
             return;
-        if(piece == null){ // if clicked a blank square
+        Piece piece = square.getCurrentPiece();
+        if(square.isBlank()){ // if clicked a blank square
             Piece pieceSelected = squareSelected.getCurrentPiece();
             board.moveWithValidation(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
             unselectSquare();
@@ -95,13 +98,11 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
      * Unhighlights the previously highlighted squares then highlights the new possible squares.
      * @param piece the piece whose possible moves will be calculated
      */
-    private void showPossibleMoves(Piece piece) {
+    private void showPossibleMoves(@NotNull Piece piece) {
         unhighlightPossibleMoves();
-        if(piece != null) {
-            possibleMoves = piece.getPossibleMoves(board);
-            for(Coordinate move : possibleMoves){
-                squares[move.y()][move.x()].showPossibleMove();
-            }
+        possibleMoves = piece.getPossibleMoves(board);
+        for(Coordinate move : possibleMoves){
+            squares[move.y()][move.x()].showPossibleMove();
         }
     }
 
@@ -118,9 +119,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
         for(Move move : board.getMovesMade()) {
-            Piece piece = board.getPiece(move.newX(), move.newY());
-            squares[move.oldY()][move.oldX()].setCurrentPiece(null);
-            squares[move.newY()][move.newX()].setCurrentPiece(piece);
+            squares[move.oldY()][move.oldX()].setCurrentPiece(board.getPiece(move.oldX(), move.oldY()));
+            squares[move.newY()][move.newX()].setCurrentPiece(board.getPiece(move.newX(), move.newY()));
         }
     }
 
