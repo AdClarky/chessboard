@@ -20,7 +20,7 @@ public final class Driver {
                 board.addBoardListener(gameWindow);
         }).start();
         Autoplay autoplay = new Autoplay(board);
-        autoplay.importGame(Path.of("games/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
+        autoplay.importGame(Path.of("games/andredar63_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play(0);
     }
 }
