@@ -70,9 +70,7 @@ public class Pawn extends Piece{
     public void setCanBePassanted(boolean passantable) {canBePassanted = passantable;}
 
     @Override
-    public String toString() {
-        return "ChessBoard.Pawn, " + x + "," + y + ", " + direction + "; ";
-    }
+    public String toString() {return "";}
 
     private static Icon getIcon(int direction) {
         if (direction == BLACK_PIECE)

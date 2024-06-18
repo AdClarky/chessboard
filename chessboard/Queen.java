@@ -34,7 +34,7 @@ public class Queen extends Piece{
 
     @Override
     public String toString() {
-        return "ChessBoard.Queen, " + x + "," + y + ", " + direction + "; ";
+        return "Q";
     }
 
     private static Icon getIcon(int direction){

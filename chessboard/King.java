@@ -69,7 +69,7 @@ public class King extends Piece{
 
     @Override
     public String toString() {
-        return "ChessBoard.King, " + x + "," + y + ", " + direction + "; ";
+        return "K";
     }
 
     private static Icon getIcon(int direction){

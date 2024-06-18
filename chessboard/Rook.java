@@ -36,7 +36,7 @@ public class Rook extends Piece{
     public boolean hadFirstMove(){return moved;}
 
     @Override
-    public String toString() {return "ChessBoard.Rook, " + x + "," + y + ", " + direction + "; ";}
+    public String toString() {return "R";}
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)

@@ -38,9 +38,7 @@ public class Knight extends Piece{
     public boolean hadFirstMove(){return false;}
 
     @Override
-    public String toString() {
-        return "ChessBoard.Knight, " + x + "," + y + ", " + direction + "; ";
-    }
+    public String toString() {return "K";}
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)

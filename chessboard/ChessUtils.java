@@ -50,6 +50,7 @@ public final class ChessUtils {
             move += "#";
         else if(board.isKingInCheck(piece.getDirection() * -1))
             move += "+";
+        board.undoTempMove();
         return move;
     }
 }
