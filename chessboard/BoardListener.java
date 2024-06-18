@@ -21,4 +21,6 @@ public interface BoardListener {
      * @param y king y position
      */
     void checkmate(int x, int y);
+
+    void boardHistoy();
 }

@@ -4,17 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TempMove {
-    private Board board;
-    private final List<Move> tempMoves = new ArrayList<>(3);
+    private final Board board;
+    private final Piece piece;
+    private final int x;
+    private final int y;
+    private final List<Move> moves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
 
 
     public TempMove(int x, int y, Piece piece, Board board){
+        this.x = x;
+        this.y = y;
+        this.piece = piece;
         this.board = board;
+        makeMove();
+    }
+
+    public void makeMove(){
         Iterable<Move> moves = piece.getMoves(x, y, board);
         for(Move move : moves){
             if(!board.isSquareBlank(move.newX(), move.newY())){ // if taking
-                tempMoves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
+                this.moves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
                 tempPieces.add(board.getPiece(move.newX(), move.newY()));
                 board.getColourPieces(tempPieces.getLast()).remove(tempPieces.getLast());
             }
@@ -27,7 +37,7 @@ public class TempMove {
                     board.setSquare(move.oldX(), move.oldY(), new Queen(move.oldX(), move.oldY(), Piece.WHITE_PIECE));
                 board.getColourPieces(board.getPiece(move.oldX(), move.oldY())).add(board.getPiece(move.oldX(), move.oldY()));
             }else{
-                tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
+                this.moves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
                 board.setSquare(move.newX(), move.newY(), board.getPiece(move.oldX(), move.oldY()));
                 board.setSquare(move.oldX(), move.oldY(), new Blank(move.oldX(), move.oldY()));
             }
@@ -37,7 +47,7 @@ public class TempMove {
     }
 
     public void undo(){
-        for(Move move : tempMoves.reversed()){
+        for(Move move : moves.reversed()){
             if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
                 if(tempPieces.getLast() instanceof Pawn pawn && (pawn.getY() == 7 || pawn.getY() == 0)) // if it was a promotion
                     board.getColourPieces(tempPieces.getLast()).remove(board.getPiece(move.oldX(), move.oldY()));
@@ -52,6 +62,10 @@ public class TempMove {
             board.getPiece(move.oldX(), move.oldY()).setX(move.oldX());
             board.getPiece(move.oldX(), move.oldY()).setY(move.oldY());
         }
-        tempMoves.clear();
     }
+
+    public int getX() {return x;}
+    public int getY() {return y;}
+    public Piece getPiece() {return piece;}
+    public List<Move> getMoves() {return moves;}
 }

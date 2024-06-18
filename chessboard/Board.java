@@ -126,7 +126,7 @@ public class Board {
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
         movesMade = piece.getMoves(newX, newY, this);
-        tempMoves.add(new TempMove(newX,newY,board[oldY][oldX],this));
+        tempMoves.push(new TempMove(newX,newY,board[oldY][oldX],this));
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king
         if(lastPawn != null)
             lastPawn.setCanBePassanted(false);
@@ -143,6 +143,30 @@ public class Board {
 
     public void moveWithValidation(@NotNull Move move){
         moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
+    }
+
+    public void undoMove(){
+        if(tempMoves.isEmpty())
+            return;
+        TempMove tempMove = tempMoves.pop();
+        movesMade = tempMove.getMoves();
+        tempMove.undo();
+        redoMoves.push(tempMove);
+        notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
+    }
+
+    public void redoMove(){
+        if(redoMoves.isEmpty())
+            return;
+        TempMove tempMove = redoMoves.pop();
+        movesMade = tempMove.getPiece().getMoves(tempMove.getX(), tempMove.getY(), this);
+        tempMove.makeMove();
+        tempMoves.push(tempMove);
+        notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
+        if(isCheckmate()) {
+            King king = (King) getColourPieces(currentTurn).getFirst();
+            notifyCheckmate(king.getX(), king.getY());
+        }
     }
 
     /**

@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.Collection;
  * Click once to select, click again to either deselect or move.
  * Member of BoardListener and is updated when boardChanged is called.
  */
-public class GameWindow extends JFrame implements BoardListener, MouseListener {
+public class GameWindow extends JFrame implements BoardListener, MouseListener, KeyListener {
     private static final Color LIGHT_SQUARE = new Color(180, 180, 180);
     private static final Color DARK_SQUARE = new Color(124, 124, 124);
     private static final int WINDOW_WIDTH = 800;
@@ -27,6 +29,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
     private Square squareSelected;
     private final Board board;
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
+    private Square checkmated;
 
     /**
      * Creates a new window and populates it with squares which icons are set based on the board input.
@@ -46,6 +49,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
                 Piece piece = board.getPiece(x, y);
                 squares[y][x] = new Square(piece, currentColour, x, y);
                 squares[y][x].addMouseListener(this);
+                squares[y][x].addKeyListener(this);
                 add(squares[y][x]);
                 currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
             }
@@ -120,7 +124,13 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
 
     @Override
     public void checkmate(int x, int y) {
+        checkmated = squares[y][x];
         squares[y][x].showPossibleMove();
+    }
+
+    @Override
+    public void boardHistoy() {
+        boardChanged(0, 0, 0, 0);
     }
 
     @Override
@@ -143,4 +153,23 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener {
     public void mouseExited(MouseEvent e) {
 
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+            board.undoMove();
+            if(checkmated != null) {
+                checkmated.unhighlight();
+                checkmated = null;
+            }
+        }else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+            board.redoMove();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }
