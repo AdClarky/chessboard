@@ -24,9 +24,6 @@ public class Autoplay {
         } catch (IOException ex) {
             System.err.println("Could not find file");
         }
-        for(String move : moves){
-            System.out.println(move);
-        }
     }
 
     private void processLine(String line){
