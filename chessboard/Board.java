@@ -138,6 +138,10 @@ public class Board {
         }
     }
 
+    public void moveWithValidation(@NotNull Move move){
+        moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
+    }
+
     /**
      * Checks all possible moves that can be made and if any result in non-check.
      * @return if in checkmate.
