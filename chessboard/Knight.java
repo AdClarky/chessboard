@@ -38,7 +38,7 @@ public class Knight extends Piece{
     public boolean hadFirstMove(){return false;}
 
     @Override
-    public String toString() {return "K";}
+    public String toString() {return "N";}
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
