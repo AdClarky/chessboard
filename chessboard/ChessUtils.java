@@ -31,4 +31,25 @@ public final class ChessUtils {
     public static String coordsToChess(int x, int y){
         return X_AXIS.get(x) + (y+1);
     }
+
+    public static String moveToChess(Board board, Piece piece, int newX, int newY){
+        if(piece instanceof King king && Math.abs(piece.getX() - newX) == 2) {// castling
+            if(piece.getX() - newX == 2) // long castle
+                return  "O-O-O";
+            else // short castle
+                return "O-O";
+        }
+        String move = piece.toString();
+        move += coordsToChess(piece.getX(), piece.getY());
+        if(!board.isSquareBlank(newX, newY))
+            move += "x";
+        move += coordsToChess(newX, newY);
+
+        board.tempMove(newX, newY, piece);
+        if(board.isCheckmate())
+            move += "#";
+        else if(board.isKingInCheck(piece.getDirection() * -1))
+            move += "+";
+        return move;
+    }
 }

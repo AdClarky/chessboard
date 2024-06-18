@@ -183,7 +183,7 @@ public class Board {
         currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
     }
 
-    private void tempMove(int x, int y, Piece piece){
+    void tempMove(int x, int y, Piece piece){
         tempMoves.clear();
         Iterable<Move> moves = piece.getMoves(x, y, this);
         for(Move move : moves){
@@ -207,7 +207,7 @@ public class Board {
         }
     }
 
-    private void undoTempMove(){
+    void undoTempMove(){
         for(Move move : tempMoves.reversed()){
             if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
                 board[move.newY()][move.newX()] = tempPieces.getLast();
