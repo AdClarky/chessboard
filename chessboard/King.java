@@ -53,7 +53,7 @@ public class King extends Piece{
         if(newX - x == -2) { // short castle
             moves.add(new Move(0, newY, 2   , newY));
         }else if(x - newX == -2) {
-            moves.add(new Move(7, newY, 5, newY));
+            moves.add(new Move(7, newY, 4, newY));
         }
         moves.add(new Move(x, y, newX, newY));
         return moves;

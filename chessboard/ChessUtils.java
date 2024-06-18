@@ -56,7 +56,7 @@ public final class ChessUtils {
             if(board.getCurrentTurn() == Piece.BLACK_PIECE){
                 return new Move(3,7,5,7);
             }else{
-                return new Move(3,0,5,7);
+                return new Move(3,0,5,0);
             }
         }
 
