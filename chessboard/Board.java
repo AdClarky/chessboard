@@ -163,7 +163,7 @@ public class Board {
 
     private void movePiece(int oldX, int oldY, int newX, int newY){
         if(!isSquareBlank(newX, newY)) {// if taking
-            getColourPieces(board[oldY][oldX].getDirection()).remove(board[newY][newX]);
+            getColourPieces(board[oldY][oldX].getDirection() * -1).remove(board[newY][newX]);
         }
         if(oldX == newX && oldY == newY){ // if a promotion
             if(oldY == 0)
