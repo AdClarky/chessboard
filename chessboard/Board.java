@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -149,8 +150,9 @@ public class Board {
      * @return if in checkmate.
      */
     public boolean isCheckmate(){
-        Iterable<Piece> enemyPieces = getColourPieces(currentTurn);
-        for(Piece piece : enemyPieces){
+        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
+        for(int i = 0; i < enemyPieces.size(); i++){
+            Piece piece = enemyPieces.get(i);
             for(Coordinate move : piece.getPossibleMoves(this)){
                 if(!isMoveSafe(move.x(), move.y(), piece))
                     return false;
@@ -185,7 +187,7 @@ public class Board {
         return whitePieces;
     }
 
-    ArrayList<Piece> getColourPieces(Piece piece){
+    List<Piece> getColourPieces(Piece piece){
         if(piece.getDirection() == Piece.BLACK_PIECE)
             return blackPieces;
         return whitePieces;
