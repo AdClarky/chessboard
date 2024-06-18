@@ -19,13 +19,13 @@ public class TempMove {
                 board.getColourPieces(tempPieces.getLast()).remove(tempPieces.getLast());
             }
             if(move.newX() == move.oldX() && move.newY() == move.oldY()){ // promotion
-                tempPieces.add(board.getPiece(move.newX(), move.newY()));
+                tempPieces.add(board.getPiece(move.oldX(), move.oldY()));
                 board.getColourPieces(tempPieces.getLast()).remove(tempPieces.getLast());
-                if(move.newY() == 0)
-                    board.setSquare(move.newX(), 0, new Queen(move.newX(), 0, Piece.BLACK_PIECE));
+                if(move.oldY() == 0)
+                    board.setSquare(move.oldX(), 0, new Queen(move.oldX(), 0, Piece.BLACK_PIECE));
                 else
-                    board.setSquare(move.newX(), move.newY(), new Queen(move.newX(), move.newY(), Piece.WHITE_PIECE));
-                board.getColourPieces(tempPieces.getLast().getDirection()).add(board.getPiece(move.newX(), move.newY()));
+                    board.setSquare(move.oldX(), move.oldY(), new Queen(move.oldX(), move.oldY(), Piece.WHITE_PIECE));
+                board.getColourPieces(board.getPiece(move.oldX(), move.oldY())).add(board.getPiece(move.oldX(), move.oldY()));
             }else{
                 tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
                 board.setSquare(move.newX(), move.newY(), board.getPiece(move.oldX(), move.oldY()));

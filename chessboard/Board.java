@@ -4,8 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * A regular chess board.
@@ -20,6 +20,8 @@ public class Board {
     private Iterable<Move> movesMade;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
+    private final Stack<TempMove> tempMoves = new Stack<>();
+    private final Stack<TempMove> redoMoves = new Stack<>();
     private Pawn lastPawn;
 
     /**
@@ -124,9 +126,7 @@ public class Board {
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
         movesMade = piece.getMoves(newX, newY, this);
-        for(Move move : movesMade){
-            movePiece(move.oldX(), move.oldY(), move.newX(), move.newY());
-        }
+        tempMoves.add(new TempMove(newX,newY,board[oldY][oldX],this));
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king
         if(lastPawn != null)
             lastPawn.setCanBePassanted(false);
@@ -162,25 +162,6 @@ public class Board {
     }
 
     void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
-
-    private void movePiece(int oldX, int oldY, int newX, int newY){
-        if(!isSquareBlank(newX, newY)) {// if taking
-            getColourPieces(board[newY][newX]).remove(board[newY][newX]);
-        }
-        if(oldX == newX && oldY == newY){ // if a promotion
-            getColourPieces(board[oldY][oldX]).remove(board[oldY][oldX]);
-            if(oldY == 0)
-                board[0][oldX] = new Queen(oldX, 0, Piece.BLACK_PIECE);
-            else
-                board[oldY][oldX] = new Queen(oldX, oldY, Piece.WHITE_PIECE);
-            getColourPieces(board[oldY][oldX]).add(board[oldY][oldX]);
-        }else {
-            board[newY][newX] = board[oldY][oldX];
-            board[oldY][oldX] = new Blank(oldX, oldY);
-        }
-        board[newY][newX].setX(newX);
-        board[newY][newX].setY(newY);
-    }
 
     ArrayList<Piece> getColourPieces(int direction){
         if(direction == Piece.BLACK_PIECE)
