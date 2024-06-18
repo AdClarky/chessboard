@@ -26,13 +26,13 @@ public class TempMove {
                 else
                     board.setSquare(move.newX(), move.newY(), new Queen(move.newX(), move.newY(), Piece.WHITE_PIECE));
                 board.getColourPieces(tempPieces.getLast().getDirection()).add(board.getPiece(move.newX(), move.newY()));
+            }else{
+                tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
+                board.setSquare(move.newX(), move.newY(), board.getPiece(move.oldX(), move.oldY()));
+                board.setSquare(move.oldX(), move.oldY(), new Blank(move.oldX(), move.oldY()));
             }
-            tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
-            Piece temp = board.getPiece(move.oldX(), move.oldY());
-            board.setSquare(move.oldX(), move.oldY(), new Blank(move.oldX(), move.oldY()));
-            temp.setX(move.newX());
-            temp.setY(move.newY());
-            board.setSquare(move.newX(), move.newY(), temp);
+            board.getPiece(move.newX(), move.newY()).setX(move.newX());
+            board.getPiece(move.newX(), move.newY()).setY(move.newY());
         }
     }
 

@@ -168,6 +168,7 @@ public class Board {
             getColourPieces(board[newY][newX]).remove(board[newY][newX]);
         }
         if(oldX == newX && oldY == newY){ // if a promotion
+            getColourPieces(board[oldY][oldX]).remove(board[oldY][oldX]);
             if(oldY == 0)
                 board[0][oldX] = new Queen(oldX, 0, Piece.BLACK_PIECE);
             else
