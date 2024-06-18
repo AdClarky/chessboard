@@ -163,14 +163,14 @@ public class Board {
 
     private void movePiece(int oldX, int oldY, int newX, int newY){
         if(!isSquareBlank(newX, newY)) {// if taking
-            getColourPieces(board[oldY][oldX].getDirection() * -1).remove(board[newY][newX]);
+            getColourPieces(board[newY][newX]).remove(board[newY][newX]);
         }
         if(oldX == newX && oldY == newY){ // if a promotion
             if(oldY == 0)
                 board[0][oldX] = new Queen(oldX, 0, Piece.BLACK_PIECE);
             else
                 board[oldY][oldX] = new Queen(oldX, oldY, Piece.WHITE_PIECE);
-            getColourPieces(board[oldY][oldX].getDirection()).add(board[oldY][oldX]);
+            getColourPieces(board[oldY][oldX]).add(board[oldY][oldX]);
         }else {
             board[newY][newX] = board[oldY][oldX];
             board[oldY][oldX] = new Blank(oldX, oldY);
@@ -181,6 +181,12 @@ public class Board {
 
     ArrayList<Piece> getColourPieces(int direction){
         if(direction == Piece.BLACK_PIECE)
+            return blackPieces;
+        return whitePieces;
+    }
+
+    ArrayList<Piece> getColourPieces(Piece piece){
+        if(piece.getDirection() == Piece.BLACK_PIECE)
             return blackPieces;
         return whitePieces;
     }
