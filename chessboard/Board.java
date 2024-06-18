@@ -17,8 +17,6 @@ public class Board {
     private int currentTurn = Piece.WHITE_PIECE;
     private final Piece[][] board  =  new Piece[8][8];
     private Iterable<Move> movesMade;
-    private final List<Move> tempMoves = new ArrayList<>(3);
-    private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private Pawn lastPawn;
@@ -91,9 +89,9 @@ public class Board {
      * @return true if in check, false if not
      */
     public boolean isMoveSafe(int newX, int newY, Piece pieceToCheck){
-        tempMove(newX, newY, pieceToCheck);
+        TempMove tempMove = new TempMove(newX, newY, pieceToCheck, this);
         boolean inCheck = isKingInCheck(pieceToCheck.getDirection());
-        undoTempMove();
+        tempMove.undo();
         return inCheck;
     }
 
@@ -155,6 +153,8 @@ public class Board {
         return true;
     }
 
+    void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
+
     private void movePiece(int oldX, int oldY, int newX, int newY){
         if(!isSquareBlank(newX, newY)) {// if taking
             getColourPieces(board[oldY][oldX].getDirection()).remove(board[newY][newX]);
@@ -181,46 +181,6 @@ public class Board {
 
     private void nextTurn(){
         currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
-    }
-
-    void tempMove(int x, int y, Piece piece){
-        tempMoves.clear();
-        Iterable<Move> moves = piece.getMoves(x, y, this);
-        for(Move move : moves){
-            if(!isSquareBlank(move.newX(), move.newY())){ // if taking
-                tempMoves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
-                tempPieces.add(board[move.newY()][move.newX()]);
-            }
-            if(move.newX() == move.oldX() && move.newY() == move.oldY()){ // promotion
-                tempPieces.add(board[move.newY()][move.newX()]);
-                if(move.newY() == 0)
-                    board[move.newY()][move.newX()] = new Queen(move.newX(), 0, Piece.BLACK_PIECE);
-                else
-                    board[move.newY()][move.newX()] = new Queen(move.newX(), move.newY(), Piece.WHITE_PIECE);
-            }
-            tempMoves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
-            Piece temp = getPiece(move.oldX(), move.oldY());
-            board[move.oldY()][move.oldX()] = new Blank(move.oldX(), move.oldY());
-            temp.setX(move.newX());
-            temp.setY(move.newY());
-            board[move.newY()][move.newX()] = temp;
-        }
-    }
-
-    void undoTempMove(){
-        for(Move move : tempMoves.reversed()){
-            if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
-                board[move.newY()][move.newX()] = tempPieces.getLast();
-                tempPieces.removeLast();
-            }
-            else {
-                board[move.oldY()][move.oldX()] = board[move.newY()][move.newX()];
-                board[move.newY()][move.newX()] = new Blank(move.newX(), move.newY());
-            }
-            board[move.oldY()][move.oldX()].setX(move.oldX());
-            board[move.oldY()][move.oldX()].setY(move.oldY());
-        }
-        tempMoves.clear();
     }
 
     /**

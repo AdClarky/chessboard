@@ -45,12 +45,12 @@ public final class ChessUtils {
             move += "x";
         move += coordsToChess(newX, newY);
 
-        board.tempMove(newX, newY, piece);
+        TempMove tempMove = new TempMove(newX, newY, piece, board);
         if(board.isCheckmate())
             move += "#";
         else if(board.isKingInCheck(piece.getDirection() * -1))
             move += "+";
-        board.undoTempMove();
+        tempMove.undo();
         return move;
     }
 }
