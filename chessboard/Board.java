@@ -173,7 +173,7 @@ public class Board {
         board[newY][newX].setY(newY);
     }
 
-    private ArrayList<Piece> getColourPieces(int direction){
+    ArrayList<Piece> getColourPieces(int direction){
         if(direction == Piece.BLACK_PIECE)
             return blackPieces;
         return whitePieces;
