@@ -83,25 +83,29 @@ public class Board {
     public int getCurrentTurn(){return currentTurn;}
 
     /**
-     * Calculates if moving a piece to a position would put the king in check.
+     * Calculates if moving a piece to a position would put that teams king in check.
      * This assumes the piece moving to the new position is a valid move.
      * @param newX the x position to move to.
      * @param newY the y position to move to.
      * @param pieceToCheck the piece being moved.
      * @return true if in check, false if not
      */
-    public boolean isInCheck(int newX, int newY, Piece pieceToCheck){
+    public boolean isMoveSafe(int newX, int newY, Piece pieceToCheck){
         tempMove(newX, newY, pieceToCheck);
-        King king = (King) getColourPieces(pieceToCheck.getDirection()).getFirst();
+        boolean inCheck = isKingInCheck(pieceToCheck.getDirection());
+        undoTempMove();
+        return inCheck;
+    }
+
+    public boolean isKingInCheck(int direction){
+        King king = (King) getColourPieces(direction).getFirst();
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
-        Iterable<Piece> enemyPieces = getColourPieces(pieceToCheck.getDirection() * -1);
+        Iterable<Piece> enemyPieces = getColourPieces(direction * -1);
         for(Piece piece : enemyPieces){
             if(piece.getPossibleMoves(this).contains(kingPos)){
-                undoTempMove();
                 return true;
             }
         }
-        undoTempMove();
         return false;
     }
 
@@ -140,11 +144,11 @@ public class Board {
      * Checks all possible moves that can be made and if any result in non-check.
      * @return if in checkmate.
      */
-    private boolean isCheckmate(){
+    public boolean isCheckmate(){
         Iterable<Piece> enemyPieces = getColourPieces(currentTurn);
         for(Piece piece : enemyPieces){
             for(Coordinate move : piece.getPossibleMoves(this)){
-                if(!isInCheck(move.x(), move.y(), piece))
+                if(!isMoveSafe(move.x(), move.y(), piece))
                     return false;
             }
         }

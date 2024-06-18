@@ -115,7 +115,7 @@ public abstract class Piece {
     protected void removeMovesInCheck(Board board, Collection<Coordinate> moves) {
         if(board.getCurrentTurn() != direction)
             return;
-        moves.removeIf(move -> board.isInCheck(move.x(), move.y(), this));
+        moves.removeIf(move -> board.isMoveSafe(move.x(), move.y(), this));
     }
 
     /**
