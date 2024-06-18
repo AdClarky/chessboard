@@ -83,11 +83,11 @@ public final class ChessUtils {
         int length = move.length();
         for(int i = 0; i < length; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x' && i != length - 2){ // x value given
-                int correctX = move.charAt(i) - 97;
-                possiblePieces.removeIf(piece -> piece.getX() != correctX);
+                Coordinate correctX = Coordinate.fromString(move.charAt(i) + "0");
+                possiblePieces.removeIf(piece -> piece.getX() != correctX.x());
             }else if(Character.isDigit(move.charAt(i)) && i != length - 1){ // y value given
-                int correctY = move.charAt(i) - '0' + 1;
-                possiblePieces.removeIf(piece -> piece.getY() != correctY);
+                Coordinate correctY = Coordinate.fromString("a" + move.charAt(i));
+                possiblePieces.removeIf(piece -> piece.getY() != correctY.y());
             }
         }
     }
