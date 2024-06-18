@@ -15,12 +15,10 @@ public final class Driver {
      */
     public static void main(String[] args) {
         Board board = new Board();
-        new Thread(() -> {
-                BoardListener gameWindow = new GameWindow(board);
-                board.addBoardListener(gameWindow);
-        }).start();
+        BoardListener gameWindow = new GameWindow(board);
+        board.addBoardListener(gameWindow);
         Autoplay autoplay = new Autoplay(board);
-        autoplay.importGame(Path.of("games/andredar63_vs_AdClarky_2024.06.18.pgn"));
-        autoplay.play(0);
+        autoplay.importGame(Path.of("games/junk437_vs_AdClarky_2024.06.18.pgn"));
+        autoplay.play(1);
     }
 }
