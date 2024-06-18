@@ -11,7 +11,7 @@ public record Coordinate(int x, int y) {
     }
 
     public static Coordinate fromString(CharSequence move){
-        int x = move.charAt(move.length() - 2) - 98;
+        int x = Math.abs(7 - (move.charAt(move.length() - 2) - 97));
         int y = move.charAt(move.length() - 1) - '0' - 1;
         return new Coordinate(x, y);
     }
