@@ -1,4 +1,5 @@
 import chessboard.Board;
+import chessboard.ChessUtils;
 import chessboard.Move;
 
 import java.util.ArrayList;
@@ -7,15 +8,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Autoplay {
-    private static final List<Move> moves = Arrays.asList(
-            new Move(3, 1, 3, 3),
-            new Move(3,6,3,4),
-            new Move(1,0,2,2),
-            new Move(6,7,5,5),
-            new Move(2,0,5,3),
-            new Move(4,6,4,5),
-            new Move(4,1,4,2),
-            new Move(1,7,2,5)
+    private static final List<String> moves = Arrays.asList(
+            "e4"
     );
     private final Board board;
 
@@ -24,8 +18,8 @@ public class Autoplay {
     }
 
     public void play(int delay){
-        for(Move move : moves){
-            board.moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
+        for(String move : moves){
+            board.moveWithValidation(ChessUtils.chessToMove(move, board));
             try {
                 TimeUnit.MILLISECONDS.sleep(delay);
             }catch (InterruptedException e){
