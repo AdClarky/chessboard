@@ -1,6 +1,8 @@
 import chessboard.Board;
 import chessboard.BoardListener;
 
+import java.nio.file.Path;
+
 /**
  * Used to run the program. Creates a window in a new thread.
  */
@@ -18,6 +20,7 @@ public final class Driver {
                 board.addBoardListener(gameWindow);
         }).start();
         Autoplay autoplay = new Autoplay(board);
+        autoplay.importGame(Path.of("games/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
         autoplay.play(0);
     }
 }
