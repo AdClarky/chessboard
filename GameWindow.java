@@ -28,16 +28,19 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private final Square[][] squares = new Square[8][8];
     private Square squareSelected;
     private final Board board;
+    private final int turn;
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
     private Square checkmated;
 
     /**
      * Creates a new window and populates it with squares which icons are set based on the board input.
      * @param board the board to be linked with.
+     * @param turn flag for which piece is playing. Flags are {@link Piece#WHITE_PIECE} and {@link Piece#BLACK_PIECE}
      */
-    public GameWindow(Board board){
+    public GameWindow(Board board, int turn){
         super();
         this.board = board;
+        this.turn = turn;
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +68,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * @param square the square which has been clicked
      */
     private void squareClicked(@NotNull Square square){
-        if(squareSelected == null && square.isBlank())
+        if((squareSelected == null && square.isBlank()) || board.getCurrentTurn() != turn)
             return;
         Piece piece = square.getCurrentPiece();
         if(square.isBlank() || piece.getDirection() != board.getCurrentTurn()){ // if clicked a blank or enemy square
@@ -116,7 +119,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
 
     @Override
     public void boardChanged(int oldX, int oldY, int newX, int newY) {
-        for(Move move : board.getMovesMade()) {
+        for(Move move : board.getLastMoveMade()) {
             squares[move.oldY()][move.oldX()].setCurrentPiece(board.getPiece(move.oldX(), move.oldY()));
             squares[move.newY()][move.newX()].setCurrentPiece(board.getPiece(move.newX(), move.newY()));
         }

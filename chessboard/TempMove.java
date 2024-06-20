@@ -10,6 +10,7 @@ public class TempMove {
     private final int y;
     private final List<Move> moves = new ArrayList<>(3);
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
+    private boolean undone = false;
 
 
     public TempMove(int x, int y, Piece piece, Board board){
@@ -21,6 +22,7 @@ public class TempMove {
     }
 
     public void makeMove(){
+        undone = false;
         Iterable<Move> moves = piece.getMoves(x, y, board);
         for(Move move : moves){
             if(!board.isSquareBlank(move.newX(), move.newY())){ // if taking
@@ -47,6 +49,7 @@ public class TempMove {
     }
 
     public void undo(){
+        undone = true;
         for(Move move : moves.reversed()){
             if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
                 if(tempPieces.getLast() instanceof Pawn pawn && (pawn.getY() == 7 || pawn.getY() == 0)) // if it was a promotion
@@ -67,5 +70,5 @@ public class TempMove {
     public int getX() {return x;}
     public int getY() {return y;}
     public Piece getPiece() {return piece;}
-    public List<Move> getMoves() {return moves;}
+    public List<Move> getMoves() {return undone ? piece.getMoves(x, y, board) : moves;}
 }

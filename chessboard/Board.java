@@ -2,10 +2,10 @@ package chessboard;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * A regular chess board.
@@ -17,12 +17,11 @@ public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
     private final Piece[][] board  =  new Piece[8][8];
-    private Iterable<Move> movesMade;
+    private TempMove lastMoveMade;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    private final Stack<TempMove> tempMoves = new Stack<>();
-    private final Stack<TempMove> redoMoves = new Stack<>();
-    private Pawn lastPawn;
+    private final ArrayDeque<TempMove> tempMoves = new ArrayDeque<>(40);
+    private final ArrayDeque<TempMove> redoMoves = new ArrayDeque<>(40);
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -100,6 +99,11 @@ public class Board {
         return inCheck;
     }
 
+    /**
+     * Checks if a given King is in check.
+     * @param direction black or white king which will be checked
+     * @return if the king is in check
+     */
     public boolean isKingInCheck(int direction){
         King king = (King) getColourPieces(direction).getFirst();
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
@@ -125,14 +129,12 @@ public class Board {
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-        movesMade = piece.getMoves(newX, newY, this);
-        tempMoves.push(new TempMove(newX,newY,board[oldY][oldX],this));
-        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king
-        if(lastPawn != null)
-            lastPawn.setCanBePassanted(false);
-        if(piece instanceof Pawn pawn) {
-            lastPawn = pawn;
-        }
+        TempMove move = new TempMove(newX,newY,board[oldY][oldX],this); // makes a move
+        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
+        if(!tempMoves.isEmpty() && tempMoves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
+            previousPawn.setCanBePassanted(false);
+        tempMoves.push(move);
+        lastMoveMade = tempMoves.getFirst();
         notifyBoardChanged(oldX, oldY, newX, newY);
         nextTurn();
         if(isCheckmate()) {
@@ -141,25 +143,35 @@ public class Board {
         }
     }
 
+    /**
+     * @see Board#moveWithValidation(int, int, int,int)
+     * @param move instance of move which specifies the piece being moved and where to.
+     */
     public void moveWithValidation(@NotNull Move move){
         moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
     }
 
+    /**
+     * Pops the last move off the stack and pushes it onto the redo moves stack.
+     */
     public void undoMove(){
         if(tempMoves.isEmpty())
             return;
         TempMove tempMove = tempMoves.pop();
-        movesMade = tempMove.getMoves();
+        lastMoveMade = tempMove;
         tempMove.undo();
         redoMoves.push(tempMove);
         notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
     }
 
+    /**
+     * Pops the last move off the stack and pushes it onto the moves made stack.
+     */
     public void redoMove(){
         if(redoMoves.isEmpty())
             return;
         TempMove tempMove = redoMoves.pop();
-        movesMade = tempMove.getPiece().getMoves(tempMove.getX(), tempMove.getY(), this);
+        lastMoveMade = tempMove;
         tempMove.makeMove();
         tempMoves.push(tempMove);
         notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
@@ -207,7 +219,7 @@ public class Board {
      * During a board change event, contains the moves performed on the board.
      * @return a list of individual moves taken to reach the new board state.
      */
-    public Iterable<Move> getMovesMade(){return movesMade;}
+    public Iterable<Move> getLastMoveMade(){return lastMoveMade.getMoves();}
 
     /**
      * Adds a board listener to receive events from this board.

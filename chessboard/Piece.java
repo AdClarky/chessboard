@@ -66,8 +66,8 @@ public abstract class Piece {
      * @param board the board
      * @return the moves needed
      */
-    public Iterable<Move> getMoves(int newX, int newY, Board board) {
-        Collection<Move> moves = new ArrayList<>(1);
+    public List<Move> getMoves(int newX, int newY, Board board) {
+        List<Move> moves = new ArrayList<>(1);
         moves.add(new Move(x, y, newX, newY));
         return moves;
     }
