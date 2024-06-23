@@ -2,6 +2,9 @@ import chessboard.Board;
 import chessboard.BoardListener;
 import chessboard.Piece;
 
+import javax.swing.JFileChooser;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 /**
@@ -20,8 +23,13 @@ public final class Driver {
         board.addBoardListener(whitePieces);
         BoardListener blackPieces = new GameWindow(board, Piece.BLACK_PIECE);
         board.addBoardListener(blackPieces);
-//        Autoplay autoplay = new Autoplay(board);
-//        autoplay.importGame(Path.of("games/junk437_vs_AdClarky_2024.06.18.pgn"));
-//        autoplay.play(5);
+        Autoplay autoplay = new Autoplay(board);
+        JFileChooser chooser = new JFileChooser("games");
+        chooser.showSaveDialog(null);
+        File file = chooser.getSelectedFile();
+        if(file == null)
+            return;
+        autoplay.importGame(Path.of(file.getPath()));
+        autoplay.play(5);
     }
 }
