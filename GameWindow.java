@@ -29,6 +29,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private Square squareSelected;
     private final Board board;
     private final int turn;
+    private int currentTurn;
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
     private Square checkmated;
 
@@ -41,6 +42,10 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         super();
         this.board = board;
         this.turn = turn;
+        if(turn == Piece.BLANK_PIECE)
+            currentTurn = Piece.WHITE_PIECE;
+        else
+            currentTurn = turn;
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,7 +73,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * @param square the square which has been clicked
      */
     private void squareClicked(@NotNull Square square){
-        if((squareSelected == null && square.isBlank()) || board.getCurrentTurn() != turn)
+        board.redoAllMoves();
+        if((squareSelected == null && square.isBlank()) || board.getCurrentTurn() != currentTurn)
             return;
         Piece piece = square.getCurrentPiece();
         if(square.isBlank() || piece.getDirection() != board.getCurrentTurn()){ // if clicked a blank or enemy square
@@ -123,6 +129,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
             squares[move.oldY()][move.oldX()].setCurrentPiece(board.getPiece(move.oldX(), move.oldY()));
             squares[move.newY()][move.newX()].setCurrentPiece(board.getPiece(move.newX(), move.newY()));
         }
+        if(turn == Piece.BLANK_PIECE)
+            currentTurn = board.getCurrentTurn();
     }
 
     @Override
