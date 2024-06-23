@@ -126,6 +126,7 @@ public class Board {
      * @param newY new y position of the piece
      */
     public void moveWithValidation(int oldX, int oldY, int newX, int newY){
+        redoAllMoves();
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
@@ -135,8 +136,8 @@ public class Board {
             previousPawn.setCanBePassanted(false);
         tempMoves.push(move);
         lastMoveMade = tempMoves.getFirst();
-        notifyBoardChanged(oldX, oldY, newX, newY);
         nextTurn();
+        notifyBoardChanged(oldX, oldY, newX, newY);
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
@@ -178,6 +179,12 @@ public class Board {
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
+        }
+    }
+
+    public void redoAllMoves(){
+        while(!redoMoves.isEmpty()){
+            redoMove();
         }
     }
 
