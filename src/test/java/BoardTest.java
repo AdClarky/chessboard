@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +12,14 @@ class BoardTest {
     }
 
     @Test
-    void getPiece() {
+    void testThis() {
         assertInstanceOf(Rook.class, board.getPiece(0, 0));
+    }
+
+    @Test
+    void testBark() {
+        String expectedString = "woof";
+        assertEquals(expectedString, "woof");
     }
 
     @Test

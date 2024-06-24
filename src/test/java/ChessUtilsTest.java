@@ -8,7 +8,7 @@ class ChessUtilsTest {
 
     @Test
     void doCoordinatesMapCorrectly() {
-        assertEquals("h1", ChessUtils.coordsToChess(0, 1));
+        assertEquals("h1", ChessUtils.coordsToChess(0, 0));
         assertEquals("g2", ChessUtils.coordsToChess(1, 1));
         assertEquals("f3", ChessUtils.coordsToChess(2, 2));
         assertEquals("e4", ChessUtils.coordsToChess(3, 3));
