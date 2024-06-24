@@ -105,11 +105,11 @@ public class Board {
      * @param pieceToCheck the piece being moved.
      * @return true if in check, false if not
      */
-    public boolean isMoveSafe(int newX, int newY, Piece pieceToCheck){
+    public boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
         TempMove tempMove = new TempMove(newX, newY, pieceToCheck, this);
-        boolean isMoveSafe = !isKingInCheck(pieceToCheck.getDirection());
+        boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
         tempMove.undo();
-        return isMoveSafe;
+        return isMoveUnsafe;
     }
 
     /**
@@ -210,7 +210,7 @@ public class Board {
         for(int i = 0; i < enemyPieces.size(); i++){
             Piece piece = enemyPieces.get(i);
             for(Coordinate move : piece.getPossibleMoves(this)){
-                if(!isMoveSafe(move.x(), move.y(), piece))
+                if(!isMoveUnsafe(move.x(), move.y(), piece))
                     return false;
             }
         }

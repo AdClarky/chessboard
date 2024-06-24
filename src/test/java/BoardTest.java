@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -106,7 +105,7 @@ class BoardTest {
     @Test
     void isInvalidMoveSafe() {
         new TempMove(2, 0, board.getPiece(4, 7), board);
-        assertFalse(board.isMoveSafe(7, 2, board.getPiece(7, 1)));
+        assertTrue(board.isMoveUnsafe(7, 2, board.getPiece(7, 1)));
     }
 
     @Test
