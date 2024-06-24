@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -114,47 +115,47 @@ class BoardTest {
         assertTrue(board.isKingInCheck(Piece.WHITE_PIECE));
     }
 
-    @Test
+    @Disabled
     void moveWithValidation() {
     }
 
-    @Test
+    @Disabled
     void testMoveWithValidation() {
     }
 
-    @Test
+    @Disabled
     void undoMove() {
     }
 
-    @Test
+    @Disabled
     void redoMove() {
     }
 
-    @Test
+    @Disabled
     void redoAllMoves() {
     }
 
-    @Test
+    @Disabled
     void isCheckmate() {
     }
 
-    @Test
+    @Disabled
     void setSquare() {
     }
 
-    @Test
+    @Disabled
     void getColourPieces() {
     }
 
-    @Test
+    @Disabled
     void testGetColourPieces() {
     }
 
-    @Test
+    @Disabled
     void getLastMoveMade() {
     }
 
-    @Test
+    @Disabled
     void addBoardListener() {
     }
 }
