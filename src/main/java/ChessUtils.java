@@ -14,7 +14,7 @@ public final class ChessUtils {
      * @return the string in chess notation
      */
     public static String coordsToChess(int x, int y){
-        return ('a' + x) + (y+1) + "";
+        return Character.toString('h' - x) + (y+1);
     }
 
     public static String moveToChess(Board board, Piece piece, int newX, int newY){
@@ -74,7 +74,12 @@ public final class ChessUtils {
         return new Move(piece.getX(), piece.getY(), newCoordinate.x(), newCoordinate.y());
     }
 
-    private static void disambiguatePiece(Collection<Piece> possiblePieces, CharSequence move){
+    /**
+     * If two pieces can move to the same square, it uses the file or rank to calculate which piece.
+     * @param possiblePieces list of pieces that could move
+     * @param move the algebraic chess move
+     */
+    static void disambiguatePiece(Collection<Piece> possiblePieces, CharSequence move){
         int length = move.length();
         for(int i = 0; i < length; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x' && i != length - 2){ // x value given
