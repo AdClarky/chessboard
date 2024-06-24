@@ -38,8 +38,8 @@ public class Rook extends Piece{
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("chessboard/src/main/resources/black_rook.png");
+            return ImageUtils.getStretchedImage("src/main/resources/black_rook.png");
         else
-            return ImageUtils.getStretchedImage("chessboard/src/main/resources/white_rook.png");
+            return ImageUtils.getStretchedImage("src/main/resources/white_rook.png");
     }
 }

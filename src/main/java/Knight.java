@@ -40,8 +40,8 @@ public class Knight extends Piece{
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("chessboard/src/main/resources/black_knight.png");
+            return ImageUtils.getStretchedImage("src/main/resources/black_knight.png");
         else
-            return ImageUtils.getStretchedImage("chessboard/src/main/resources/white_knight.png");
+            return ImageUtils.getStretchedImage("src/main/resources/white_knight.png");
     }
 }
