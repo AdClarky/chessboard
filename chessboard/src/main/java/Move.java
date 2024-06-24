@@ -1,5 +1,3 @@
-package chessboard;
-
 /**
  * Records a move from one position to another
  * @param oldX original X

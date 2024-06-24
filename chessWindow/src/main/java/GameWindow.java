@@ -1,8 +1,3 @@
-import chessboard.Board;
-import chessboard.BoardListener;
-import chessboard.Coordinate;
-import chessboard.Move;
-import chessboard.Piece;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;

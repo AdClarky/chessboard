@@ -1,5 +1,3 @@
-package chessboard;
-
 import javax.swing.ImageIcon;
 
 /**

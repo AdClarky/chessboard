@@ -1,5 +1,3 @@
-package chessboard;
-
 /**
  * Coordinate class which stores the x and y value of a coordinate.
  * Used for comparing coordinates.

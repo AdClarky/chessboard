@@ -8,4 +8,3 @@
  * be found using the getMoves method on Board. <br>
  * Each piece can provide the possible moves for highlighting on a board.
  */
-package chessboard;

@@ -1,5 +1,3 @@
-package chessboard;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 
@@ -39,8 +37,8 @@ public class Queen extends Piece{
 
     private static Icon getIcon(int direction){
         if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("chessboard/assets/black_queen.png");
+            return ImageUtils.getStretchedImage("chessboard/src/main/resources/black_queen.png");
         else
-            return ImageUtils.getStretchedImage("chessboard/assets/white_queen.png");
+            return ImageUtils.getStretchedImage("chessboard/src/main/resources/white_queen.png");
     }
 }

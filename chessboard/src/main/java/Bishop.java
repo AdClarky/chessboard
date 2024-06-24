@@ -1,5 +1,3 @@
-package chessboard;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 
@@ -43,8 +41,8 @@ public class Bishop extends Piece{
      */
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("chessboard/assets/black_bishop.png");
+            return ImageUtils.getStretchedImage("chessboard/src/main/resources/black_bishop.png");
         else
-            return ImageUtils.getStretchedImage("chessboard/assets/white_bishop.png");
+            return ImageUtils.getStretchedImage("chessboard/src/main/resources/white_bishop.png");
     }
 }

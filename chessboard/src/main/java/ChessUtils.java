@@ -1,10 +1,5 @@
-package chessboard;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * Used for converting x and y coordinates into chess notation.

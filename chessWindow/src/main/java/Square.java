@@ -1,5 +1,3 @@
-import chessboard.Blank;
-import chessboard.Piece;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JButton;

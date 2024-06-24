@@ -1,10 +1,5 @@
-import chessboard.Board;
-import chessboard.BoardListener;
-import chessboard.Piece;
-
 import javax.swing.JFileChooser;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
 /**

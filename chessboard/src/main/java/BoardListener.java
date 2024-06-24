@@ -1,5 +1,3 @@
-package chessboard;
-
 /**
  * For classes which want to be notified about changes to the chess board.
  */
