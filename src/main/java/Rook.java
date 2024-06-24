@@ -1,4 +1,5 @@
 import javax.swing.Icon;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -36,10 +37,10 @@ public class Rook extends Piece{
     @Override
     public String toString() {return "R";}
 
-    private static Icon getIcon(int direction){
-        if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("src/main/resources/black_rook.png");
+    private static Icon getIcon(int colour){
+        if(colour == BLACK_PIECE)
+            return ImageUtils.getStretchedImage(Rook.class.getResource("/black_rook.png"));
         else
-            return ImageUtils.getStretchedImage("src/main/resources/white_rook.png");
+            return ImageUtils.getStretchedImage(Rook.class.getResource("/white_rook.png"));
     }
 }

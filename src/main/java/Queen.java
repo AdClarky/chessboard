@@ -1,4 +1,5 @@
 import javax.swing.Icon;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -35,10 +36,10 @@ public class Queen extends Piece{
         return "Q";
     }
 
-    private static Icon getIcon(int direction){
-        if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("src/main/resources/black_queen.png");
+    private static Icon getIcon(int colour){
+        if(colour == BLACK_PIECE)
+            return ImageUtils.getStretchedImage(Queen.class.getResource("/black_queen.png"));
         else
-            return ImageUtils.getStretchedImage("src/main/resources/white_queen.png");
+            return ImageUtils.getStretchedImage(Queen.class.getResource("/white_queen.png"));
     }
 }

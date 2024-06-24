@@ -1,4 +1,5 @@
 import javax.swing.Icon;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -70,10 +71,10 @@ public class Pawn extends Piece{
     @Override
     public String toString() {return "";}
 
-    private static Icon getIcon(int direction) {
-        if (direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("src/main/resources/black_pawn.png");
+    private static Icon getIcon(int colour) {
+        if(colour == BLACK_PIECE)
+            return ImageUtils.getStretchedImage(Pawn.class.getResource("/black_pawn.png"));
         else
-            return ImageUtils.getStretchedImage("src/main/resources/white_pawn.png");
+            return ImageUtils.getStretchedImage(Pawn.class.getResource("/white_pawn.png"));
     }
 }

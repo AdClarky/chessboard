@@ -1,4 +1,5 @@
 import javax.swing.Icon;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 /**
@@ -38,10 +39,10 @@ public class Knight extends Piece{
     @Override
     public String toString() {return "N";}
 
-    private static Icon getIcon(int direction){
-        if(direction == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("src/main/resources/black_knight.png");
+    private static Icon getIcon(int colour){
+        if(colour == BLACK_PIECE)
+            return ImageUtils.getStretchedImage(Knight.class.getResource("/black_knight.png"));
         else
-            return ImageUtils.getStretchedImage("src/main/resources/white_knight.png");
+            return ImageUtils.getStretchedImage(Knight.class.getResource("/white_knight.png"));
     }
 }

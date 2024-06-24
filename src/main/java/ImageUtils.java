@@ -1,4 +1,6 @@
 import javax.swing.ImageIcon;
+import java.net.URL;
+import java.nio.file.Path;
 
 /**
  * Used for generating a larger image.
@@ -10,12 +12,11 @@ public final class ImageUtils {
 
     /**
      * Generates an Icon which is larger than the original.
-     * @param path the image to be made large
+     * @param imageURL the image to be made large
      * @return the Icon scaled up
      */
-    public static ImageIcon getStretchedImage(String path) {
-        ImageIcon image = new ImageIcon(path);
+    public static ImageIcon getStretchedImage(URL imageURL) {
+        ImageIcon image = new ImageIcon(imageURL);
         return new ImageIcon((image.getImage().getScaledInstance(SCALE, SCALE,java.awt.Image.SCALE_SMOOTH)));
     }
-
 }

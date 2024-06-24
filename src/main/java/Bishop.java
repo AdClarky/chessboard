@@ -1,5 +1,8 @@
 import javax.swing.Icon;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Bishop for Chess. Only moves diagonally.
@@ -41,8 +44,8 @@ public class Bishop extends Piece{
      */
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)
-            return ImageUtils.getStretchedImage("src/main/resources/black_bishop.png");
+            return ImageUtils.getStretchedImage(Bishop.class.getResource("/black_bishop.png"));
         else
-            return ImageUtils.getStretchedImage("src/main/resources/white_bishop.png");
+            return ImageUtils.getStretchedImage(Bishop.class.getResource("/white_bishop.png"));
     }
 }
