@@ -58,6 +58,17 @@ public class Board {
         }
     }
 
+    public Board(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
+        this.whitePieces.addAll(whitePieces);
+        this.blackPieces.addAll(blackPieces);
+        for(Piece piece : blackPieces){
+            board[piece.getY()][piece.getX()] = piece;
+        }
+        for(Piece piece : whitePieces){
+            board[piece.getY()][piece.getX()] = piece;
+        }
+    }
+
     /**
      * Finds the piece in a specific square
      * @param x x position
