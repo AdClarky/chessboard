@@ -1,72 +1,77 @@
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class BoardTest {
+class BoardTest {
+    Board board;
 
-    private Board board = new Board();
-
-    @Test
-    public void getPiece() {
-        assertTrue(board.getPiece(0,0) instanceof Rook);
+    @BeforeEach
+    void setUp() {
+        board = new Board();
     }
 
     @Test
-    public void isSquareBlank() {
+    void getPiece() {
+        assertInstanceOf(Rook.class, board.getPiece(0, 0));
     }
 
     @Test
-    public void getCurrentTurn() {
+    void isSquareBlank() {
     }
 
     @Test
-    public void isMoveSafe() {
+    void getCurrentTurn() {
     }
 
     @Test
-    public void isKingInCheck() {
+    void isMoveSafe() {
     }
 
     @Test
-    public void moveWithValidation() {
+    void isKingInCheck() {
     }
 
     @Test
-    public void testMoveWithValidation() {
+    void moveWithValidation() {
     }
 
     @Test
-    public void undoMove() {
+    void testMoveWithValidation() {
     }
 
     @Test
-    public void redoMove() {
+    void undoMove() {
     }
 
     @Test
-    public void redoAllMoves() {
+    void redoMove() {
     }
 
     @Test
-    public void isCheckmate() {
+    void redoAllMoves() {
     }
 
     @Test
-    public void setSquare() {
+    void isCheckmate() {
     }
 
     @Test
-    public void getColourPieces() {
+    void setSquare() {
     }
 
     @Test
-    public void testGetColourPieces() {
+    void getColourPieces() {
     }
 
     @Test
-    public void getLastMoveMade() {
+    void testGetColourPieces() {
     }
 
     @Test
-    public void addBoardListener() {
+    void getLastMoveMade() {
+    }
+
+    @Test
+    void addBoardListener() {
     }
 }
