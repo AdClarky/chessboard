@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ class ChessUtilsTest {
     }
 
     @Test
-    void Rooka5Disambiguated() {
+    void RookA5Disambiguated() {
         Rook a1Rook = new Rook(7, 0, Piece.BLACK_PIECE);
         Rook a5hRook = new Rook(7, 4, Piece.BLACK_PIECE);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
@@ -58,7 +59,7 @@ class ChessUtilsTest {
     }
 
     @Test
-    void Rooka1Disambiguated() {
+    void RookA1Disambiguated() {
         Rook a1Rook = new Rook(7, 0, Piece.BLACK_PIECE);
         Rook a5hRook = new Rook(7, 4, Piece.BLACK_PIECE);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
@@ -83,14 +84,31 @@ class ChessUtilsTest {
         assertEquals(queenH4, possiblePieces.getFirst());
     }
 
-    @Test
-    void moveToChess() {
+    @Disabled
+    void shortCastleWhite() {
     }
 
-    @Test
-    void chessToMove() {
+    @Disabled
+    void longCastleWhite() {
     }
 
-    @Test
-    void disambiguatePiece(){}
+    @Disabled
+    void shortCastleBlack() {
+    }
+
+    @Disabled
+    void longCastleBlack() {
+    }
+
+    @Disabled
+    void basicPawnMove() {
+    }
+
+    @Disabled
+    void knightMove() {
+    }
+
+    @Disabled
+    void disambiguatedMove() {
+    }
 }

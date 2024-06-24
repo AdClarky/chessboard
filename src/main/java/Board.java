@@ -61,6 +61,11 @@ public class Board {
     public Board(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
+        for(int y = 0; y < 8; y++){
+            for(int x = 0; x < 8; x++){
+                board[y][x] = new Blank(x, y);
+            }
+        }
         for(Piece piece : blackPieces){
             board[piece.getY()][piece.getX()] = piece;
         }
@@ -102,9 +107,9 @@ public class Board {
      */
     public boolean isMoveSafe(int newX, int newY, Piece pieceToCheck){
         TempMove tempMove = new TempMove(newX, newY, pieceToCheck, this);
-        boolean inCheck = isKingInCheck(pieceToCheck.getDirection());
+        boolean isMoveSafe = !isKingInCheck(pieceToCheck.getDirection());
         tempMove.undo();
-        return inCheck;
+        return isMoveSafe;
     }
 
     /**
