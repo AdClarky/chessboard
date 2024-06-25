@@ -1,12 +1,10 @@
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-class TempMoveTest {
+class MoveTest {
     Board board = new Board();
 
     @AfterEach
@@ -16,7 +14,7 @@ class TempMoveTest {
 
     @Test
     void basicMove(){
-        TempMove move = new TempMove(3, 3, board.getPiece(3, 1), board);
+        Move move = new Move(3, 3, board.getPiece(3, 1), board);
         assertInstanceOf(Blank.class, board.getPiece(3, 1));
         assertEquals(3, board.getPiece(3, 1).getX());
         assertEquals(1, board.getPiece(3, 1).getY());
@@ -27,7 +25,7 @@ class TempMoveTest {
 
     @Test
     void basicMoveUndo(){
-        TempMove move = new TempMove(3, 3, board.getPiece(3, 1), board);
+        Move move = new Move(3, 3, board.getPiece(3, 1), board);
         move.undo();
         assertInstanceOf(Blank.class, board.getPiece(3, 3));
         assertEquals(3, board.getPiece(3, 3).getX());
@@ -39,7 +37,7 @@ class TempMoveTest {
 
     @Test
     void basicMoveRedo(){
-        TempMove move = new TempMove(3, 3, board.getPiece(3, 1), board);
+        Move move = new Move(3, 3, board.getPiece(3, 1), board);
         move.undo();
         move.makeMove();
         assertInstanceOf(Blank.class, board.getPiece(3, 1));
@@ -52,9 +50,9 @@ class TempMoveTest {
 
     @Test
     void takingMove(){
-        TempMove pawnE4 = new TempMove(3, 3, board.getPiece(3, 1), board);
-        TempMove pawnD5 = new TempMove(4, 4, board.getPiece(4, 6), board);
-        TempMove pawnXD5 = new TempMove(4, 4, board.getPiece(3, 3), board);
+        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
         assertInstanceOf(Blank.class, board.getPiece(3, 3));
         assertEquals(3, board.getPiece(3, 3).getX());
         assertEquals(3, board.getPiece(3, 3).getY());
@@ -66,9 +64,9 @@ class TempMoveTest {
 
     @Test
     void takingMoveUndo(){
-        TempMove pawnE4 = new TempMove(3, 3, board.getPiece(3, 1), board);
-        TempMove pawnD5 = new TempMove(4, 4, board.getPiece(4, 6), board);
-        TempMove pawnXD5 = new TempMove(4, 4, board.getPiece(3, 3), board);
+        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
         pawnXD5.undo();
         int x = 3, y = 3;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -84,9 +82,9 @@ class TempMoveTest {
 
     @Test
     void takingMoveRedo(){
-        TempMove pawnE4 = new TempMove(3, 3, board.getPiece(3, 1), board);
-        TempMove pawnD5 = new TempMove(4, 4, board.getPiece(4, 6), board);
-        TempMove pawnXD5 = new TempMove(4, 4, board.getPiece(3, 3), board);
+        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
         pawnXD5.undo();
         pawnXD5.makeMove();
         int x = 3, y = 3;
@@ -108,7 +106,7 @@ class TempMoveTest {
         whitePieces.add(new Pawn(4, 6, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -130,7 +128,7 @@ class TempMoveTest {
         whitePieces.add(new Pawn(4, 6, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -153,7 +151,7 @@ class TempMoveTest {
         whitePieces.add(new Pawn(4, 6, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -178,7 +176,7 @@ class TempMoveTest {
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Pawn(4, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -202,7 +200,7 @@ class TempMoveTest {
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Pawn(4, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -227,7 +225,7 @@ class TempMoveTest {
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         blackPieces.add(new Pawn(4, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove pawnPromotion = new TempMove(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -252,7 +250,7 @@ class TempMoveTest {
         whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove shortCastle = new TempMove(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
         int x = 0, y = 0;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -286,7 +284,7 @@ class TempMoveTest {
         whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove shortCastle = new TempMove(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
         shortCastle.undo();
         int x = 0, y = 0;
         assertInstanceOf(Rook.class, board.getPiece(x, y));
@@ -321,7 +319,7 @@ class TempMoveTest {
         whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE));
         blackPieces.add(new King(0, 7, Piece.BLACK_PIECE));
         board = new Board(whitePieces, blackPieces);
-        TempMove shortCastle = new TempMove(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
         shortCastle.undo();
         shortCastle.makeMove();
         int x = 0, y = 0;
@@ -359,7 +357,7 @@ class TempMoveTest {
         blackPieces.add(new Pawn(2, 4, Piece.BLACK_PIECE));
         blackPieces.getLast().firstMove();
         board = new Board(whitePieces, blackPieces);
-        TempMove enPassant = new TempMove(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
         int x = 3, y = 4;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -390,7 +388,7 @@ class TempMoveTest {
         blackPieces.add(new Pawn(2, 4, Piece.BLACK_PIECE));
         blackPieces.getLast().firstMove();
         board = new Board(whitePieces, blackPieces);
-        TempMove enPassant = new TempMove(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
         enPassant.undo();
         int x = 3, y = 4;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -422,7 +420,7 @@ class TempMoveTest {
         blackPieces.add(new Pawn(2, 4, Piece.BLACK_PIECE));
         blackPieces.getLast().firstMove();
         board = new Board(whitePieces, blackPieces);
-        TempMove enPassant = new TempMove(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
         enPassant.undo();
         enPassant.makeMove();
         int x = 3, y = 4;

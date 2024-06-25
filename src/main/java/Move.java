@@ -1,18 +1,30 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TempMove {
+/**
+ * Moves and stores all necessary pieces to make a chess move.
+ * Allows the move to be undone and redone as many times as you would like.
+ * There is no move validation, it will always make the move.
+ * This should not be used in a regular chess situation. Instead use {@see }
+ */
+public class Move {
     private final Board board;
     private final Piece piece;
     private final int x;
     private final int y;
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
-    private final Iterable<MoveValue> movesMade;
-    private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
+    private final List<MoveValue> movesMade;
     private boolean undone = false;
 
 
-    public TempMove(int x, int y, Piece piece, Board board){
+    /**
+     * Initialises move and then moves the piece to the new location.
+     * @param x new x position
+     * @param y new y position
+     * @param piece the piece being moved
+     * @param board the board the piece is on
+     */
+    public Move(int x, int y, Piece piece, Board board){
         this.x = x;
         this.y = y;
         this.piece = piece;
@@ -21,6 +33,10 @@ public class TempMove {
         makeMove();
     }
 
+    /**
+     * Moves the relevant pieces with no validation.
+     * Saves the moves made so they can be undone.
+     */
     public void makeMove(){
         undone = false;
         for(MoveValue move : movesMade){
@@ -40,6 +56,10 @@ public class TempMove {
         }
     }
 
+    /**
+     * Undoes the move that was just made.
+     * The board returns to the exact same state as before being run.
+     */
     public void undo(){
         undone = true;
         for(MoveValue move : movesToUndo.reversed()){
@@ -61,5 +81,5 @@ public class TempMove {
     public int getX() {return x;}
     public int getY() {return y;}
     public Piece getPiece() {return piece;}
-    public List<MoveValue> getMovesToUndo() {return undone ? piece.getMoves(x, y, board) : movesToUndo;}
+    public List<MoveValue> getMovesToUndo() {return undone ? movesMade : movesToUndo;}
 }

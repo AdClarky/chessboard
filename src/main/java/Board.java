@@ -14,11 +14,11 @@ public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
     private final Piece[][] board  =  new Piece[8][8];
-    private TempMove lastMoveMade;
+    private Move lastMoveMade;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    private final ArrayDeque<TempMove> tempMoves = new ArrayDeque<>(40);
-    private final ArrayDeque<TempMove> redoMoves = new ArrayDeque<>(40);
+    private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
+    private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -130,9 +130,9 @@ public class Board {
      * @return true if in check, false if not
      */
     boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
-        TempMove tempMove = new TempMove(newX, newY, pieceToCheck, this);
+        Move move = new Move(newX, newY, pieceToCheck, this);
         boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
-        tempMove.undo();
+        move.undo();
         return isMoveUnsafe;
     }
 
@@ -184,12 +184,12 @@ public class Board {
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-        TempMove move = new TempMove(newX,newY,board[oldY][oldX],this); // makes a move
+        Move move = new Move(newX,newY,board[oldY][oldX],this); // makes a move
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
-        if(!tempMoves.isEmpty() && tempMoves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
+        if(!moves.isEmpty() && moves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
             previousPawn.setCanBePassanted(false);
-        tempMoves.push(move);
-        lastMoveMade = tempMoves.getFirst();
+        moves.push(move);
+        lastMoveMade = moves.getFirst();
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
         if(isCheckmate()) {
@@ -210,13 +210,13 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the redo moves stack.
      */
     public void undoMove(){
-        if(tempMoves.isEmpty())
+        if(moves.isEmpty())
             return;
-        TempMove tempMove = tempMoves.pop();
-        lastMoveMade = tempMove;
-        tempMove.undo();
-        redoMoves.push(tempMove);
-        notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
+        Move move = moves.pop();
+        lastMoveMade = move;
+        move.undo();
+        redoMoves.push(move);
+        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
     }
 
     /**
@@ -226,11 +226,11 @@ public class Board {
     public void redoMove(){
         if(redoMoves.isEmpty())
             return;
-        TempMove tempMove = redoMoves.pop();
-        lastMoveMade = tempMove;
-        tempMove.makeMove();
-        tempMoves.push(tempMove);
-        notifyBoardChanged(tempMove.getPiece().getX(), tempMove.getPiece().getY(), tempMove.getX(), tempMove.getY());
+        Move move = redoMoves.pop();
+        lastMoveMade = move;
+        move.makeMove();
+        moves.push(move);
+        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());

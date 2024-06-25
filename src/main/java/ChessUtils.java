@@ -26,19 +26,19 @@ public final class ChessUtils {
                 return "O-O";
         }
         // TODO: check if ambiguous
-        String move = piece.toString();
+        String moveString = piece.toString();
         if(!board.isSquareBlank(newX, newY)) {
-            move += "x";
+            moveString += "x";
         }
-        move += coordsToChess(newX, newY);
+        moveString += coordsToChess(newX, newY);
 
-        TempMove tempMove = new TempMove(newX, newY, piece, board);
+        Move move = new Move(newX, newY, piece, board);
         if(board.isCheckmate())
-            move += "#";
+            moveString += "#";
         else if(board.isKingInCheck(piece.getDirection() * -1))
-            move += "+";
-        tempMove.undo();
-        return move;
+            moveString += "+";
+        move.undo();
+        return moveString;
     }
 
     public static MoveValue chessToMove(String move, Board board){
