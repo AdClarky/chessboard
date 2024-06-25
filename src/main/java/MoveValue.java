@@ -4,5 +4,5 @@
  * @param newX new x
  * @param newY new Y
  */
-public record Move(Piece piece, int newX, int newY) {
+public record MoveValue(Piece piece, int newX, int newY) {
 }

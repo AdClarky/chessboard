@@ -6,7 +6,8 @@ public class TempMove {
     private final Piece piece;
     private final int x;
     private final int y;
-    private final List<Move> moves = new ArrayList<>(3);
+    private final List<MoveValue> movesToUndo = new ArrayList<>(3);
+    private final Iterable<MoveValue> movesMade;
     private final ArrayList<Piece> tempPieces = new ArrayList<>(2);
     private boolean undone = false;
 
@@ -16,57 +17,40 @@ public class TempMove {
         this.y = y;
         this.piece = piece;
         this.board = board;
+        movesMade = piece.getMoves(x, y, board);
         makeMove();
     }
 
     public void makeMove(){
         undone = false;
-        Iterable<Move> moves = piece.getMoves(x, y, board);
-        for(Move move : moves){
-            if(!board.isSquareBlank(move.newX(), move.newY())){ // if taking
-                this.moves.add(new Move(move.newX(), move.newY(), move.newX(), move.newY()));
-                tempPieces.add(board.getPiece(move.newX(), move.newY()));
-                board.getColourPieces(tempPieces.getLast()).remove(tempPieces.getLast());
+        for(MoveValue move : movesMade){
+            if(!board.isSquareBlank(move.newX(), move.newY())) { // taking
+                Piece pieceTaken = board.getPiece(move.newX(), move.newY());
+                movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
+                board.getColourPieces(pieceTaken).remove(pieceTaken);
             }
-            if(move.newX() == move.oldX() && move.newY() == move.oldY()){ // promotion
-                tempPieces.add(board.getPiece(move.oldX(), move.oldY()));
-                board.getColourPieces(tempPieces.getLast()).remove(tempPieces.getLast());
-                if(move.oldY() == 0)
-                    board.setSquare(move.oldX(), 0, new Queen(move.oldX(), 0, Piece.BLACK_PIECE));
-                else
-                    board.setSquare(move.oldX(), move.oldY(), new Queen(move.oldX(), move.oldY(), Piece.WHITE_PIECE));
-                board.getColourPieces(board.getPiece(move.oldX(), move.oldY())).add(board.getPiece(move.oldX(), move.oldY()));
-            }else{
-                this.moves.add(new Move(move.oldX(), move.oldY(), move.newX(), move.newY()));
-                board.setSquare(move.newX(), move.newY(), board.getPiece(move.oldX(), move.oldY()));
-                board.setSquare(move.oldX(), move.oldY(), new Blank(move.oldX(), move.oldY()));
-            }
-            board.getPiece(move.newX(), move.newY()).setX(move.newX());
-            board.getPiece(move.newX(), move.newY()).setY(move.newY());
+            Piece pieceToMove = move.piece();
+            movesToUndo.add(new MoveValue(pieceToMove, pieceToMove.getX(), pieceToMove.getY()));
+            board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(move.newX(), move.newY()));
+            board.setSquare(move.newX(), move.newY(), pieceToMove);
+            pieceToMove.setX(move.newX());
+            pieceToMove.setY(move.newY());
         }
     }
 
     public void undo(){
         undone = true;
-        for(Move move : moves.reversed()){
-            if(move.oldY() == move.newY() && move.newX() == move.oldX()) {
-                if(tempPieces.getLast() instanceof Pawn pawn && (pawn.getY() == 7 || pawn.getY() == 0)) // if it was a promotion
-                    board.getColourPieces(tempPieces.getLast()).remove(board.getPiece(move.oldX(), move.oldY()));
-                board.setSquare(move.newX(), move.newY(), tempPieces.getLast());
-                board.getColourPieces(tempPieces.getLast()).add(tempPieces.getLast());
-                tempPieces.removeLast();
-            }
-            else {
-                board.setSquare(move.oldX(), move.oldY(), board.getPiece(move.newX(), move.newY()));
-                board.setSquare(move.newX(), move.newY(), new Blank(move.newX(), move.newY()));
-            }
-            board.getPiece(move.oldX(), move.oldY()).setX(move.oldX());
-            board.getPiece(move.oldX(), move.oldY()).setY(move.oldY());
+        for(MoveValue move : movesToUndo.reversed()){
+            Piece pieceToMove = move.piece();
+            board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(move.newX(), move.newY()));
+            board.setSquare(move.newX(), move.newY(), pieceToMove);
+            pieceToMove.setX(move.newX());
+            pieceToMove.setY(move.newY());
         }
     }
 
     public int getX() {return x;}
     public int getY() {return y;}
     public Piece getPiece() {return piece;}
-    public List<Move> getMoves() {return undone ? piece.getMoves(x, y, board) : moves;}
+    public List<MoveValue> getMovesToUndo() {return undone ? piece.getMoves(x, y, board) : movesToUndo;}
 }

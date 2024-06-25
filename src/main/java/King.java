@@ -47,14 +47,14 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Move> getMoves(int newX, int newY, Board board) {
-        ArrayList<Move> moves = new ArrayList<>(2);
+    public ArrayList<MoveValue> getMoves(int newX, int newY, Board board) {
+        ArrayList<MoveValue> moves = new ArrayList<>(2);
         if(newX - x == -2) { // short castle
-            moves.add(new Move(0, newY, 2   , newY));
+            moves.add(new MoveValue(board.getPiece(0, newY), 2   , newY));
         }else if(x - newX == -2) {
-            moves.add(new Move(7, newY, 4, newY));
+            moves.add(new MoveValue(board.getPiece(7, newY), 4, newY));
         }
-        moves.add(new Move(x, y, newX, newY));
+        moves.add(new MoveValue(this, newX, newY));
         return moves;
     }
 

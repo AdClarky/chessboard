@@ -41,18 +41,18 @@ public final class ChessUtils {
         return move;
     }
 
-    public static Move chessToMove(String move, Board board){
+    public static MoveValue chessToMove(String move, Board board){
         if("O-O".equals(move)) {
             if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-                return new Move(3,7,1,7);
+                return new MoveValue(board.getPiece(3,0),1,7);
             }else{
-                return new Move(3,0,1,0);
+                return new MoveValue(board.getPiece(3, 0), 1, 0);
             }
         }else if("O-O-O".equals(move)) {
             if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-                return new Move(3,7,5,7);
+                return new MoveValue(board.getPiece(3, 7), 5, 7);
             }else{
-                return new Move(3,0,5,0);
+                return new MoveValue(board.getPiece(3, 0), 5, 0);
             }
         }
 
@@ -72,7 +72,7 @@ public final class ChessUtils {
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         Piece piece = possiblePieces.getFirst();
-        return new Move(piece.getX(), piece.getY(), newCoordinate.x(), newCoordinate.y());
+        return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
 
     /**

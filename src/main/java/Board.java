@@ -202,8 +202,8 @@ public class Board {
      * @see Board#moveWithValidation(int, int, int,int)
      * @param move instance of move which specifies the piece being moved and where to.
      */
-    public void moveWithValidation(@NotNull Move move){
-        moveWithValidation(move.oldX(), move.oldY(), move.newX(), move.newY());
+    public void moveWithValidation(@NotNull MoveValue move){
+        moveWithValidation(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 
     /**
@@ -251,7 +251,7 @@ public class Board {
      * During a board change event, contains the moves performed on the board.
      * @return a list of individual moves taken to reach the new board state.
      */
-    public Iterable<Move> getLastMoveMade(){return lastMoveMade.getMoves();}
+    public Iterable<MoveValue> getLastMoveMade(){return lastMoveMade.getMovesToUndo();}
 
     /**
      * Adds a board listener to receive events from this board.

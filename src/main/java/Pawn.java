@@ -42,16 +42,16 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<Move> getMoves(int newX, int newY, Board board) {
-        ArrayList<Move> moves = new ArrayList<>(2);
+    public ArrayList<MoveValue> getMoves(int newX, int newY, Board board) {
+        ArrayList<MoveValue> moves = new ArrayList<>(2);
         if(newY == 7 || newY == 0) { // if pawn promotion
-            moves.add(new Move(x, y, newX, newY));
-            moves.add(new Move(newX, newY, newX, newY));
+            moves.add(new MoveValue(this, newX, newY));
+            moves.add(new MoveValue(new Queen(newX, newY, direction), newX, newY));
         }else if(newX != x && board.isSquareBlank(newX, newY)){ // if passanting
-            moves.add(new Move(newX, newY-direction, newX, newY));
-            moves.add(new Move(x, y, newX, newY));
+            moves.add(new MoveValue(board.getPiece(newX, newY-direction), newX, newY));
+            moves.add(new MoveValue(this, newX, newY));
         }else{
-            moves.add(new Move(x, y, newX, newY));
+            moves.add(new MoveValue(this, newX, newY));
         }
         return moves;
     }
