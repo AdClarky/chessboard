@@ -2,13 +2,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Used for converting x and y coordinates into chess notation.
+ * Contains functions relating to chess move notation in algebraic form.
+ * Since chess moves are context based, it requires a board to be passed for most functions in order to calcualte
+ * their true meaning.
  */
 public final class ChessUtils {
     private ChessUtils(){}
     /**
-     * Converts the chessboard coordinates to chess notation.
-     * It does not convert to a Move notation, just a square on the board.
+     * Converts the chessboard coordinates to chess algabraic notation.
      * @param x the chessboard x value
      * @param y the chessboard y value
      * @return the string in chess notation

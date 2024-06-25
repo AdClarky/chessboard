@@ -58,6 +58,12 @@ public class Board {
         }
     }
 
+    /**
+     * Intiialises the board with only the pieces in the collection. Their position on the board
+     * is determined by their x and y values. Every other square is blank.
+     * @param whitePieces
+     * @param blackPieces
+     */
     public Board(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
@@ -95,7 +101,25 @@ public class Board {
      */
     public boolean isSquareBlank(int x, int y){return board[y][x] instanceof Blank;}
 
+    void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
+
+    ArrayList<Piece> getColourPieces(int direction){
+        if(direction == Piece.BLACK_PIECE)
+            return blackPieces;
+        return whitePieces;
+    }
+
+    List<Piece> getColourPieces(@NotNull Piece piece){
+        if(piece.getDirection() == Piece.BLACK_PIECE)
+            return blackPieces;
+        return whitePieces;
+    }
+
     public int getCurrentTurn(){return currentTurn;}
+
+    private void nextTurn(){
+        currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
+    }
 
     /**
      * Calculates if moving a piece to a position would put that teams king in check.
@@ -105,7 +129,7 @@ public class Board {
      * @param pieceToCheck the piece being moved.
      * @return true if in check, false if not
      */
-    public boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
+    boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
         TempMove tempMove = new TempMove(newX, newY, pieceToCheck, this);
         boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
         tempMove.undo();
@@ -117,7 +141,7 @@ public class Board {
      * @param direction black or white king which will be checked
      * @return if the king is in check
      */
-    public boolean isKingInCheck(int direction){
+    boolean isKingInCheck(int direction){
         King king = (King) getColourPieces(direction).getFirst();
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
         Iterable<Piece> enemyPieces = getColourPieces(direction * -1);
@@ -130,8 +154,25 @@ public class Board {
     }
 
     /**
+     * Checks all possible moves that can be made and if any result in non-check.
+     * @return if in checkmate.
+     */
+    boolean isCheckmate(){
+        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
+        for(int i = 0; i < enemyPieces.size(); i++){
+            Piece piece = enemyPieces.get(i);
+            for(Coordinate move : piece.getPossibleMoves(this)){
+                if(!isMoveUnsafe(move.x(), move.y(), piece))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Moves a piece to a new location while validating it is a valid move.
      * Assumes the provided old coordinates are valid coordinates for a piece.
+     * If any moves have been undone, it sets the board back to the current position.
      * After a move has been made, it notifies all listeners then moves on to the next turn.
      * @param oldX current x position of the piece
      * @param oldY current y position of the piece
@@ -179,6 +220,7 @@ public class Board {
     }
 
     /**
+     * Moves forward one move. Does nothing if there are no more moves to be made.
      * Pops the last move off the stack and pushes it onto the moves made stack.
      */
     public void redoMove(){
@@ -195,44 +237,14 @@ public class Board {
         }
     }
 
+    /**
+     * Sets the board back to the most recent position.
+     * Can be called if there have been no move undo's made.
+     */
     public void redoAllMoves(){
         while(!redoMoves.isEmpty()){
             redoMove();
         }
-    }
-
-    /**
-     * Checks all possible moves that can be made and if any result in non-check.
-     * @return if in checkmate.
-     */
-    public boolean isCheckmate(){
-        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
-        for(int i = 0; i < enemyPieces.size(); i++){
-            Piece piece = enemyPieces.get(i);
-            for(Coordinate move : piece.getPossibleMoves(this)){
-                if(!isMoveUnsafe(move.x(), move.y(), piece))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
-
-    ArrayList<Piece> getColourPieces(int direction){
-        if(direction == Piece.BLACK_PIECE)
-            return blackPieces;
-        return whitePieces;
-    }
-
-    List<Piece> getColourPieces(Piece piece){
-        if(piece.getDirection() == Piece.BLACK_PIECE)
-            return blackPieces;
-        return whitePieces;
-    }
-
-    private void nextTurn(){
-        currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
     }
 
     /**
@@ -243,6 +255,8 @@ public class Board {
 
     /**
      * Adds a board listener to receive events from this board.
+     * Events which are notified are board change events, when a change has been made to the board and
+     * checkmate events - when the king is checkmated.
      * @param listener the board listener
      */
     public void addBoardListener(BoardListener listener){
