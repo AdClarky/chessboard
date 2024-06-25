@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -78,9 +80,8 @@ public abstract class Piece {
     public int getDirection() {return direction;}
 
 
-    public void setX(int x) {this.x = x;}
-
-    public void setY(int y) {this.y = y;}
+    void setX(int x) {this.x = x;}
+    void setY(int y) {this.y = y;}
     public int getX() {return x;}
     public int getY() {return y;}
 
@@ -110,7 +111,7 @@ public abstract class Piece {
      * @param board the board this piece is on
      * @param moves the possible moves not considering checks
      */
-    protected void removeMovesInCheck(Board board, Collection<Coordinate> moves) {
+    protected void removeMovesInCheck(@NotNull Board board, Collection<Coordinate> moves) {
         if(board.getCurrentTurn() != direction)
             return;
         moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));

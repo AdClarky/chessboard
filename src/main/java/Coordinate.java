@@ -1,14 +1,18 @@
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Coordinate class which stores the x and y value of a coordinate.
  * Used for comparing coordinates.
  */
 public record Coordinate(int x, int y) {
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return ChessUtils.coordsToChess(x, y);
     }
 
-    public static Coordinate fromString(CharSequence move){
+    @Contract("_ -> new")
+    public static @NotNull Coordinate fromString(@NotNull CharSequence move){
         int length = move.length();
         if(move.charAt(length - 1) == '+' || move.charAt(length - 1) == '#')
             length--; // so it ignores the checks/checkmates
