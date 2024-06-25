@@ -15,6 +15,7 @@ public class Move {
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
     private boolean undone = false;
+    private boolean taking = false;
 
 
     /**
@@ -41,8 +42,10 @@ public class Move {
         undone = false;
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY())) { // taking
-                if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY())
+                if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
                     board.getColourPieces(move.piece()).add(move.piece());
+                else
+                    taking = true;
                 Piece pieceTaken = board.getPiece(move.newX(), move.newY());
                 movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
                 board.getColourPieces(pieceTaken).remove(pieceTaken);
@@ -82,4 +85,5 @@ public class Move {
     public int getY() {return y;}
     public Piece getPiece() {return piece;}
     public List<MoveValue> getMovesToUndo() {return undone ? movesMade : movesToUndo;}
+    public boolean hasTaken() {return taking;}
 }

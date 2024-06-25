@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class Board {
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
+    private int lastPawnOrCapture = 0;
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -169,6 +171,42 @@ public class Board {
         return true;
     }
 
+    boolean isDraw(int side){
+        return isStalemate(side) || is3Repetition() || is50MoveRule();
+    }
+
+    boolean isStalemate(int stalemateSide){
+        if(isKingInCheck(stalemateSide))
+            return false;
+        Iterable<Piece> pieces = getColourPieces(stalemateSide);
+        for(Piece piece : pieces){
+            if(!piece.getPossibleMoves(this).isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    boolean is3Repetition(){
+        if(moves.size() < 6)
+            return false;
+        int boardState = Arrays.deepHashCode(board);
+        for(int i = 0; i < 2; i++){
+            undoMove();
+            undoMove();
+            if(boardState != Arrays.deepHashCode(board)) {
+                redoAllMoves();
+                return false;
+            }
+        }
+        redoAllMoves();
+        return true;
+    }
+
+    boolean is50MoveRule(){
+        return (moves.size() - lastPawnOrCapture) == 50;
+    }
+
     /**
      * Moves a piece to a new location while validating it is a valid move.
      * Assumes the provided old coordinates are valid coordinates for a piece.
@@ -185,6 +223,8 @@ public class Board {
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
         Move move = new Move(newX,newY,board[oldY][oldX],this); // makes a move
+        if(move.getPiece() instanceof Pawn || move.hasTaken())
+            lastPawnOrCapture = moves.size();
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
         if(!moves.isEmpty() && moves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
             previousPawn.setCanBePassanted(false);
@@ -192,6 +232,8 @@ public class Board {
         lastMoveMade = moves.getFirst();
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
+        if(isDraw(currentTurn))
+            notifyDraw();
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
