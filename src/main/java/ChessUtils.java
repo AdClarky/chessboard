@@ -44,7 +44,7 @@ public final class ChessUtils {
     public static MoveValue chessToMove(String move, Board board){
         if("O-O".equals(move)) {
             if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-                return new MoveValue(board.getPiece(3,0),1,7);
+                return new MoveValue(board.getPiece(3,7),1,7);
             }else{
                 return new MoveValue(board.getPiece(3, 0), 1, 0);
             }
@@ -55,7 +55,6 @@ public final class ChessUtils {
                 return new MoveValue(board.getPiece(3, 0), 5, 0);
             }
         }
-
         Coordinate newCoordinate = Coordinate.fromString(move);
         String pieceLetter;
         if(Character.isLowerCase(move.charAt(0))) // if a pawn
