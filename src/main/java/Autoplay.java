@@ -56,4 +56,8 @@ public class Autoplay {
             }
         }
     }
+
+    public void play(){
+        play(0);
+    }
 }
