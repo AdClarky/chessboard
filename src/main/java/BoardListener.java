@@ -20,5 +20,5 @@ public interface BoardListener {
      */
     void checkmate(int x, int y);
 
-    void boardHistoy();
+    void draw(int whiteX, int whiteY, int blackX, int blackY);
 }

@@ -273,4 +273,13 @@ public class Board {
         for(BoardListener listener : boardListeners)
             listener.checkmate(x, y);
     }
+
+    private void notifyDraw(){
+        int whiteX = whitePieces.getFirst().getX();
+        int whiteY = whitePieces.getFirst().getY();
+        int blackX = blackPieces.getFirst().getX();
+        int blackY = blackPieces.getFirst().getY();
+        for(BoardListener listener : boardListeners)
+            listener.draw(whiteX, whiteY, blackX, blackY);
+    }
 }
