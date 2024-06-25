@@ -12,13 +12,19 @@ class GameTest {
         board = new Board();
     }
 
+    /**
+     * <a href="https://www.chess.com/game/live/107820135780">Game Link</a>
+     */
     @Test
     void GameOneTest(){
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
-        autoplay.play();
+            autoplay.play();
     }
 
+    /**
+     * <a href="https://www.chess.com/game/live/107825855352">Game Link</a>
+     */
     @Test
     void GameTwoTest(){
         Autoplay autoplay = new Autoplay(board);
@@ -26,6 +32,9 @@ class GameTest {
         autoplay.play();
     }
 
+    /**
+     * <a href="https://www.chess.com/game/live/112479669593">Game Link</a>
+     */
     @Test
     void GameThreeTest(){
         Autoplay autoplay = new Autoplay(board);
