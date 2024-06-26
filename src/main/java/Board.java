@@ -259,8 +259,8 @@ public class Board {
         lastMoveMade = moves.getFirst();
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
-        if(isDraw(currentTurn))
-            notifyDraw();
+//        if(isDraw(currentTurn))
+//            notifyDraw();
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
