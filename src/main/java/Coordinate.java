@@ -6,13 +6,14 @@ import org.jetbrains.annotations.NotNull;
  * Used for comparing coordinates.
  */
 public record Coordinate(int x, int y) {
+    // TODO: test coordinate string
     @Override
     public @NotNull String toString() {
         return ChessUtils.coordsToChess(x, y);
     }
 
     @Contract("_ -> new")
-    public static @NotNull Coordinate fromString(@NotNull CharSequence move){
+    public static @NotNull Coordinate createCoorindateFromString(@NotNull CharSequence move){
         int length = move.length();
         if(move.charAt(length - 1) == '+' || move.charAt(length - 1) == '#')
             length--; // so it ignores the checks/checkmates

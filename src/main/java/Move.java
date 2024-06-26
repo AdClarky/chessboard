@@ -94,7 +94,7 @@ public class Move {
             addOrRemovePiece(move.piece(), move);
             movePiece(move.piece(), move);
         }
-        if(piece instanceof Pawn pawn && pawn.hadFirstMove() || notHadFirstMove)
+        if(notHadFirstMove)
             piece.undoMoveCondition();
     }
 

@@ -38,6 +38,7 @@ public class Rook extends Piece{
     @Override
     public void undoMoveCondition(){moved = false;}
 
+    // TODO: test rook equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

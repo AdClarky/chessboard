@@ -50,18 +50,15 @@ public class Autoplay {
         return false;
     }
 
-    public void play(int delay){
+    public void play(int delay) throws InterruptedException {
         for(String move : moves){
             board.makeMove(ChessUtils.chessToMove(move, board));
-            try {
-                TimeUnit.MILLISECONDS.sleep(delay);
-            }catch (InterruptedException e){
-                return;
-            }
+            TimeUnit.MILLISECONDS.sleep(delay);
+
         }
     }
 
-    public void play(){
+    public void play() throws InterruptedException {
         play(0);
     }
     public Collection<String> getMoves(){return moves;}

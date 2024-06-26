@@ -232,6 +232,7 @@ public class Board {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY){
         redoAllMoves();
+        // TODO: test invalid moves
         if(!getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
         pushMove(oldX, oldY, newX, newY);
@@ -280,6 +281,7 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the redo moves stack.
      */
     public void undoMove(){
+        // TODO: test undoing more than necessary
         if(moves.isEmpty())
             return;
         Move move = moves.pop();
@@ -300,6 +302,7 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the moves made stack.
      */
     public void redoMove(){
+        // TODO: test redoing more than necessary
         if(redoMoves.isEmpty())
             return;
         Move move = redoMoves.pop();
@@ -329,6 +332,7 @@ public class Board {
      */
     public Iterable<MoveValue> getLastMoveMade(){return lastMoveMade.getMovesToUndo();}
 
+    // TODO: test api listeners
     /**
      * Adds a board listener to receive events from this board.
      * Events which are notified are board change events, when a change has been made to the board and

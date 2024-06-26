@@ -17,7 +17,7 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/107820135780">Game Link</a>
      */
     @Test
-    void GameOneTest() throws IOException {
+    void GameOneTest() throws IOException, InterruptedException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
         autoplay.play();
@@ -28,7 +28,7 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/107825855352">Game Link</a>
      */
     @Test
-    void GameTwoTest() throws IOException {
+    void GameTwoTest() throws IOException, InterruptedException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/andredar63_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
@@ -39,7 +39,7 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/112479669593">Game Link</a>
      */
     @Test
-    void checkmateTest() throws IOException {
+    void checkmateTest() throws IOException, InterruptedException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
@@ -51,7 +51,7 @@ class GameTest {
      * <a href="https://www.chess.com/game/computer/132962671">Game Link</a>
      */
     @Test
-    void stalemateTest() throws IOException {
+    void stalemateTest() throws IOException, InterruptedException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/stalemateGame.pgn"));
         autoplay.play();
@@ -60,7 +60,7 @@ class GameTest {
     }
 
     @Test
-    void repetitionTest() throws IOException {
+    void repetitionTest() throws IOException, InterruptedException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/repetitionGame.pgn"));
         autoplay.play();

@@ -18,6 +18,7 @@ public final class ChessUtils {
         return Character.toString('h' - x) + (y+1);
     }
 
+    // TODO: complete and test, maybe add to Move
     public static String moveToChess(Board board, Piece piece, int newX, int newY){
         if(piece instanceof King king && Math.abs(piece.getX() - newX) == 2) {// castling
             if(piece.getX() - newX == 2) // long castle
@@ -47,7 +48,7 @@ public final class ChessUtils {
         }else if("O-O-O".equals(move)) {
             return getCastlingMove(5, board);
         }
-        Coordinate newCoordinate = Coordinate.fromString(move);
+        Coordinate newCoordinate = Coordinate.createCoorindateFromString(move);
         String pieceLetter;
         if(Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = "";
@@ -83,10 +84,10 @@ public final class ChessUtils {
         int length = move.length();
         for(int i = 0; i < length; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x' && i != length - 2){ // x value given
-                Coordinate correctX = Coordinate.fromString(move.charAt(i) + "0");
+                Coordinate correctX = Coordinate.createCoorindateFromString(move.charAt(i) + "0");
                 possiblePieces.removeIf(piece -> piece.getX() != correctX.x());
             }else if(Character.isDigit(move.charAt(i)) && i != length - 1){ // y value given
-                Coordinate correctY = Coordinate.fromString("a" + move.charAt(i));
+                Coordinate correctY = Coordinate.createCoorindateFromString("a" + move.charAt(i));
                 possiblePieces.removeIf(piece -> piece.getY() != correctY.y());
             }
         }

@@ -73,6 +73,7 @@ public class Pawn extends Piece{
     @Override
     public String toString() {return "";}
 
+    // TODO: test pawn equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

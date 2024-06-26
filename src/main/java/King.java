@@ -70,6 +70,7 @@ public class King extends Piece{
     @Override
     public void undoMoveCondition(){moved = false;}
 
+    // TODO: test king equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
