@@ -56,21 +56,23 @@ public class Move {
         wasPreviousPawnPassantable = previousPawn.hadFirstMove();
         previousPawn.undoMoveCondition();
         for(MoveValue move : movesMade){
-            if(!board.isSquareBlank(move.newX(), move.newY())) { // taking
-                if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
-                    board.addPiece(move.piece());
-                else
-                    taking = true;
-                Piece pieceTaken = board.getPiece(move.newX(), move.newY());
-                movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
-                board.removePiece(pieceTaken);
-            }
-            Piece pieceToMove = move.piece();
-            movesToUndo.add(new MoveValue(pieceToMove, pieceToMove.getX(), pieceToMove.getY()));
-            movePiece(pieceToMove, move);
+            if(!board.isSquareBlank(move.newX(), move.newY()))
+                takePiece(move);
+            movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
+            movePiece(move.piece(), move);
         }
         notHadFirstMove = !piece.hadFirstMove();
-        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
+        piece.firstMove();
+    }
+
+    private void takePiece(@NotNull MoveValue move){
+        if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
+            board.addPiece(move.piece());
+        else
+            taking = true;
+        Piece pieceTaken = board.getPiece(move.newX(), move.newY());
+        movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
+        board.removePiece(pieceTaken);
     }
 
     /**
@@ -96,7 +98,7 @@ public class Move {
             piece.undoMoveCondition();
     }
 
-    private void movePiece(Piece pieceToMove, MoveValue move){
+    private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
         board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
         board.setSquare(move.newX(), move.newY(), pieceToMove);
         pieceToMove.setX(move.newX());
