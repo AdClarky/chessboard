@@ -111,10 +111,18 @@ public class Board {
         return whitePieces;
     }
 
-    List<Piece> getColourPieces(@NotNull Piece piece){
+    void addPiece(@NotNull Piece piece){
         if(piece.getDirection() == Piece.BLACK_PIECE)
-            return blackPieces;
-        return whitePieces;
+            blackPieces.add(piece);
+        else
+            whitePieces.add(piece);
+    }
+
+    void removePiece(@NotNull Piece piece){
+        if(piece.getDirection() == Piece.BLACK_PIECE)
+            blackPieces.remove(piece);
+        else
+            whitePieces.remove(piece);
     }
 
     public int getCurrentTurn(){return currentTurn;}
@@ -192,15 +200,32 @@ public class Board {
         if(moves.size() < 6)
             return false;
         int boardState = Arrays.deepHashCode(board);
+        ArrayList pieceStates = new ArrayList<Integer>(64);
+        for(int y = 0; y < 8; y++){
+            for(int x = 0; x < 8; x++){
+                pieceStates.add(board[y][x].hashCode());
+            }
+        }
         for(int i = 0; i < 2; i++){
             undoMove();
             undoMove();
             if(boardState != Arrays.deepHashCode(board)) {
                 redoAllMoves();
+                if(boardState != Arrays.deepHashCode(board)) {
+                    System.out.println("nope");
+                    for(int y = 0; y < 8; y++){
+                        for(int x = 0; x < 8; x++){
+                            if(!pieceStates.contains(board[y][x].hashCode()))
+                                System.out.println("nope");
+                        }
+                    }
+                }
                 return false;
             }
         }
         redoAllMoves();
+        if(boardState != Arrays.deepHashCode(board))
+            System.out.println("nope");
         return true;
     }
 
@@ -234,8 +259,8 @@ public class Board {
         lastMoveMade = moves.getFirst();
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
-//        if(isDraw(currentTurn))
-//            notifyDraw();
+        if(isDraw(currentTurn))
+            notifyDraw();
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());

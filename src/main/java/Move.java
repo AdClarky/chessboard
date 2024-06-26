@@ -57,12 +57,12 @@ public class Move {
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY())) { // taking
                 if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
-                    board.getColourPieces(move.piece()).add(move.piece());
+                    board.addPiece(move.piece());
                 else
                     taking = true;
                 Piece pieceTaken = board.getPiece(move.newX(), move.newY());
                 movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
-                board.getColourPieces(pieceTaken).remove(pieceTaken);
+                board.removePiece(pieceTaken);
             }
             Piece pieceToMove = move.piece();
             movesToUndo.add(new MoveValue(pieceToMove, pieceToMove.getX(), pieceToMove.getY()));
@@ -89,9 +89,9 @@ public class Move {
             if(pieceToMove.getX() == move.newX() && pieceToMove.getY() == move.newY()){
                 // a piece moving to the same spot only occurs as the last move when it's a promotion
                 if(move == movesToUndo.getLast())
-                    board.getColourPieces(pieceToMove).remove(pieceToMove);
+                    board.removePiece(pieceToMove);
                 else
-                    board.getColourPieces(move.piece()).add(move.piece());
+                    board.addPiece(move.piece());
             }
             board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
             board.setSquare(move.newX(), move.newY(), pieceToMove);
