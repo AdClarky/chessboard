@@ -206,13 +206,13 @@ public class Board {
             return false;
         int boardState = Arrays.deepHashCode(board);
         for(int i = 0; i < 2; i++){
-            undoMultipleMoves(4);
+            undoMultipleMovesSilent(4);
             if(boardState != Arrays.deepHashCode(board)) {
-                redoAllMoves();
+                redoAllMovesSilent();
                 return false;
             }
         }
-        redoAllMoves();
+        redoAllMovesSilent();
         return true;
     }
 
@@ -282,16 +282,27 @@ public class Board {
     public void undoMove(){
         if(moves.isEmpty())
             return;
+        Move move = undoOneMove();
+        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+    }
+
+    private Move undoOneMove(){
         Move move = moves.pop();
         lastMoveMade = move;
         move.undo();
         redoMoves.push(move);
-        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        return move;
     }
 
     public void undoMultipleMoves(int numOfMoves){
         for(int i = 0; i < numOfMoves; i++){
             undoMove();
+        }
+    }
+
+    private void undoMultipleMovesSilent(int numOfMoves){
+        for(int i = 0; i < numOfMoves; i++){
+            undoOneMove();
         }
     }
 
@@ -302,15 +313,20 @@ public class Board {
     public void redoMove(){
         if(redoMoves.isEmpty())
             return;
-        Move move = redoMoves.pop();
-        lastMoveMade = move;
-        move.makeMove();
-        moves.push(move);
+        Move move = redoOneMove();
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
         }
+    }
+
+    private Move redoOneMove(){
+        Move move = redoMoves.pop();
+        lastMoveMade = move;
+        move.makeMove();
+        moves.push(move);
+        return move;
     }
 
     /**
@@ -320,6 +336,12 @@ public class Board {
     public void redoAllMoves(){
         while(!redoMoves.isEmpty()){
             redoMove();
+        }
+    }
+
+    private void redoAllMovesSilent(){
+        while(!redoMoves.isEmpty()){
+            redoOneMove();
         }
     }
 
