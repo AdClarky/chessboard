@@ -1,13 +1,15 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class Autoplay {
-    private List<String> moves = new ArrayList<>(30);
+    private final Collection<String> moves = new ArrayList<>(30);
     private final Board board;
 
     public Autoplay(Board board){
@@ -22,28 +24,33 @@ public class Autoplay {
         }
     }
 
-    private void processLine(String line){
+    void processLine(@NotNull String line){
         if(line.isEmpty() || line.charAt(0) == '[')
             return;
         StringBuilder currentMove = new StringBuilder();
         boolean active = !Character.isDigit(line.charAt(0));
-        int length = line.length();
+        int length = line.length() - 1;
         for(int i = 0; i < length; i++){
-            if(line.charAt(i) == ' '){
-                if(active) {
-                    moves.add(currentMove.toString());
-                    currentMove.setLength(0);
-                }
-                if(Character.isDigit(line.charAt(i+1)))
-                    active = false;
-                else
-                    active = true;
-            }else if(active) {
-                currentMove.append(line.charAt(i));
-            }
+            active = processCharacter(line.charAt(i), line.charAt(i+1), currentMove, active);
         }
+        processCharacter(line.charAt(line.length()-1), ' ', currentMove, active);
         if(!currentMove.isEmpty())
             moves.add(currentMove.toString());
+    }
+
+    boolean processCharacter(Character character, Character nextChar,
+                                     StringBuilder move, boolean active){
+        if(character == ' '){
+            if(active) {
+                moves.add(move.toString());
+                move.setLength(0);
+            }
+            return !Character.isDigit(nextChar);
+        }else if(active) {
+            move.append(character);
+            return true;
+        }
+        return false;
     }
 
     public void play(int delay){
@@ -60,4 +67,5 @@ public class Autoplay {
     public void play(){
         play(0);
     }
+    public Collection<String> getMoves(){return moves;}
 }
