@@ -16,7 +16,7 @@ public class Knight extends Piece{
      * @param direction black or white
      */
     public Knight(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, 'N');
     }
 
     @Override
@@ -38,9 +38,6 @@ public class Knight extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
-
-    @Override
-    public String toString() {return "N";}
 
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)

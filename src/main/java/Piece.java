@@ -26,6 +26,7 @@ public abstract class Piece {
     protected int x;
     protected int y;
     protected final int direction;
+    protected final char pieceCharacter;
 
     /**
      * Initialises the position and whether the piece is white or black
@@ -34,11 +35,12 @@ public abstract class Piece {
      * @param pieceIcon image of the piece
      * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
-    protected Piece(int x, int y, Icon pieceIcon, int direction) {
+    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter) {
         this.x = x;
         this.y = y;
         this.pieceIcon = pieceIcon;
         this.direction = direction;
+        this.pieceCharacter = pieceCharacter;
     }
 
     /**
@@ -76,7 +78,9 @@ public abstract class Piece {
     }
 
     @Override
-    public abstract String toString();
+    public String toString(){
+        return pieceCharacter + "";
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -88,7 +92,7 @@ public abstract class Piece {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, direction);
+        return Objects.hash(x, y, direction, pieceCharacter);
     }
 
     public Icon getPieceIcon() {return pieceIcon;}

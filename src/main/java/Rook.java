@@ -16,7 +16,7 @@ public class Rook extends Piece{
      * @param direction black or white
      */
     public Rook(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, 'R');
     }
 
     @Override
@@ -37,9 +37,6 @@ public class Rook extends Piece{
 
     @Override
     public void undoMoveCondition(){moved = false;}
-
-    @Override
-    public String toString() {return "R";}
 
     @Override
     public boolean equals(Object o) {

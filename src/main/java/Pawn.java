@@ -15,7 +15,7 @@ public class Pawn extends Piece{
      * @param direction black or white
      */
     public Pawn(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, '\u0000');
     }
 
     @Override

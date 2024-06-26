@@ -15,7 +15,7 @@ public class Bishop extends Piece{
      * @param direction flags are {@link Piece#BLACK_PIECE} and {@link Piece#WHITE_PIECE}
      */
     public Bishop(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, 'B');
     }
 
     @Override
@@ -34,11 +34,6 @@ public class Bishop extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
-
-    @Override
-    public String toString() {
-        return "B";
-    }
 
     /**
      * Returns an icon based on the piece colour.

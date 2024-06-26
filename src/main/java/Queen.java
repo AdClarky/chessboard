@@ -12,7 +12,7 @@ public class Queen extends Piece{
      * @param direction black or white
      */
     public Queen(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, 'Q');
     }
 
     @Override
@@ -32,11 +32,6 @@ public class Queen extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
-
-    @Override
-    public String toString() {
-        return "Q";
-    }
 
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)

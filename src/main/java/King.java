@@ -17,7 +17,7 @@ public class King extends Piece{
      * @param direction white or black
      */
     public King(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction);
+        super(x, y, getIcon(direction), direction, 'K');
     }
 
     @Override
@@ -69,11 +69,6 @@ public class King extends Piece{
 
     @Override
     public void undoMoveCondition(){notMoved = true;}
-
-    @Override
-    public String toString() {
-        return "K";
-    }
 
     @Override
     public boolean equals(Object o) {
