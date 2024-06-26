@@ -168,6 +168,8 @@ public class Board {
      * @return if in checkmate.
      */
     boolean isCheckmate(){
+        if(!isKingInCheck(currentTurn))
+            return false;
         ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
         for (Piece enemyPiece : enemyPieces) {
             for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
