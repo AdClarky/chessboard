@@ -21,7 +21,7 @@ public abstract class Piece {
     /**
      * Flag for a blank piece.
      */
-    public static final int BLANK_PIECE = 0;
+    public static final int EMPTY_PIECE = 0;
     private final Icon pieceIcon;
     protected int x;
     protected int y;

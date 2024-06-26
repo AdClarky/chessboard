@@ -39,9 +39,9 @@ public class Move {
         this.piece = piece;
         this.board = board;
         if(previousPiece instanceof Pawn)
-            this.previousPawn = previousPiece;
+            previousPawn = previousPiece;
         else
-            this.previousPawn = new Blank(0,0);
+            previousPawn = new Blank(0,0);
         movesMade = piece.getMoves(x, y, board);
         makeMove();
     }
@@ -52,6 +52,7 @@ public class Move {
      */
     public void makeMove(){
         undone = false;
+        movesToUndo.clear();
         wasPreviousPawnPassantable = previousPawn.hadFirstMove();
         previousPawn.undoMoveCondition();
         for(MoveValue move : movesMade){
@@ -72,7 +73,6 @@ public class Move {
             pieceToMove.setY(move.newY());
         }
         notHadFirstMove = !piece.hadFirstMove();
-
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
     }
 

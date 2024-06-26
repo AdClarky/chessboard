@@ -11,7 +11,7 @@ public class Blank extends Piece {
      * @param y y position
      */
     public Blank(int x, int y) {
-        super(x, y, null, BLANK_PIECE, 'Z');
+        super(x, y, null, EMPTY_PIECE, 'Z');
     }
 
     @Override
