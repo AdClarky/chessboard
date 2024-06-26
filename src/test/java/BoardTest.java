@@ -105,13 +105,13 @@ class BoardTest {
 
     @Test
     void isInvalidMoveSafe() {
-        new Move(2, 0, board.getPiece(4, 7), board);
+        new Move(2, 0, board.getPiece(4, 7), null, board);
         assertTrue(board.isMoveUnsafe(7, 2, board.getPiece(7, 1)));
     }
 
     @Test
     void queenNextToKingInCheck(){
-        new Move(2, 0, board.getPiece(4, 7), board);
+        new Move(2, 0, board.getPiece(4, 7), null, board);
         assertTrue(board.isKingInCheck(Piece.WHITE_PIECE));
     }
 

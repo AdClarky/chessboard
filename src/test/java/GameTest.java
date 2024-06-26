@@ -20,6 +20,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
         autoplay.play();
+        System.out.println(board.boardState());
     }
 
     /**

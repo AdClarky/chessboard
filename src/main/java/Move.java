@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Move {
     private final Board board;
     private final Piece piece;
-    private final Piece previousPiece;
+    private final Piece previousPawn;
     private final int x;
     private final int y;
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
@@ -20,37 +21,27 @@ public class Move {
     private boolean undone = false;
     private boolean taking = false;
     private boolean notHadFirstMove;
-
+    private boolean wasPreviousPawnPassantable = false;
 
     /**
      * Initialises move and then moves the piece to the new location.
+     * Used so it can undo the first move condition on the previous piece if necessary.
+     * If the piece is not a pawn used the other constructor.
      * @param x new x position
      * @param y new y position
      * @param piece the piece being moved
+     * @param previousPiece the piece to move before this one
      * @param board the board the piece is on
      */
-    public Move(int x, int y, @NotNull Piece piece, Board board){
+    public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Board board){
         this.x = x;
         this.y = y;
         this.piece = piece;
         this.board = board;
-        previousPiece = new Blank(0, 0);
-        movesMade = piece.getMoves(x, y, board);
-        makeMove();
-    }
-
-    /**
-     * Used so it can undo the first move condition on the previous piece if necessary.
-     * If the piece is not a pawn used the other constructor.
-     * @param previousPiece the piece to move before this one
-     * @see Move#Move(int, int, Piece, Board)
-     */
-    public Move(int x, int y, @NotNull Piece piece, @NotNull Pawn previousPiece, Board board){
-        this.x = x;
-        this.y = y;
-        this.piece = piece;
-        this.board = board;
-        this.previousPiece = previousPiece;
+        if(previousPiece instanceof Pawn)
+            this.previousPawn = previousPiece;
+        else
+            this.previousPawn = new Blank(0,0);
         movesMade = piece.getMoves(x, y, board);
         makeMove();
     }
@@ -61,7 +52,8 @@ public class Move {
      */
     public void makeMove(){
         undone = false;
-        previousPiece.undoMoveCondition();
+        wasPreviousPawnPassantable = previousPawn.hadFirstMove();
+        previousPawn.undoMoveCondition();
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY())) { // taking
                 if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
@@ -80,6 +72,7 @@ public class Move {
             pieceToMove.setY(move.newY());
         }
         notHadFirstMove = !piece.hadFirstMove();
+
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
     }
 
@@ -89,7 +82,8 @@ public class Move {
      */
     public void undo(){
         undone = true;
-        previousPiece.firstMove();
+        if(wasPreviousPawnPassantable)
+            previousPawn.firstMove();
         for(MoveValue move : movesToUndo.reversed()){
             Piece pieceToMove = move.piece();
             if(pieceToMove.getX() == move.newX() && pieceToMove.getY() == move.newY()){

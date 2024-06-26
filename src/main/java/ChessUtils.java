@@ -32,7 +32,7 @@ public final class ChessUtils {
         }
         moveString += coordsToChess(newX, newY);
 
-        Move move = new Move(newX, newY, piece, board);
+        Move move = new Move(newX, newY, piece, null, board);
         if(board.isCheckmate())
             moveString += "#";
         else if(board.isKingInCheck(piece.getDirection() * -1))

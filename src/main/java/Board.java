@@ -132,7 +132,8 @@ public class Board {
      * @return true if in check, false if not
      */
     boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
-        Move move = new Move(newX, newY, pieceToCheck, this);
+        Piece lastPiece = moves.isEmpty() ? null : moves.getLast().getPiece();
+        Move move = new Move(newX, newY, pieceToCheck, lastPiece, this);
         boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
         move.undo();
         return isMoveUnsafe;
@@ -223,10 +224,10 @@ public class Board {
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
         Move move;
-        if(!moves.isEmpty() && moves.getLast().getPiece() instanceof Pawn)
-            move = new Move(newX,newY,board[oldY][oldX], (Pawn) moves.getLast().getPiece(), this);
+        if (moves.isEmpty())
+            move = new Move(newX, newY, board[oldY][oldX], null,this);
         else
-            move = new Move(newX,newY,board[oldY][oldX],this);
+            move = new Move(newX, newY, board[oldY][oldX], moves.getLast().getPiece(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = moves.size();
         moves.push(move);
