@@ -41,7 +41,7 @@ class GameTest {
     @Test
     void checkmateTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
-        autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
+        autoplay.importGame(Path.of("src/test/resources/checkmateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(board.isCheckmate());
         assertEquals(264244004, board.boardState());
