@@ -3,21 +3,21 @@ import org.junit.jupiter.api.Test;
 
 class PawnTest {
     @Test
-    void isNotPassantableAfterAnotherPawnMove() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPawnMove() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(3, 6, 3, 4);
+        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
     }
 
     @Test
-    void isNotPassantableAfterAnotherPawnMoveThenUndone() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPawnMoveThenUndone() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(3, 6, 3, 4);
+        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
@@ -26,11 +26,11 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(3, 6, 3, 4);
+        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
@@ -42,31 +42,31 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMove() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPieceMove() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(6, 7, 5, 5);
+        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
         assertFalse(board.getPiece(3,3).hadFirstMove());
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMoveThenUndone() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPieceMoveThenUndone() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(6, 7, 5, 5);
+        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
         assertTrue(board.getPiece(3,3).hadFirstMove());
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone() throws InvalidMoveException {
+    void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone() {
         Board board = new Board();
-        board.makeMove(3, 1, 3, 3);
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.makeMove(6, 7, 5, 5);
+        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
         assertTrue(board.getPiece(3,3).hadFirstMove());

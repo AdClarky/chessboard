@@ -17,10 +17,10 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/107820135780">Game Link</a>
      */
     @Test
-    void GameOneTest() throws IOException, InterruptedException {
+    void GameOneTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
-        autoplay.play();
+        assertDoesNotThrow(() -> autoplay.play());
         assertEquals(418651116, board.boardState()); // hash value of the board, if hashing changes this will need to be recalculated
     }
 
@@ -28,10 +28,10 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/107825855352">Game Link</a>
      */
     @Test
-    void GameTwoTest() throws IOException, InterruptedException {
+    void GameTwoTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/andredar63_vs_AdClarky_2024.06.18.pgn"));
-        autoplay.play();
+        assertDoesNotThrow(() -> autoplay.play());
         assertEquals(-873082511, board.boardState());
     }
 
@@ -39,10 +39,10 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/112479669593">Game Link</a>
      */
     @Test
-    void checkmateTest() throws IOException, InterruptedException {
+    void checkmateTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
-        autoplay.play();
+        assertDoesNotThrow(() -> autoplay.play());
         assertTrue(board.isCheckmate());
         assertEquals(264244004, board.boardState());
     }
@@ -51,19 +51,19 @@ class GameTest {
      * <a href="https://www.chess.com/game/computer/132962671">Game Link</a>
      */
     @Test
-    void stalemateTest() throws IOException, InterruptedException {
+    void stalemateTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/stalemateGame.pgn"));
-        autoplay.play();
+        assertDoesNotThrow(() -> autoplay.play());
         assertTrue(board.isDraw(Piece.BLACK_PIECE));
         assertTrue(board.isStalemate(Piece.BLACK_PIECE));
     }
 
     @Test
-    void repetitionTest() throws IOException, InterruptedException {
+    void repetitionTest() throws IOException {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/repetitionGame.pgn"));
-        autoplay.play();
+        assertDoesNotThrow(() -> autoplay.play());
         assertTrue(board.isDraw(Piece.BLACK_PIECE));
         assertTrue(board.is3Repetition());
     }

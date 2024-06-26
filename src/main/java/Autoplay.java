@@ -58,7 +58,7 @@ public class Autoplay {
         }
     }
 
-    public void play() throws InterruptedException {
+    public void play() throws InterruptedException, InvalidMoveException {
         play(0);
     }
     public Collection<String> getMoves(){return moves;}

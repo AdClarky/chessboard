@@ -232,7 +232,6 @@ public class Board {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        // TODO: test invalid moves
         if(!getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             throw new InvalidMoveException("That isn't a valid move!");
         pushMove(oldX, oldY, newX, newY);
@@ -281,7 +280,6 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the redo moves stack.
      */
     public void undoMove(){
-        // TODO: test undoing more than necessary
         if(moves.isEmpty())
             return;
         Move move = moves.pop();
@@ -302,7 +300,6 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the moves made stack.
      */
     public void redoMove(){
-        // TODO: test redoing more than necessary
         if(redoMoves.isEmpty())
             return;
         Move move = redoMoves.pop();

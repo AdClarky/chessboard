@@ -97,8 +97,8 @@ class BoardTest {
     }
 
     @Test
-    void doesCurrentMoveSwitchCorrectly() throws InvalidMoveException {
-        board.makeMove(0, 1, 0, 2);
+    void doesCurrentMoveSwitchCorrectly() {
+        assertDoesNotThrow(() -> board.makeMove(0, 1, 0, 2));
         assertEquals(Piece.BLACK_PIECE, board.getCurrentTurn());
     }
 
@@ -115,27 +115,70 @@ class BoardTest {
     }
 
     @Test
-    void hashcodeTestOnBasicPawnMoveWithUndo() throws InvalidMoveException {
+    void hashcodeTestOnBasicPawnMoveWithUndo() {
         int state = board.boardState();
-        board.makeMove(4, 1, 4, 3);
+        assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
         assertNotEquals(state, board.boardState());
         board.undoMove();
         assertEquals(state, board.boardState());
     }
 
     @Test
-    void hashcodeTestOnMoveWherePreviousWasPassantable() throws InvalidMoveException {
-        board.makeMove(4, 1, 4, 3);
+    void hashcodeTestOnMoveWherePreviousWasPassantable() {
+        assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
         int state = board.boardState();
         int whitePawnHash = board.getPiece(4,3).hashCode();
         int blackPawnHash = board.getPiece(4,6).hashCode();
         int blankSquareHash = board.getPiece(4, 4).hashCode();
-        board.makeMove(4, 6, 4, 4);
+        assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
         assertNotEquals(state, board.boardState());
         board.undoMove();
         assertEquals(whitePawnHash, board.getPiece(4,3).hashCode());
         assertEquals(blackPawnHash, board.getPiece(4,6).hashCode());
         assertEquals(blankSquareHash, board.getPiece(4, 4).hashCode());
+        assertEquals(state, board.boardState());
+    }
+
+    @Test
+    void invalidMove() {
+        assertThrows(InvalidMoveException.class, () -> board.makeMove(0, 1, 0, 4));
+    }
+
+    @Test
+    void noPieceMove(){
+        assertThrows(InvalidMoveException.class, () -> board.makeMove(4, 4, 4, 3));
+    }
+
+    @Test
+    void undoMoreThanNecessary(){
+        int state = board.boardState();
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
+        assertDoesNotThrow(()->board.makeMove(3, 3, 4, 4));
+        board.undoMove();
+        board.undoMove();
+        board.undoMove();
+        board.undoMove();
+        board.undoMove();
+        assertEquals(state, board.boardState());
+    }
+
+
+    @Test
+    void redoMoreThanNecessary(){
+        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
+        assertDoesNotThrow(()->board.makeMove(3, 3, 4, 4));
+        int state = board.boardState();
+        board.undoMove();
+        board.undoMove();
+        board.undoMove();
+        board.redoMove();
+        board.redoMove();
+        board.redoMove();
+        board.redoMove();
+        board.redoMove();
+        board.redoMove();
         assertEquals(state, board.boardState());
     }
 }
