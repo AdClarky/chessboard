@@ -46,6 +46,13 @@ public class Move {
         makeMove();
     }
 
+    private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
+        board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
+        board.setSquare(move.newX(), move.newY(), pieceToMove);
+        pieceToMove.setX(move.newX());
+        pieceToMove.setY(move.newY());
+    }
+
     /**
      * Moves the relevant pieces with no validation.
      * Saves the moves made so they can be undone.
@@ -77,32 +84,33 @@ public class Move {
 
     /**
      * Undoes the move that was just made.
-     * The board returns to the exact same state as before being run.
+     * The board is left in the exact same state as before being run.
      */
     public void undo(){
         undone = true;
         if(wasPreviousPawnPassantable)
             previousPawn.firstMove();
         for(MoveValue move : movesToUndo.reversed()){
-            Piece pieceToMove = move.piece();
-            if(pieceToMove.getX() == move.newX() && pieceToMove.getY() == move.newY()){
-                // a piece moving to the same spot only occurs as the last move when it's a promotion
-                if(move == movesToUndo.getLast())
-                    board.removePiece(pieceToMove);
-                else
-                    board.addPiece(move.piece());
-            }
-            movePiece(pieceToMove, move);
+            addOrRemovePiece(move.piece(), move);
+            movePiece(move.piece(), move);
         }
         if(piece instanceof Pawn pawn && pawn.hadFirstMove() || notHadFirstMove)
             piece.undoMoveCondition();
     }
 
-    private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
-        board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
-        board.setSquare(move.newX(), move.newY(), pieceToMove);
-        pieceToMove.setX(move.newX());
-        pieceToMove.setY(move.newY());
+    /**
+     * Checks if a piece was taken or if it was a promotion and restores it.
+     * @param pieceToMove the piece being moved
+     * @param move the move made
+     */
+    private void addOrRemovePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
+        if(pieceToMove.getX() == move.newX() && pieceToMove.getY() == move.newY()){
+            // a piece moving to the same spot only occurs as the last move when it's a promotion
+            if(move == movesToUndo.getLast())
+                board.removePiece(pieceToMove);
+            else
+                board.addPiece(move.piece());
+        }
     }
 
     public int getX() {return x;}
