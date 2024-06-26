@@ -67,10 +67,7 @@ public class Move {
             }
             Piece pieceToMove = move.piece();
             movesToUndo.add(new MoveValue(pieceToMove, pieceToMove.getX(), pieceToMove.getY()));
-            board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
-            board.setSquare(move.newX(), move.newY(), pieceToMove);
-            pieceToMove.setX(move.newX());
-            pieceToMove.setY(move.newY());
+            movePiece(pieceToMove, move);
         }
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
@@ -93,13 +90,17 @@ public class Move {
                 else
                     board.addPiece(move.piece());
             }
-            board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
-            board.setSquare(move.newX(), move.newY(), pieceToMove);
-            pieceToMove.setX(move.newX());
-            pieceToMove.setY(move.newY());
+            movePiece(pieceToMove, move);
         }
         if(piece instanceof Pawn pawn && pawn.hadFirstMove() || notHadFirstMove)
             piece.undoMoveCondition();
+    }
+
+    private void movePiece(Piece pieceToMove, MoveValue move){
+        board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
+        board.setSquare(move.newX(), move.newY(), pieceToMove);
+        pieceToMove.setX(move.newX());
+        pieceToMove.setY(move.newY());
     }
 
     public int getX() {return x;}

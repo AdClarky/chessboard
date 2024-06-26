@@ -105,10 +105,10 @@ class ChessUtilsTest {
     }
 
     @Disabled
-    void knightMove() {
+    void takingPawnMove() {
     }
 
     @Disabled
-    void disambiguatedMove() {
+    void knightMove() {
     }
 }
