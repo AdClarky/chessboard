@@ -16,6 +16,11 @@ public class Autoplay {
         this.board = board;
     }
 
+    public Autoplay(Board board, Path path) throws IOException {
+        this.board = board;
+        importGame(path);
+    }
+
     public void importGame(Path path) throws IOException {
         Stream<String> lines = Files.lines(path);
         lines.forEach(this::processLine);
