@@ -66,6 +66,9 @@ public class Pawn extends Piece{
         return canBePassanted;
     }
 
+    @Override
+    public void undoMoveCondition(){canBePassanted = false;}
+
     public void setCanBePassanted(boolean passantable) {canBePassanted = passantable;}
 
     @Override

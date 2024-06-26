@@ -36,6 +36,9 @@ public class Rook extends Piece{
     public boolean hadFirstMove(){return moved;}
 
     @Override
+    public void undoMoveCondition(){moved = false;}
+
+    @Override
     public String toString() {return "R";}
 
     @Override

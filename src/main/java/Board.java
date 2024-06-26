@@ -226,7 +226,7 @@ public class Board {
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = moves.size();
         if(!moves.isEmpty() && moves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
-            previousPawn.setCanBePassanted(false);
+            previousPawn.undoMoveCondition();
         moves.push(move);
         lastMoveMade = moves.getFirst();
         nextTurn();

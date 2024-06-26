@@ -34,6 +34,9 @@ public class Knight extends Piece{
     public void firstMove() {}
 
     @Override
+    public void undoMoveCondition(){}
+
+    @Override
     public boolean hadFirstMove(){return false;}
 
     @Override

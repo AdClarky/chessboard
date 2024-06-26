@@ -30,6 +30,9 @@ public class Bishop extends Piece{
     public void firstMove() {}
 
     @Override
+    public void undoMoveCondition(){}
+
+    @Override
     public boolean hadFirstMove(){return false;}
 
     @Override

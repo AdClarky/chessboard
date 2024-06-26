@@ -54,6 +54,8 @@ public abstract class Piece {
      */
     public abstract void firstMove();
 
+    public abstract void undoMoveCondition();
+
     /**
      * For pieces where the first move must be tracked.
      * @return if they've had their first move.

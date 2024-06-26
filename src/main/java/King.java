@@ -68,6 +68,9 @@ public class King extends Piece{
     public boolean hadFirstMove(){return notMoved;}
 
     @Override
+    public void undoMoveCondition(){notMoved = true;}
+
+    @Override
     public String toString() {
         return "K";
     }
