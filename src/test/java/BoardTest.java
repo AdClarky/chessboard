@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ class BoardTest {
     }
 
     @Test
-    void doesCurrentMoveSwitchCorrectly(){
+    void doesCurrentMoveSwitchCorrectly() throws InvalidMoveException {
         board.makeMove(0, 1, 0, 2);
         assertEquals(Piece.BLACK_PIECE, board.getCurrentTurn());
     }
@@ -116,7 +115,7 @@ class BoardTest {
     }
 
     @Test
-    void hashcodeTestOnBasicPawnMoveWithUndo(){
+    void hashcodeTestOnBasicPawnMoveWithUndo() throws InvalidMoveException {
         int state = board.boardState();
         board.makeMove(4, 1, 4, 3);
         assertNotEquals(state, board.boardState());
@@ -125,7 +124,7 @@ class BoardTest {
     }
 
     @Test
-    void hashcodeTestOnMoveWherePreviousWasPassantable(){
+    void hashcodeTestOnMoveWherePreviousWasPassantable() throws InvalidMoveException {
         board.makeMove(4, 1, 4, 3);
         int state = board.boardState();
         int whitePawnHash = board.getPiece(4,3).hashCode();
@@ -138,49 +137,5 @@ class BoardTest {
         assertEquals(blackPawnHash, board.getPiece(4,6).hashCode());
         assertEquals(blankSquareHash, board.getPiece(4, 4).hashCode());
         assertEquals(state, board.boardState());
-    }
-
-    @Disabled
-    void makeMove() {
-    }
-
-    @Disabled
-    void testMakeMove() {
-    }
-
-    @Disabled
-    void undoMove() {
-    }
-
-    @Disabled
-    void redoMove() {
-    }
-
-    @Disabled
-    void redoAllMoves() {
-    }
-
-    @Disabled
-    void isCheckmate() {
-    }
-
-    @Disabled
-    void setSquare() {
-    }
-
-    @Disabled
-    void getColourPieces() {
-    }
-
-    @Disabled
-    void testGetColourPieces() {
-    }
-
-    @Disabled
-    void getLastMoveMade() {
-    }
-
-    @Disabled
-    void addBoardListener() {
     }
 }

@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 class PawnTest {
     @Test
-    void isNotPassantableAfterAnotherPawnMove(){
+    void isNotPassantableAfterAnotherPawnMove() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -13,7 +13,7 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPawnMoveThenUndone(){
+    void isNotPassantableAfterAnotherPawnMoveThenUndone() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -26,7 +26,7 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone(){
+    void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -42,7 +42,7 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMove(){
+    void isNotPassantableAfterAnotherPieceMove() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -51,7 +51,7 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMoveThenUndone(){
+    void isNotPassantableAfterAnotherPieceMoveThenUndone() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -62,7 +62,7 @@ class PawnTest {
     }
 
     @Test
-    void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone(){
+    void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone() throws InvalidMoveException {
         Board board = new Board();
         board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());

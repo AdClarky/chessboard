@@ -230,11 +230,11 @@ public class Board {
      * @param newX new x position of the piece
      * @param newY new y position of the piece
      */
-    public void makeMove(int oldX, int oldY, int newX, int newY){
+    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
         // TODO: test invalid moves
         if(!getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
-            return;
+            throw new InvalidMoveException("That isn't a valid move!");
         pushMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
@@ -269,7 +269,7 @@ public class Board {
      * @see Board#makeMove(int, int, int,int)
      * @param move instance of move which specifies the piece being moved and where to.
      */
-    public void makeMove(@NotNull MoveValue move){
+    public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {
         makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 

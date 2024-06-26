@@ -50,7 +50,7 @@ public class Autoplay {
         return false;
     }
 
-    public void play(int delay) throws InterruptedException {
+    public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
             board.makeMove(ChessUtils.chessToMove(move, board));
             TimeUnit.MILLISECONDS.sleep(delay);
