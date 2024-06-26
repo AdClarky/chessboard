@@ -7,7 +7,7 @@ import java.util.Objects;
  * Chess Rook piece
  */
 public class Rook extends Piece{
-    private boolean moved = true;
+    private boolean moved = false;
 
     /**
      * Initialises Rook piece

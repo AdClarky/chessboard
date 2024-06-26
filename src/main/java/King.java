@@ -8,7 +8,7 @@ import java.util.Objects;
  * Only one per side.
  */
 public class King extends Piece{
-    private boolean notMoved = true;
+    private boolean moved = false;
 
     /**
      * Initialises the king piece.
@@ -28,12 +28,12 @@ public class King extends Piece{
                 cantMove(x, y, board, moves);
             }
         }
-        if(notMoved){ // castling
-            if(board.getPiece(x-3, y) instanceof Rook rook && rook.hadFirstMove()){
+        if(!moved){ // castling
+            if(board.getPiece(x-3, y) instanceof Rook rook && !rook.hadFirstMove()){
                 if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
                     moves.add(new Coordinate(x-2, y));
             }
-            if(board.getPiece(x+4, y) instanceof Rook rook && rook.hadFirstMove()){
+            if(board.getPiece(x+4, y) instanceof Rook rook && !rook.hadFirstMove()){
                 if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
                     moves.add(new Coordinate(x+2, y));
             }
@@ -61,14 +61,14 @@ public class King extends Piece{
 
     @Override
     public void firstMove(){
-        notMoved = false;
+        moved = true;
     }
 
     @Override
-    public boolean hadFirstMove(){return notMoved;}
+    public boolean hadFirstMove(){return moved;}
 
     @Override
-    public void undoMoveCondition(){notMoved = true;}
+    public void undoMoveCondition(){moved = false;}
 
     @Override
     public boolean equals(Object o) {
@@ -76,12 +76,12 @@ public class King extends Piece{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         King king = (King) o;
-        return notMoved == king.notMoved;
+        return moved == king.moved;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), notMoved);
+        return Objects.hash(super.hashCode(), moved);
     }
 
     private static Icon getIcon(int colour){

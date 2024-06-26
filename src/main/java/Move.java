@@ -19,7 +19,7 @@ public class Move {
     private final List<MoveValue> movesMade;
     private boolean undone = false;
     private boolean taking = false;
-    private boolean previousFirstMove;
+    private boolean notHadFirstMove;
 
 
     /**
@@ -79,7 +79,7 @@ public class Move {
             pieceToMove.setX(move.newX());
             pieceToMove.setY(move.newY());
         }
-        previousFirstMove = piece.hadFirstMove();
+        notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
     }
 
@@ -104,7 +104,7 @@ public class Move {
             pieceToMove.setX(move.newX());
             pieceToMove.setY(move.newY());
         }
-        if(piece instanceof Pawn pawn && pawn.hadFirstMove() || !previousFirstMove)
+        if(piece instanceof Pawn pawn && pawn.hadFirstMove() || notHadFirstMove)
             piece.undoMoveCondition();
     }
 
