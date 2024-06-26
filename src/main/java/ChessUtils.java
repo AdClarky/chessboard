@@ -48,7 +48,7 @@ public final class ChessUtils {
         }else if("O-O-O".equals(move)) {
             return getCastlingMove(5, board);
         }
-        Coordinate newCoordinate = Coordinate.createCoorindateFromString(move);
+        Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
         String pieceLetter;
         if(Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = "";
@@ -84,10 +84,10 @@ public final class ChessUtils {
         int length = move.length();
         for(int i = 0; i < length; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x' && i != length - 2){ // x value given
-                Coordinate correctX = Coordinate.createCoorindateFromString(move.charAt(i) + "0");
+                Coordinate correctX = Coordinate.createCoordinateFromString(move.charAt(i) + "0");
                 possiblePieces.removeIf(piece -> piece.getX() != correctX.x());
             }else if(Character.isDigit(move.charAt(i)) && i != length - 1){ // y value given
-                Coordinate correctY = Coordinate.createCoorindateFromString("a" + move.charAt(i));
+                Coordinate correctY = Coordinate.createCoordinateFromString("a" + move.charAt(i));
                 possiblePieces.removeIf(piece -> piece.getY() != correctY.y());
             }
         }
