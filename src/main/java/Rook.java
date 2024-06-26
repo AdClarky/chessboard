@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.Icon;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -37,8 +39,7 @@ public class Rook extends Piece{
 
     @Override
     public void undoMoveCondition(){moved = false;}
-
-    // TODO: test rook equals
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,7 +54,7 @@ public class Rook extends Piece{
         return Objects.hash(super.hashCode(), moved);
     }
 
-    private static Icon getIcon(int colour){
+    private static @NotNull Icon getIcon(int colour){
         if(colour == BLACK_PIECE)
             return ImageUtils.getStretchedImage(Rook.class.getResource("/black_rook.png"));
         else
