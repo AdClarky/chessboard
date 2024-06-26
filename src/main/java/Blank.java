@@ -14,13 +14,11 @@ public class Blank extends Piece {
         super(x, y, null, EMPTY_PIECE, 'Z');
     }
 
-    // TODO: test
     @Override
     public List<Coordinate> getPossibleMoves(Board board) {
         return new ArrayList<>(0);
     }
 
-    // TODO: test
     @Override
     public void firstMove() {}
 
@@ -30,7 +28,6 @@ public class Blank extends Piece {
     @Override
     public boolean hadFirstMove() {return false;}
 
-    // TODO: test
     @Override
     public String toString() {
         return "Blank";
