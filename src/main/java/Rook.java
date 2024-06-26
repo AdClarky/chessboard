@@ -1,6 +1,7 @@
 import javax.swing.Icon;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Chess Rook piece
@@ -36,6 +37,20 @@ public class Rook extends Piece{
 
     @Override
     public String toString() {return "R";}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Rook rook = (Rook) o;
+        return moved == rook.moved;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), moved);
+    }
 
     private static Icon getIcon(int colour){
         if(colour == BLACK_PIECE)

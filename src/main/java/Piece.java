@@ -4,6 +4,7 @@ import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * An abstract class which parents all chess pieces.
@@ -74,6 +75,19 @@ public abstract class Piece {
 
     @Override
     public abstract String toString();
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Piece piece = (Piece) obj;
+        return x == piece.x && y == piece.y && direction == piece.direction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, direction);
+    }
 
     public Icon getPieceIcon() {return pieceIcon;}
 

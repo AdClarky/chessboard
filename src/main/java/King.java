@@ -1,6 +1,7 @@
 import javax.swing.Icon;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Chess board king piece.
@@ -69,6 +70,20 @@ public class King extends Piece{
     @Override
     public String toString() {
         return "K";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        King king = (King) o;
+        return notMoved == king.notMoved;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), notMoved);
     }
 
     private static Icon getIcon(int colour){

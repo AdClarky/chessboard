@@ -1,6 +1,6 @@
 import javax.swing.Icon;
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Pawn chess piece
@@ -70,6 +70,20 @@ public class Pawn extends Piece{
 
     @Override
     public String toString() {return "";}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+        Pawn pawn = (Pawn) obj;
+        return canBePassanted == pawn.canBePassanted;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), canBePassanted);
+    }
 
     private static Icon getIcon(int colour) {
         if(colour == BLACK_PIECE)
