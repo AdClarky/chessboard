@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -73,7 +75,6 @@ public class Pawn extends Piece{
     @Override
     public String toString() {return "";}
 
-    // TODO: test pawn equals
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -88,7 +89,7 @@ public class Pawn extends Piece{
         return Objects.hash(super.hashCode(), canBePassanted);
     }
 
-    private static Icon getIcon(int colour) {
+    private static @NotNull Icon getIcon(int colour) {
         if(colour == BLACK_PIECE)
             return ImageUtils.getStretchedImage(Pawn.class.getResource("/black_pawn.png"));
         else

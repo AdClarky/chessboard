@@ -73,4 +73,28 @@ class PawnTest {
         board.redoMove();
         assertFalse(board.getPiece(3,3).hadFirstMove());
     }
+
+    @Test
+    void pawnHasntMoved(){
+        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE);
+        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE);
+        assertEquals(pawn, pawn2);
+    }
+
+    @Test
+    void onePawnPassantable(){
+        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE);
+        pawn.firstMove();
+        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE);
+        assertNotEquals(pawn, pawn2);
+    }
+
+    @Test
+    void bothPawnsPassantable(){
+        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE);
+        pawn.firstMove();
+        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE);
+        pawn2.firstMove();
+        assertEquals(pawn, pawn2);
+    }
 }

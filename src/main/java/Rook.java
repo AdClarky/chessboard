@@ -39,7 +39,7 @@ public class Rook extends Piece{
 
     @Override
     public void undoMoveCondition(){moved = false;}
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
