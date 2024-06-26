@@ -43,17 +43,9 @@ public final class ChessUtils {
 
     public static MoveValue chessToMove(String move, Board board){
         if("O-O".equals(move)) {
-            if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-                return new MoveValue(board.getPiece(3,7),1,7);
-            }else{
-                return new MoveValue(board.getPiece(3, 0), 1, 0);
-            }
+            return getCastlingMove(1, board);
         }else if("O-O-O".equals(move)) {
-            if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-                return new MoveValue(board.getPiece(3, 7), 5, 7);
-            }else{
-                return new MoveValue(board.getPiece(3, 0), 5, 0);
-            }
+            return getCastlingMove(5, board);
         }
         Coordinate newCoordinate = Coordinate.fromString(move);
         String pieceLetter;
@@ -70,8 +62,17 @@ public final class ChessUtils {
         }
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
+
         Piece piece = possiblePieces.getFirst();
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
+    }
+
+    static MoveValue getCastlingMove(int newX, Board board){
+        if(board.getCurrentTurn() == Piece.BLACK_PIECE){
+            return new MoveValue(board.getPiece(3,7),newX,7);
+        }else{
+            return new MoveValue(board.getPiece(3, 0), newX, 0);
+        }
     }
 
     /**
