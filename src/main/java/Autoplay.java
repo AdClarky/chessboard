@@ -16,12 +16,9 @@ public class Autoplay {
         this.board = board;
     }
 
-    public void importGame(Path path){
-        try (Stream<String> lines = Files.lines(path)) {
-            lines.forEach(this::processLine);
-        } catch (IOException ex) {
-            System.err.println("Could not find file");
-        }
+    public void importGame(Path path) throws IOException {
+        Stream<String> lines = Files.lines(path);
+        lines.forEach(this::processLine);
     }
 
     void processLine(@NotNull String line){

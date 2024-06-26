@@ -202,12 +202,11 @@ public class Board {
     }
 
     boolean is3Repetition(){
-        if(moves.size() < 6)
+        if(moves.size() < 8)
             return false;
         int boardState = Arrays.deepHashCode(board);
         for(int i = 0; i < 2; i++){
-            undoMove();
-            undoMove();
+            undoMultipleMoves(4);
             if(boardState != Arrays.deepHashCode(board)) {
                 redoAllMoves();
                 return false;
@@ -247,7 +246,7 @@ public class Board {
     }
 
     /**
-     * Creates a move and pushes it to the stack
+     * Creates a move and pushes it to the stack.
      * @param oldX current x position of the piece
      * @param oldY current y position of the piece
      * @param newX new x position of the piece
@@ -288,6 +287,12 @@ public class Board {
         move.undo();
         redoMoves.push(move);
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+    }
+
+    public void undoMultipleMoves(int numOfMoves){
+        for(int i = 0; i < numOfMoves; i++){
+            undoMove();
+        }
     }
 
     /**
