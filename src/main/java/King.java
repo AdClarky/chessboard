@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.Icon;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -70,7 +72,6 @@ public class King extends Piece{
     @Override
     public void undoMoveCondition(){moved = false;}
 
-    // TODO: test king equals
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,7 +86,7 @@ public class King extends Piece{
         return Objects.hash(super.hashCode(), moved);
     }
 
-    private static Icon getIcon(int colour){
+    private static @NotNull Icon getIcon(int colour){
         if(colour == BLACK_PIECE)
             return ImageUtils.getStretchedImage(King.class.getResource("/black_king.png"));
         else
