@@ -124,6 +124,22 @@ class BoardTest {
         assertEquals(state, board.boardState());
     }
 
+    @Test
+    void hashcodeTestOnMoveWherePreviousWasPassantable(){
+        board.moveWithValidation(4, 1, 4, 3);
+        int state = board.boardState();
+        int whitePawnHash = board.getPiece(4,3).hashCode();
+        int blackPawnHash = board.getPiece(4,6).hashCode();
+        int blankSquareHash = board.getPiece(4, 4).hashCode();
+        board.moveWithValidation(4, 6, 4, 4);
+        assertNotEquals(state, board.boardState());
+        board.undoMove();
+        assertEquals(whitePawnHash, board.getPiece(4,3).hashCode());
+        assertEquals(blackPawnHash, board.getPiece(4,6).hashCode());
+        assertEquals(blankSquareHash, board.getPiece(4, 4).hashCode());
+        assertEquals(state, board.boardState());
+    }
+
     @Disabled
     void moveWithValidation() {
     }

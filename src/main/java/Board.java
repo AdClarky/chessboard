@@ -13,13 +13,13 @@ import java.util.List;
  */
 public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private int currentTurn = Piece.WHITE_PIECE;
     private final Piece[][] board  =  new Piece[8][8];
-    private Move lastMoveMade;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
+    private int currentTurn = Piece.WHITE_PIECE;
+    private Move lastMoveMade;
     private int lastPawnOrCapture = 0;
 
     /**

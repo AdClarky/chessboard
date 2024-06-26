@@ -32,5 +32,4 @@ public class Blank extends Piece {
     public String toString() {
         return "Blank " + x + "," + y + "; ";
     }
-
 }
