@@ -96,6 +96,47 @@ class MoveTest {
     }
 
     @Test
+    void takingMoveUndoRedoRepeated(){
+        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), null, board);
+        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), pawnE4.getPiece(), board);
+        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), pawnD5.getPiece(), board);
+        pawnXD5.undo();
+        pawnD5.undo();
+        pawnD5.makeMove();
+        pawnD5.undo();
+        pawnD5.makeMove();
+        pawnXD5.makeMove();
+        pawnXD5.undo();
+        pawnXD5.makeMove();
+        pawnXD5.undo();
+        pawnD5.undo();
+        int x = 3, y = 1;
+        assertInstanceOf(Blank.class, board.getPiece(x, y));
+        assertEquals(x, board.getPiece(x, y).getX());
+        assertEquals(y, board.getPiece(x, y).getY());
+        assertEquals(Piece.EMPTY_PIECE, board.getPiece(x, y).getDirection());
+        y = 3;
+        assertInstanceOf(Pawn.class, board.getPiece(x, y));
+        assertEquals(x, board.getPiece(x, y).getX());
+        assertEquals(y, board.getPiece(x, y).getY());
+        assertEquals(Piece.WHITE_PIECE, board.getPiece(x, y).getDirection());
+        x = 4; y = 4;
+        assertInstanceOf(Blank.class, board.getPiece(x, y));
+        assertEquals(x, board.getPiece(x, y).getX());
+        assertEquals(y, board.getPiece(x, y).getY());
+        assertEquals(Piece.EMPTY_PIECE, board.getPiece(x, y).getDirection());
+        y = 6;
+        assertInstanceOf(Pawn.class, board.getPiece(x, y));
+        assertEquals(x, board.getPiece(x, y).getX());
+        assertEquals(y, board.getPiece(x, y).getY());
+        assertEquals(Piece.BLACK_PIECE, board.getPiece(x, y).getDirection());
+
+        assertEquals(16, board.getColourPieces(Piece.WHITE_PIECE).size());
+        assertEquals(16, board.getColourPieces(Piece.BLACK_PIECE).size());
+    }
+
+
+    @Test
     void takingMoveDoubleUndo(){
         Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), null, board);
         Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), pawnE4.getPiece(), board);
