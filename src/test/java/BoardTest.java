@@ -115,6 +115,15 @@ class BoardTest {
         assertTrue(board.isKingInCheck(Piece.WHITE_PIECE));
     }
 
+    @Test
+    void hashcodeTestOnBasicPawnMoveWithUndo(){
+        int state = board.boardState();
+        board.moveWithValidation(4, 1, 4, 3);
+        assertNotEquals(state, board.boardState());
+        board.undoMove();
+        assertEquals(state, board.boardState());
+    }
+
     @Disabled
     void moveWithValidation() {
     }

@@ -225,15 +225,14 @@ public class Board {
         Move move = new Move(newX,newY,board[oldY][oldX],this); // makes a move
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = moves.size();
-        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
         if(!moves.isEmpty() && moves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
             previousPawn.setCanBePassanted(false);
         moves.push(move);
         lastMoveMade = moves.getFirst();
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
-        if(isDraw(currentTurn))
-            notifyDraw();
+//        if(isDraw(currentTurn))
+//            notifyDraw();
         if(isCheckmate()) {
             King king = (King) getColourPieces(currentTurn).getFirst();
             notifyCheckmate(king.getX(), king.getY());
@@ -246,6 +245,10 @@ public class Board {
      */
     public void moveWithValidation(@NotNull MoveValue move){
         moveWithValidation(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
+    }
+
+    int boardState(){
+        return Arrays.deepHashCode(board);
     }
 
     /**

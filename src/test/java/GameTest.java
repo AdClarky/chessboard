@@ -40,5 +40,6 @@ class GameTest {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
+        assertTrue(board.isCheckmate());
     }
 }

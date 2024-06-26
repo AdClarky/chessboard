@@ -57,6 +57,7 @@ public class Move {
             pieceToMove.setX(move.newX());
             pieceToMove.setY(move.newY());
         }
+        piece.firstMove(); // if a piece has a first move constraint e.g. pawn, rook, king activates it
     }
 
     /**
@@ -79,6 +80,8 @@ public class Move {
             pieceToMove.setX(move.newX());
             pieceToMove.setY(move.newY());
         }
+        if(piece instanceof Pawn pawn && pawn.hadFirstMove())
+            pawn.setCanBePassanted(false);
     }
 
     public int getX() {return x;}
