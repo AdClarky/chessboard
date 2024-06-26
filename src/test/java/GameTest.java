@@ -20,7 +20,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
         autoplay.play();
-        System.out.println(board.boardState());
+        assertEquals(418651116, board.boardState()); // hash value of the board, if hashing changes this will need to be recalculated
     }
 
     /**
@@ -31,6 +31,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/andredar63_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
+        assertEquals(-873082511, board.boardState());
     }
 
     /**
@@ -42,5 +43,6 @@ class GameTest {
         autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
         assertTrue(board.isCheckmate());
+        assertEquals(264244004, board.boardState());
     }
 }
