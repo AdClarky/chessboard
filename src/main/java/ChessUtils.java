@@ -62,7 +62,6 @@ public final class ChessUtils {
         }
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
-
         Piece piece = possiblePieces.getFirst();
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
