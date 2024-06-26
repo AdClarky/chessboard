@@ -26,7 +26,7 @@ public abstract class Piece {
     protected int x;
     protected int y;
     protected final int direction;
-    protected final char pieceCharacter;
+    private final char pieceCharacter;
 
     /**
      * Initialises the position and whether the piece is white or black

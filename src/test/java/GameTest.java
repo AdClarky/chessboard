@@ -38,11 +38,23 @@ class GameTest {
      * <a href="https://www.chess.com/game/live/112479669593">Game Link</a>
      */
     @Test
-    void GameThreeTest(){
+    void checkmateTest(){
         Autoplay autoplay = new Autoplay(board);
         autoplay.importGame(Path.of("src/test/resources/junk437_vs_AdClarky_2024.06.18.pgn"));
         autoplay.play();
         assertTrue(board.isCheckmate());
         assertEquals(264244004, board.boardState());
+    }
+
+    /**
+     * <a href="https://www.chess.com/game/computer/132962671">Game Link</a>
+     */
+    @Test
+    void stalemateTest(){
+        Autoplay autoplay = new Autoplay(board);
+        autoplay.importGame(Path.of("src/test/resources/__vs_______.__.__.pgn"));
+        autoplay.play();
+        assertTrue(board.isDraw(Piece.BLACK_PIECE));
+        assertTrue(board.isStalemate(Piece.BLACK_PIECE));
     }
 }

@@ -178,6 +178,11 @@ public class Board {
         return true;
     }
 
+    /**
+     * Calculates if the current position is a draw.
+     * @param side the side which may have been stalemated
+     * @return if its a draw
+     */
     boolean isDraw(int side){
         return isStalemate(side) ||
                 is50MoveRule() ||
