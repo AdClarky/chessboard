@@ -222,11 +222,13 @@ public class Board {
         Piece piece = getPiece(oldX, oldY);
         if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-        Move move = new Move(newX,newY,board[oldY][oldX],this); // makes a move
+        Move move;
+        if(!moves.isEmpty() && moves.getLast().getPiece() instanceof Pawn)
+            move = new Move(newX,newY,board[oldY][oldX], (Pawn) moves.getLast().getPiece(), this);
+        else
+            move = new Move(newX,newY,board[oldY][oldX],this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = moves.size();
-        if(!moves.isEmpty() && moves.getFirst().getPiece() instanceof Pawn previousPawn) // stops previous pawn from being en passanted
-            previousPawn.undoMoveCondition();
         moves.push(move);
         lastMoveMade = moves.getFirst();
         nextTurn();
