@@ -99,7 +99,7 @@ class BoardTest {
 
     @Test
     void doesCurrentMoveSwitchCorrectly(){
-        board.moveWithValidation(0, 1, 0, 2);
+        board.makeMove(0, 1, 0, 2);
         assertEquals(Piece.BLACK_PIECE, board.getCurrentTurn());
     }
 
@@ -118,7 +118,7 @@ class BoardTest {
     @Test
     void hashcodeTestOnBasicPawnMoveWithUndo(){
         int state = board.boardState();
-        board.moveWithValidation(4, 1, 4, 3);
+        board.makeMove(4, 1, 4, 3);
         assertNotEquals(state, board.boardState());
         board.undoMove();
         assertEquals(state, board.boardState());
@@ -126,12 +126,12 @@ class BoardTest {
 
     @Test
     void hashcodeTestOnMoveWherePreviousWasPassantable(){
-        board.moveWithValidation(4, 1, 4, 3);
+        board.makeMove(4, 1, 4, 3);
         int state = board.boardState();
         int whitePawnHash = board.getPiece(4,3).hashCode();
         int blackPawnHash = board.getPiece(4,6).hashCode();
         int blankSquareHash = board.getPiece(4, 4).hashCode();
-        board.moveWithValidation(4, 6, 4, 4);
+        board.makeMove(4, 6, 4, 4);
         assertNotEquals(state, board.boardState());
         board.undoMove();
         assertEquals(whitePawnHash, board.getPiece(4,3).hashCode());
@@ -141,11 +141,11 @@ class BoardTest {
     }
 
     @Disabled
-    void moveWithValidation() {
+    void makeMove() {
     }
 
     @Disabled
-    void testMoveWithValidation() {
+    void testMakeMove() {
     }
 
     @Disabled

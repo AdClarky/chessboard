@@ -169,10 +169,9 @@ public class Board {
      */
     boolean isCheckmate(){
         ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
-        for(int i = 0; i < enemyPieces.size(); i++){
-            Piece piece = enemyPieces.get(i);
-            for(Coordinate move : piece.getPossibleMoves(this)){
-                if(!isMoveUnsafe(move.x(), move.y(), piece))
+        for (Piece enemyPiece : enemyPieces) {
+            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
+                if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
                     return false;
             }
         }
@@ -210,8 +209,6 @@ public class Board {
             }
         }
         redoAllMoves();
-        if(boardState != Arrays.deepHashCode(board))
-            System.out.println("nope");
         return true;
     }
 
@@ -229,20 +226,11 @@ public class Board {
      * @param newX new x position of the piece
      * @param newY new y position of the piece
      */
-    public void moveWithValidation(int oldX, int oldY, int newX, int newY){
+    public void makeMove(int oldX, int oldY, int newX, int newY){
         redoAllMoves();
-        Piece piece = getPiece(oldX, oldY);
-        if(!piece.getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
+        if(!getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             return;
-        Move move;
-        if (moves.isEmpty())
-            move = new Move(newX, newY, board[oldY][oldX], null,this);
-        else
-            move = new Move(newX, newY, board[oldY][oldX], moves.getFirst().getPiece(), this);
-        if(move.getPiece() instanceof Pawn || move.hasTaken())
-            lastPawnOrCapture = moves.size();
-        moves.push(move);
-        lastMoveMade = moves.getFirst();
+        pushMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
         if(isDraw(currentTurn))
@@ -254,11 +242,30 @@ public class Board {
     }
 
     /**
-     * @see Board#moveWithValidation(int, int, int,int)
+     * Creates a move and pushes it to the stack
+     * @param oldX current x position of the piece
+     * @param oldY current y position of the piece
+     * @param newX new x position of the piece
+     * @param newY new y position of the piece
+     */
+    private void pushMove(int oldX, int oldY, int newX, int newY){
+        Move move;
+        if (moves.isEmpty())
+            move = new Move(newX, newY, board[oldY][oldX], null,this);
+        else
+            move = new Move(newX, newY, board[oldY][oldX], moves.getFirst().getPiece(), this);
+        if(move.getPiece() instanceof Pawn || move.hasTaken())
+            lastPawnOrCapture = moves.size();
+        lastMoveMade = move;
+        moves.push(move);
+    }
+
+    /**
+     * @see Board#makeMove(int, int, int,int)
      * @param move instance of move which specifies the piece being moved and where to.
      */
-    public void moveWithValidation(@NotNull MoveValue move){
-        moveWithValidation(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
+    public void makeMove(@NotNull MoveValue move){
+        makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 
     int boardState(){

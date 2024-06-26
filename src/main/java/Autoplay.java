@@ -55,7 +55,7 @@ public class Autoplay {
 
     public void play(int delay){
         for(String move : moves){
-            board.moveWithValidation(ChessUtils.chessToMove(move, board));
+            board.makeMove(ChessUtils.chessToMove(move, board));
             try {
                 TimeUnit.MILLISECONDS.sleep(delay);
             }catch (InterruptedException e){

@@ -5,9 +5,9 @@ class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPawnMove(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(3, 6, 3, 4);
+        board.makeMove(3, 6, 3, 4);
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
     }
@@ -15,9 +15,9 @@ class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenUndone(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(3, 6, 3, 4);
+        board.makeMove(3, 6, 3, 4);
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
@@ -28,9 +28,9 @@ class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(3, 6, 3, 4);
+        board.makeMove(3, 6, 3, 4);
         assertTrue(board.getPiece(3,4).hadFirstMove());
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
@@ -44,18 +44,18 @@ class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPieceMove(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(6, 7, 5, 5);
+        board.makeMove(6, 7, 5, 5);
         assertFalse(board.getPiece(3,3).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenUndone(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(6, 7, 5, 5);
+        board.makeMove(6, 7, 5, 5);
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
         assertTrue(board.getPiece(3,3).hadFirstMove());
@@ -64,9 +64,9 @@ class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone(){
         Board board = new Board();
-        board.moveWithValidation(3, 1, 3, 3);
+        board.makeMove(3, 1, 3, 3);
         assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.moveWithValidation(6, 7, 5, 5);
+        board.makeMove(6, 7, 5, 5);
         assertFalse(board.getPiece(3,3).hadFirstMove());
         board.undoMove();
         assertTrue(board.getPiece(3,3).hadFirstMove());
