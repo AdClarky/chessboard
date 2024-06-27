@@ -9,7 +9,28 @@ public class ChessboardBuilder {
     int squaresProcessed = 0;
 
     public @NotNull Chessboard createChessboardDefaultSetup() {
-        return createChessboardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        whitePieces.add(new King(3, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Knight(1, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Bishop(2, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Queen(4, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Bishop(5, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Knight(6, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new Rook(7, 0, Piece.WHITE_PIECE, board));
+        blackPieces.add(new King(3, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Rook(0, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Knight(1, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Bishop(2, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Queen(4, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Bishop(5, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Knight(6, 7, Piece.BLACK_PIECE, board));
+        blackPieces.add(new Rook(7, 7, Piece.BLACK_PIECE, board));
+        for(int x = 0; x < 8; x++){
+            blackPieces.add(new Pawn(x, 6, Piece.BLACK_PIECE, board));
+            whitePieces.add(new Pawn(x, 1, Piece.WHITE_PIECE, board));
+        }
+        board.populateBoard(whitePieces, blackPieces);
+        return board;
     }
 
     public @NotNull Chessboard createChessboardFromFen(String fenString) {
