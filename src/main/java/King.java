@@ -18,8 +18,8 @@ public class King extends Piece{
      * @param y starting y value
      * @param direction white or black
      */
-    public King(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, 'K');
+    public King(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, 'K', board);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<MoveValue> getMoves(int newX, int newY, Board board) {
+    public ArrayList<MoveValue> getMoves(int newX, int newY) {
         ArrayList<MoveValue> moves = new ArrayList<>(2);
         if(newX - x == -2) { // short castle
             moves.add(new MoveValue(board.getPiece(0, newY), 2   , newY));

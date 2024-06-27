@@ -11,8 +11,8 @@ public class Queen extends Piece{
      * @param y starting y position
      * @param direction black or white
      */
-    public Queen(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, 'Q');
+    public Queen(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, 'Q', board);
     }
 
     @Override

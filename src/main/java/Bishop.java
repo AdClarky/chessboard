@@ -14,8 +14,8 @@ public class Bishop extends Piece{
      * @param y starting y position
      * @param direction flags are {@link Piece#BLACK_PIECE} and {@link Piece#WHITE_PIECE}
      */
-    public Bishop(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, 'B');
+    public Bishop(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, 'B', board);
     }
 
     @Override

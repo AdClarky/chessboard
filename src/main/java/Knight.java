@@ -15,8 +15,8 @@ public class Knight extends Piece{
      * @param y starting y value
      * @param direction black or white
      */
-    public Knight(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, 'N');
+    public Knight(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, 'N', board);
     }
 
     @Override

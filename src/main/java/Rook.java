@@ -17,8 +17,8 @@ public class Rook extends Piece{
      * @param y starting y
      * @param direction black or white
      */
-    public Rook(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, 'R');
+    public Rook(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, 'R', board);
     }
 
     @Override

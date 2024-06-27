@@ -45,11 +45,11 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<MoveValue> getMoves(int newX, int newY, Board board) {
+    public ArrayList<MoveValue> getMoves(int newX, int newY) {
         ArrayList<MoveValue> moves = new ArrayList<>(2);
         if(newY == 7 || newY == 0) { // if pawn promotion
             moves.add(new MoveValue(this, newX, newY));
-            moves.add(new MoveValue(new Queen(newX, newY, direction), newX, newY));
+            moves.add(new MoveValue(new Queen(newX, newY, direction, board), newX, newY));
         }else if(newX != x && board.isSquareBlank(newX, newY)){ // if passanting
             moves.add(new MoveValue(board.getPiece(newX, newY-direction), newX, newY));
             moves.add(new MoveValue(this, newX, newY));
