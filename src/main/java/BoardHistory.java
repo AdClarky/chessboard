@@ -27,7 +27,7 @@ public class BoardHistory {
     }
 
     public @Nullable Move redoMove(){
-        if(moves.isEmpty())
+        if(redoMoves.isEmpty())
             return null;
         Move move = redoMoves.pop();
         move.makeMove();

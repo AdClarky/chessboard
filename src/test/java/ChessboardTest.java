@@ -64,6 +64,12 @@ class ChessboardTest {
     }
 
     @Test
+    void hashcodeOnSameState(){
+        int state = board.getState();
+        assertEquals(state, board.getState());
+    }
+
+    @Test
     void hashcodeTestOnBasicPawnMoveWithUndo() {
         int state = board.getState();
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
