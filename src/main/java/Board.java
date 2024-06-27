@@ -1,7 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -11,117 +10,16 @@ import java.util.Collection;
  * Can use getMoves to find the individual moves made - e.g. in castling what moves were made.
  */
 public class Board {
+    private BoardBoard board;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private final Piece[][] board  =  new Piece[8][8];
-    private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
-    private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
     private int currentTurn = Piece.WHITE_PIECE;
     private Move lastMoveMade;
     private int lastPawnOrCapture = 0;
 
-    /**
-     * Initialises the board with the pieces in default positions.
-     * Blank squares are null.
-     */
     public Board(){
-        whitePieces.add(new King(3, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Knight(1, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Bishop(2, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Queen(4, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Bishop(5, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Knight(6, 0, Piece.WHITE_PIECE));
-        whitePieces.add(new Rook(7, 0, Piece.WHITE_PIECE));
-        blackPieces.add(new King(3, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Rook(0, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Knight(1, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Bishop(2, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Queen(4, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Bishop(5, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Knight(6, 7, Piece.BLACK_PIECE));
-        blackPieces.add(new Rook(7, 7, Piece.BLACK_PIECE));
-        for(int x = 0; x < 8; x++){
-            blackPieces.add(new Pawn(x, 6, Piece.BLACK_PIECE));
-            whitePieces.add(new Pawn(x, 1, Piece.WHITE_PIECE));
-        }
-        for(int y = 2; y < 6; y++){
-            for(int x = 0; x < 8; x++){
-                board[y][x] = new Blank(x, y);
-            }
-        }
-        for(Piece piece : blackPieces){
-            board[piece.getY()][piece.getX()] = piece;
-        }
-        for(Piece piece : whitePieces){
-            board[piece.getY()][piece.getX()] = piece;
-        }
-    }
-
-    /**
-     * Intiialises the board with only the pieces in the collection. Their position on the board
-     * is determined by their x and y values. Every other square is blank.
-     * @param whitePieces
-     * @param blackPieces
-     */
-    public Board(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
-        this.whitePieces.addAll(whitePieces);
-        this.blackPieces.addAll(blackPieces);
-        for(int y = 0; y < 8; y++){
-            for(int x = 0; x < 8; x++){
-                board[y][x] = new Blank(x, y);
-            }
-        }
-        for(Piece piece : blackPieces){
-            board[piece.getY()][piece.getX()] = piece;
-        }
-        for(Piece piece : whitePieces){
-            board[piece.getY()][piece.getX()] = piece;
-        }
-    }
-
-    /**
-     * Finds the piece in a specific square
-     * @param x x position
-     * @param y y position
-     * @return the piece on that square.
-     */
-    @NotNull
-    public Piece getPiece(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return new Blank(x, y);
-        return board[y][x];
-    }
-
-    /**
-     * Checks if a square is blank or contains a piece
-     * @param x x value of square to check
-     * @param y y value of square to check
-     * @return if the square is blank
-     */
-    public boolean isSquareBlank(int x, int y){return board[y][x] instanceof Blank;}
-
-    void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
-
-    ArrayList<Piece> getColourPieces(int direction){
-        if(direction == Piece.BLACK_PIECE)
-            return blackPieces;
-        return whitePieces;
-    }
-
-    void addPiece(@NotNull Piece piece){
-        if(piece.getDirection() == Piece.BLACK_PIECE)
-            blackPieces.add(piece);
-        else
-            whitePieces.add(piece);
-    }
-
-    void removePiece(@NotNull Piece piece){
-        if(piece.getDirection() == Piece.BLACK_PIECE)
-            blackPieces.remove(piece);
-        else
-            whitePieces.remove(piece);
+        board = new BoardBoard();
     }
 
     public int getCurrentTurn(){return currentTurn;}
@@ -148,13 +46,13 @@ public class Board {
 
     /**
      * Checks if a given King is in check.
-     * @param direction black or white king which will be checked
+     * @param colour black or white king which will be checked
      * @return if the king is in check
      */
-    boolean isKingInCheck(int direction){
-        King king = (King) getColourPieces(direction).getFirst();
+    boolean isKingInCheck(int colour){
+        King king = board.getKing(colour);
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
-        Iterable<Piece> enemyPieces = getColourPieces(direction * -1);
+        Iterable<Piece> enemyPieces = board.getColourPieces(colour * -1);
         for(Piece piece : enemyPieces){
             if(piece.getPossibleMoves(this).contains(kingPos)){
                 return true;
@@ -170,7 +68,7 @@ public class Board {
     boolean isCheckmate(){
         if(!isKingInCheck(currentTurn))
             return false;
-        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
+        ArrayList<Piece> enemyPieces = board.getColourPieces(currentTurn);
         for (Piece enemyPiece : enemyPieces) {
             for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
@@ -187,14 +85,14 @@ public class Board {
      */
     boolean isDraw(int side){
         return isStalemate(side) ||
-                is50MoveRule() ||
+                isDraw50Move() ||
                 is3Repetition();
     }
 
     boolean isStalemate(int stalemateSide){
         if(isKingInCheck(stalemateSide))
             return false;
-        Iterable<Piece> pieces = getColourPieces(stalemateSide);
+        Iterable<Piece> pieces = board.getColourPieces(stalemateSide);
         for(Piece piece : pieces){
             if(!piece.getPossibleMoves(this).isEmpty()){
                 return false;
@@ -206,10 +104,10 @@ public class Board {
     boolean is3Repetition(){
         if(moves.size() < 8)
             return false;
-        int boardState = Arrays.deepHashCode(board);
+        int boardState = board.getState();
         for(int i = 0; i < 2; i++){
             undoMultipleMovesSilent(4);
-            if(boardState != Arrays.deepHashCode(board)) {
+            if(boardState != board.getState()) {
                 redoAllMovesSilent();
                 return false;
             }
@@ -218,7 +116,7 @@ public class Board {
         return true;
     }
 
-    boolean is50MoveRule(){
+    boolean isDraw50Move(){
         return (moves.size() - lastPawnOrCapture) == 50;
     }
 
@@ -234,7 +132,7 @@ public class Board {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(!getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
+        if(!board.getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
             throw new InvalidMoveException("That isn't a valid move!");
         pushMove(oldX, oldY, newX, newY);
         nextTurn();
@@ -242,7 +140,7 @@ public class Board {
         if(isDraw(currentTurn))
             notifyDraw();
         if(isCheckmate()) {
-            King king = (King) getColourPieces(currentTurn).getFirst();
+            King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
     }
@@ -257,9 +155,9 @@ public class Board {
     private void pushMove(int oldX, int oldY, int newX, int newY){
         Move move;
         if (moves.isEmpty())
-            move = new Move(newX, newY, board[oldY][oldX], null,this);
+            move = new Move(newX, newY, board.getPiece(oldX, oldY), null,this);
         else
-            move = new Move(newX, newY, board[oldY][oldX], moves.getFirst().getPiece(), this);
+            move = new Move(newX, newY, board.getPiece(oldX, oldY), moves.getFirst().getPiece(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = moves.size();
         lastMoveMade = move;
@@ -272,10 +170,6 @@ public class Board {
      */
     public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {
         makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
-    }
-
-    int boardState(){
-        return Arrays.deepHashCode(board);
     }
 
     /**
@@ -318,7 +212,7 @@ public class Board {
         Move move = redoOneMove();
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
         if(isCheckmate()) {
-            King king = (King) getColourPieces(currentTurn).getFirst();
+            King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
     }
@@ -376,11 +270,9 @@ public class Board {
     }
 
     private void notifyDraw(){
-        int whiteX = whitePieces.getFirst().getX();
-        int whiteY = whitePieces.getFirst().getY();
-        int blackX = blackPieces.getFirst().getX();
-        int blackY = blackPieces.getFirst().getY();
+        King whiteKing = board.getKing(Piece.WHITE_PIECE);
+        King blackKing = board.getKing(Piece.BLACK_PIECE);
         for(BoardListener listener : boardListeners)
-            listener.draw(whiteX, whiteY, blackX, blackY);
+            listener.draw(whiteKing.getX(), whiteKing.getY(), blackKing.getX(), blackKing.getY());
     }
 }

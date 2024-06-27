@@ -57,6 +57,7 @@ public class BoardBoard {
      * is determined by their x and y values. Every other square is blank.
      * @param whitePieces
      * @param blackPieces
+     * TODO: replace with that fern thing
      */
     public BoardBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
         this.whitePieces.addAll(whitePieces);
@@ -97,10 +98,16 @@ public class BoardBoard {
 
     void setSquare(int x, int y, Piece piece){board[y][x] = piece;}
 
-    ArrayList<Piece> getColourPieces(int direction){
-        if(direction == Piece.BLACK_PIECE)
+    ArrayList<Piece> getColourPieces(int colour){
+        if(colour == Piece.BLACK_PIECE)
             return blackPieces;
         return whitePieces;
+    }
+
+    King getKing(int colour){
+        if(colour == Piece.BLACK_PIECE)
+            return (King) blackPieces.getFirst();
+        return (King) whitePieces.getFirst();
     }
 
     void addPiece(@NotNull Piece piece){
@@ -117,7 +124,7 @@ public class BoardBoard {
             whitePieces.remove(piece);
     }
 
-    int boardState(){
+    int getState(){
         return Arrays.deepHashCode(board);
     }
 }
