@@ -5,39 +5,44 @@ import org.junit.jupiter.api.Test;
 class KingTest {
     @Test
     void sameKing(){
-//        King king = new King(1, 1, Piece.WHITE_PIECE);
-//        King king2 = king;
-//        assertEquals(king, king2);
+        Chessboard board = new Chessboard();
+        King king = new King(1, 1, Piece.WHITE_PIECE, board);
+        King king2 = king;
+        assertEquals(king, king2);
     }
 
     @Test
     void differentPiece(){
-//        King king = new King(1, 1, Piece.WHITE_PIECE);
-//        Pawn king2 = new Pawn(1, 1, Piece.WHITE_PIECE);
-//        assertNotEquals(king, king2);
+        Chessboard board = new Chessboard();
+        King king = new King(1, 1, Piece.WHITE_PIECE, board);
+        Pawn king2 = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        assertNotEquals(king, king2);
     }
 
     @Test
     void kingHasntMoved(){
-//        King king = new King(1, 1, Piece.WHITE_PIECE);
-//        King king2 = new King(1, 1, Piece.WHITE_PIECE);
-//        assertEquals(king, king2);
+        Chessboard board = new Chessboard();
+        King king = new King(1, 1, Piece.WHITE_PIECE, board);
+        King king2 = new King(1, 1, Piece.WHITE_PIECE, board);
+        assertEquals(king, king2);
     }
 
     @Test
     void oneKingMoved(){
-//        King king = new King(1, 1, Piece.WHITE_PIECE);
-//        king.firstMove();
-//        King king2 = new King(1, 1, Piece.WHITE_PIECE);
-//        assertNotEquals(king, king2);
+        Chessboard board = new Chessboard();
+        King king = new King(1, 1, Piece.WHITE_PIECE, board);
+        king.firstMove();
+        King king2 = new King(1, 1, Piece.WHITE_PIECE, board);
+        assertNotEquals(king, king2);
     }
 
     @Test
     void bothKingMoved(){
-//        King king = new King(1, 1, Piece.WHITE_PIECE);
-//        king.firstMove();
-//        King king2 = new King(1, 1, Piece.WHITE_PIECE);
-//        king2.firstMove();
-//        assertEquals(king, king2);
+        Chessboard board = new Chessboard();
+        King king = new King(1, 1, Piece.WHITE_PIECE, board);
+        king.firstMove();
+        King king2 = new King(1, 1, Piece.WHITE_PIECE, board);
+        king2.firstMove();
+        assertEquals(king, king2);
     }
 }
