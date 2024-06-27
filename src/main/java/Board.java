@@ -21,6 +21,7 @@ public class Board {
 
     private void nextTurn(){
         currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
+        board.setCurrentTurn(currentTurn);
     }
 
     /**
@@ -40,9 +41,9 @@ public class Board {
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
-        if(board.isDraw(currentTurn))
+        if(board.isDraw())
             notifyDraw();
-        if(board.isCheckmate(currentTurn)) {
+        if(board.isCheckmate()) {
             King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
@@ -100,7 +101,7 @@ public class Board {
         if(move == null)
             return;
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
-        if(board.isCheckmate(currentTurn)) {
+        if(board.isCheckmate()) {
             King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
@@ -131,4 +132,8 @@ public class Board {
             redoMove();
         }
     }
+
+    ArrayList<Piece> getColourPieces(int colour){return board.getColourPieces(colour);}
+
+    Piece getPiece(int x, int y){return board.getPiece(x, y);}
 }

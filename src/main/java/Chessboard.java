@@ -16,6 +16,7 @@ public class Chessboard {
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private int lastPawnOrCapture = 0;
+    private int currentTurn;
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -131,10 +132,10 @@ public class Chessboard {
      * Checks all possible moves that can be made and if any result in non-check.
      * @return if in checkmate.
      */
-    boolean isCheckmate(int colour){
-        if(!isKingInCheck(colour))
+    boolean isCheckmate(){
+        if(!isKingInCheck(currentTurn))
             return false;
-        ArrayList<Piece> enemyPieces = getColourPieces(colour);
+        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
         for (Piece enemyPiece : enemyPieces) {
             for (Coordinate move : enemyPiece.getPossibleMoves( )) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
@@ -146,19 +147,18 @@ public class Chessboard {
 
     /**
      * Calculates if the current position is a draw.
-     * @param side the side which may have been stalemated
      * @return if its a draw
      */
-    boolean isDraw(int side){
-        return isStalemate(side) ||
+    boolean isDraw(){
+        return isStalemate() ||
                 isDraw50Move() ||
                 is3Repetition();
     }
 
-    boolean isStalemate(int stalemateSide){
-        if(isKingInCheck(stalemateSide))
+    boolean isStalemate(){
+        if(isKingInCheck(currentTurn))
             return false;
-        Iterable<Piece> pieces = getColourPieces(stalemateSide);
+        Iterable<Piece> pieces = getColourPieces(currentTurn);
         for(Piece piece : pieces){
             if(!piece.getPossibleMoves().isEmpty()){
                 return false;
@@ -204,4 +204,5 @@ public class Chessboard {
     public @Nullable Move undoMove(){return history.undoMove();}
     public @Nullable Move redoMove(){return history.redoMove();}
     public boolean canRedoMove(){return history.canRedoMove();}
+    public void setCurrentTurn(int newTurn){currentTurn = newTurn;}
 }

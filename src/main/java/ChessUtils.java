@@ -19,7 +19,7 @@ public final class ChessUtils {
     }
 
     // TODO: complete and test, maybe add to Move
-    public static String moveToChess(Board board, Piece piece, int newX, int newY){
+    public static String moveToChess(Chessboard board, Piece piece, int newX, int newY){
         if(piece instanceof King king && Math.abs(piece.getX() - newX) == 2) {// castling
             if(piece.getX() - newX == 2) // long castle
                 return  "O-O-O";
@@ -58,7 +58,7 @@ public final class ChessUtils {
         for(Piece piece : board.getColourPieces(board.getCurrentTurn())){
             if(!(piece.toString()).equals(pieceLetter)) // if its not type of piece that moved
                 continue;
-            if(piece.getPossibleMoves(board).contains(newCoordinate))
+            if(piece.getPossibleMoves().contains(newCoordinate))
                 possiblePieces.add(piece);
         }
         if(possiblePieces.size() > 1)
