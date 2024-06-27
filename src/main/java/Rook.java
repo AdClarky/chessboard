@@ -25,7 +25,7 @@ public class Rook extends Piece{
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(10);
         calculateStraightMoves(board, moves);
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+        removeMovesInCheck(moves);
         return moves;
     }
 

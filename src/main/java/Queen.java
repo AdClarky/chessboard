@@ -20,7 +20,7 @@ public class Queen extends Piece{
         ArrayList<Coordinate> moves = new ArrayList<>(10);
         calculateDiagonalMoves(board, moves);
         calculateStraightMoves(board, moves);
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+        removeMovesInCheck(moves);
         return moves;
     }
 

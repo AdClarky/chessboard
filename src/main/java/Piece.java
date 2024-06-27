@@ -1,3 +1,5 @@
+import org.jetbrains.annotations.NotNull;
+
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -102,6 +104,12 @@ public abstract class Piece {
     void setY(int y) {this.y = y;}
     public int getX() {return x;}
     public int getY() {return y;}
+
+    protected void removeMovesInCheck(Collection<Coordinate> moves) {
+        if(board.getCurrentTurn() != direction)
+            return;
+        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+    }
 
     /**
      * Calculates if a move to a specific square is valid.

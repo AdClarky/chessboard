@@ -40,7 +40,7 @@ public class King extends Piece{
                     moves.add(new Coordinate(x+2, y));
             }
         }
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+        removeMovesInCheck(moves);
         // stops castling through check
         if(!moves.contains(new Coordinate(x-1, y)))
             moves.remove(new Coordinate(x-2, y));

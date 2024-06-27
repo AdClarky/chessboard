@@ -22,7 +22,7 @@ public class Bishop extends Piece{
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         calculateDiagonalMoves(board, moves);
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+        removeMovesInCheck(moves);
         return moves;
     }
 

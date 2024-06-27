@@ -40,7 +40,7 @@ public class Pawn extends Piece{
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+        removeMovesInCheck(moves);
         return moves;
     }
 
