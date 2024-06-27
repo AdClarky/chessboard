@@ -14,7 +14,12 @@ public class ChessGame {
     private int currentTurn = Piece.WHITE_PIECE;
 
     public ChessGame(){
-        board = ChessboardFactory.createChessboardDefaultSetup();
+        board = new ChessboardBuilder().createChessboardDefaultSetup();
+    }
+
+    public ChessGame(String fenString){
+        board = new ChessboardBuilder().createChessboardFromFen(fenString);
+        currentTurn = board.getCurrentTurn();
     }
 
     public int getCurrentTurn(){return currentTurn;}

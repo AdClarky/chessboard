@@ -15,7 +15,7 @@ public class Chessboard {
     BoardHistory history;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    private int lastPawnOrCapture = 0;
+    private int numHalfMoves = 0;
     private int currentTurn;
 
     /**
@@ -177,7 +177,7 @@ public class Chessboard {
     public void makeMove(int oldX, int oldY, int newX, int newY){
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
-            lastPawnOrCapture = history.getNumberOfMoves();
+            numHalfMoves = history.getNumberOfMoves();
         history.push(move);
     }
 
@@ -197,7 +197,7 @@ public class Chessboard {
     }
 
     boolean isDraw50Move(){
-        return (history.getNumberOfMoves() - lastPawnOrCapture) == 50;
+        return (history.getNumberOfMoves() - numHalfMoves) == 50;
     }
 
     public Iterable<MoveValue> getLastMoveMade(){return history.getLastMoves();}
@@ -205,4 +205,6 @@ public class Chessboard {
     public @Nullable Move redoMove(){return history.redoMove();}
     public boolean canRedoMove(){return history.canRedoMove();}
     public void setCurrentTurn(int newTurn){currentTurn = newTurn;}
+    public int getCurrentTurn(){return currentTurn;}
+    void setNumHalfMoves(int numHalfMoves){this.numHalfMoves = numHalfMoves;}
 }

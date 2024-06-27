@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
 import static org.junit.jupiter.api.Assertions.*;
@@ -6,7 +7,6 @@ import java.util.ArrayList;
 import java.util.SequencedCollection;
 
 class ChessUtilsTest {
-
     @Test
     void doCoordinatesMapCorrectly() {
         assertEquals("h1", ChessUtils.coordsToChess(0, 0));
