@@ -141,4 +141,10 @@ public class ChessGame {
     ArrayList<Piece> getColourPieces(int colour){return board.getColourPieces(colour);}
 
     Piece getPiece(int x, int y){return board.getPiece(x, y);}
+    public int getState(){return board.getState();}
+    public boolean isCheckmate(){return board.isCheckmate();}
+    public boolean isDraw(){return board.isDraw();}
+    public boolean isStalemate(){return board.isStalemate();}
+    public boolean is3Repetition(){return board.is3Repetition();}
+    public boolean isDraw50Move(){return board.isDraw50Move();}
 }
