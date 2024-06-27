@@ -23,7 +23,7 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
@@ -40,7 +40,7 @@ public class King extends Piece{
                     moves.add(new Coordinate(x+2, y));
             }
         }
-        removeMovesInCheck(board, moves);
+        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
         // stops castling through check
         if(!moves.contains(new Coordinate(x-1, y)))
             moves.remove(new Coordinate(x-2, y));

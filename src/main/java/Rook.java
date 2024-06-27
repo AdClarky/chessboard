@@ -22,10 +22,10 @@ public class Rook extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(10);
         calculateStraightMoves(board, moves);
-        removeMovesInCheck(board, moves);
+        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
         return moves;
     }
 

@@ -15,7 +15,7 @@ public class Blank extends Piece {
     }
 
     @Override
-    public List<Coordinate> getPossibleMoves(Board board) {
+    public List<Coordinate> getPossibleMoves() {
         return new ArrayList<>(0);
     }
 

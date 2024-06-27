@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -16,12 +17,12 @@ public class Pawn extends Piece{
      * @param y starting y position
      * @param direction black or white
      */
-    public Pawn(int x, int y, int direction) {
-        super(x, y, getIcon(direction), direction, '\u0000');
+    public Pawn(int x, int y, int direction, Chessboard board) {
+        super(x, y, getIcon(direction), direction, '\u0000', board);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(4);
         if(y < 7 && y > 0 && board.isSquareBlank(x, y+direction)) {// basic move forward
             moves.add(new Coordinate(x, y + direction));
@@ -39,7 +40,7 @@ public class Pawn extends Piece{
                 moves.add(new Coordinate(x+1,y+direction));
             }
         }
-        removeMovesInCheck(board, moves);
+        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
         return moves;
     }
 

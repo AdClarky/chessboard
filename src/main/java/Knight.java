@@ -20,13 +20,13 @@ public class Knight extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(Board board) {
+    public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
 
         for(int i = 0; i<8; i++){
             cantMove(x+ POSSIBLE_X[i], y+ POSSIBLE_Y[i], board, moves);
         }
-        removeMovesInCheck(board, moves);
+        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
         return moves;
     }
 

@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,11 +21,11 @@ public abstract class Piece {
      */
     public static final int EMPTY_PIECE = 0;
     private final Icon pieceIcon;
-    private final Chessboard chessboard;
+    private final char pieceCharacter;
+    protected final Chessboard board;
     protected int x;
     protected int y;
     protected final int direction;
-    private final char pieceCharacter;
 
     /**
      * Initialises the position and whether the piece is white or black
@@ -36,13 +34,13 @@ public abstract class Piece {
      * @param pieceIcon image of the piece
      * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
-    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter, Chessboard chessboard) {
+    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter, Chessboard board) {
         this.x = x;
         this.y = y;
         this.pieceIcon = pieceIcon;
         this.direction = direction;
         this.pieceCharacter = pieceCharacter;
-        this.chessboard = chessboard;
+        this.board = board;
     }
 
     /**
