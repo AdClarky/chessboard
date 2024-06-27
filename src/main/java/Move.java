@@ -11,7 +11,7 @@ import java.util.List;
  * This should not be used in a regular chess situation. Instead use {@see }
  */
 public class Move {
-    private final Board board;
+    private final Chessboard board;
     private final Piece piece;
     private final Piece previousPawn;
     private final int x;
@@ -20,7 +20,7 @@ public class Move {
     private final List<MoveValue> movesMade;
     private boolean undone = false;
     private boolean taking = false;
-    private boolean notHadFirstMove;
+    private boolean notHadFirstMove = false;
     private boolean wasPreviousPawnPassantable = false;
 
     /**
@@ -33,16 +33,16 @@ public class Move {
      * @param previousPiece the piece to move before this one
      * @param board the board the piece is on
      */
-    public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Board board){
+    public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Chessboard board){
         this.x = x;
         this.y = y;
         this.piece = piece;
         this.board = board;
-        if(previousPiece instanceof Pawn)
+        if(previousPiece instanceof Pawn) // only need to track it if its a pawn
             previousPawn = previousPiece;
         else
             previousPawn = new Blank(0,0);
-        movesMade = piece.getMoves(x, y, board);
+        movesMade = piece.getMoves(x, y);
         makeMove();
     }
 
