@@ -42,11 +42,11 @@ public final class ChessUtils {
         return moveString;
     }
 
-    public static MoveValue chessToMove(String move, Board board){
+    public static MoveValue chessToMove(String move, ChessGame chessGame){
         if("O-O".equals(move)) {
-            return getCastlingMove(1, board);
+            return getCastlingMove(1, chessGame);
         }else if("O-O-O".equals(move)) {
-            return getCastlingMove(5, board);
+            return getCastlingMove(5, chessGame);
         }
         Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
         String pieceLetter;
@@ -55,7 +55,7 @@ public final class ChessUtils {
         else // any other piece
             pieceLetter = move.charAt(0) + "";
         ArrayList<Piece> possiblePieces = new ArrayList<>(2);
-        for(Piece piece : board.getColourPieces(board.getCurrentTurn())){
+        for(Piece piece : chessGame.getColourPieces(chessGame.getCurrentTurn())){
             if(!(piece.toString()).equals(pieceLetter)) // if its not type of piece that moved
                 continue;
             if(piece.getPossibleMoves().contains(newCoordinate))
@@ -67,11 +67,11 @@ public final class ChessUtils {
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
 
-    static MoveValue getCastlingMove(int newX, Board board){
-        if(board.getCurrentTurn() == Piece.BLACK_PIECE){
-            return new MoveValue(board.getPiece(3,7),newX,7);
+    static MoveValue getCastlingMove(int newX, ChessGame chessGame){
+        if(chessGame.getCurrentTurn() == Piece.BLACK_PIECE){
+            return new MoveValue(chessGame.getPiece(3,7),newX,7);
         }else{
-            return new MoveValue(board.getPiece(3, 0), newX, 0);
+            return new MoveValue(chessGame.getPiece(3, 0), newX, 0);
         }
     }
 

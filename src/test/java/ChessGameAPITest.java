@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-class BoardAPITest {
+class ChessGameAPITest {
     private class Listener implements BoardListener {
         int boardChanged = 0;
         int checkmate = 0;
@@ -26,18 +26,18 @@ class BoardAPITest {
         }
     }
     Listener listener;
-    Board board;
+    ChessGame chessGame;
 
     @BeforeEach
     void setUp() {
         listener = new Listener();
-        board = new Board();
-        board.addBoardListener(listener);
+        chessGame = new ChessGame();
+        chessGame.addBoardListener(listener);
     }
 
     @Test
     void basicMove(){
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
         assertEquals(1, listener.boardChanged);
         assertEquals(0, listener.checkmate);
         assertEquals(0, listener.draw);
@@ -45,7 +45,7 @@ class BoardAPITest {
 
     @Test
     void checkmateGame() {
-        assertDoesNotThrow( ()->new Autoplay(board, Path.of("src/test/resources/checkmateGame.pgn")).play());
+        assertDoesNotThrow( ()->new Autoplay(chessGame, Path.of("src/test/resources/checkmateGame.pgn")).play());
         assertEquals(46, listener.boardChanged);
         assertEquals(1, listener.checkmate);
         assertEquals(0, listener.draw);
@@ -53,7 +53,7 @@ class BoardAPITest {
 
     @Test
     void repetitionGame() {
-        assertDoesNotThrow( ()->new Autoplay(board, Path.of("src/test/resources/repetitionGame.pgn")).play());
+        assertDoesNotThrow( ()->new Autoplay(chessGame, Path.of("src/test/resources/repetitionGame.pgn")).play());
         assertEquals(8, listener.boardChanged);
         assertEquals(0, listener.checkmate);
         assertEquals(1, listener.draw);
@@ -61,7 +61,7 @@ class BoardAPITest {
 
     @Test
     void stalemateGame() {
-        assertDoesNotThrow( ()->new Autoplay(board, Path.of("src/test/resources/stalemateGame.pgn")).play());
+        assertDoesNotThrow( ()->new Autoplay(chessGame, Path.of("src/test/resources/stalemateGame.pgn")).play());
         assertEquals(105, listener.boardChanged);
         assertEquals(0, listener.checkmate);
         assertEquals(1, listener.draw);

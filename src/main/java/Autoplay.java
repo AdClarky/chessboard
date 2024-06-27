@@ -10,14 +10,14 @@ import java.util.stream.Stream;
 
 public class Autoplay {
     private final Collection<String> moves = new ArrayList<>(30);
-    private final Board board;
+    private final ChessGame chessGame;
 
-    public Autoplay(Board board){
-        this.board = board;
+    public Autoplay(ChessGame chessGame){
+        this.chessGame = chessGame;
     }
 
-    public Autoplay(Board board, Path path) throws IOException {
-        this.board = board;
+    public Autoplay(ChessGame chessGame, Path path) throws IOException {
+        this.chessGame = chessGame;
         importGame(path);
     }
 
@@ -57,7 +57,7 @@ public class Autoplay {
 
     public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
-            board.makeMove(ChessUtils.chessToMove(move, board));
+            chessGame.makeMove(ChessUtils.chessToMove(move, chessGame));
             TimeUnit.MILLISECONDS.sleep(delay);
 
         }

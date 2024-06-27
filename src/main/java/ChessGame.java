@@ -8,13 +8,13 @@ import java.util.Collection;
  * At the end of a move boardChanged is called.
  * Can use getMoves to find the individual moves made - e.g. in castling what moves were made.
  */
-public class Board {
-    private Chessboard board;
+public class ChessGame {
+    private final Chessboard board;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
 
-    public Board(){
-        board = new Chessboard();
+    public ChessGame(){
+        board = ChessboardFactory.createChessboardDefaultSetup();
     }
 
     public int getCurrentTurn(){return currentTurn;}
@@ -50,7 +50,7 @@ public class Board {
     }
 
     /**
-     * @see Board#makeMove(int, int, int,int)
+     * @see ChessGame#makeMove(int, int, int,int)
      * @param move instance of move which specifies the piece being moved and where to.
      */
     public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {

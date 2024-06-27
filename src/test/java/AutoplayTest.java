@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 
 class AutoplayTest {
     Autoplay autoplay;
-    Board board;
+    ChessGame chessGame;
     @BeforeEach
     void setUp() {
-        board = new Board();
-        autoplay = new Autoplay(board);
+        chessGame = new ChessGame();
+        autoplay = new Autoplay(chessGame);
     }
 
     @Test

@@ -6,7 +6,7 @@ class BlankTest {
 
     @Test
     void testPossibleMoves(){
-        assertTrue(blank.getPossibleMoves(new Board()).isEmpty());
+        assertTrue(blank.getPossibleMoves(new ChessGame()).isEmpty());
         assertEquals(0, blank.getX());
         assertEquals(0, blank.getY());
     }

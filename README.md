@@ -1,3 +1,3 @@
 # Chess
-Includes a Chess Board api and GUI for a chess board.
+Includes a Chess api for a chessGame.
 All Chess rules implemented (as far as I am aware).  

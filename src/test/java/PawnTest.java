@@ -4,74 +4,74 @@ import org.junit.jupiter.api.Test;
 class PawnTest {
     @Test
     void isNotPassantableAfterAnotherPawnMove() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
-        assertTrue(board.getPiece(3,4).hadFirstMove());
-        assertFalse(board.getPiece(3,3).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
+        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenUndone() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
-        assertTrue(board.getPiece(3,4).hadFirstMove());
-        assertFalse(board.getPiece(3,3).hadFirstMove());
-        board.undoMove();
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertFalse(board.getPiece(3,6).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
+        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        chessGame.undoMove();
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,6).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(3, 6, 3, 4));
-        assertTrue(board.getPiece(3,4).hadFirstMove());
-        assertFalse(board.getPiece(3,3).hadFirstMove());
-        board.undoMove();
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertFalse(board.getPiece(3,6).hadFirstMove());
-        board.redoMove();
-        assertTrue(board.getPiece(3,4).hadFirstMove());
-        assertFalse(board.getPiece(3,3).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
+        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        chessGame.undoMove();
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,6).hadFirstMove());
+        chessGame.redoMove();
+        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMove() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
-        assertFalse(board.getPiece(3,3).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenUndone() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
-        assertFalse(board.getPiece(3,3).hadFirstMove());
-        board.undoMove();
-        assertTrue(board.getPiece(3,3).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        chessGame.undoMove();
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone() {
-        Board board = new Board();
-        assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()->board.makeMove(6, 7, 5, 5));
-        assertFalse(board.getPiece(3,3).hadFirstMove());
-        board.undoMove();
-        assertTrue(board.getPiece(3,3).hadFirstMove());
-        board.redoMove();
-        assertFalse(board.getPiece(3,3).hadFirstMove());
+        ChessGame chessGame = new ChessGame();
+        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        chessGame.undoMove();
+        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        chessGame.redoMove();
+        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
     }
 
     @Test
