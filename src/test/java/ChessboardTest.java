@@ -14,17 +14,18 @@ class ChessboardTest {
     }
 
 
-    @Disabled
+    @Test
     void doesCustomPositionWork(){
+        board = new Chessboard();
         ArrayList<Piece> whitePieces = new ArrayList<>(3);
         ArrayList<Piece> blackPieces = new ArrayList<>(3);
-//        whitePieces.add(new King(0, 0, Piece.WHITE_PIECE));
-//        whitePieces.add(new King(0, 1, Piece.WHITE_PIECE));
-//        whitePieces.add(new King(0, 2, Piece.WHITE_PIECE));
-//        blackPieces.add(new King(0, 3, Piece.BLACK_PIECE));
-//        blackPieces.add(new King(0, 4, Piece.BLACK_PIECE));
-//        blackPieces.add(new King(0, 5, Piece.BLACK_PIECE));
-//        board = new Board(whitePieces, blackPieces);
+        whitePieces.add(new King(0, 0, Piece.WHITE_PIECE, board));
+        whitePieces.add(new King(0, 1, Piece.WHITE_PIECE, board));
+        whitePieces.add(new King(0, 2, Piece.WHITE_PIECE, board));
+        blackPieces.add(new King(0, 3, Piece.BLACK_PIECE, board));
+        blackPieces.add(new King(0, 4, Piece.BLACK_PIECE, board));
+        blackPieces.add(new King(0, 5, Piece.BLACK_PIECE, board));
+        board.populateBoard(whitePieces, blackPieces);
         for(int x = 1; x < 8; x++){
             for(int y = 0; y < 8; y++){
                 assertInstanceOf(Blank.class, board.getPiece(x, y));

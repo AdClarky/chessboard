@@ -41,8 +41,6 @@ public class ChessGame {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(!board.getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
-            throw new InvalidMoveException("That isn't a valid move!");
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);

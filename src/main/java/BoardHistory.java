@@ -2,11 +2,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class BoardHistory {
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
-    private ArrayDeque<Move> lastMove;
+    private Deque<Move> lastMove = moves;
 
     public @Nullable Piece getLastPieceMoved(){
         return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();

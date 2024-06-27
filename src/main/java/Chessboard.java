@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public class Chessboard {
     private final Piece[][] board  =  new Piece[8][8];
-    BoardHistory history;
+    private BoardHistory history;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private int numHalfMoves = 0;
@@ -24,7 +24,8 @@ public class Chessboard {
      * TODO: replace with that fern thing
      */
     public Chessboard(){
-        for(int y = 0; y < 6; y++){
+        history = new BoardHistory();
+        for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
                 board[y][x] = new Blank(x, y);
             }
@@ -174,7 +175,9 @@ public class Chessboard {
      * @param newX new x position of the piece
      * @param newY new y position of the piece
      */
-    public void makeMove(int oldX, int oldY, int newX, int newY){
+    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
+        if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
+            throw new InvalidMoveException("That isn't a valid move!");
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             numHalfMoves = history.getNumberOfMoves();
