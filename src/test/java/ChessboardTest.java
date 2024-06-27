@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 class ChessboardTest {
-    Chessboard board = ChessboardFactory.createChessboardDefaultSetup();
+    Chessboard board = new ChessboardBuilder().createChessboardDefaultSetup();
 
     @AfterEach
     void setUp() {
-        board = ChessboardFactory.createChessboardDefaultSetup();
+        board = new ChessboardBuilder().createChessboardDefaultSetup();
     }
 
     @Test
