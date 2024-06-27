@@ -13,7 +13,6 @@ public class Board {
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
     private Move lastMoveMade;
-    private int lastPawnOrCapture = 0;
 
     public Board(){
         board = new Chessboard();

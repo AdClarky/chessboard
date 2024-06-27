@@ -10,9 +10,10 @@ import java.util.Arrays;
  */
 public class Chessboard {
     private final Piece[][] board  =  new Piece[8][8];
-    BoardHistory boardHistory;
+    BoardHistory history;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
+    private int lastPawnOrCapture = 0;
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -100,7 +101,7 @@ public class Chessboard {
      * @return true if in check, false if not
      */
     boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
-        Piece lastPiece = boardHistory.getLastPieceMoved();
+        Piece lastPiece = history.getLastPieceMoved();
         Move move = new Move(newX, newY, pieceToCheck, lastPiece, this);
         boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
         move.undo();
@@ -117,7 +118,7 @@ public class Chessboard {
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
         Iterable<Piece> enemyPieces = getColourPieces(colour * -1);
         for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves(this).contains(kingPos)){
+            if(piece.getPossibleMoves().contains(kingPos)){
                 return true;
             }
         }
@@ -133,7 +134,7 @@ public class Chessboard {
             return false;
         ArrayList<Piece> enemyPieces = getColourPieces(colour);
         for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
+            for (Coordinate move : enemyPiece.getPossibleMoves( )) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
                     return false;
             }
@@ -157,7 +158,7 @@ public class Chessboard {
             return false;
         Iterable<Piece> pieces = getColourPieces(stalemateSide);
         for(Piece piece : pieces){
-            if(!piece.getPossibleMoves(this).isEmpty()){
+            if(!piece.getPossibleMoves().isEmpty()){
                 return false;
             }
         }
@@ -172,33 +173,28 @@ public class Chessboard {
      * @param newY new y position of the piece
      */
     private void makeMove(int oldX, int oldY, int newX, int newY){
-        Move move;
-        if (moves.isEmpty())
-            move = new Move(newX, newY, getPiece(oldX, oldY), null,this);
-        else
-            move = new Move(newX, newY, getPiece(oldX, oldY), moves.getFirst().getPiece(), this);
+        Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
-            lastPawnOrCapture = moves.size();
-        lastMoveMade = move;
-        boardHistory.push(move);
+            lastPawnOrCapture = history.getNumberOfMoves();
+        history.push(move);
     }
 
     boolean is3Repetition(){
-        if(moves.size() < 8)
+        if(history.getNumberOfMoves() < 8)
             return false;
-        int boardState = board.getState();
+        int boardState = getState();
         for(int i = 0; i < 2; i++){
-            undoMultipleMovesSilent(4);
-            if(boardState != board.getState()) {
-                redoAllMovesSilent();
+            history.undoMultipleMoves(4);
+            if(boardState != getState()) {
+                history.redoAllMoves();
                 return false;
             }
         }
-        redoAllMovesSilent();
+        history.undoMultipleMoves(4);
         return true;
     }
 
     boolean isDraw50Move(){
-        return (moves.size() - lastPawnOrCapture) == 50;
+        return (history.getNumberOfMoves() - lastPawnOrCapture) == 50;
     }
 }

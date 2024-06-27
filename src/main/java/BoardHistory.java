@@ -11,12 +11,16 @@ public class BoardHistory {
         return lastPieceMoved;
     }
 
-    void push(Move move){
+    public int getNumberOfMoves(){
+        return moves.size() + redoMoves.size();
+    }
+
+    public void push(Move move){
         moves.push(move);
         lastPieceMoved = move.getPiece();
     }
 
-    private Move redoMove(){
+    public Move redoMove(){
         Move move = redoMoves.pop();
         move.makeMove();
         lastPieceMoved = move.getPiece();
@@ -24,13 +28,13 @@ public class BoardHistory {
         return move;
     }
 
-    private void redoMoves(){
+    public void redoAllMoves(){
         while(!redoMoves.isEmpty()){
             redoMove();
         }
     }
 
-    private Move undoMove(){
+    public Move undoMove(){
         Move move = moves.pop();
         move.undo();
         lastPieceMoved = move.getPiece();
@@ -38,7 +42,7 @@ public class BoardHistory {
         return move;
     }
 
-    private void undoMultipleMoves(int numOfMoves){
+    public void undoMultipleMoves(int numOfMoves){
         for(int i = 0; i < numOfMoves; i++){
             undoMove();
         }
