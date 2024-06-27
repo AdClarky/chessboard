@@ -21,7 +21,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(chessGame);
         autoplay.importGame(Path.of("src/test/resources/AdClarky_vs_kuldeepbhakuni317_2024.06.18.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
-        assertEquals(418651116, chessGame.boardState()); // hash value of the board, if hashing changes this will need to be recalculated
+        assertEquals(418651116, chessGame.getState()); // hash value of the board, if hashing changes this will need to be recalculated
     }
 
     /**
@@ -32,7 +32,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(chessGame);
         autoplay.importGame(Path.of("src/test/resources/andredar63_vs_AdClarky_2024.06.18.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
-        assertEquals(-873082511, chessGame.boardState());
+        assertEquals(-873082511, chessGame.getState());
     }
 
     /**
@@ -44,7 +44,7 @@ class GameTest {
         autoplay.importGame(Path.of("src/test/resources/checkmateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isCheckmate());
-        assertEquals(264244004, chessGame.boardState());
+        assertEquals(264244004, chessGame.getState());
     }
 
     /**
@@ -55,8 +55,8 @@ class GameTest {
         Autoplay autoplay = new Autoplay(chessGame);
         autoplay.importGame(Path.of("src/test/resources/stalemateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
-        assertTrue(chessGame.isDraw(Piece.BLACK_PIECE));
-        assertTrue(chessGame.isStalemate(Piece.BLACK_PIECE));
+        assertTrue(chessGame.isDraw());
+        assertTrue(chessGame.isStalemate());
     }
 
     @Test
@@ -64,7 +64,7 @@ class GameTest {
         Autoplay autoplay = new Autoplay(chessGame);
         autoplay.importGame(Path.of("src/test/resources/repetitionGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
-        assertTrue(chessGame.isDraw(Piece.BLACK_PIECE));
+        assertTrue(chessGame.isDraw());
         assertTrue(chessGame.is3Repetition());
     }
 }
