@@ -1,3 +1,4 @@
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
@@ -5,10 +6,14 @@ import java.util.ArrayDeque;
 public class BoardHistory {
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
-    private Piece lastPieceMoved;
+    private ArrayDeque<Move> lastMove;
 
     public @Nullable Piece getLastPieceMoved(){
-        return lastPieceMoved;
+        return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
+    }
+
+    public @NotNull Iterable<MoveValue> getLastMoves(){
+        return lastMove.getFirst().getMovesToUndo();
     }
 
     public int getNumberOfMoves(){
@@ -17,13 +22,15 @@ public class BoardHistory {
 
     public void push(Move move){
         moves.push(move);
-        lastPieceMoved = move.getPiece();
+        lastMove = moves;
     }
 
-    public Move redoMove(){
+    public @Nullable Move redoMove(){
+        if(moves.isEmpty())
+            return null;
         Move move = redoMoves.pop();
         move.makeMove();
-        lastPieceMoved = move.getPiece();
+        lastMove = moves;
         moves.push(move);
         return move;
     }
@@ -34,10 +41,12 @@ public class BoardHistory {
         }
     }
 
-    public Move undoMove(){
+    public @Nullable Move undoMove(){
+        if(moves.isEmpty())
+            return null;
         Move move = moves.pop();
         move.undo();
-        lastPieceMoved = move.getPiece();
+        lastMove = redoMoves;
         redoMoves.push(move);
         return move;
     }
@@ -47,4 +56,6 @@ public class BoardHistory {
             undoMove();
         }
     }
+
+    public boolean canRedoMove() {return !redoMoves.isEmpty();}
 }

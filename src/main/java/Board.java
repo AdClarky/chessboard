@@ -12,7 +12,6 @@ public class Board {
     private Chessboard board;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private int currentTurn = Piece.WHITE_PIECE;
-    private Move lastMoveMade;
 
     public Board(){
         board = new Chessboard();
@@ -36,14 +35,14 @@ public class Board {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(!board.getPiece(oldX, oldY).getPossibleMoves(this).contains(new Coordinate(newX, newY))) // if invalid move
+        if(!board.getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
             throw new InvalidMoveException("That isn't a valid move!");
-        pushMove(oldX, oldY, newX, newY);
+        board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyBoardChanged(oldX, oldY, newX, newY);
-        if(isDraw(currentTurn))
+        if(board.isDraw(currentTurn))
             notifyDraw();
-        if(isCheckmate()) {
+        if(board.isCheckmate(currentTurn)) {
             King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
@@ -61,7 +60,7 @@ public class Board {
      * During a board change event, contains the moves performed on the board.
      * @return a list of individual moves taken to reach the new board state.
      */
-    public Iterable<MoveValue> getLastMoveMade(){return lastMoveMade.getMovesToUndo();}
+    public Iterable<MoveValue> getLastMoveMade(){return board.getLastMoveMade();}
 
 
     // TODO: test api listeners
@@ -97,11 +96,11 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the moves made stack.
      */
     public void redoMove(){
-        if(redoMoves.isEmpty())
+        Move move = board.redoMove();
+        if(move == null)
             return;
-        Move move = redoOneMove();
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
-        if(isCheckmate()) {
+        if(board.isCheckmate(currentTurn)) {
             King king = board.getKing(currentTurn);
             notifyCheckmate(king.getX(), king.getY());
         }
@@ -111,12 +110,11 @@ public class Board {
      * Pops the last move off the stack and pushes it onto the redo moves stack.
      */
     public void undoMove(){
-        if(moves.isEmpty())
+        Move move = board.undoMove();
+        if(move == null)
             return;
-        Move move = undoOneMove();
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
     }
-
 
     public void undoMultipleMoves(int numOfMoves){
         for(int i = 0; i < numOfMoves; i++){
@@ -124,13 +122,12 @@ public class Board {
         }
     }
 
-
     /**
      * Sets the board back to the most recent position.
      * Can be called if there have been no move undo's made.
      */
     public void redoAllMoves(){
-        while(!redoMoves.isEmpty()){
+        while(board.canRedoMove()){
             redoMove();
         }
     }

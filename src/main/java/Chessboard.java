@@ -1,4 +1,6 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -172,7 +174,7 @@ public class Chessboard {
      * @param newX new x position of the piece
      * @param newY new y position of the piece
      */
-    private void makeMove(int oldX, int oldY, int newX, int newY){
+    public void makeMove(int oldX, int oldY, int newX, int newY){
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
             lastPawnOrCapture = history.getNumberOfMoves();
@@ -197,4 +199,9 @@ public class Chessboard {
     boolean isDraw50Move(){
         return (history.getNumberOfMoves() - lastPawnOrCapture) == 50;
     }
+
+    public Iterable<MoveValue> getLastMoveMade(){return history.getLastMoves();}
+    public @Nullable Move undoMove(){return history.undoMove();}
+    public @Nullable Move redoMove(){return history.redoMove();}
+    public boolean canRedoMove(){return history.canRedoMove();}
 }
