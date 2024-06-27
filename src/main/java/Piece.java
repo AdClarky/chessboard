@@ -23,6 +23,7 @@ public abstract class Piece {
      */
     public static final int EMPTY_PIECE = 0;
     private final Icon pieceIcon;
+    private final Chessboard chessboard;
     protected int x;
     protected int y;
     protected final int direction;
@@ -35,20 +36,20 @@ public abstract class Piece {
      * @param pieceIcon image of the piece
      * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
      */
-    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter) {
+    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter, Chessboard chessboard) {
         this.x = x;
         this.y = y;
         this.pieceIcon = pieceIcon;
         this.direction = direction;
         this.pieceCharacter = pieceCharacter;
+        this.chessboard = chessboard;
     }
 
     /**
      * Calculates all possible moves based on surrounding pieces and checks.
-     * @param board the board which the piece is on
      * @return a list of coordinates the piece can move to.
      */
-    public abstract List<Coordinate> getPossibleMoves(Board board);
+    public abstract List<Coordinate> getPossibleMoves();
 
     /**
      * For pieces where the first move must be tracked.
@@ -68,10 +69,9 @@ public abstract class Piece {
      * Calculates a list of moves required to move a piece to a new place.
      * @param newX the new x position
      * @param newY the new y position
-     * @param board the board
      * @return the moves needed
      */
-    public List<MoveValue> getMoves(int newX, int newY, Board board) {
+    public List<MoveValue> getMoves(int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
         moves.add(new MoveValue(this, newX, newY));
         return moves;
@@ -114,7 +114,7 @@ public abstract class Piece {
      * @param moves a collection of possible moves
      * @return if the move is valid
      */
-    protected boolean cantMove(int x, int y, Board board, Collection<Coordinate> moves) {
+    protected boolean cantMove(int x, int y, Chessboard board, Collection<Coordinate> moves) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
@@ -126,23 +126,22 @@ public abstract class Piece {
         return false;
     }
 
-    /**
-     * Removes moves which would put the king in check.
-     * @param board the board this piece is on
-     * @param moves the possible moves not considering checks
-     */
-    protected void removeMovesInCheck(@NotNull Board board, Collection<Coordinate> moves) {
-        if(board.getCurrentTurn() != direction)
-            return;
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
-    }
+//    /**
+//     * Removes moves which would put the king in check.
+//     * @param board the board this piece is on
+//     * @param moves the possible moves not considering checks
+//     */
+//    protected void removeMovesInCheck(Collection<Coordinate> moves) {
+//
+//        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
+//    }
 
     /**
      * Calculates how far a piece can move in each diagonal direction.
      * @param board the board being worked on
      * @param moves a list of possible moves
      */
-    protected void calculateDiagonalMoves(Board board, Collection<Coordinate> moves){
+    protected void calculateDiagonalMoves(Chessboard board, Collection<Coordinate> moves){
         for(int x = this.x+1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x++, y++) {
             if(cantMove(x, y, board, moves))
                 break;
@@ -166,7 +165,7 @@ public abstract class Piece {
      * @param board the board being worked on
      * @param moves a list of possible moves
      */
-    protected void calculateStraightMoves(Board board, Collection<Coordinate> moves) {
+    protected void calculateStraightMoves(Chessboard board, Collection<Coordinate> moves) {
         for(int x = this.x+1; x < 8 && x >= 0; x++){
             if(cantMove(x, y, board, moves))
                 break;
