@@ -150,8 +150,9 @@ public class ChessboardBuilder {
         if(section.contains("-"))
             return;
         Coordinate location = Coordinate.createCoordinateFromString(section);
-        int direction = PieceColour.getDirectionFromColour(board.getCurrentTurn());
-        board.getPiece(location.x() + direction, location.y()).firstMove();
+        PieceColour enPassantColour = PieceColour.getOtherColour(board.getCurrentTurn());
+        int direction = PieceColour.getDirectionFromColour(enPassantColour);
+        board.getPiece(location.x(), location.y() + direction).firstMove();
     }
 
     void setHalfMoves(String section){

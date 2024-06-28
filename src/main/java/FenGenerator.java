@@ -1,4 +1,6 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 public class FenGenerator {
@@ -81,19 +83,25 @@ public class FenGenerator {
     }
 
     private void addEnPassant(){
-        List<MoveValue> lastMove = board.getLastMoveMade();
-        if(lastMove.size() != 1) {
+        Pawn pawn = findEnPassantPawn();
+        if(pawn == null) {
             fenString.append("- ");
             return;
         }
-        if(!(lastMove.getFirst().piece() instanceof Pawn)) {
-            fenString.append("- ");
-            return;
-        }
-        Pawn pawn = (Pawn) lastMove.getFirst().piece();
         int direction = PieceColour.getDirectionFromColour(pawn.getColour());
-        Coordinate coordinateBehind = new Coordinate(pawn.getX() - direction, pawn.getY());
+        Coordinate coordinateBehind = new Coordinate(pawn.getX(), pawn.getY() - direction);
         fenString.append(coordinateBehind).append(" ");
+    }
+
+    private @Nullable Pawn findEnPassantPawn(){
+        for(int y = 3; y < 5; y++) {
+            for (int x = 0; x < 8; x++) {
+                Piece possiblePiece = board.getPiece(x, y);
+                if(possiblePiece instanceof Pawn pawn && possiblePiece.hadFirstMove())
+                    return pawn;
+            }
+        }
+        return null;
     }
 
     private void addHalfMoves(){
