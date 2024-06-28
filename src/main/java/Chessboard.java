@@ -184,7 +184,7 @@ public class Chessboard {
     }
 
     boolean is3Repetition(){
-        if(history.getNumHalfMoves() < 8)
+        if(history.getNumFullMoves() < 4)
             return false;
         int boardState = getState();
         for(int i = 0; i < 2; i++){
