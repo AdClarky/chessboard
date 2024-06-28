@@ -16,10 +16,10 @@ public class King extends Piece{
      * Initialises the king piece.
      * @param x starting x value
      * @param y starting y value
-     * @param direction white or black
+     * @param colour white or black
      */
-    public King(int x, int y, int direction, Chessboard board) {
-        super(x, y, getIcon(direction), direction, 'K', board);
+    public King(int x, int y, PieceColour colour, Chessboard board) {
+        super(x, y, getIcon(colour), colour, 'K', board);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class King extends Piece{
         return Objects.hash(super.hashCode(), moved);
     }
 
-    private static @NotNull Icon getIcon(int colour){
-        if(colour == BLACK_PIECE)
+    private static @NotNull Icon getIcon(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(King.class.getResource("/black_king.png"));
         else
             return ImageUtils.getStretchedImage(King.class.getResource("/white_king.png"));

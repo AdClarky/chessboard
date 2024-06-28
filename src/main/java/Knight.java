@@ -13,10 +13,10 @@ public class Knight extends Piece{
      * Initialises the knight piece.
      * @param x starting x value
      * @param y starting y value
-     * @param direction black or white
+     * @param colour black or white
      */
-    public Knight(int x, int y, int direction, Chessboard board) {
-        super(x, y, getIcon(direction), direction, 'N', board);
+    public Knight(int x, int y, PieceColour colour, Chessboard board) {
+        super(x, y, getIcon(colour), colour, 'N', board);
     }
 
     @Override
@@ -38,8 +38,8 @@ public class Knight extends Piece{
     @Override
     public boolean hadFirstMove(){return false;}
 
-    private static Icon getIcon(int colour){
-        if(colour == BLACK_PIECE)
+    private static Icon getIcon(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(Knight.class.getResource("/black_knight.png"));
         else
             return ImageUtils.getStretchedImage(Knight.class.getResource("/white_knight.png"));

@@ -25,8 +25,8 @@ class ChessUtilsTest {
     @Test
     void dRookDisambiguated(){
         Chessboard board = new Chessboard();
-        Rook dRook = new Rook(4,7, Piece.BLACK_PIECE, board);
-        Rook hRook = new Rook(0,7, Piece.BLACK_PIECE, board);
+        Rook dRook = new Rook(4,7, PieceColour.BLACK, board);
+        Rook hRook = new Rook(0,7, PieceColour.BLACK, board);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
         possiblePieces.add(dRook);
         possiblePieces.add(hRook);
@@ -38,8 +38,8 @@ class ChessUtilsTest {
     @Test
     void hRookDisambiguated(){
         Chessboard board = new Chessboard();
-        Rook dRook = new Rook(4,7, Piece.BLACK_PIECE, board);
-        Rook hRook = new Rook(0,7, Piece.BLACK_PIECE, board);
+        Rook dRook = new Rook(4,7, PieceColour.BLACK, board);
+        Rook hRook = new Rook(0,7, PieceColour.BLACK, board);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
         possiblePieces.add(dRook);
         possiblePieces.add(hRook);
@@ -51,8 +51,8 @@ class ChessUtilsTest {
     @Test
     void RookA5Disambiguated() {
         Chessboard board = new Chessboard();
-        Rook a1Rook = new Rook(7, 0, Piece.BLACK_PIECE, board);
-        Rook a5hRook = new Rook(7, 4, Piece.BLACK_PIECE, board);
+        Rook a1Rook = new Rook(7, 0, PieceColour.BLACK, board);
+        Rook a5hRook = new Rook(7, 4, PieceColour.BLACK, board);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
         possiblePieces.add(a1Rook);
         possiblePieces.add(a5hRook);
@@ -64,8 +64,8 @@ class ChessUtilsTest {
     @Test
     void RookA1Disambiguated() {
         Chessboard board = new Chessboard();
-        Rook a1Rook = new Rook(7, 0, Piece.BLACK_PIECE, board);
-        Rook a5hRook = new Rook(7, 4, Piece.BLACK_PIECE, board);
+        Rook a1Rook = new Rook(7, 0, PieceColour.BLACK, board);
+        Rook a5hRook = new Rook(7, 4, PieceColour.BLACK, board);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
         possiblePieces.add(a1Rook);
         possiblePieces.add(a5hRook);
@@ -77,9 +77,9 @@ class ChessUtilsTest {
     @Test
     void queenDoubleDisambiguation(){
         Chessboard board = new Chessboard();
-        Queen queenE4 = new Queen(3,3, Piece.BLACK_PIECE, board);
-        Queen queenH4 = new Queen(0,3, Piece.BLACK_PIECE, board);
-        Queen queenH1 = new Queen(0,0, Piece.BLACK_PIECE, board);
+        Queen queenE4 = new Queen(3,3, PieceColour.BLACK, board);
+        Queen queenH4 = new Queen(0,3, PieceColour.BLACK, board);
+        Queen queenH1 = new Queen(0,0, PieceColour.BLACK, board);
         SequencedCollection<Piece> possiblePieces = new ArrayList<>(2);
         possiblePieces.add(queenH1);
         possiblePieces.add(queenH4);

@@ -9,10 +9,10 @@ public class Queen extends Piece{
      * Initialises the Queen.
      * @param x starting x position
      * @param y starting y position
-     * @param direction black or white
+     * @param colour black or white
      */
-    public Queen(int x, int y, int direction, Chessboard board) {
-        super(x, y, getIcon(direction), direction, 'Q', board);
+    public Queen(int x, int y, PieceColour colour, Chessboard board) {
+        super(x, y, getIcon(colour), colour, 'Q', board);
     }
 
     @Override
@@ -33,8 +33,8 @@ public class Queen extends Piece{
     @Override
     public boolean hadFirstMove(){return false;}
 
-    private static Icon getIcon(int colour){
-        if(colour == BLACK_PIECE)
+    private static Icon getIcon(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(Queen.class.getResource("/black_queen.png"));
         else
             return ImageUtils.getStretchedImage(Queen.class.getResource("/white_queen.png"));

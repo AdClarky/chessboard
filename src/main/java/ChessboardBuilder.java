@@ -9,25 +9,25 @@ public class ChessboardBuilder {
     int squaresProcessed = 7;
 
     public @NotNull Chessboard createChessboardDefaultSetup() {
-        whitePieces.add(new King(3, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Rook(0, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Knight(1, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Bishop(2, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Queen(4, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Bishop(5, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Knight(6, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new Rook(7, 0, Piece.WHITE_PIECE, board));
-        blackPieces.add(new King(3, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Rook(0, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Knight(1, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Bishop(2, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Queen(4, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Bishop(5, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Knight(6, 7, Piece.BLACK_PIECE, board));
-        blackPieces.add(new Rook(7, 7, Piece.BLACK_PIECE, board));
+        whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Knight(1, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Bishop(2, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Queen(4, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Bishop(5, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Knight(6, 0, PieceColour.WHITE, board));
+        whitePieces.add(new Rook(7, 0, PieceColour.WHITE, board));
+        blackPieces.add(new King(3, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Rook(0, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Knight(1, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Bishop(2, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Queen(4, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Bishop(5, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Knight(6, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Rook(7, 7, PieceColour.BLACK, board));
         for(int x = 0; x < 8; x++){
-            blackPieces.add(new Pawn(x, 6, Piece.BLACK_PIECE, board));
-            whitePieces.add(new Pawn(x, 1, Piece.WHITE_PIECE, board));
+            blackPieces.add(new Pawn(x, 6, PieceColour.BLACK, board));
+            whitePieces.add(new Pawn(x, 1, PieceColour.WHITE, board));
         }
         board.populateBoard(whitePieces, blackPieces);
         return board;
@@ -73,7 +73,7 @@ public class ChessboardBuilder {
             squaresProcessed -= Character.getNumericValue(character);
             return;
         }
-        int colour = getColourFromCharacter(character);
+        PieceColour colour = getColourFromCharacter(character);
         ArrayList<Piece> pieces = getPiecesFromChar(character);
         switch(Character.toLowerCase(character)){
             case 'r':
@@ -108,19 +108,19 @@ public class ChessboardBuilder {
         if(length == 4)
             return;
         if(rights.contains("-")){
-            board.getKing(Piece.WHITE_PIECE).firstMove();
-            board.getKing(Piece.BLACK_PIECE).firstMove();
+            board.getKing(PieceColour.WHITE).firstMove();
+            board.getKing(PieceColour.BLACK).firstMove();
             return;
         }
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
         getUpperAndLower(rights, upper, lower);
         if(upper.isEmpty())
-            board.getKing(Piece.WHITE_PIECE).firstMove();
+            board.getKing(PieceColour.WHITE).firstMove();
         else if(upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
         if(lower.isEmpty())
-            board.getKing(Piece.WHITE_PIECE).firstMove();
+            board.getKing(PieceColour.WHITE).firstMove();
         else if(lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }
@@ -138,7 +138,7 @@ public class ChessboardBuilder {
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
         int x = rookWithRights == 'k' ? 0 : 7;
         Rook rookNotMoved = (Rook) board.getPiece(x, y);
-        for(Piece piece : board.getColourPieces(rookNotMoved.getDirection())){
+        for(Piece piece : board.getColourPieces(rookNotMoved.getColour())){
             if(piece instanceof Rook && piece != rookNotMoved){
                 piece.firstMove();
             }
@@ -149,15 +149,16 @@ public class ChessboardBuilder {
         if(section.contains("-"))
             return;
         Coordinate location = Coordinate.createCoordinateFromString(section);
-        board.getPiece(location.x() + board.getCurrentTurn(), location.y()).firstMove();
+        int direction = PieceColour.getDirectionFromColour(board.getCurrentTurn());
+        board.getPiece(location.x() + direction, location.y()).firstMove();
     }
 
     void setHalfMoves(String section){
         board.setNumHalfMoves(Integer.parseInt(section));
     }
 
-    int getColourFromCharacter(char c){
-        return Character.isUpperCase(c) ? Piece.WHITE_PIECE : Piece.BLACK_PIECE;
+    PieceColour getColourFromCharacter(char c){
+        return Character.isUpperCase(c) ? PieceColour.WHITE : PieceColour.BLACK;
     }
 
     ArrayList<Piece> getPiecesFromChar(char c){

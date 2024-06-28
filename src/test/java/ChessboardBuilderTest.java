@@ -20,8 +20,8 @@ public class ChessboardBuilderTest {
         Chessboard board = new ChessboardBuilder().createChessboardDefaultSetup();
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 1));
-            assertEquals(Piece.WHITE_PIECE, board.getPiece(x, 1).getDirection());
-            assertEquals(Piece.WHITE_PIECE, board.getPiece(x, 0).getDirection());
+            assertEquals(PieceColour.WHITE, board.getPiece(x, 1).getColour());
+            assertEquals(PieceColour.WHITE, board.getPiece(x, 0).getColour());
         }
         assertInstanceOf(Rook.class, board.getPiece(7, 0));
         assertFalse(board.getPiece(7, 0).hadFirstMove());
@@ -41,8 +41,8 @@ public class ChessboardBuilderTest {
         Chessboard board = new ChessboardBuilder().createChessboardDefaultSetup();
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 6));
-            assertEquals(Piece.BLACK_PIECE, board.getPiece(x, 6).getDirection());
-            assertEquals(Piece.BLACK_PIECE, board.getPiece(x, 7).getDirection());
+            assertEquals(PieceColour.BLACK, board.getPiece(x, 6).getColour());
+            assertEquals(PieceColour.BLACK, board.getPiece(x, 7).getColour());
         }
         assertInstanceOf(Rook.class, board.getPiece(7, 7));
         assertFalse(board.getPiece(7, 7).hadFirstMove());
@@ -102,8 +102,8 @@ public class ChessboardBuilderTest {
         Chessboard board = new ChessboardBuilder().createChessboardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 1));
-            assertEquals(Piece.WHITE_PIECE, board.getPiece(x, 1).getDirection());
-            assertEquals(Piece.WHITE_PIECE, board.getPiece(x, 0).getDirection());
+            assertEquals(PieceColour.WHITE, board.getPiece(x, 1).getColour());
+            assertEquals(PieceColour.WHITE, board.getPiece(x, 0).getColour());
         }
         assertInstanceOf(Rook.class, board.getPiece(7, 0));
         assertFalse(board.getPiece(7, 0).hadFirstMove());
@@ -123,8 +123,8 @@ public class ChessboardBuilderTest {
         Chessboard board = new ChessboardBuilder().createChessboardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 6));
-            assertEquals(Piece.BLACK_PIECE, board.getPiece(x, 6).getDirection());
-            assertEquals(Piece.BLACK_PIECE, board.getPiece(x, 7).getDirection());
+            assertEquals(PieceColour.BLACK, board.getPiece(x, 6).getColour());
+            assertEquals(PieceColour.BLACK, board.getPiece(x, 7).getColour());
         }
         assertInstanceOf(Rook.class, board.getPiece(7, 7));
         assertFalse(board.getPiece(7, 7).hadFirstMove());

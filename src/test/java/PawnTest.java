@@ -77,26 +77,26 @@ class PawnTest {
     @Test
     void pawnHasntMoved(){
         Chessboard board = new Chessboard();
-        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE, board);
-        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        Pawn pawn = new Pawn(1, 1, PieceColour.BLACK, board);
+        Pawn pawn2 = new Pawn(1, 1, PieceColour.BLACK, board);
         assertEquals(pawn, pawn2);
     }
 
     @Test
     void onePawnPassantable(){
         Chessboard board = new Chessboard();
-        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        Pawn pawn = new Pawn(1, 1, PieceColour.BLACK, board);
         pawn.firstMove();
-        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        Pawn pawn2 = new Pawn(1, 1, PieceColour.BLACK, board);
         assertNotEquals(pawn, pawn2);
     }
 
     @Test
     void bothPawnsPassantable(){
         Chessboard board = new Chessboard();
-        Pawn pawn = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        Pawn pawn = new Pawn(1, 1, PieceColour.BLACK, board);
         pawn.firstMove();
-        Pawn pawn2 = new Pawn(1, 1, Piece.WHITE_PIECE, board);
+        Pawn pawn2 = new Pawn(1, 1, PieceColour.BLACK, board);
         pawn2.firstMove();
         assertEquals(pawn, pawn2);
     }

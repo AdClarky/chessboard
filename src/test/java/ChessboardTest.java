@@ -19,12 +19,12 @@ class ChessboardTest {
         board = new Chessboard();
         ArrayList<Piece> whitePieces = new ArrayList<>(3);
         ArrayList<Piece> blackPieces = new ArrayList<>(3);
-        whitePieces.add(new King(0, 0, Piece.WHITE_PIECE, board));
-        whitePieces.add(new King(0, 1, Piece.WHITE_PIECE, board));
-        whitePieces.add(new King(0, 2, Piece.WHITE_PIECE, board));
-        blackPieces.add(new King(0, 3, Piece.BLACK_PIECE, board));
-        blackPieces.add(new King(0, 4, Piece.BLACK_PIECE, board));
-        blackPieces.add(new King(0, 5, Piece.BLACK_PIECE, board));
+        whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
+        whitePieces.add(new King(0, 1, PieceColour.WHITE, board));
+        whitePieces.add(new King(0, 2, PieceColour.WHITE, board));
+        blackPieces.add(new King(0, 3, PieceColour.BLACK, board));
+        blackPieces.add(new King(0, 4, PieceColour.BLACK, board));
+        blackPieces.add(new King(0, 5, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
         for(int x = 1; x < 8; x++){
             for(int y = 0; y < 8; y++){
@@ -60,7 +60,7 @@ class ChessboardTest {
     @Test
     void queenNextToKingInCheck(){
         new Move(2, 0, board.getPiece(4, 7), null, board);
-        assertTrue(board.isKingInCheck(Piece.WHITE_PIECE));
+        assertTrue(board.isKingInCheck(PieceColour.WHITE));
     }
 
     @Test

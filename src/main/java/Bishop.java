@@ -12,10 +12,10 @@ public class Bishop extends Piece{
      * Constructor for a bishop.
      * @param x starting x position
      * @param y starting y position
-     * @param direction flags are {@link Piece#BLACK_PIECE} and {@link Piece#WHITE_PIECE}
+     * @param colour {@link PieceColour}
      */
-    public Bishop(int x, int y, int direction, Chessboard board) {
-        super(x, y, getIcon(direction), direction, 'B', board);
+    public Bishop(int x, int y, PieceColour colour, Chessboard board) {
+        super(x, y, getIcon(colour), colour, 'B', board);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class Bishop extends Piece{
      * @param colour the colour of the piece
      * @return an icon which is white or black.
      */
-    private static Icon getIcon(int colour){
-        if(colour == BLACK_PIECE)
+    private static Icon getIcon(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(Bishop.class.getResource("/black_bishop.png"));
         else
             return ImageUtils.getStretchedImage(Bishop.class.getResource("/white_bishop.png"));

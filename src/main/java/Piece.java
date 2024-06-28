@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,37 +8,25 @@ import java.util.Objects;
  * An abstract class which parents all chess pieces.
  */
 public abstract class Piece {
-    /**
-     * Flag for a piece being white
-     */
-    public static final int WHITE_PIECE = 1;
-    /**
-     * Flag for a piece being black
-     */
-    public static final int BLACK_PIECE = -1;
-    /**
-     * Flag for a blank piece.
-     */
-    public static final int EMPTY_PIECE = 0;
     private final Icon pieceIcon;
     private final char pieceCharacter;
     protected final Chessboard board;
     protected int x;
     protected int y;
-    protected final int direction;
+    protected final PieceColour colour;
 
     /**
      * Initialises the position and whether the piece is white or black
      * @param x starting x value
      * @param y starting y value
      * @param pieceIcon image of the piece
-     * @param direction value should be the flag {@link #BLACK_PIECE} or {@link #WHITE_PIECE}
+     * @param colour the colour of the piece
      */
-    protected Piece(int x, int y, Icon pieceIcon, int direction, char pieceCharacter, Chessboard board) {
+    protected Piece(int x, int y, Icon pieceIcon, PieceColour colour, char pieceCharacter, Chessboard board) {
         this.x = x;
         this.y = y;
         this.pieceIcon = pieceIcon;
-        this.direction = direction;
+        this.colour = colour;
         this.pieceCharacter = pieceCharacter;
         this.board = board;
     }
@@ -87,17 +73,17 @@ public abstract class Piece {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Piece piece = (Piece) obj;
-        return x == piece.x && y == piece.y && direction == piece.direction;
+        return x == piece.x && y == piece.y && colour == piece.colour;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, direction, pieceCharacter);
+        return Objects.hash(x, y, colour, pieceCharacter);
     }
 
     public Icon getPieceIcon() {return pieceIcon;}
 
-    public int getDirection() {return direction;}
+    public PieceColour getColour() {return colour;}
 
 
     void setX(int x) {this.x = x;}
@@ -106,7 +92,7 @@ public abstract class Piece {
     public int getY() {return y;}
 
     protected void removeMovesInCheck(Collection<Coordinate> moves) {
-        if(board.getCurrentTurn() != direction)
+        if(board.getCurrentTurn() != colour)
             return;
         moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
     }
@@ -124,7 +110,7 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            if(board.getPiece(x, y).direction != direction) // if it's an enemy piece
+            if(board.getPiece(x, y).colour != colour) // if it's an enemy piece
                 moves.add(new Coordinate(x, y));
             return true;
         }

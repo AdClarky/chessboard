@@ -15,10 +15,10 @@ public class Rook extends Piece{
      * Initialises Rook piece
      * @param x starting x
      * @param y starting y
-     * @param direction black or white
+     * @param colour black or white
      */
-    public Rook(int x, int y, int direction, Chessboard board) {
-        super(x, y, getIcon(direction), direction, 'R', board);
+    public Rook(int x, int y, PieceColour colour, Chessboard board) {
+        super(x, y, getIcon(colour), colour, 'R', board);
     }
 
     @Override
@@ -54,8 +54,8 @@ public class Rook extends Piece{
         return Objects.hash(super.hashCode(), moved);
     }
 
-    private static @NotNull Icon getIcon(int colour){
-        if(colour == BLACK_PIECE)
+    private static @NotNull Icon getIcon(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(Rook.class.getResource("/black_rook.png"));
         else
             return ImageUtils.getStretchedImage(Rook.class.getResource("/white_rook.png"));

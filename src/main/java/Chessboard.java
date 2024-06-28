@@ -16,7 +16,7 @@ public class Chessboard {
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
     private int numHalfMoves = 0;
-    private int currentTurn;
+    private PieceColour currentTurn;
 
     /**
      * Initialises the board with the pieces in default positions.
@@ -66,27 +66,27 @@ public class Chessboard {
 
     void setSquare(int x, int y, @NotNull Piece piece){board[y][x] = piece;}
 
-    ArrayList<Piece> getColourPieces(int colour){
-        if(colour == Piece.BLACK_PIECE)
+    ArrayList<Piece> getColourPieces(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return blackPieces;
         return whitePieces;
     }
 
-    King getKing(int colour){
-        if(colour == Piece.BLACK_PIECE)
+    King getKing(PieceColour colour){
+        if(colour == PieceColour.BLACK)
             return (King) blackPieces.getFirst();
         return (King) whitePieces.getFirst();
     }
 
     void addPiece(@NotNull Piece piece){
-        if(piece.getDirection() == Piece.BLACK_PIECE)
+        if(piece.getColour() == PieceColour.BLACK)
             blackPieces.add(piece);
         else
             whitePieces.add(piece);
     }
 
     void removePiece(@NotNull Piece piece){
-        if(piece.getDirection() == Piece.BLACK_PIECE)
+        if(piece.getColour() == PieceColour.BLACK)
             blackPieces.remove(piece);
         else
             whitePieces.remove(piece);
@@ -107,7 +107,7 @@ public class Chessboard {
     boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
         Piece lastPiece = history.getLastPieceMoved();
         Move move = new Move(newX, newY, pieceToCheck, lastPiece, this);
-        boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getDirection());
+        boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getColour());
         move.undo();
         return isMoveUnsafe;
     }
@@ -117,10 +117,10 @@ public class Chessboard {
      * @param colour black or white king which will be checked
      * @return if the king is in check
      */
-    boolean isKingInCheck(int colour){
+    boolean isKingInCheck(PieceColour colour){
         King king = getKing(colour);
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
-        Iterable<Piece> enemyPieces = getColourPieces(colour * -1);
+        Iterable<Piece> enemyPieces = getColourPieces(PieceColour.getOtherColour(colour));
         for(Piece piece : enemyPieces){
             if(piece.getPossibleMoves().contains(kingPos)){
                 return true;
@@ -207,7 +207,7 @@ public class Chessboard {
     public @Nullable Move undoMove(){return history.undoMove();}
     public @Nullable Move redoMove(){return history.redoMove();}
     public boolean canRedoMove(){return history.canRedoMove();}
-    public void setCurrentTurn(int newTurn){currentTurn = newTurn;}
-    public int getCurrentTurn(){return currentTurn;}
+    public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
+    public PieceColour getCurrentTurn(){return currentTurn;}
     void setNumHalfMoves(int numHalfMoves){this.numHalfMoves = numHalfMoves;}
 }

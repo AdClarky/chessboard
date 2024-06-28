@@ -36,7 +36,7 @@ public final class ChessUtils {
         Move move = new Move(newX, newY, piece, null, board);
         if(board.isCheckmate())
             moveString += "#";
-        else if(board.isKingInCheck(piece.getDirection() * -1))
+        else if(board.isKingInCheck(PieceColour.getOtherColour(piece)))
             moveString += "+";
         move.undo();
         return moveString;
@@ -68,7 +68,7 @@ public final class ChessUtils {
     }
 
     static MoveValue getCastlingMove(int newX, ChessGame chessGame){
-        if(chessGame.getCurrentTurn() == Piece.BLACK_PIECE){
+        if(chessGame.getCurrentTurn() == PieceColour.BLACK){
             return new MoveValue(chessGame.getPiece(3,7),newX,7);
         }else{
             return new MoveValue(chessGame.getPiece(3, 0), newX, 0);

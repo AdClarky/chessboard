@@ -11,7 +11,7 @@ import java.util.Collection;
 public class ChessGame {
     private final Chessboard board;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private int currentTurn = Piece.WHITE_PIECE;
+    private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
         board = new ChessboardBuilder().createChessboardDefaultSetup();
@@ -22,10 +22,10 @@ public class ChessGame {
         currentTurn = board.getCurrentTurn();
     }
 
-    public int getCurrentTurn(){return currentTurn;}
+    public PieceColour getCurrentTurn(){return currentTurn;}
 
     private void nextTurn(){
-        currentTurn = currentTurn == Piece.WHITE_PIECE ? Piece.BLACK_PIECE : Piece.WHITE_PIECE;
+        currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
         board.setCurrentTurn(currentTurn);
     }
 
@@ -89,8 +89,8 @@ public class ChessGame {
     }
 
     private void notifyDraw(){
-        King whiteKing = board.getKing(Piece.WHITE_PIECE);
-        King blackKing = board.getKing(Piece.BLACK_PIECE);
+        King whiteKing = board.getKing(PieceColour.WHITE);
+        King blackKing = board.getKing(PieceColour.BLACK);
         for(BoardListener listener : boardListeners)
             listener.draw(whiteKing.getX(), whiteKing.getY(), blackKing.getX(), blackKing.getY());
     }
@@ -136,7 +136,7 @@ public class ChessGame {
         }
     }
 
-    ArrayList<Piece> getColourPieces(int colour){return board.getColourPieces(colour);}
+    ArrayList<Piece> getColourPieces(PieceColour colour){return board.getColourPieces(colour);}
 
     Piece getPiece(int x, int y){return board.getPiece(x, y);}
     public int getState(){return board.getState();}
