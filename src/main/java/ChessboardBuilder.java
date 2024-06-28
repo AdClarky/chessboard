@@ -8,7 +8,7 @@ public class ChessboardBuilder {
     ArrayList<Piece> blackPieces = new ArrayList<>(16);
     int squaresProcessed = 7;
 
-    public @NotNull Chessboard createChessboardDefaultSetup() {
+    public @NotNull Chessboard defaultSetup() {
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Knight(1, 0, PieceColour.WHITE, board));
@@ -33,7 +33,7 @@ public class ChessboardBuilder {
         return board;
     }
 
-    public @NotNull Chessboard createChessboardFromFen(String fenString) {
+    public @NotNull Chessboard FromFen(String fenString) {
         ArrayList<String> sections = separateIntoSections(fenString, ' ');
         populateBoardFromFenString(sections.getFirst());
         setTurnToMove(sections.get(1));
@@ -121,7 +121,7 @@ public class ChessboardBuilder {
         else if(upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
         if(lower.isEmpty())
-            board.getKing(PieceColour.WHITE).firstMove();
+            board.getKing(PieceColour.BLACK).firstMove();
         else if(lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }

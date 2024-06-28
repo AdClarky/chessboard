@@ -14,11 +14,11 @@ public class ChessGame {
     private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
-        board = new ChessboardBuilder().createChessboardDefaultSetup();
+        board = new ChessboardBuilder().defaultSetup();
     }
 
     public ChessGame(String fenString){
-        board = new ChessboardBuilder().createChessboardFromFen(fenString);
+        board = new ChessboardBuilder().FromFen(fenString);
         currentTurn = board.getCurrentTurn();
     }
 

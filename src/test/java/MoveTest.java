@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 class MoveTest {
-    Chessboard board = new ChessboardBuilder().createChessboardDefaultSetup();
+    Chessboard board = new ChessboardBuilder().defaultSetup();
 
     @AfterEach
     void setUp() {
-        board = new ChessboardBuilder().createChessboardDefaultSetup();
+        board = new ChessboardBuilder().defaultSetup();
     }
 
     @Test

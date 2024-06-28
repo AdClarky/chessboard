@@ -1,16 +1,15 @@
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 class ChessboardTest {
-    Chessboard board = new ChessboardBuilder().createChessboardDefaultSetup();
+    Chessboard board = new ChessboardBuilder().defaultSetup();
 
     @AfterEach
     void setUp() {
-        board = new ChessboardBuilder().createChessboardDefaultSetup();
+        board = new ChessboardBuilder().defaultSetup();
     }
 
 

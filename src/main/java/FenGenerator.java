@@ -29,6 +29,7 @@ public class FenGenerator {
                 else {
                     if(blankSquare != 0){
                         fenString.append(blankSquare);
+                        blankSquare = 0;
                     }
                     fenString.append(charFromPiece(piece));
                 }
@@ -74,9 +75,9 @@ public class FenGenerator {
 
     private void addColourCastleRight(int backRow){
         if(!board.getPiece(0, backRow).hadFirstMove())
-            fenString.append(charFromPiece(board.getPiece(3, backRow)));
+            fenString.append(backRow == 0 ? 'K' : 'k');
         if(!board.getPiece(7, backRow).hadFirstMove())
-            fenString.append(charFromPiece(board.getPiece(4, backRow)));
+            fenString.append(backRow == 0 ? 'Q' : 'q');
     }
 
     private void addEnPassant(){
