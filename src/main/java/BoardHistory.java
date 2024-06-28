@@ -2,6 +2,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
@@ -15,6 +16,8 @@ public class BoardHistory {
     }
 
     public @NotNull List<MoveValue> getLastMoves(){
+        if(lastMove.isEmpty())
+            return new ArrayList<>(0);
         return lastMove.getFirst().getMovesToUndo();
     }
 

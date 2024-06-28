@@ -2,8 +2,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class FenGenerator {
-    private Chessboard board;
-    private StringBuilder fenString = new StringBuilder();
+    private final Chessboard board;
+    private final StringBuilder fenString = new StringBuilder();
 
     public FenGenerator(Chessboard board) {
         this.board = board;
@@ -21,8 +21,8 @@ public class FenGenerator {
 
     private void addBoardPosition() {
         int blankSquare = 0;
-        for(int y = 0; y < 8; y++) {
-            for(int x = 0; x < 8; x++) {
+        for(int y = 7; y >= 0; y--) {
+            for(int x = 7; x >= 0; x--) {
                 Piece piece = board.getPiece(x, y);
                 if(piece instanceof Blank)
                     blankSquare++;
@@ -38,17 +38,18 @@ public class FenGenerator {
             blankSquare = 0;
             fenString.append("/");
         }
+        fenString.deleteCharAt(fenString.length()-1);
         fenString.append(' ');
     }
 
     private char charFromPiece(@NotNull Piece piece) {
         String pieceString = piece.toString();
         if(pieceString.isEmpty()) {
-            pieceString = "p";
+            pieceString = "P";
         }
         char character = pieceString.charAt(0);
-        if(piece.getColour() == PieceColour.WHITE)
-            character = Character.toUpperCase(character);
+        if(piece.getColour() == PieceColour.BLACK)
+            character = Character.toLowerCase(character);
         return character;
     }
 
@@ -95,11 +96,11 @@ public class FenGenerator {
     }
 
     private void addHalfMoves(){
-        fenString.append(board.getNumHalfMoves());
+        fenString.append(board.getNumHalfMoves()).append(' ');
     }
 
     private void addFullMoves(){
-        fenString.append(board.getNumFullMoves());
+        fenString.append(board.getNumFullMoves() + 1);
     }
 }
 
