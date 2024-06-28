@@ -7,15 +7,15 @@ public class FenGenerator {
 
     public FenGenerator(Chessboard board) {
         this.board = board;
+    }
+
+    public String getFenString() {
         addBoardPosition();
         addCurrentTurn();
         addCastlingRights();
         addEnPassant();
         addHalfMoves();
         addFullMoves();
-    }
-
-    public String getFenString() {
         return fenString.toString();
     }
 

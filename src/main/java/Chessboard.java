@@ -180,8 +180,6 @@ public class Chessboard {
         if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
             throw new InvalidMoveException("That isn't a valid move!");
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
-        if(move.getPiece() instanceof Pawn || move.hasTaken())
-            numHalfMoves = history.getNumHalfMoves();
         history.push(move);
     }
 
@@ -201,7 +199,7 @@ public class Chessboard {
     }
 
     boolean isDraw50Move(){
-        return (history.getNumHalfMoves() - numHalfMoves) == 50;
+        return history.getNumHalfMoves() == 50;
     }
 
     public List<MoveValue> getLastMoveMade(){return history.getLastMoves();}
@@ -212,6 +210,6 @@ public class Chessboard {
     public boolean canRedoMove(){return history.canRedoMove();}
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
     public PieceColour getCurrentTurn(){return currentTurn;}
-    void setNumHalfMoves(int numHalfMoves){this.numHalfMoves = numHalfMoves;}
+    void setNumHalfMoves(int numHalfMoves){history.setNumHalfMoves(numHalfMoves);}
     public void setNumFullMoves(int numFullMoves){history.setNumFullMoves(numFullMoves);}
 }

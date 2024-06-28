@@ -10,6 +10,7 @@ public class BoardHistory {
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
     private Deque<Move> lastMove = moves;
+    private int numHalfMoves = 0;
     private int numFullMoves = 1; // when importing through fenstring history unknown so moves are set
 
     public @Nullable Piece getLastPieceMoved(){
@@ -22,15 +23,12 @@ public class BoardHistory {
         return lastMove.getFirst().getMovesToUndo();
     }
 
-    public int getNumHalfMoves(){
-        return moves.size() + redoMoves.size();
-    }
-    public int getNumFullMoves(){return numFullMoves;}
-
     public void push(Move move){
         moves.push(move);
         if(move.getPiece().getColour() == PieceColour.BLACK)
             numFullMoves++;
+        if(move.getPiece() instanceof Pawn || move.hasTaken())
+            numHalfMoves++;
         lastMove = moves;
     }
 
@@ -68,7 +66,16 @@ public class BoardHistory {
 
     public boolean canRedoMove() {return !redoMoves.isEmpty();}
 
+    public int getNumHalfMoves(){
+        return numHalfMoves;
+    }
+    public int getNumFullMoves(){return numFullMoves;}
+
     public void setNumFullMoves(int numFullMoves) {
         this.numFullMoves = numFullMoves;
+    }
+
+    public void setNumHalfMoves(int numHalfMoves) {
+        this.numHalfMoves = numHalfMoves;
     }
 }

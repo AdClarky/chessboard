@@ -101,7 +101,7 @@ public class ChessboardBuilder {
 
     void setTurnToMove(CharSequence turnSection){
         char character = turnSection.charAt(0);
-        board.setCurrentTurn(getColourFromCharacter(character));
+        board.setCurrentTurn(character == 'w' ? PieceColour.WHITE : PieceColour.BLACK);
     }
 
     void setCastlingRights(String rights){
