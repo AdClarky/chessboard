@@ -3,6 +3,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A regular chess board.
@@ -203,7 +204,9 @@ public class Chessboard {
         return (history.getNumberOfMoves() - numHalfMoves) == 50;
     }
 
-    public Iterable<MoveValue> getLastMoveMade(){return history.getLastMoves();}
+    public List<MoveValue> getLastMoveMade(){return history.getLastMoves();}
+    public int getNumHalfMoves(){return history.getNumberOfMoves();}
+    public int getNumFullMoves(){return Math.floorDiv(history.getNumberOfMoves(), 2);}
     public @Nullable Move undoMove(){return history.undoMove();}
     public @Nullable Move redoMove(){return history.redoMove();}
     public boolean canRedoMove(){return history.canRedoMove();}

@@ -3,6 +3,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 public class BoardHistory {
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
@@ -13,7 +14,7 @@ public class BoardHistory {
         return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
     }
 
-    public @NotNull Iterable<MoveValue> getLastMoves(){
+    public @NotNull List<MoveValue> getLastMoves(){
         return lastMove.getFirst().getMovesToUndo();
     }
 

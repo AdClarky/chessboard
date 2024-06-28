@@ -1,0 +1,105 @@
+import org.jetbrains.annotations.NotNull;
+import java.util.List;
+
+public class FenGenerator {
+    private Chessboard board;
+    private StringBuilder fenString = new StringBuilder();
+
+    public FenGenerator(Chessboard board) {
+        this.board = board;
+        addBoardPosition();
+        addCurrentTurn();
+        addCastlingRights();
+        addEnPassant();
+        addHalfMoves();
+        addFullMoves();
+    }
+
+    public String getFenString() {
+        return fenString.toString();
+    }
+
+    private void addBoardPosition() {
+        int blankSquare = 0;
+        for(int y = 0; y < 8; y++) {
+            for(int x = 0; x < 8; x++) {
+                Piece piece = board.getPiece(x, y);
+                if(piece instanceof Blank)
+                    blankSquare++;
+                else {
+                    if(blankSquare != 0){
+                        fenString.append(blankSquare);
+                    }
+                    fenString.append(charFromPiece(piece));
+                }
+            }
+            if(blankSquare != 0)
+                fenString.append(blankSquare);
+            blankSquare = 0;
+            fenString.append("/");
+        }
+        fenString.append(' ');
+    }
+
+    private char charFromPiece(@NotNull Piece piece) {
+        String pieceString = piece.toString();
+        if(pieceString.isEmpty()) {
+            pieceString = "p";
+        }
+        char character = pieceString.charAt(0);
+        if(piece.getColour() == PieceColour.WHITE)
+            character = Character.toUpperCase(character);
+        return character;
+    }
+
+    private void addCurrentTurn() {
+        if(board.getCurrentTurn() == PieceColour.BLACK)
+            fenString.append("b ");
+        else
+            fenString.append("w ");
+    }
+
+    private void addCastlingRights() {
+        if(board.getKing(PieceColour.WHITE).hadFirstMove() && board.getKing(PieceColour.BLACK).hadFirstMove()) {
+            fenString.append("- ");
+            return;
+        }
+        if(!board.getKing(PieceColour.WHITE).hadFirstMove())
+            addColourCastleRight(0);
+        if(!board.getKing(PieceColour.BLACK).hadFirstMove())
+            addColourCastleRight(7);
+        fenString.append(" ");
+    }
+
+    private void addColourCastleRight(int backRow){
+        if(!board.getPiece(0, backRow).hadFirstMove())
+            fenString.append(charFromPiece(board.getPiece(3, backRow)));
+        if(!board.getPiece(7, backRow).hadFirstMove())
+            fenString.append(charFromPiece(board.getPiece(4, backRow)));
+    }
+
+    private void addEnPassant(){
+        List<MoveValue> lastMove = board.getLastMoveMade();
+        if(lastMove.size() != 1) {
+            fenString.append("- ");
+            return;
+        }
+        if(!(lastMove.getFirst().piece() instanceof Pawn)) {
+            fenString.append("- ");
+            return;
+        }
+        Pawn pawn = (Pawn) lastMove.getFirst().piece();
+        int direction = PieceColour.getDirectionFromColour(pawn.getColour());
+        Coordinate coordinateBehind = new Coordinate(pawn.getX() - direction, pawn.getY());
+        fenString.append(coordinateBehind).append(" ");
+    }
+
+    private void addHalfMoves(){
+        fenString.append(board.getNumHalfMoves());
+    }
+
+    private void addFullMoves(){
+        fenString.append(board.getNumFullMoves());
+    }
+}
+
