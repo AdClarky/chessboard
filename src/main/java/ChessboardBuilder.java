@@ -40,6 +40,7 @@ public class ChessboardBuilder {
         setCastlingRights(sections.get(2));
         setEnPassant(sections.get(3));
         setHalfMoves(sections.get(4));
+        setFullMoves(sections.get(5));
         return board;
     }
 
@@ -155,6 +156,10 @@ public class ChessboardBuilder {
 
     void setHalfMoves(String section){
         board.setNumHalfMoves(Integer.parseInt(section));
+    }
+
+    void setFullMoves(String section){
+        board.setNumFullMoves(Integer.parseInt(section));
     }
 
     PieceColour getColourFromCharacter(char c){

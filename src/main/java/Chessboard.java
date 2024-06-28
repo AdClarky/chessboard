@@ -181,12 +181,12 @@ public class Chessboard {
             throw new InvalidMoveException("That isn't a valid move!");
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         if(move.getPiece() instanceof Pawn || move.hasTaken())
-            numHalfMoves = history.getNumberOfMoves();
+            numHalfMoves = history.getNumHalfMoves();
         history.push(move);
     }
 
     boolean is3Repetition(){
-        if(history.getNumberOfMoves() < 8)
+        if(history.getNumHalfMoves() < 8)
             return false;
         int boardState = getState();
         for(int i = 0; i < 2; i++){
@@ -201,16 +201,17 @@ public class Chessboard {
     }
 
     boolean isDraw50Move(){
-        return (history.getNumberOfMoves() - numHalfMoves) == 50;
+        return (history.getNumHalfMoves() - numHalfMoves) == 50;
     }
 
     public List<MoveValue> getLastMoveMade(){return history.getLastMoves();}
-    public int getNumHalfMoves(){return history.getNumberOfMoves();}
-    public int getNumFullMoves(){return Math.floorDiv(history.getNumberOfMoves(), 2);}
+    public int getNumHalfMoves(){return history.getNumHalfMoves();}
+    public int getNumFullMoves(){return history.getNumFullMoves();}
     public @Nullable Move undoMove(){return history.undoMove();}
     public @Nullable Move redoMove(){return history.redoMove();}
     public boolean canRedoMove(){return history.canRedoMove();}
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
     public PieceColour getCurrentTurn(){return currentTurn;}
     void setNumHalfMoves(int numHalfMoves){this.numHalfMoves = numHalfMoves;}
+    public void setNumFullMoves(int numFullMoves){history.setNumFullMoves(numFullMoves);}
 }

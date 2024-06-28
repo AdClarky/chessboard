@@ -100,7 +100,7 @@ public class FenGenerator {
     }
 
     private void addFullMoves(){
-        fenString.append(board.getNumFullMoves() + 1);
+        fenString.append(board.getNumFullMoves());
     }
 }
 
