@@ -1,3 +1,4 @@
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public enum PieceColour {
@@ -27,7 +28,8 @@ public enum PieceColour {
         };
     }
 
-    public static String getStringFromColour(@NotNull PieceColour colour){
+    @Contract(pure = true)
+    public static @NotNull String getStringFromColour(@NotNull PieceColour colour){
         return switch(colour){
             case WHITE -> "white";
             case BLACK -> "black";

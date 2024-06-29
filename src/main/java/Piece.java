@@ -9,10 +9,10 @@ import java.util.Objects;
  */
 public abstract class Piece {
     private Icon pieceIcon;
+    protected final PieceColour colour;
     protected final Chessboard board;
     protected int x;
     protected int y;
-    protected final PieceColour colour;
 
     protected Piece(int x, int y, PieceColour colour, Chessboard board) {
         this.x = x;

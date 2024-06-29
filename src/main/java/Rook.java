@@ -1,18 +1,9 @@
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
- * Chess Rook piece
- */
 public class Rook extends Piece{
     private boolean moved = false;
 
-    /**
-     * Initialises Rook piece
-     * @param x starting x
-     * @param y starting y
-     * @param colour black or white
-     */
     public Rook(int x, int y, PieceColour colour, Chessboard board) {
         super(x, y, colour, board);
     }

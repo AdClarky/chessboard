@@ -1,15 +1,6 @@
 import java.util.ArrayList;
 
-/**
- * Queen chess piece
- */
 public class Queen extends Piece{
-    /**
-     * Initialises the Queen.
-     * @param x starting x position
-     * @param y starting y position
-     * @param colour black or white
-     */
     public Queen(int x, int y, PieceColour colour, Chessboard board) {
         super(x, y, colour, board);
     }
