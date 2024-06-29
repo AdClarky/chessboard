@@ -16,30 +16,6 @@ public final class ChessUtils {
         return Character.toString('h' - x) + (y+1);
     }
 
-    @Deprecated
-    public static String moveToChess(Chessboard board, Piece piece, int newX, int newY){
-        if(piece instanceof King && Math.abs(piece.getX() - newX) == 2) {// castling
-            if(piece.getX() - newX == 2) // long castle
-                return  "O-O-O";
-            else // short castle
-                return "O-O";
-        }
-        // TODO: check if ambiguous
-        String moveString = piece.toString();
-        if(!board.isSquareBlank(newX, newY)) {
-            moveString += "x";
-        }
-        moveString += coordsToChess(newX, newY);
-
-        Move move = new Move(newX, newY, piece, null, board);
-        if(board.isCheckmate())
-            moveString += "#";
-        else if(board.isKingInCheck(PieceColour.getOtherColour(piece)))
-            moveString += "+";
-        move.undo();
-        return moveString;
-    }
-
     public static MoveValue chessToMove(String move, ChessGame chessGame){
         if("O-O".equals(move)) {
             return getCastlingMove(1, chessGame);
