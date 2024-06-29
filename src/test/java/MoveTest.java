@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.SequencedCollection;
 
 class MoveTest {
-    Chessboard board = new ChessboardBuilder().defaultSetup();
+    private Chessboard board = new ChessboardBuilder().defaultSetup();
 
     @AfterEach
     void setUp() {
@@ -16,7 +16,7 @@ class MoveTest {
 
     @Test
     void basicMove(){
-        Move move = new Move(3, 3, board.getPiece(3, 1), null, board);
+        new Move(3, 3, board.getPiece(3, 1), null, board);
         assertInstanceOf(Blank.class, board.getPiece(3, 1));
         assertEquals(3, board.getPiece(3, 1).getX());
         assertEquals(1, board.getPiece(3, 1).getY());
@@ -63,7 +63,7 @@ class MoveTest {
     void takingMove(){
         Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), null, board);
         Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), pawnE4.getPiece(), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), pawnD5.getPiece(), board);
+        new Move(4, 4, board.getPiece(3, 3), pawnD5.getPiece(), board);
         assertInstanceOf(Blank.class, board.getPiece(3, 3));
         assertEquals(3, board.getPiece(3, 3).getX());
         assertEquals(3, board.getPiece(3, 3).getY());
@@ -234,7 +234,7 @@ class MoveTest {
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
+        new Move(4, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -278,8 +278,8 @@ class MoveTest {
 
     @Test
     void basicPromotionRedo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
@@ -313,7 +313,7 @@ class MoveTest {
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         blackPieces.add(new Pawn(5, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
+        new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -331,8 +331,8 @@ class MoveTest {
 
     @Test
     void promotionTakingUndo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
@@ -358,8 +358,8 @@ class MoveTest {
 
     @Test
     void promotionTakingRedo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
@@ -386,14 +386,14 @@ class MoveTest {
 
     @Test
     void castling(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), null, board);
+        new Move(1, 0, board.getPiece(3, 0), null, board);
         int x = 0, y = 0;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -421,8 +421,8 @@ class MoveTest {
 
     @Test
     void castlingUndo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
@@ -457,8 +457,8 @@ class MoveTest {
 
     @Test
     void castlingRedo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
@@ -494,8 +494,8 @@ class MoveTest {
 
     @Test
     void enPassant(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE, board));
@@ -503,7 +503,7 @@ class MoveTest {
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK, board));
         blackPieces.getLast().firstMove();
         board.populateBoard(whitePieces, blackPieces);
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), null, board);
+        new Move(2, 5, board.getPiece(3, 4), null, board);
         int x = 3, y = 4;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -526,8 +526,8 @@ class MoveTest {
 
     @Test
     void enPassantUndo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE, board));
@@ -559,8 +559,8 @@ class MoveTest {
 
     @Test
     void enPassantRedo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE, board));

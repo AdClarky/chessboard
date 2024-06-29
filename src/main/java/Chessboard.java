@@ -52,7 +52,7 @@ public class Chessboard {
 
     void setSquare(int x, int y, @NotNull Piece piece){board[y][x] = piece;}
 
-    public ArrayList<Piece> getAllColourPieces(PieceColour colour){
+    public List<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
             return blackPieces;
         else if(colour == PieceColour.WHITE)

@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 class ChessboardTest {
     Chessboard board = new ChessboardBuilder().defaultSetup();
@@ -16,8 +18,8 @@ class ChessboardTest {
     @Test
     void doesCustomPositionWork(){
         board = new Chessboard();
-        ArrayList<Piece> whitePieces = new ArrayList<>(3);
-        ArrayList<Piece> blackPieces = new ArrayList<>(3);
+        Collection<Piece> whitePieces = new ArrayList<>(3);
+        Collection<Piece> blackPieces = new ArrayList<>(3);
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new King(0, 1, PieceColour.WHITE, board));
         whitePieces.add(new King(0, 2, PieceColour.WHITE, board));
