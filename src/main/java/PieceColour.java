@@ -26,4 +26,12 @@ public enum PieceColour {
             case BLANK -> 0;
         };
     }
+
+    public static String getStringFromColour(@NotNull PieceColour colour){
+        return switch(colour){
+            case WHITE -> "white";
+            case BLACK -> "black";
+            case BLANK -> "blank";
+        };
+    }
 }

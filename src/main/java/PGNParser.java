@@ -13,8 +13,9 @@ public class PGNParser {
     private boolean active = false;
 
     public PGNParser(Path path) throws IOException {
-        Stream<String> lines = Files.lines(path);
-        lines.forEach(this::processLine);
+        try (Stream<String> lines = Files.lines(path)) {
+            lines.forEach(this::processLine);
+        }
     }
 
     public PGNParser(String pgnString) {

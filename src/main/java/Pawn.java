@@ -2,20 +2,12 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
-/**
- * Pawn chess piece
- */
 public class Pawn extends Piece{
     private boolean canBePassanted = false;
 
-    /**
-     * Initialises the pawn to a set position
-     * @param x starting x position
-     * @param y starting y position
-     * @param colour black or white
-     */
     public Pawn(int x, int y, PieceColour colour, Chessboard board) {
         super(x, y, getIcon(colour), colour, '\u0000', board);
     }
@@ -24,24 +16,27 @@ public class Pawn extends Piece{
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(4);
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(y < 7 && y > 0 && board.isSquareBlank(x, y+direction)) {// basic move forward
+        if(board.isSquareBlank(x, y+direction)) {// basic move forward
             moves.add(new Coordinate(x, y + direction));
             if (((y == 6 && colour == PieceColour.BLACK) || (y == 1 && colour == PieceColour.WHITE)) && board.isSquareBlank(x, y + (direction << 1))) // double move first go
                 moves.add(new Coordinate(x, y + (direction << 1)));
         }
-        if(x > 0 && !board.isSquareBlank(x-1,y+direction) && board.getPiece(x-1,y+direction).getColour() != colour) // can take left
+        if(board.getPiece(x-1,y+direction).getColour() == PieceColour.getOtherColour(colour)) // can take left
             moves.add(new Coordinate(x-1,y+direction));
-        if(x < 7 && !board.isSquareBlank(x+1,y+direction) && board.getPiece(x+1,y+direction).getColour() != colour) // can take right
+        if(board.getPiece(x+1,y+direction).getColour() == PieceColour.getOtherColour(colour)) // can take right
             moves.add(new Coordinate(x+1,y+direction));
         if((colour == PieceColour.BLACK && y == 3) || (colour == PieceColour.WHITE && y == 4)){ // en passant
-            if(board.getPiece(x-1,y) instanceof Pawn pawn && pawn.hadFirstMove())
-                moves.add(new Coordinate(x-1,y+direction));
-            else if (board.getPiece(x+1,y) instanceof Pawn pawn && pawn.hadFirstMove()) {
-                moves.add(new Coordinate(x+1,y+direction));
-            }
+            addEnPassantMoves(moves, -1);
+            addEnPassantMoves(moves, 1);
         }
         removeMovesInCheck(moves);
         return moves;
+    }
+
+    private void addEnPassantMoves(Collection<Coordinate> moves, int leftOrRight){
+        int direction = PieceColour.getDirectionFromColour(colour);
+        if(board.getPiece(x+leftOrRight,y) instanceof Pawn pawn && pawn.hadFirstMove())
+            moves.add(new Coordinate(x+leftOrRight,y+direction));
     }
 
     @Override

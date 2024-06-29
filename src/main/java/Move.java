@@ -7,10 +7,8 @@ import java.util.List;
 /**
  * Moves and stores all necessary pieces to make a chess move.
  * Allows the move to be undone and redone as many times as you would like.
- * There is no move validation, it will always make the move.
- * This should not be used in a regular chess situation. Instead use {@see }
- */
-public class Move {
+ * There is no move validation, it will always make the move. */
+class Move {
     private final Chessboard board;
     private final Piece piece;
     private final Piece previousPawn;
@@ -26,31 +24,18 @@ public class Move {
     /**
      * Initialises move and then moves the piece to the new location.
      * Used so it can undo the first move condition on the previous piece if necessary.
-     * If the piece is not a pawn used the other constructor.
-     * @param x new x position
-     * @param y new y position
-     * @param piece the piece being moved
-     * @param previousPiece the piece to move before this one
-     * @param board the board the piece is on
      */
     public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Chessboard board){
         this.x = x;
         this.y = y;
         this.piece = piece;
         this.board = board;
-        if(previousPiece instanceof Pawn) // only need to track it if its a pawn
+        if(previousPiece instanceof Pawn) // only need to track it if it's a pawn
             previousPawn = previousPiece;
         else
             previousPawn = new Blank(0,0);
         movesMade = piece.getMoves(x, y);
         makeMove();
-    }
-
-    private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
-        board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
-        board.setSquare(move.newX(), move.newY(), pieceToMove);
-        pieceToMove.setX(move.newX());
-        pieceToMove.setY(move.newY());
     }
 
     /**
@@ -70,6 +55,13 @@ public class Move {
         }
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
+    }
+
+    private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
+        board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
+        board.setSquare(move.newX(), move.newY(), pieceToMove);
+        pieceToMove.setX(move.newX());
+        pieceToMove.setY(move.newY());
     }
 
     private void takePiece(@NotNull MoveValue move){
@@ -98,19 +90,15 @@ public class Move {
             piece.undoMoveCondition();
     }
 
-    /**
-     * Checks if a piece was taken or if it was a promotion and restores it.
-     * @param pieceToMove the piece being moved
-     * @param move the move made
-     */
+    /** Checks if a piece was taken or if it was a promotion and restores it. */
     private void addOrRemovePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
-        if(pieceToMove.getX() == move.newX() && pieceToMove.getY() == move.newY()){
-            // a piece moving to the same spot only occurs as the last move when it's a promotion
-            if(move == movesToUndo.getLast())
-                board.removePiece(pieceToMove);
-            else
-                board.addPiece(move.piece());
-        }
+        if(pieceToMove.getX() != move.newX() || pieceToMove.getY() != move.newY())
+            return;
+        // a piece moving to the same spot only occurs as the last move when it's a promotion
+        if(move == movesToUndo.getLast())
+            board.removePiece(pieceToMove);
+        else
+            board.addPiece(move.piece());
     }
 
     public int getX() {return x;}
