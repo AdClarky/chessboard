@@ -18,8 +18,7 @@ class GameTest {
      */
     @Test
     void GameOneTest() throws IOException {
-        Autoplay autoplay = new Autoplay(chessGame);
-        autoplay.importGame(Path.of("src/test/resources/randomGame1.pgn"));
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/randomGame1.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
     }
 
@@ -28,8 +27,7 @@ class GameTest {
      */
     @Test
     void GameTwoTest() throws IOException {
-        Autoplay autoplay = new Autoplay(chessGame);
-        autoplay.importGame(Path.of("src/test/resources/randomGame2.pgn"));
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/randomGame2.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
     }
 
@@ -38,8 +36,7 @@ class GameTest {
      */
     @Test
     void checkmateTest() throws IOException {
-        Autoplay autoplay = new Autoplay(chessGame);
-        autoplay.importGame(Path.of("src/test/resources/checkmateGame.pgn"));
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/checkmateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isCheckmate());
     }
@@ -49,16 +46,14 @@ class GameTest {
      */
     @Test
     void stalemateTest() throws IOException {
-        Autoplay autoplay = new Autoplay(chessGame);
-        autoplay.importGame(Path.of("src/test/resources/stalemateGame.pgn"));
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/stalemateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isDraw());
     }
 
     @Test
     void repetitionTest() throws IOException {
-        Autoplay autoplay = new Autoplay(chessGame);
-        autoplay.importGame(Path.of("src/test/resources/repetitionGame.pgn"));
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/repetitionGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isDraw());
     }

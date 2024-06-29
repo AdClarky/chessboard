@@ -79,7 +79,6 @@ public class Chessboard {
             blackPieces.remove(piece);
         else if(piece.getColour() == PieceColour.WHITE)
             whitePieces.remove(piece);
-        throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
     /** Validates a move is correct then moves the piece. */
@@ -173,11 +172,6 @@ public class Chessboard {
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
     public PieceColour getCurrentTurn(){return currentTurn;}
-
-    @Nullable
-    public Piece getLastPieceMoved() {
-        return history.getLastPieceMoved();
-    }
 
     @NotNull
     public List<MoveValue> getLastMoves() {
