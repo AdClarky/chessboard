@@ -11,6 +11,7 @@ public class FenGenerator {
         this.board = board;
     }
 
+    /** Calculates and returns the fenstring */
     public String getFenString() {
         addBoardPosition();
         addCurrentTurn();
@@ -45,7 +46,7 @@ public class FenGenerator {
         fenString.append(' ');
     }
 
-    private char charFromPiece(@NotNull Piece piece) {
+    private static char charFromPiece(@NotNull Piece piece) {
         String pieceString = piece.toString();
         if(pieceString.isEmpty()) {
             pieceString = "P";

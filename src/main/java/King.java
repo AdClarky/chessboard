@@ -1,23 +1,12 @@
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/**
- * Chess board king piece.
- * Only one per side.
- */
 public class King extends Piece{
     private boolean moved = false;
 
-    /**
-     * Initialises the king piece.
-     * @param x starting x value
-     * @param y starting y value
-     * @param colour white or black
-     */
     public King(int x, int y, PieceColour colour, Chessboard board) {
         super(x, y, getIcon(colour), colour, 'K', board);
     }
@@ -31,11 +20,11 @@ public class King extends Piece{
             }
         }
         if(!moved){ // castling
-            if(board.getPiece(x-3, y) instanceof Rook rook && !rook.hadFirstMove()){
+            if(!board.getPiece(x-3, y).hadFirstMove()){
                 if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
                     moves.add(new Coordinate(x-2, y));
             }
-            if(board.getPiece(x+4, y) instanceof Rook rook && !rook.hadFirstMove()){
+            if(!board.getPiece(x+4, y).hadFirstMove()){
                 if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
                     moves.add(new Coordinate(x+2, y));
             }
@@ -73,11 +62,11 @@ public class King extends Piece{
     public void undoMoveCondition(){moved = false;}
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        King king = (King) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+        King king = (King) obj;
         return moved == king.moved;
     }
 
