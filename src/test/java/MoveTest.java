@@ -311,7 +311,7 @@ class MoveTest {
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
@@ -337,7 +337,7 @@ class MoveTest {
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
@@ -364,7 +364,7 @@ class MoveTest {
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
+        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
