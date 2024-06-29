@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.ImageIcon;
@@ -11,7 +10,7 @@ public final class ImageUtils {
     private ImageUtils() {}
 
     /** Generates an Icon which is larger than the original. */
-    public static ImageIcon getStretchedImage(URL imageURL) {
+    private static ImageIcon getStretchedImage(URL imageURL) {
         ImageIcon image = new ImageIcon(imageURL);
         return new ImageIcon((image.getImage().getScaledInstance(SCALE, SCALE,java.awt.Image.SCALE_SMOOTH)));
     }

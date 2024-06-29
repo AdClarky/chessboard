@@ -5,7 +5,7 @@ class MoveWithFenTest {
     @Test
     void basicPromotion(){
         Chessboard board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
+        new Move(4, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -65,7 +65,7 @@ class MoveWithFenTest {
     @Test
     void promotionTaking(){
         Chessboard board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
+        new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -125,7 +125,7 @@ class MoveWithFenTest {
     @Test
     void castling(){
         Chessboard board = new ChessboardBuilder().FromFen("7k/8/8/8/8/8/8/4K2R w - - 0 1");
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), null, board);
+        new Move(1, 0, board.getPiece(3, 0), null, board);
         int x = 0, y = 0;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -215,7 +215,7 @@ class MoveWithFenTest {
     @Test
     void enPassant(){
         Chessboard board = new ChessboardBuilder().FromFen("4k3/8/8/4Pp2/8/8/8/4K3 w - f6 0 1");
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), null, board);
+        new Move(2, 5, board.getPiece(3, 4), null, board);
         int x = 3, y = 4;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());

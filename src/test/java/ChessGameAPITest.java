@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Path;
 
 class ChessGameAPITest {
-    private class Listener implements BoardListener {
+    private static class Listener implements BoardListener {
         int boardChanged = 0;
         int checkmate = 0;
         int draw = 0;
@@ -25,8 +25,8 @@ class ChessGameAPITest {
             draw++;
         }
     }
-    Listener listener;
-    ChessGame chessGame;
+    private Listener listener;
+    private ChessGame chessGame;
 
     @BeforeEach
     void setUp() {

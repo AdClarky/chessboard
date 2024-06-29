@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 class GameTest {
-    ChessGame chessGame;
+    private ChessGame chessGame;
 
     @BeforeEach
     void setUp() {

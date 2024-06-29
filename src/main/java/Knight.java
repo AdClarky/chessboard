@@ -1,4 +1,3 @@
-import javax.swing.Icon;
 import java.util.ArrayList;
 
 public class Knight extends Piece{

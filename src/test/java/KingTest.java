@@ -4,14 +4,6 @@ import org.junit.jupiter.api.Test;
 
 class KingTest {
     @Test
-    void sameKing(){
-        Chessboard board = new Chessboard();
-        King king = new King(1, 1, PieceColour.BLACK, board);
-        King king2 = king;
-        assertEquals(king, king2);
-    }
-
-    @Test
     void kingNotMoved(){
         Chessboard board = new Chessboard();
         King king = new King(1, 1, PieceColour.BLACK, board);

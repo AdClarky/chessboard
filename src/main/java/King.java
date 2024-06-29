@@ -1,9 +1,5 @@
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public class King extends Piece{

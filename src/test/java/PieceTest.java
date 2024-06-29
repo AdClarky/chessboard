@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ class PieceTest {
         int knightBlackHash = new Knight(0,0, PieceColour.BLACK, board).hashCode();
         int bishopBlackHash = new Bishop(0,0, PieceColour.BLACK, board).hashCode();
         int kingBlackHash = new King(0,0, PieceColour.BLACK, board).hashCode();
-        Set<Integer> hashes = new HashSet<>(13);
+        Collection<Integer> hashes = new HashSet<>(13);
         hashes.add(blankHash);
         hashes.add(queenHash);
         hashes.add(pawnHash);

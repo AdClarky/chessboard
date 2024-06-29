@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 class ChessboardTest {
-    Chessboard board = new ChessboardBuilder().defaultSetup();
+    private Chessboard board = new ChessboardBuilder().defaultSetup();
 
     @AfterEach
     void setUp() {

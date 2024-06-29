@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class BlankTest {
-    Blank blank = new Blank(0, 0);
+    private final Blank blank = new Blank(0, 0);
 
     @Test
     void testPossibleMoves(){
