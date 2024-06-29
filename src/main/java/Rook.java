@@ -20,7 +20,7 @@ public class Rook extends Piece{
     @Override
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(10);
-        calculateStraightMoves(board, moves);
+        calculateStraightMoves(moves);
         removeMovesInCheck(moves);
         return moves;
     }

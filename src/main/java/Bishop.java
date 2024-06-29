@@ -8,7 +8,7 @@ public class Bishop extends Piece{
     @Override
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
-        calculateDiagonalMoves(board, moves);
+        calculateDiagonalMoves(moves);
         removeMovesInCheck(moves);
         return moves;
     }

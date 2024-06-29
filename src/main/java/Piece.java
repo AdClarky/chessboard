@@ -105,10 +105,9 @@ public abstract class Piece {
 
     /**
      * Calculates how far a piece can move in each diagonal direction.
-     * @param board the board being worked on
      * @param moves a list of possible moves
      */
-    protected void calculateDiagonalMoves(Chessboard board, Collection<Coordinate> moves){
+    protected void calculateDiagonalMoves(Collection<Coordinate> moves){
         for(int x = this.x+1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x++, y++) {
             if(cantMove(x, y, moves))
                 break;
@@ -129,10 +128,9 @@ public abstract class Piece {
 
     /**
      * Calculates how far a piece can move in each straight direction.
-     * @param board the board being worked on
      * @param moves a list of possible moves
      */
-    protected void calculateStraightMoves(Chessboard board, Collection<Coordinate> moves) {
+    protected void calculateStraightMoves(Collection<Coordinate> moves) {
         for(int x = this.x+1; x < 8 && x >= 0; x++){
             if(cantMove(x, y, moves))
                 break;

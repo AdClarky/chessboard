@@ -17,8 +17,8 @@ public class Queen extends Piece{
     @Override
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(10);
-        calculateDiagonalMoves(board, moves);
-        calculateStraightMoves(board, moves);
+        calculateDiagonalMoves(moves);
+        calculateStraightMoves(moves);
         removeMovesInCheck(moves);
         return moves;
     }

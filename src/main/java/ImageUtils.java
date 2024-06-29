@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.ImageIcon;
 import java.net.URL;
@@ -15,10 +16,13 @@ public final class ImageUtils {
         return new ImageIcon((image.getImage().getScaledInstance(SCALE, SCALE,java.awt.Image.SCALE_SMOOTH)));
     }
 
-    public static ImageIcon getPieceImage(String piece, PieceColour colour){
+    public static @Nullable ImageIcon getPieceImage(String piece, PieceColour colour){
+        String pieceFullString = getStringFromPiece(piece);
+        if(pieceFullString.equals(""))
+            return null;
         String path = "/" +
                 PieceColour.getStringFromColour(colour) + "_" +
-                getStringFromPiece(piece) + ".png";
+                 pieceFullString + ".png";
         return ImageUtils.getStretchedImage(Piece.class.getResource(path));
     }
 
@@ -30,6 +34,7 @@ public final class ImageUtils {
             case "R" -> "rook";
             case "N" -> "knight";
             case "" -> "pawn";
+            case "Blank" -> "";
             default -> throw new IllegalArgumentException("Invalid piece: " + piece);
         };
     }
