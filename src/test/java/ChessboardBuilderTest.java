@@ -61,7 +61,7 @@ public class ChessboardBuilderTest {
     void separatorTestOnFenString(){
         ChessboardBuilder builder = new ChessboardBuilder();
         ArrayList<String> sections =
-                builder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR b - - 2 28", ' ');
+                ChessboardBuilder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR b - - 2 28", ' ');
         assertEquals(6, sections.size());
         assertEquals("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR", sections.getFirst());
         assertEquals("b", sections.get(1));
@@ -75,7 +75,7 @@ public class ChessboardBuilderTest {
     void separatorTestOnBoardLayoutString(){
         ChessboardBuilder builder = new ChessboardBuilder();
         ArrayList<String> sections =
-                builder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR", '/');
+                ChessboardBuilder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR", '/');
         assertEquals(8, sections.size());
         assertEquals("8", sections.getFirst());
         assertEquals("8", sections.get(1));

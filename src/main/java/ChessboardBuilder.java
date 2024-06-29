@@ -1,11 +1,12 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChessboardBuilder {
     private final Chessboard board = new Chessboard();
-    private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
+    private final List<Piece> whitePieces = new ArrayList<>(16);
+    private final List<Piece> blackPieces = new ArrayList<>(16);
     private int squaresProcessed = 7;
 
     public @NotNull Chessboard defaultSetup() {
@@ -13,35 +14,21 @@ public class ChessboardBuilder {
         return board;
     }
 
-    public @NotNull Chessboard FromFen(String fenString) {
-        ArrayList<String> sections = separateIntoSections(fenString, ' ');
-        populateBoardFromFenString(sections.getFirst());
-        setTurnToMove(sections.get(1));
-        setCastlingRights(sections.get(2));
-        setEnPassant(sections.get(3));
-        setHalfMoves(sections.get(4));
-        setFullMoves(sections.get(5));
+    public @NotNull Chessboard FromFen(@NotNull String fenString) {
+        String[] sections = fenString.split(" ");
+        populateBoardFromFenString(sections[0]);
+        setTurnToMove(sections[1]);
+        setCastlingRights(sections[2]);
+        setEnPassant(sections[3]);
+        setHalfMoves(sections[4]);
+        setFullMoves(sections[5]);
         return board;
     }
 
-    @NotNull ArrayList<String> separateIntoSections(@NotNull String fenString, char delimiter){
-        ArrayList<String> sections = new ArrayList<>(6);
-        StringBuilder builder = new StringBuilder();
-        for(char c : fenString.toCharArray()){
-            if(c == delimiter){
-                sections.add(builder.toString());
-                builder.setLength(0);
-            }else
-                builder.append(c);
-        }
-        sections.add(builder.toString());
-        return sections;
-    }
-
-    void populateBoardFromFenString(@NotNull String positionSection) {
-        ArrayList<String> sections = separateIntoSections(positionSection, '/');
+    private void populateBoardFromFenString(@NotNull String positionSection) {
+        String[] sections = positionSection.split("/");
         for(int row = 0; row < 8; row++){
-            for(char character : sections.get(row).toCharArray()){
+            for(char character : sections[row].toCharArray()){
                 processCharacter(character, 7 - row);
             }
             squaresProcessed = 7;
@@ -49,13 +36,13 @@ public class ChessboardBuilder {
         board.populateBoard(whitePieces, blackPieces);
     }
 
-    void processCharacter(char character, int row){
+    private void processCharacter(char character, int row){
         if(Character.isDigit(character)){
             squaresProcessed -= Character.getNumericValue(character);
             return;
         }
         PieceColour colour = getColourFromCharacter(character);
-        ArrayList<Piece> pieces = getPiecesFromChar(character);
+        List<Piece> pieces = getPiecesFromChar(character);
         switch(Character.toLowerCase(character)){
             case 'r':
                 pieces.add(new Rook(squaresProcessed, row, colour, board));
@@ -79,12 +66,12 @@ public class ChessboardBuilder {
         squaresProcessed--;
     }
 
-    void setTurnToMove(CharSequence turnSection){
+    private void setTurnToMove(@NotNull CharSequence turnSection){
         char character = turnSection.charAt(0);
         board.setCurrentTurn(character == 'w' ? PieceColour.WHITE : PieceColour.BLACK);
     }
 
-    void setCastlingRights(String rights){
+    private void setCastlingRights(@NotNull String rights){
         int length = rights.length();
         if(length == 4)
             return;
@@ -106,7 +93,7 @@ public class ChessboardBuilder {
             setOtherRookMoved(lower.charAt(0));
     }
 
-    void getUpperAndLower(String rights, StringBuilder upper, StringBuilder lower) {
+    private static void getUpperAndLower(@NotNull String rights, StringBuilder upper, StringBuilder lower) {
         for(char c : rights.toCharArray()){
             if(Character.isUpperCase(c))
                 upper.append(c);
@@ -115,7 +102,7 @@ public class ChessboardBuilder {
         }
     }
 
-    void setOtherRookMoved(char rookWithRights){
+    private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
         int x = rookWithRights == 'k' ? 0 : 7;
         Rook rookNotMoved = (Rook) board.getPiece(x, y);
@@ -126,7 +113,7 @@ public class ChessboardBuilder {
         }
     }
 
-    void setEnPassant(String section){
+    private void setEnPassant(@NotNull String section){
         if(section.contains("-"))
             return;
         Coordinate location = Coordinate.createCoordinateFromString(section);
@@ -135,19 +122,19 @@ public class ChessboardBuilder {
         board.getPiece(location.x(), location.y() + direction).firstMove();
     }
 
-    void setHalfMoves(String section){
+    private void setHalfMoves(String section){
         board.setNumHalfMoves(Integer.parseInt(section));
     }
 
-    void setFullMoves(String section){
+    private void setFullMoves(String section){
         board.setNumFullMoves(Integer.parseInt(section));
     }
 
-    PieceColour getColourFromCharacter(char c){
+    private static PieceColour getColourFromCharacter(char c){
         return Character.isUpperCase(c) ? PieceColour.WHITE : PieceColour.BLACK;
     }
 
-    ArrayList<Piece> getPiecesFromChar(char c){
+    private List<Piece> getPiecesFromChar(char c){
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
     }
 }
