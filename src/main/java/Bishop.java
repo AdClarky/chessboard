@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Bishop extends Piece{
     public Bishop(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, 'B', board);
+        super(x, y, colour, board);
     }
 
     @Override
@@ -21,4 +21,14 @@ public class Bishop extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
+
+    @Override
+    public String toString() {
+        return "bishop";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'B';
+    }
 }

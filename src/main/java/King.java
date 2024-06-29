@@ -8,7 +8,7 @@ public class King extends Piece{
     private boolean moved = false;
 
     public King(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, 'K', board);
+        super(x, y, colour, board);
     }
 
     @Override
@@ -48,6 +48,16 @@ public class King extends Piece{
         }
         moves.add(new MoveValue(this, newX, newY));
         return moves;
+    }
+
+    @Override
+    public String toString() {
+        return "king";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'K';
     }
 
     @Override

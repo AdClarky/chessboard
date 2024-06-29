@@ -6,7 +6,7 @@ public class Knight extends Piece{
     private static final int[] POSSIBLE_Y = {-2, -1, 1, 2, -2, -1, 1, 2};
 
     public Knight(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, 'N', board);
+        super(x, y, colour, board);
     }
 
     @Override
@@ -27,4 +27,14 @@ public class Knight extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
+
+    @Override
+    public String toString() {
+        return "knight";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'N';
+    }
 }

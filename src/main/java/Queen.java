@@ -11,7 +11,7 @@ public class Queen extends Piece{
      * @param colour black or white
      */
     public Queen(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, 'Q', board);
+        super(x, y, colour, board);
     }
 
     @Override
@@ -31,4 +31,14 @@ public class Queen extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
+
+    @Override
+    public String toString() {
+        return "queen";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'Q';
+    }
 }

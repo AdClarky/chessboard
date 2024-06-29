@@ -14,7 +14,7 @@ public class Rook extends Piece{
      * @param colour black or white
      */
     public Rook(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, 'R', board);
+        super(x, y, colour, board);
     }
 
     @Override
@@ -32,6 +32,16 @@ public class Rook extends Piece{
 
     @Override
     public boolean hadFirstMove(){return moved;}
+
+    @Override
+    public String toString() {
+        return "rook";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'R';
+    }
 
     @Override
     public void undoMoveCondition(){moved = false;}

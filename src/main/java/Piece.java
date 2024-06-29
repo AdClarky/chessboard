@@ -9,19 +9,17 @@ import java.util.Objects;
  */
 public abstract class Piece {
     private final Icon pieceIcon;
-    private final char pieceCharacter;
     protected final Chessboard board;
     protected int x;
     protected int y;
     protected final PieceColour colour;
 
-    protected Piece(int x, int y, PieceColour colour, char pieceCharacter, Chessboard board) {
+    protected Piece(int x, int y, PieceColour colour, Chessboard board) {
         this.x = x;
         this.y = y;
         this.colour = colour;
-        this.pieceCharacter = pieceCharacter;
-        pieceIcon = ImageUtils.getPieceImage(toString(), colour);
         this.board = board;
+        pieceIcon = ImageUtils.getPieceImage(toString(), colour);
     }
 
     /**
@@ -52,9 +50,9 @@ public abstract class Piece {
     }
 
     @Override
-    public String toString(){
-        return pieceCharacter + "";
-    }
+    public abstract String toString();
+
+    public abstract char toCharacter();
 
     @Override
     public boolean equals(Object obj) {
@@ -66,7 +64,7 @@ public abstract class Piece {
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, colour, pieceCharacter);
+        return Objects.hash(x, y, colour, toCharacter());
     }
 
     public Icon getPieceIcon() {return pieceIcon;}

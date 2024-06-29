@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Blank extends Piece {
     public Blank(int x, int y) {
-        super(x, y, PieceColour.BLANK, 'Z', null);
+        super(x, y, PieceColour.BLANK, null);
     }
 
     @Override
@@ -27,5 +27,10 @@ public class Blank extends Piece {
     @Override
     public String toString() {
         return "Blank";
+    }
+
+    @Override
+    public char toCharacter() {
+        return 'Z';
     }
 }

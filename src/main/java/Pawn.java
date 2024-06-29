@@ -6,7 +6,7 @@ public class Pawn extends Piece{
     private boolean canBePassanted = false;
 
     public Pawn(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y,  colour, '\u0000', board);
+        super(x, y,  colour, board);
     }
 
     @Override
@@ -67,7 +67,12 @@ public class Pawn extends Piece{
 
 
     @Override
-    public String toString() {return "";}
+    public String toString() {return "pawn";}
+
+    @Override
+    public char toCharacter() {
+        return '\u0000';
+    }
 
     @Override
     public boolean equals(Object obj) {
