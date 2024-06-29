@@ -43,7 +43,7 @@ class FenStringGeneratorTest {
     }
 
     @Test
-    void validEnpassantTest(){
+    void validEnPassantTest(){
         String inputString = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
         Chessboard board = new ChessboardBuilder().FromFen(inputString);
         String fenString = new FenGenerator(board).getFenString();

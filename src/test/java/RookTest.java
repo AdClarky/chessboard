@@ -1,9 +1,9 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class RookTest {
+class RookTest {
     @Test
-    void rookHasntMoved(){
+    void rookNotMoved(){
         Chessboard board = new Chessboard();
         Rook rook = new Rook(1, 1, PieceColour.WHITE, board);
         Rook rook2 = new Rook(1, 1, PieceColour.WHITE, board);

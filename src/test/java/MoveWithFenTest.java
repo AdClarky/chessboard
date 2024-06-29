@@ -11,7 +11,7 @@ class MoveWithFenTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -32,7 +32,7 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
         assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -52,7 +52,7 @@ class MoveWithFenTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());

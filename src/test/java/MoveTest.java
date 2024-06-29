@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 class MoveTest {
     Chessboard board = new ChessboardBuilder().defaultSetup();
@@ -225,8 +227,8 @@ class MoveTest {
 
     @Test
     void basicPromotion(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
@@ -238,7 +240,7 @@ class MoveTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -250,8 +252,8 @@ class MoveTest {
 
     @Test
     void basicPromotionUndo(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(1);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(1);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
@@ -265,7 +267,7 @@ class MoveTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
         assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -291,7 +293,7 @@ class MoveTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -303,21 +305,21 @@ class MoveTest {
 
     @Test
     void promotionTaking(){
-        ArrayList<Piece> whitePieces = new ArrayList<>(2);
-        ArrayList<Piece> blackPieces = new ArrayList<>(2);
+        Collection<Piece> whitePieces = new ArrayList<>(2);
+        Collection<Piece> blackPieces = new ArrayList<>(2);
         board = new Chessboard();
         whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
         whitePieces.add(new Pawn(4, 6, PieceColour.WHITE, board));
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
+        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -337,14 +339,14 @@ class MoveTest {
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
+        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        x = 5; y = 7;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
@@ -364,7 +366,7 @@ class MoveTest {
         blackPieces.add(new King(0, 7, PieceColour.BLACK, board));
         blackPieces.add(new Pawn(4, 7, PieceColour.BLACK, board));
         board.populateBoard(whitePieces, blackPieces);
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
+        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -372,7 +374,7 @@ class MoveTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
-        x = 4; y = 7;
+        x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());

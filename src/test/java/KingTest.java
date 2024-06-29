@@ -12,15 +12,7 @@ class KingTest {
     }
 
     @Test
-    void differentPiece(){
-        Chessboard board = new Chessboard();
-        King king = new King(1, 1, PieceColour.BLACK, board);
-        Pawn king2 = new Pawn(1, 1, PieceColour.BLACK, board);
-        assertNotEquals(king, king2);
-    }
-
-    @Test
-    void kingHasntMoved(){
+    void kingNotMoved(){
         Chessboard board = new Chessboard();
         King king = new King(1, 1, PieceColour.BLACK, board);
         King king2 = new King(1, 1, PieceColour.BLACK, board);

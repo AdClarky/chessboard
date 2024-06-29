@@ -75,7 +75,7 @@ class PawnTest {
     }
 
     @Test
-    void pawnHasntMoved(){
+    void pawnNotMoved(){
         Chessboard board = new Chessboard();
         Pawn pawn = new Pawn(1, 1, PieceColour.BLACK, board);
         Pawn pawn2 = new Pawn(1, 1, PieceColour.BLACK, board);

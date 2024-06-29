@@ -11,7 +11,7 @@ public class FenGenerator {
         this.board = board;
     }
 
-    /** Calculates and returns the fenstring */
+    /** Calculates and returns the fen string */
     public String getFenString() {
         addBoardPosition();
         addCurrentTurn();
