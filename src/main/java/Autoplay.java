@@ -8,12 +8,11 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-/**
- * Parses a set of moves in a text file and then plays the move in order to a given board.
- */
+/** Parses a set of moves in a text file and then plays the move in order to a given board. */
 public class Autoplay {
     private final Collection<String> moves = new ArrayList<>(30);
     private final ChessGame chessGame;
+
 
     public Autoplay(ChessGame chessGame){
         this.chessGame = chessGame;
@@ -69,5 +68,6 @@ public class Autoplay {
     public void play() throws InterruptedException, InvalidMoveException {
         play(0);
     }
+
     public Collection<String> getMoves(){return moves;}
 }

@@ -3,27 +3,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-/**
- * A regular chess board.
- * Only method for interaction is the moveWithValidation function.
- * At the end of a move boardChanged is called.
- * Can use getMoves to find the individual moves made - e.g. in castling what moves were made.
- */
+/** A chess board that is automatically populated with blank squares. */
 public class Chessboard {
     private final Piece[][] board  =  new Piece[8][8];
-    private BoardHistory history;
+    private final BoardHistory history;
     private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
     private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    private int numHalfMoves = 0;
     private PieceColour currentTurn;
 
-    /**
-     * Initialises the board with the pieces in default positions.
-     * Blank squares are null.
-     * TODO: replace with that fern thing
-     */
+    /** Initialises the board with all squares blank. */
     public Chessboard(){
         history = new BoardHistory();
         for(int y = 0; y < 8; y++){
@@ -33,7 +24,8 @@ public class Chessboard {
         }
     }
 
-    void populateBoard(ArrayList<Piece> whitePieces, ArrayList<Piece> blackPieces){
+    /** Adds all the pieces in the collections to the board based on the pieces x and y values */
+    void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
         for(Piece piece : blackPieces){
@@ -44,12 +36,7 @@ public class Chessboard {
         }
     }
 
-    /**
-     * Finds the piece in a specific square
-     * @param x x position
-     * @param y y position
-     * @return the piece on that square.
-     */
+    /** Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}. */
     @NotNull
     public Piece getPiece(int x, int y){
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
@@ -57,55 +44,65 @@ public class Chessboard {
         return board[y][x];
     }
 
-    /**
-     * Checks if a square is blank or contains a piece
-     * @param x x value of square to check
-     * @param y y value of square to check
-     * @return if the square is blank
-     */
     public boolean isSquareBlank(int x, int y){return board[y][x] instanceof Blank;}
 
     void setSquare(int x, int y, @NotNull Piece piece){board[y][x] = piece;}
 
-    ArrayList<Piece> getColourPieces(PieceColour colour){
+    public ArrayList<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
             return blackPieces;
-        return whitePieces;
+        else if(colour == PieceColour.WHITE)
+            return whitePieces;
+        throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
-    King getKing(PieceColour colour){
+    public King getKing(PieceColour colour){
         if(colour == PieceColour.BLACK)
             return (King) blackPieces.getFirst();
-        return (King) whitePieces.getFirst();
+        else if(colour == PieceColour.WHITE)
+            return (King) whitePieces.getFirst();
+        throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
-    void addPiece(@NotNull Piece piece){
+    /** Adds the piece to the list of pieces. Used only when adding a new piece to the board. */
+    public void addPiece(@NotNull Piece piece){
         if(piece.getColour() == PieceColour.BLACK)
             blackPieces.add(piece);
-        else
+        else if(piece.getColour() == PieceColour.WHITE)
             whitePieces.add(piece);
+        throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
-    void removePiece(@NotNull Piece piece){
+    /** Removes the piece from the list of pieces. Should only be used if a piece is no longer on the board. */
+    public void removePiece(@NotNull Piece piece){
         if(piece.getColour() == PieceColour.BLACK)
             blackPieces.remove(piece);
-        else
+        else if(piece.getColour() == PieceColour.WHITE)
             whitePieces.remove(piece);
+        throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
-    int getState(){
+    /** Validates a move is correct then moves the piece. */
+    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
+        if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
+            throw new InvalidMoveException("That isn't a valid move!");
+        Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
+        history.push(move);
+    }
+
+    /** Gets the hash of the board. The previous moves is not included in this calculation, only the state of each
+     * piece. */
+    public int getState(){
         return Arrays.deepHashCode(board);
     }
 
     /**
      * Calculates if moving a piece to a position would put that teams king in check.
      * This assumes the piece moving to the new position is a valid move.
-     * @param newX the x position to move to.
-     * @param newY the y position to move to.
      * @param pieceToCheck the piece being moved.
      * @return true if in check, false if not
      */
-    boolean isMoveUnsafe(int newX, int newY, Piece pieceToCheck){
+    public boolean isMoveUnsafe(int newX, int newY, @NotNull Piece pieceToCheck){
         Piece lastPiece = history.getLastPieceMoved();
         Move move = new Move(newX, newY, pieceToCheck, lastPiece, this);
         boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getColour());
@@ -113,15 +110,10 @@ public class Chessboard {
         return isMoveUnsafe;
     }
 
-    /**
-     * Checks if a given King is in check.
-     * @param colour black or white king which will be checked
-     * @return if the king is in check
-     */
-    boolean isKingInCheck(PieceColour colour){
-        King king = getKing(colour);
+    public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
+        King king = getKing(kingToCheck);
         Coordinate kingPos = new Coordinate(king.getX(), king.getY());
-        Iterable<Piece> enemyPieces = getColourPieces(PieceColour.getOtherColour(colour));
+        Iterable<Piece> enemyPieces = getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
         for(Piece piece : enemyPieces){
             if(piece.getPossibleMoves().contains(kingPos)){
                 return true;
@@ -130,14 +122,10 @@ public class Chessboard {
         return false;
     }
 
-    /**
-     * Checks all possible moves that can be made and if any result in non-check.
-     * @return if in checkmate.
-     */
-    boolean isCheckmate(){
+    public boolean isCheckmate(){
         if(!isKingInCheck(currentTurn))
             return false;
-        ArrayList<Piece> enemyPieces = getColourPieces(currentTurn);
+        Iterable<Piece> enemyPieces = getAllColourPieces(currentTurn);
         for (Piece enemyPiece : enemyPieces) {
             for (Coordinate move : enemyPiece.getPossibleMoves( )) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
@@ -147,43 +135,24 @@ public class Chessboard {
         return true;
     }
 
-    /**
-     * Calculates if the current position is a draw.
-     * @return if its a draw
-     */
-    boolean isDraw(){
+    public boolean isDraw(){
         return isStalemate() ||
                 isDraw50Move() ||
-                is3Repetition();
+                isRepetition();
     }
 
-    boolean isStalemate(){
+    private boolean isStalemate(){
         if(isKingInCheck(currentTurn))
             return false;
-        Iterable<Piece> pieces = getColourPieces(currentTurn);
+        Iterable<Piece> pieces = getAllColourPieces(currentTurn);
         for(Piece piece : pieces){
-            if(!piece.getPossibleMoves().isEmpty()){
+            if(!piece.getPossibleMoves().isEmpty())
                 return false;
-            }
         }
         return true;
     }
 
-    /**
-     * Creates a move and pushes it to the stack.
-     * @param oldX current x position of the piece
-     * @param oldY current y position of the piece
-     * @param newX new x position of the piece
-     * @param newY new y position of the piece
-     */
-    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
-        if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
-            throw new InvalidMoveException("That isn't a valid move!");
-        Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
-        history.push(move);
-    }
-
-    boolean is3Repetition(){
+    private boolean isRepetition(){
         if(history.getNumFullMoves() < 4)
             return false;
         int boardState = getState();
@@ -198,18 +167,58 @@ public class Chessboard {
         return true;
     }
 
-    boolean isDraw50Move(){
+    private boolean isDraw50Move(){
         return history.getNumHalfMoves() == 50;
     }
 
-    public List<MoveValue> getLastMoveMade(){return history.getLastMoves();}
-    public int getNumHalfMoves(){return history.getNumHalfMoves();}
-    public int getNumFullMoves(){return history.getNumFullMoves();}
-    public @Nullable Move undoMove(){return history.undoMove();}
-    public @Nullable Move redoMove(){return history.redoMove();}
-    public boolean canRedoMove(){return history.canRedoMove();}
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
     public PieceColour getCurrentTurn(){return currentTurn;}
-    void setNumHalfMoves(int numHalfMoves){history.setNumHalfMoves(numHalfMoves);}
-    public void setNumFullMoves(int numFullMoves){history.setNumFullMoves(numFullMoves);}
+
+    @Nullable
+    public Piece getLastPieceMoved() {
+        return history.getLastPieceMoved();
+    }
+
+    @NotNull
+    public List<MoveValue> getLastMoves() {
+        return history.getLastMoves();
+    }
+
+    @Nullable
+    public Move redoMove() {
+        return history.redoMove();
+    }
+
+    public void redoAllMoves() {
+        history.redoAllMoves();
+    }
+
+    @Nullable
+    public Move undoMove() {
+        return history.undoMove();
+    }
+
+    public int getNumHalfMoves() {
+        return history.getNumHalfMoves();
+    }
+
+    public int getNumFullMoves() {
+        return history.getNumFullMoves();
+    }
+
+    public void setNumFullMoves(int numFullMoves) {
+        history.setNumFullMoves(numFullMoves);
+    }
+
+    public void setNumHalfMoves(int numHalfMoves) {
+        history.setNumHalfMoves(numHalfMoves);
+    }
+
+    public void undoMultipleMoves(int numOfMoves) {
+        history.undoMultipleMoves(numOfMoves);
+    }
+
+    public boolean canRedoMove() {
+        return history.canRedoMove();
+    }
 }

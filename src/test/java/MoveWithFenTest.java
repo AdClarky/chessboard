@@ -10,15 +10,15 @@ class MoveWithFenTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 4; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -31,14 +31,14 @@ class MoveWithFenTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-        assertInstanceOf(Pawn.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 4; y = 7;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -51,15 +51,15 @@ class MoveWithFenTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 4; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -70,15 +70,15 @@ class MoveWithFenTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -90,15 +90,15 @@ class MoveWithFenTest {
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Pawn.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(2, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -111,15 +111,15 @@ class MoveWithFenTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getColourPieces(PieceColour.WHITE).getLast());
+        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -147,8 +147,8 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -177,8 +177,8 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -208,8 +208,8 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -232,8 +232,8 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -257,8 +257,8 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(2, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 
     @Test
@@ -283,7 +283,7 @@ class MoveWithFenTest {
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
 
-        assertEquals(2, board.getColourPieces(PieceColour.WHITE).size());
-        assertEquals(1, board.getColourPieces(PieceColour.BLACK).size());
+        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
 }

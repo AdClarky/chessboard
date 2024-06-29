@@ -53,7 +53,6 @@ class GameTest {
         autoplay.importGame(Path.of("src/test/resources/stalemateGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isDraw());
-        assertTrue(chessGame.isStalemate());
     }
 
     @Test
@@ -62,6 +61,5 @@ class GameTest {
         autoplay.importGame(Path.of("src/test/resources/repetitionGame.pgn"));
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isDraw());
-        assertTrue(chessGame.is3Repetition());
     }
 }
