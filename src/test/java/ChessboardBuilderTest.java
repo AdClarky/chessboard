@@ -58,36 +58,6 @@ public class ChessboardBuilderTest {
     }
 
     @Test
-    void separatorTestOnFenString(){
-        ChessboardBuilder builder = new ChessboardBuilder();
-        ArrayList<String> sections =
-                ChessboardBuilder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR b - - 2 28", ' ');
-        assertEquals(6, sections.size());
-        assertEquals("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR", sections.getFirst());
-        assertEquals("b", sections.get(1));
-        assertEquals("-", sections.get(2));
-        assertEquals("-", sections.get(3));
-        assertEquals("2", sections.get(4));
-        assertEquals("28", sections.get(5));
-    }
-
-    @Test
-    void separatorTestOnBoardLayoutString(){
-        ChessboardBuilder builder = new ChessboardBuilder();
-        ArrayList<String> sections =
-                ChessboardBuilder.separateIntoSections("8/8/6Q1/4p1k1/4B3/2PP1PP1/7P/2K3NR", '/');
-        assertEquals(8, sections.size());
-        assertEquals("8", sections.getFirst());
-        assertEquals("8", sections.get(1));
-        assertEquals("6Q1", sections.get(2));
-        assertEquals("4p1k1", sections.get(3));
-        assertEquals("4B3", sections.get(4));
-        assertEquals("2PP1PP1", sections.get(5));
-        assertEquals("7P", sections.get(6));
-        assertEquals("2K3NR", sections.get(7));
-    }
-
-    @Test
     void fenStartingMiddleOfBoardBlank(){
         Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {

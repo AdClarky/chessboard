@@ -3,6 +3,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Used to generate a {@link Chessboard}. Can be built in the default configuration or using a fen string.*/
 public class ChessboardBuilder {
     private final Chessboard board = new Chessboard();
     private final List<Piece> whitePieces = new ArrayList<>(16);

@@ -1,10 +1,7 @@
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Coordinate class which stores the x and y value of a coordinate.
- * Used for comparing coordinates.
- */
+/** Coordinate class which stores the x and y value of a coordinate. */
 public record Coordinate(int x, int y) {
     @Override
     public @NotNull String toString() {
@@ -27,7 +24,7 @@ public record Coordinate(int x, int y) {
             length--; // so it ignores the checks/checkmates
         if(move.contains("=")) // promotion
             length = 2;
-        int x = Math.abs(7 - (move.charAt(length - 2) - 97));
+        int x = Math.abs(7 - (move.charAt(length - 2) - 'a'));
         int y = move.charAt(length - 1) - '0' - 1;
         return new Coordinate(x, y);
     }

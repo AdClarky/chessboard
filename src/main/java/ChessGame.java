@@ -1,25 +1,32 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.TestOnly;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * A regular chess board.
- * Only method for interaction is the moveWithValidation function.
- * At the end of a move boardChanged is called.
- * Can use getMoves to find the individual moves made - e.g. in castling what moves were made.
+ * A chess game api. The board can be built using a FEN string or just in the default position.
+ * Add a {@link BoardListener} to be notified of events. At the end of a move boardChanged is called.
+ * After a move has been made, {@link ChessGame#getLastMoveMade()} to find the individual moves made - e.g. in castling
+ * what moves were made.
+ * @author Toby
  */
 public class ChessGame {
     private final Chessboard board;
+    private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
         board = new ChessboardBuilder().defaultSetup();
+        fenGenerator = new FenGenerator(board);
     }
 
     public ChessGame(String fenString){
         board = new ChessboardBuilder().FromFen(fenString);
         currentTurn = board.getCurrentTurn();
+        fenGenerator = new FenGenerator(board);
     }
 
     public PieceColour getCurrentTurn(){return currentTurn;}
@@ -34,10 +41,7 @@ public class ChessGame {
      * Assumes the provided old coordinates are valid coordinates for a piece.
      * If any moves have been undone, it sets the board back to the current position.
      * After a move has been made, it notifies all listeners then moves on to the next turn.
-     * @param oldX current x position of the piece
-     * @param oldY current y position of the piece
-     * @param newX new x position of the piece
-     * @param newY new y position of the piece
+     * Checks for checkmate and draws.
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
@@ -54,29 +58,21 @@ public class ChessGame {
 
     /**
      * @see ChessGame#makeMove(int, int, int,int)
-     * @param move instance of move which specifies the piece being moved and where to.
      */
     public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {
         makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 
     /**
-     * During a board change event, contains the moves performed on the board.
-     * @return a list of individual moves taken to reach the new board state.
-     */
+     * After {@link BoardListener#boardChanged(int, int, int, int)}, this returns the individual moves performed on the
+     * board.
+     * @return a list of individual moves taken to reach the new board state. */
     public Iterable<MoveValue> getLastMoveMade(){return board.getLastMoves();}
 
-
-    // TODO: test api listeners
-    /**
-     * Adds a board listener to receive events from this board.
-     * Events which are notified are board change events, when a change has been made to the board and
-     * checkmate events - when the king is checkmated.
-     * @param listener the board listener
-     */
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
     }
+
     private void notifyBoardChanged(int oldX, int oldY, int newX, int newY){
         for(BoardListener listener : boardListeners){
             listener.boardChanged(oldX, oldY, newX, newY);
@@ -88,6 +84,7 @@ public class ChessGame {
             listener.checkmate(x, y);
     }
 
+    @TestOnly
     private void notifyDraw(){
         King whiteKing = board.getKing(PieceColour.WHITE);
         King blackKing = board.getKing(PieceColour.BLACK);
@@ -95,10 +92,7 @@ public class ChessGame {
             listener.draw(whiteKing.getX(), whiteKing.getY(), blackKing.getX(), blackKing.getY());
     }
 
-    /**
-     * Moves forward one move. Does nothing if there are no more moves to be made.
-     * Pops the last move off the stack and pushes it onto the moves made stack.
-     */
+    /** Moves forward one move. Does nothing if there are no more moves to be made. */
     public void redoMove(){
         Move move = board.redoMove();
         if(move == null)
@@ -110,9 +104,7 @@ public class ChessGame {
         }
     }
 
-    /**
-     * Pops the last move off the stack and pushes it onto the redo moves stack.
-     */
+    /** Moves backwards one move. Does nothing if there are no more moves to be made. */
     public void undoMove(){
         Move move = board.undoMove();
         if(move == null)
@@ -126,20 +118,19 @@ public class ChessGame {
         }
     }
 
-    /**
-     * Sets the board back to the most recent position.
-     * Can be called if there have been no move undo's made.
-     */
+     /** Sets the board back to the most recent position. Does nothing if there are no moves to redo. */
     public void redoAllMoves(){
         while(board.canRedoMove()){
             redoMove();
         }
     }
 
-    ArrayList<Piece> getColourPieces(PieceColour colour){return board.getAllColourPieces(colour);}
-
-    Piece getPiece(int x, int y){return board.getPiece(x, y);}
-    public int getState(){return board.getState();}
+    public List<Piece> getColourPieces(PieceColour colour){return board.getAllColourPieces(colour);}
+    public Piece getPiece(int x, int y){return board.getPiece(x, y);}
     public boolean isCheckmate(){return board.isCheckmate();}
     public boolean isDraw(){return board.isDraw();}
+
+    public String getFenString() {
+        return fenGenerator.getFenString();
+    }
 }

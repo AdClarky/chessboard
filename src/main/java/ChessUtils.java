@@ -1,26 +1,24 @@
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Contains functions relating to chess move notation in algebraic form.
- * Since chess moves are context based, it requires a board to be passed for most functions in order to calcualte
+ * Since chess moves are context based, it requires a board to be passed for most functions in order to calculate
  * their true meaning.
  */
 public final class ChessUtils {
     private ChessUtils(){}
-    /**
-     * Converts the chessboard coordinates to chess algabraic notation.
-     * @param x the chessboard x value
-     * @param y the chessboard y value
-     * @return the string in chess notation
-     */
-    public static String coordsToChess(int x, int y){
+    /** Converts the chessboard coordinates to chess algebraic notation. */
+    public static @NotNull String coordsToChess(int x, int y){
         return Character.toString('h' - x) + (y+1);
     }
 
-    // TODO: complete and test, maybe add to Move
+    @Deprecated
     public static String moveToChess(Chessboard board, Piece piece, int newX, int newY){
-        if(piece instanceof King king && Math.abs(piece.getX() - newX) == 2) {// castling
+        if(piece instanceof King && Math.abs(piece.getX() - newX) == 2) {// castling
             if(piece.getX() - newX == 2) // long castle
                 return  "O-O-O";
             else // short castle
@@ -45,7 +43,8 @@ public final class ChessUtils {
     public static MoveValue chessToMove(String move, ChessGame chessGame){
         if("O-O".equals(move)) {
             return getCastlingMove(1, chessGame);
-        }else if("O-O-O".equals(move)) {
+        }
+        if("O-O-O".equals(move)) {
             return getCastlingMove(5, chessGame);
         }
         Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
@@ -67,7 +66,7 @@ public final class ChessUtils {
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
 
-    static MoveValue getCastlingMove(int newX, ChessGame chessGame){
+    private static MoveValue getCastlingMove(int newX, @NotNull ChessGame chessGame){
         if(chessGame.getCurrentTurn() == PieceColour.BLACK){
             return new MoveValue(chessGame.getPiece(3,7),newX,7);
         }else{
@@ -80,13 +79,14 @@ public final class ChessUtils {
      * @param possiblePieces list of pieces that could move
      * @param move the algebraic chess move
      */
-    static void disambiguatePiece(Collection<Piece> possiblePieces, CharSequence move){
+    @VisibleForTesting
+    static void disambiguatePiece(Collection<Piece> possiblePieces, @NotNull CharSequence move){
         int length = move.length();
-        for(int i = 0; i < length; i++){
-            if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x' && i != length - 2){ // x value given
+        for(int i = 0; i < length - 2; i++){
+            if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x'){ // x value given
                 Coordinate correctX = Coordinate.createCoordinateFromString(move.charAt(i) + "0");
                 possiblePieces.removeIf(piece -> piece.getX() != correctX.x());
-            }else if(Character.isDigit(move.charAt(i)) && i != length - 1){ // y value given
+            }else if(Character.isDigit(move.charAt(i))){ // y value given
                 Coordinate correctY = Coordinate.createCoordinateFromString("a" + move.charAt(i));
                 possiblePieces.removeIf(piece -> piece.getY() != correctY.y());
             }
