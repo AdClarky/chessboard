@@ -1,19 +1,8 @@
+import org.jetbrains.annotations.NotNull;
 import javax.swing.Icon;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-/**
- * Bishop for Chess. Only moves diagonally.
- */
 public class Bishop extends Piece{
-    /**
-     * Constructor for a bishop.
-     * @param x starting x position
-     * @param y starting y position
-     * @param colour {@link PieceColour}
-     */
     public Bishop(int x, int y, PieceColour colour, Chessboard board) {
         super(x, y, getIcon(colour), colour, 'B', board);
     }
@@ -40,10 +29,11 @@ public class Bishop extends Piece{
      * @param colour the colour of the piece
      * @return an icon which is white or black.
      */
-    private static Icon getIcon(PieceColour colour){
+    private static @NotNull Icon getIcon(PieceColour colour){
         if(colour == PieceColour.BLACK)
             return ImageUtils.getStretchedImage(Bishop.class.getResource("/black_bishop.png"));
-        else
+        else if(colour == PieceColour.WHITE)
             return ImageUtils.getStretchedImage(Bishop.class.getResource("/white_bishop.png"));
+        throw new IllegalArgumentException("Invalid colour");
     }
 }

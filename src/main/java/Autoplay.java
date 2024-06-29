@@ -11,10 +11,6 @@ public class Autoplay {
     private final Collection<String> moves = new ArrayList<>(30);
     private final ChessGame chessGame;
 
-    public Autoplay(@NotNull ChessGame chessGame){
-        this.chessGame = chessGame;
-    }
-
     public Autoplay(@NotNull ChessGame chessGame, Path path) throws IOException {
         this.chessGame = chessGame;
         moves.addAll(new PGNParser(path).getMoves());

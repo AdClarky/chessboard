@@ -11,7 +11,7 @@ public class BoardHistory {
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
     private Deque<Move> lastMove = moves;
     private int numHalfMoves = 0;
-    private int numFullMoves = 1; // when importing through fenstring history unknown so moves are set
+    private int numFullMoves = 1;
 
     public @Nullable Piece getLastPieceMoved(){
         return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
@@ -32,6 +32,7 @@ public class BoardHistory {
         lastMove = moves;
     }
 
+    /** Returns null if there are no moves to redo. */
     public @Nullable Move redoMove(){
         if(redoMoves.isEmpty())
             return null;
@@ -48,6 +49,7 @@ public class BoardHistory {
         }
     }
 
+    /** Returns null if there are no moves to undo. */
     public @Nullable Move undoMove(){
         if(moves.isEmpty())
             return null;
@@ -74,7 +76,6 @@ public class BoardHistory {
     public void setNumFullMoves(int numFullMoves) {
         this.numFullMoves = numFullMoves;
     }
-
     public void setNumHalfMoves(int numHalfMoves) {
         this.numHalfMoves = numHalfMoves;
     }

@@ -16,7 +16,7 @@ class ChessGameAPITest {
         }
 
         @Override
-        public void checkmate(int x, int y) {
+        public void checkmate(int kingX, int kingY) {
             checkmate++;
         }
 

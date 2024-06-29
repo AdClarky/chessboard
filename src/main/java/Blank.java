@@ -2,14 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a blank square in the board
+ * Represents a blank square in the board. Mostly can be treated as a piece in generic functions, methods will just
+ * do nothing or return empty lists/false.
  */
 public class Blank extends Piece {
-    /**
-     * Initialises a blank piece with a null icon.
-     * @param x x position
-     * @param y y position
-     */
     public Blank(int x, int y) {
         super(x, y, null, PieceColour.BLANK, 'Z', null);
     }

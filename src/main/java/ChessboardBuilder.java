@@ -3,33 +3,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class ChessboardBuilder {
-    Chessboard board = new Chessboard();
-    ArrayList<Piece> whitePieces = new ArrayList<>(16);
-    ArrayList<Piece> blackPieces = new ArrayList<>(16);
-    int squaresProcessed = 7;
+    private final Chessboard board = new Chessboard();
+    private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
+    private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
+    private int squaresProcessed = 7;
 
     public @NotNull Chessboard defaultSetup() {
-        whitePieces.add(new King(3, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Rook(0, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Knight(1, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Bishop(2, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Queen(4, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Bishop(5, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Knight(6, 0, PieceColour.WHITE, board));
-        whitePieces.add(new Rook(7, 0, PieceColour.WHITE, board));
-        blackPieces.add(new King(3, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Rook(0, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Knight(1, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Bishop(2, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Queen(4, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Bishop(5, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Knight(6, 7, PieceColour.BLACK, board));
-        blackPieces.add(new Rook(7, 7, PieceColour.BLACK, board));
-        for(int x = 0; x < 8; x++){
-            blackPieces.add(new Pawn(x, 6, PieceColour.BLACK, board));
-            whitePieces.add(new Pawn(x, 1, PieceColour.WHITE, board));
-        }
-        board.populateBoard(whitePieces, blackPieces);
+        FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
 
