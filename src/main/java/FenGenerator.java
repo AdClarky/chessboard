@@ -47,11 +47,10 @@ public class FenGenerator {
     }
 
     private static char charFromPiece(@NotNull Piece piece) {
-        String pieceString = piece.toString();
-        if(pieceString.isEmpty()) {
-            pieceString = "P";
+        char character = piece.toCharacter();
+        if(character == '\u0000') {
+            character = 'P';
         }
-        char character = pieceString.charAt(0);
         if(piece.getColour() == PieceColour.BLACK)
             character = Character.toLowerCase(character);
         return character;

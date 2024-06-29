@@ -17,25 +17,11 @@ public final class ImageUtils {
     }
 
     public static @Nullable ImageIcon getPieceImage(String piece, PieceColour colour){
-        String pieceFullString = getStringFromPiece(piece);
-        if(pieceFullString.equals(""))
+        if("Blank".equals(piece))
             return null;
         String path = "/" +
                 PieceColour.getStringFromColour(colour) + "_" +
-                 pieceFullString + ".png";
+                 piece + ".png";
         return ImageUtils.getStretchedImage(Piece.class.getResource(path));
-    }
-
-    private static @NotNull String getStringFromPiece(@NotNull String piece){
-        return switch (piece){
-            case "B" -> "bishop";
-            case "K" -> "king";
-            case "Q" -> "queen";
-            case "R" -> "rook";
-            case "N" -> "knight";
-            case "" -> "pawn";
-            case "Blank" -> "";
-            default -> throw new IllegalArgumentException("Invalid piece: " + piece);
-        };
     }
 }

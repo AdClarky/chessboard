@@ -8,7 +8,7 @@ import java.util.Objects;
  * An abstract class which parents all chess pieces.
  */
 public abstract class Piece {
-    private final Icon pieceIcon;
+    private Icon pieceIcon;
     protected final Chessboard board;
     protected int x;
     protected int y;
@@ -19,7 +19,6 @@ public abstract class Piece {
         this.y = y;
         this.colour = colour;
         this.board = board;
-        pieceIcon = ImageUtils.getPieceImage(toString(), colour);
     }
 
     /**
@@ -67,7 +66,12 @@ public abstract class Piece {
         return Objects.hash(x, y, colour, toCharacter());
     }
 
-    public Icon getPieceIcon() {return pieceIcon;}
+    public Icon getPieceIcon() {
+        if(pieceIcon == null) {
+            pieceIcon = ImageUtils.getPieceImage(toString(), colour);
+        }
+        return pieceIcon;
+    }
 
     public PieceColour getColour() {return colour;}
 

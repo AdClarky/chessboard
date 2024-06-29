@@ -48,14 +48,14 @@ public final class ChessUtils {
             return getCastlingMove(5, chessGame);
         }
         Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
-        String pieceLetter;
+        char pieceLetter;
         if(Character.isLowerCase(move.charAt(0))) // if a pawn
-            pieceLetter = "";
+            pieceLetter = '\u0000';
         else // any other piece
-            pieceLetter = move.charAt(0) + "";
+            pieceLetter = move.charAt(0);
         ArrayList<Piece> possiblePieces = new ArrayList<>(2);
         for(Piece piece : chessGame.getColourPieces(chessGame.getCurrentTurn())){
-            if(!(piece.toString()).equals(pieceLetter)) // if its not type of piece that moved
+            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
                 continue;
             if(piece.getPossibleMoves().contains(newCoordinate))
                 possiblePieces.add(piece);
