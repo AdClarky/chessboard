@@ -2,6 +2,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 public class King extends Piece{
@@ -19,15 +21,22 @@ public class King extends Piece{
                 cantMove(x, y, moves);
             }
         }
-        if(!moved){ // castling
-            if(!board.getPiece(x-3, y).hadFirstMove()){
-                if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
-                    moves.add(new Coordinate(x-2, y));
-            }
-            if(!board.getPiece(x+4, y).hadFirstMove()){
-                if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
-                    moves.add(new Coordinate(x+2, y));
-            }
+        if(moved){
+            removeMovesInCheck(moves);
+            return moves;
+        }
+        calculateCastling(moves);
+        return moves;
+    }
+
+    private void calculateCastling(Collection<Coordinate> moves){
+        if(!board.getPiece(x-3, y).hadFirstMove()){
+            if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
+                moves.add(new Coordinate(x-2, y));
+        }
+        if(!board.getPiece(x+4, y).hadFirstMove()){
+            if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
+                moves.add(new Coordinate(x+2, y));
         }
         removeMovesInCheck(moves);
         // stops castling through check
@@ -35,7 +44,6 @@ public class King extends Piece{
             moves.remove(new Coordinate(x-2, y));
         if(!moves.contains(new Coordinate(x+1, y)))
             moves.remove(new Coordinate(x+2, y));
-        return moves;
     }
 
     @Override
