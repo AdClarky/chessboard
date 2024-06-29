@@ -15,13 +15,11 @@ public class Pawn extends Piece{
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isSquareBlank(x, y+direction)) {// basic move forward
             moves.add(new Coordinate(x, y + direction));
-            if (((y == 6 && colour == PieceColour.BLACK) || (y == 1 && colour == PieceColour.WHITE)) && board.isSquareBlank(x, y + (direction << 1))) // double move first go
+            if(board.isSquareBlank(x, y+(direction << 1))) // double move first go
                 moves.add(new Coordinate(x, y + (direction << 1)));
         }
-        if(board.getPiece(x-1,y+direction).getColour() == PieceColour.getOtherColour(colour)) // can take left
-            moves.add(new Coordinate(x-1,y+direction));
-        if(board.getPiece(x+1,y+direction).getColour() == PieceColour.getOtherColour(colour)) // can take right
-            moves.add(new Coordinate(x+1,y+direction));
+        addTakingMove(moves, 1);
+        addTakingMove(moves, -1);
         if((colour == PieceColour.BLACK && y == 3) || (colour == PieceColour.WHITE && y == 4)){ // en passant
             addEnPassantMoves(moves, -1);
             addEnPassantMoves(moves, 1);
@@ -33,6 +31,12 @@ public class Pawn extends Piece{
     private void addEnPassantMoves(Collection<Coordinate> moves, int leftOrRight){
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.getPiece(x+leftOrRight,y) instanceof Pawn pawn && pawn.hadFirstMove())
+            moves.add(new Coordinate(x+leftOrRight,y+direction));
+    }
+
+    private void addTakingMove(Collection<Coordinate> moves, int leftOrRight){
+        int direction = PieceColour.getDirectionFromColour(colour);
+        if(board.getPiece(x+leftOrRight,y+direction).getColour() == PieceColour.getOtherColour(colour)) // can take left
             moves.add(new Coordinate(x+leftOrRight,y+direction));
     }
 

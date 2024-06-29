@@ -44,7 +44,11 @@ public class Chessboard {
         return board[y][x];
     }
 
-    public boolean isSquareBlank(int x, int y){return board[y][x] instanceof Blank;}
+    public boolean isSquareBlank(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        return board[y][x] instanceof Blank;
+    }
 
     void setSquare(int x, int y, @NotNull Piece piece){board[y][x] = piece;}
 
