@@ -53,7 +53,8 @@ public class Chessboard {
             return blackPieces;
         else if(colour == PieceColour.WHITE)
             return whitePieces;
-        throw new IllegalArgumentException("Invalid colour: " + colour);
+        else
+            throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
     public King getKing(PieceColour colour){
@@ -61,7 +62,8 @@ public class Chessboard {
             return (King) blackPieces.getFirst();
         else if(colour == PieceColour.WHITE)
             return (King) whitePieces.getFirst();
-        throw new IllegalArgumentException("Invalid colour: " + colour);
+        else
+            throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
     /** Adds the piece to the list of pieces. Used only when adding a new piece to the board. */
@@ -70,7 +72,8 @@ public class Chessboard {
             blackPieces.add(piece);
         else if(piece.getColour() == PieceColour.WHITE)
             whitePieces.add(piece);
-        throw new IllegalArgumentException("Invalid piece: " + piece);
+        else
+            throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
     /** Removes the piece from the list of pieces. Should only be used if a piece is no longer on the board. */
@@ -79,6 +82,8 @@ public class Chessboard {
             blackPieces.remove(piece);
         else if(piece.getColour() == PieceColour.WHITE)
             whitePieces.remove(piece);
+        else
+            throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
     /** Validates a move is correct then moves the piece. */

@@ -35,8 +35,10 @@ public class PGNParser {
             processCharacter(line.charAt(i), line.charAt(i+1));
         }
         processCharacter(line.charAt(line.length()-1), ' ');
-        if(!currentMove.isEmpty())
+        if(!currentMove.isEmpty()) {
             moves.add(currentMove.toString());
+            currentMove.setLength(0);
+        }
     }
 
     private void processCharacter(Character character, Character nextChar){
