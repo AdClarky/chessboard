@@ -8,7 +8,7 @@ public class King extends Piece{
     private boolean moved = false;
 
     public King(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, getIcon(colour), colour, 'K', board);
+        super(x, y, colour, 'K', board);
     }
 
     @Override
@@ -16,7 +16,7 @@ public class King extends Piece{
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
-                cantMove(x, y, board, moves);
+                cantMove(x, y, moves);
             }
         }
         if(!moved){ // castling
@@ -73,12 +73,5 @@ public class King extends Piece{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), moved);
-    }
-
-    private static @NotNull Icon getIcon(PieceColour colour){
-        if(colour == PieceColour.BLACK)
-            return ImageUtils.getStretchedImage(King.class.getResource("/black_king.png"));
-        else
-            return ImageUtils.getStretchedImage(King.class.getResource("/white_king.png"));
     }
 }

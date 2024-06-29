@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class Blank extends Piece {
     public Blank(int x, int y) {
-        super(x, y, null, PieceColour.BLANK, 'Z', null);
+        super(x, y, PieceColour.BLANK, 'Z', null);
     }
 
     @Override

@@ -1,4 +1,3 @@
-import javax.swing.Icon;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +11,7 @@ public class Queen extends Piece{
      * @param colour black or white
      */
     public Queen(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, getIcon(colour), colour, 'Q', board);
+        super(x, y, colour, 'Q', board);
     }
 
     @Override
@@ -32,11 +31,4 @@ public class Queen extends Piece{
 
     @Override
     public boolean hadFirstMove(){return false;}
-
-    private static Icon getIcon(PieceColour colour){
-        if(colour == PieceColour.BLACK)
-            return ImageUtils.getStretchedImage(Queen.class.getResource("/black_queen.png"));
-        else
-            return ImageUtils.getStretchedImage(Queen.class.getResource("/white_queen.png"));
-    }
 }

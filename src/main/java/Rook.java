@@ -1,7 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,7 +14,7 @@ public class Rook extends Piece{
      * @param colour black or white
      */
     public Rook(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, getIcon(colour), colour, 'R', board);
+        super(x, y, colour, 'R', board);
     }
 
     @Override
@@ -41,23 +37,16 @@ public class Rook extends Piece{
     public void undoMoveCondition(){moved = false;}
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Rook rook = (Rook) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        if (!super.equals(obj)) return false;
+        Rook rook = (Rook) obj;
         return moved == rook.moved;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), moved);
-    }
-
-    private static @NotNull Icon getIcon(PieceColour colour){
-        if(colour == PieceColour.BLACK)
-            return ImageUtils.getStretchedImage(Rook.class.getResource("/black_rook.png"));
-        else
-            return ImageUtils.getStretchedImage(Rook.class.getResource("/white_rook.png"));
     }
 }

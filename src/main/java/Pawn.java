@@ -1,6 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -9,7 +6,7 @@ public class Pawn extends Piece{
     private boolean canBePassanted = false;
 
     public Pawn(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, getIcon(colour), colour, '\u0000', board);
+        super(x, y,  colour, '\u0000', board);
     }
 
     @Override
@@ -84,12 +81,5 @@ public class Pawn extends Piece{
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), canBePassanted);
-    }
-
-    private static @NotNull Icon getIcon(PieceColour colour) {
-        if(colour == PieceColour.BLACK)
-            return ImageUtils.getStretchedImage(Pawn.class.getResource("/black_pawn.png"));
-        else
-            return ImageUtils.getStretchedImage(Pawn.class.getResource("/white_pawn.png"));
     }
 }
