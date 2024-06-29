@@ -47,7 +47,7 @@ public class ChessGame {
         redoAllMoves();
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
-        notifyBoardChanged(oldX, oldY, newX, newY);
+        notifyMoveMade(oldX, oldY, newX, newY);
         if(board.isDraw())
             notifyDraw();
         if(board.isCheckmate()) {
@@ -64,13 +64,19 @@ public class ChessGame {
     }
 
     /**
-     * After {@link BoardListener#boardChanged(int, int, int, int)}, this returns the individual moves performed on the
+     * After {@link BoardListener#moveMade(int, int, int, int)}, this returns the individual moves performed on the
      * board.
      * @return a list of individual moves taken to reach the new board state. */
     public Iterable<MoveValue> getLastMoveMade(){return board.getLastMoves();}
 
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
+    }
+
+    private void notifyMoveMade(int oldX, int oldY, int newX, int newY){
+        for(BoardListener listener : boardListeners){
+            listener.moveMade(oldX, oldY, newX, newY);
+        }
     }
 
     private void notifyBoardChanged(int oldX, int oldY, int newX, int newY){

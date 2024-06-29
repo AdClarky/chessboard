@@ -11,7 +11,7 @@ class ChessGameAPITest {
         int draw = 0;
 
         @Override
-        public void boardChanged(int oldX, int oldY, int newX, int newY) {
+        public void moveMade(int oldX, int oldY, int newX, int newY) {
             boardChanged++;
         }
 
@@ -23,6 +23,11 @@ class ChessGameAPITest {
         @Override
         public void draw(int whiteX, int whiteY, int blackX, int blackY) {
             draw++;
+        }
+
+        @Override
+        public void boardChanged(int oldX, int oldY, int newX, int newY) {
+
         }
     }
     private Listener listener;
