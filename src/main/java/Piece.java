@@ -108,22 +108,10 @@ public abstract class Piece {
      * @param moves a list of possible moves
      */
     protected void calculateDiagonalMoves(Collection<Coordinate> moves){
-        for(int x = this.x+1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x++, y++) {
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int x = this.x-1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x--, y--) {
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int x = this.x+1, y = this.y-1; x < 8 && x>=0 && y>=0 && y < 8; x++, y--) {
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int x = this.x-1, y = this.y+1; x < 8 && x>=0 && y>=0 && y < 8; x--, y++) {
-            if(cantMove(x, y, moves))
-                break;
-        }
+        calculateSingleDirection(moves, 1, 1);
+        calculateSingleDirection(moves, -1, -1);
+        calculateSingleDirection(moves, 1, -1);
+        calculateSingleDirection(moves, -1, 1);
     }
 
     /**
@@ -131,19 +119,14 @@ public abstract class Piece {
      * @param moves a list of possible moves
      */
     protected void calculateStraightMoves(Collection<Coordinate> moves) {
-        for(int x = this.x+1; x < 8 && x >= 0; x++){
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int x = this.x-1; x < 8 && x >= 0; x--){
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int y = this.y+1; y < 8 && y >= 0; y++){
-            if(cantMove(x, y, moves))
-                break;
-        }
-        for(int y = this.y-1; y < 8 && y >= 0; y--){
+        calculateSingleDirection(moves, 1, 0);
+        calculateSingleDirection(moves, -1, 0);
+        calculateSingleDirection(moves, 0, 1);
+        calculateSingleDirection(moves, 0, -1);
+    }
+
+    private void calculateSingleDirection(Collection<Coordinate> moves, int xIncrement, int yIncrement){
+        for(int x = this.x+xIncrement, y = this.y+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
             if(cantMove(x, y, moves))
                 break;
         }
