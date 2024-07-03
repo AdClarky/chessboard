@@ -94,8 +94,22 @@ public class Move {
             board.addPiece(pieceToMove);
     }
 
-    public int getX() {return x;}
-    public int getY() {return y;}
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getPieceX(){
+        return piece.getX();
+    }
+
+    public int getPieceY(){
+        return piece.getY();
+    }
+
     public Piece getPiece() {return piece;}
     public boolean isPieceAPawn(){return piece instanceof Pawn;}
     public boolean isPieceColourBlack(){return piece.getColour() == PieceColour.BLACK;}

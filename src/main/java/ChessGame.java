@@ -78,9 +78,10 @@ public class ChessGame {
         }
     }
 
-    private void notifyBoardChanged(int oldX, int oldY, int newX, int newY){
+    private void notifyBoardChanged(@NotNull Move move){
+        int oldX = move.getPieceX(), oldY = move.getPieceY();
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(oldX, oldY, newX, newY);
+            listener.boardChanged(oldX, oldY, move.getX(), move.getY());
         }
     }
 
@@ -90,7 +91,6 @@ public class ChessGame {
             listener.checkmate(x, y);
     }
 
-    @TestOnly
     private void notifyDraw(){
         King whiteKing = board.getKing(PieceColour.WHITE);
         King blackKing = board.getKing(PieceColour.BLACK);
@@ -103,7 +103,7 @@ public class ChessGame {
         Move move = board.redoMove();
         if(move == null)
             return;
-        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        notifyBoardChanged(move);
         if(board.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
@@ -114,7 +114,7 @@ public class ChessGame {
         Move move = board.undoMove();
         if(move == null)
             return;
-        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        notifyBoardChanged(move);
     }
 
     public void undoMultipleMoves(int numOfMoves){

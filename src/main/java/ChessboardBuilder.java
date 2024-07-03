@@ -115,7 +115,7 @@ public class ChessboardBuilder {
         Coordinate location = Coordinate.createCoordinateFromString(section);
         PieceColour enPassantColour = PieceColour.getOtherColour(board.getCurrentTurn());
         int direction = PieceColour.getDirectionFromColour(enPassantColour);
-        board.setPawnEnpassantable(location.x(), location.y() + direction);
+        board.setPawnEnPassantable(location.x(), location.y() + direction);
     }
 
     private void setHalfMoves(String section){

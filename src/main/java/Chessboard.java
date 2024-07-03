@@ -91,7 +91,7 @@ public class Chessboard {
         }
     }
 
-    public void setPawnEnpassantable(int x, int y){
+    public void setPawnEnPassantable(int x, int y){
         getPiece(x, y).firstMove();
     }
 
