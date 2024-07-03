@@ -76,7 +76,7 @@ public abstract class Piece {
     public PieceColour getColour() {return colour;}
 
 
-    void setPos(int x, int y) {
+    public void setPos(int x, int y) {
         this.x = x;
         this.y = y;
     }
