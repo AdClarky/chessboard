@@ -93,7 +93,7 @@ public class Chessboard {
     /** Validates a move is correct then moves the piece. */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
-            throw new InvalidMoveException("That isn't a valid move!");
+            throw new InvalidMoveException(oldX, oldY, newX, newY);
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         history.push(move);
     }
