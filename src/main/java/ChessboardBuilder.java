@@ -106,12 +106,7 @@ public class ChessboardBuilder {
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
         int x = rookWithRights == 'k' ? 0 : 7;
-        Rook rookNotMoved = (Rook) board.getPiece(x, y);
-        for(Piece piece : board.getAllColourPieces(rookNotMoved.getColour())){
-            if(piece instanceof Rook && piece != rookNotMoved){
-                piece.firstMove();
-            }
-        }
+        board.setOtherRookMoved(x, y);
     }
 
     private void setEnPassant(@NotNull String section){
