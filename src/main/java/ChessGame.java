@@ -51,8 +51,7 @@ public class ChessGame {
         if(board.isDraw())
             notifyDraw();
         if(board.isCheckmate()) {
-            King king = board.getKing(currentTurn);
-            notifyCheckmate(king.getX(), king.getY());
+            notifyCheckmate(board.getKing(currentTurn));
         }
     }
 
@@ -85,7 +84,8 @@ public class ChessGame {
         }
     }
 
-    private void notifyCheckmate(int x, int y){
+    private void notifyCheckmate(King king){
+        int x = king.getX(), y = king.getY();
         for(BoardListener listener : boardListeners)
             listener.checkmate(x, y);
     }
@@ -105,8 +105,7 @@ public class ChessGame {
             return;
         notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
         if(board.isCheckmate()) {
-            King king = board.getKing(currentTurn);
-            notifyCheckmate(king.getX(), king.getY());
+            notifyCheckmate(board.getKing(currentTurn));
         }
     }
 
