@@ -51,7 +51,7 @@ public class Move {
             if(!board.isSquareBlank(move.newX(), move.newY()))
                 takePiece(move);
             movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
-            board.makeMove(move);
+            board.movePiece(move);
         }
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
@@ -77,7 +77,7 @@ public class Move {
             previousPawn.firstMove();
         for(MoveValue move : movesToUndo.reversed()){
             addOrRemovePiece(move.piece(), move);
-            board.makeMove(move);
+            board.movePiece(move);
         }
         if(notHadFirstMove)
             piece.undoMoveCondition();
