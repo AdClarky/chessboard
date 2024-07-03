@@ -187,6 +187,10 @@ public class Chessboard {
         return history.getNumHalfMoves() == 50;
     }
 
+    public void setKingMoved(PieceColour kingToSet){
+        getKing(kingToSet).firstMove();
+    }
+
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
     public PieceColour getCurrentTurn(){return currentTurn;}
 

@@ -77,19 +77,19 @@ public class ChessboardBuilder {
         if(length == 4)
             return;
         if(rights.contains("-")){
-            board.getKing(PieceColour.WHITE).firstMove();
-            board.getKing(PieceColour.BLACK).firstMove();
+            board.setKingMoved(PieceColour.WHITE);
+            board.setKingMoved(PieceColour.BLACK);
             return;
         }
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
         getUpperAndLower(rights, upper, lower);
         if(upper.isEmpty())
-            board.getKing(PieceColour.WHITE).firstMove();
+            board.setKingMoved(PieceColour.WHITE);
         else if(upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
         if(lower.isEmpty())
-            board.getKing(PieceColour.BLACK).firstMove();
+            board.setKingMoved(PieceColour.BLACK);
         else if(lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }
