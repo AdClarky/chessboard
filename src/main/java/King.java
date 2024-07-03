@@ -10,12 +10,6 @@ public class King extends Piece{
     }
 
     @Override
-    public void setPos(int x, int y) {
-        super.setPos(x, y);
-        moved = true;
-    }
-
-    @Override
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int y = this.y-1; y <= this.y+1; y++) {

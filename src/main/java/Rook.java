@@ -17,12 +17,6 @@ public class Rook extends Piece{
     }
 
     @Override
-    public void setPos(int x, int y) {
-        super.setPos(x, y);
-        moved = true;
-    }
-
-    @Override
     public void firstMove(){
         moved = true;
     }

@@ -10,13 +10,6 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void setPos(int x, int y) {
-        if(Math.abs(x - this.x) == 2)
-            canBePassanted = true;
-        super.setPos(x, y);
-    }
-
-    @Override
     public ArrayList<Coordinate> getPossibleMoves() {
         ArrayList<Coordinate> moves = new ArrayList<>(4);
         int direction = PieceColour.getDirectionFromColour(colour);
