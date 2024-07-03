@@ -50,7 +50,15 @@ public class Chessboard {
         return board[y][x] instanceof Blank;
     }
 
-    void setSquare(int x, int y, @NotNull Piece piece){board[y][x] = piece;}
+    public void movePiece(int x, int y, @NotNull Piece piece){
+        board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
+        board[y][x] = piece;
+        piece.setPos(x, y);
+    }
+
+    public void movePiece(@NotNull MoveValue move){
+        movePiece(move.newX(), move.newY(), move.piece());
+    }
 
     public List<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
