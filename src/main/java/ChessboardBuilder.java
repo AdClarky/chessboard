@@ -109,7 +109,7 @@ public class ChessboardBuilder {
         Rook rookNotMoved = (Rook) board.getPiece(x, y);
         for(Piece piece : board.getAllColourPieces(rookNotMoved.getColour())){
             if(piece instanceof Rook && piece != rookNotMoved){
-                piece.firstMove();
+                piece.setPos(piece.getX(), piece.getY());
             }
         }
     }
