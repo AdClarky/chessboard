@@ -91,6 +91,10 @@ public class Chessboard {
         }
     }
 
+    public void setPawnEnpassantable(int x, int y){
+        getPiece(x, y).firstMove();
+    }
+
     /** Adds the piece to the list of pieces. Used only when adding a new piece to the board. */
     public void addPiece(@NotNull Piece piece){
         if(piece.getColour() == PieceColour.BLACK)
