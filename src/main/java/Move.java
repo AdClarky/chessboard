@@ -60,7 +60,7 @@ public class Move {
     private void movePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
         board.setSquare(pieceToMove.getX(), pieceToMove.getY(), new Blank(pieceToMove.getX(), pieceToMove.getY()));
         board.setSquare(move.newX(), move.newY(), pieceToMove);
-        pieceToMove.setPos(move.newX(), move.newX());
+        pieceToMove.setPos(move.newX(), move.newY());
     }
 
     private void takePiece(@NotNull MoveValue move){
