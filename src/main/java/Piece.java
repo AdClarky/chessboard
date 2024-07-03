@@ -100,7 +100,7 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            if(board.getPiece(x, y).colour != colour) // if it's an enemy piece
+            if(board.getPiece(x, y).getColour() != colour) // if it's an enemy piece
                 moves.add(new Coordinate(x, y));
             return true;
         }

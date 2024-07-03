@@ -77,19 +77,19 @@ public class ChessboardBuilder {
         if(length == 4)
             return;
         if(rights.contains("-")){
-            board.getKing(PieceColour.WHITE).firstMove();
-            board.getKing(PieceColour.BLACK).firstMove();
+            board.setKingMoved(PieceColour.WHITE);
+            board.setKingMoved(PieceColour.BLACK);
             return;
         }
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
         getUpperAndLower(rights, upper, lower);
         if(upper.isEmpty())
-            board.getKing(PieceColour.WHITE).firstMove();
+            board.setKingMoved(PieceColour.WHITE);
         else if(upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
         if(lower.isEmpty())
-            board.getKing(PieceColour.BLACK).firstMove();
+            board.setKingMoved(PieceColour.BLACK);
         else if(lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }
@@ -106,12 +106,7 @@ public class ChessboardBuilder {
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
         int x = rookWithRights == 'k' ? 0 : 7;
-        Rook rookNotMoved = (Rook) board.getPiece(x, y);
-        for(Piece piece : board.getAllColourPieces(rookNotMoved.getColour())){
-            if(piece instanceof Rook && piece != rookNotMoved){
-                piece.firstMove();
-            }
-        }
+        board.setOtherRookMoved(x, y);
     }
 
     private void setEnPassant(@NotNull String section){
@@ -120,7 +115,7 @@ public class ChessboardBuilder {
         Coordinate location = Coordinate.createCoordinateFromString(section);
         PieceColour enPassantColour = PieceColour.getOtherColour(board.getCurrentTurn());
         int direction = PieceColour.getDirectionFromColour(enPassantColour);
-        board.getPiece(location.x(), location.y() + direction).firstMove();
+        board.setPawnEnPassantable(location.x(), location.y() + direction);
     }
 
     private void setHalfMoves(String section){

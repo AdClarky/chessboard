@@ -25,9 +25,9 @@ public class BoardHistory {
 
     public void push(Move move){
         moves.push(move);
-        if(move.getPiece().getColour() == PieceColour.BLACK)
+        if(move.isPieceColourBlack())
             numFullMoves++;
-        if(move.getPiece() instanceof Pawn || move.hasTaken())
+        if(move.isPieceAPawn() || move.hasTaken())
             numHalfMoves++;
         lastMove = moves;
     }

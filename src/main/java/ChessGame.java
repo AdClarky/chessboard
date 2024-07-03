@@ -51,8 +51,7 @@ public class ChessGame {
         if(board.isDraw())
             notifyDraw();
         if(board.isCheckmate()) {
-            King king = board.getKing(currentTurn);
-            notifyCheckmate(king.getX(), king.getY());
+            notifyCheckmate(board.getKing(currentTurn));
         }
     }
 
@@ -79,18 +78,19 @@ public class ChessGame {
         }
     }
 
-    private void notifyBoardChanged(int oldX, int oldY, int newX, int newY){
+    private void notifyBoardChanged(@NotNull Move move){
+        int oldX = move.getPieceX(), oldY = move.getPieceY();
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(oldX, oldY, newX, newY);
+            listener.boardChanged(oldX, oldY, move.getX(), move.getY());
         }
     }
 
-    private void notifyCheckmate(int x, int y){
+    private void notifyCheckmate(King king){
+        int x = king.getX(), y = king.getY();
         for(BoardListener listener : boardListeners)
             listener.checkmate(x, y);
     }
 
-    @TestOnly
     private void notifyDraw(){
         King whiteKing = board.getKing(PieceColour.WHITE);
         King blackKing = board.getKing(PieceColour.BLACK);
@@ -103,10 +103,9 @@ public class ChessGame {
         Move move = board.redoMove();
         if(move == null)
             return;
-        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        notifyBoardChanged(move);
         if(board.isCheckmate()) {
-            King king = board.getKing(currentTurn);
-            notifyCheckmate(king.getX(), king.getY());
+            notifyCheckmate(board.getKing(currentTurn));
         }
     }
 
@@ -115,7 +114,7 @@ public class ChessGame {
         Move move = board.undoMove();
         if(move == null)
             return;
-        notifyBoardChanged(move.getPiece().getX(), move.getPiece().getY(), move.getX(), move.getY());
+        notifyBoardChanged(move);
     }
 
     public void undoMultipleMoves(int numOfMoves){

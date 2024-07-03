@@ -58,7 +58,7 @@ public class Move {
     }
 
     private void takePiece(@NotNull MoveValue move){
-        if(move.newX() == move.piece().getX() && move.newY() == move.piece().getY()) // promotion
+        if(move.isPieceInSamePosition()) // promotion
             board.addPiece(move.piece());
         else
             taking = true;
@@ -85,18 +85,34 @@ public class Move {
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */
     private void addOrRemovePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
-        if(pieceToMove.getX() != move.newX() || pieceToMove.getY() != move.newY())
+        if(!move.isPieceInSamePosition())
             return;
         // a piece moving to the same spot only occurs as the last move when it's a promotion
         if(move == movesToUndo.getLast())
             board.removePiece(pieceToMove);
         else
-            board.addPiece(move.piece());
+            board.addPiece(pieceToMove);
     }
 
-    public int getX() {return x;}
-    public int getY() {return y;}
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getPieceX(){
+        return piece.getX();
+    }
+
+    public int getPieceY(){
+        return piece.getY();
+    }
+
     public Piece getPiece() {return piece;}
+    public boolean isPieceAPawn(){return piece instanceof Pawn;}
+    public boolean isPieceColourBlack(){return piece.getColour() == PieceColour.BLACK;}
     public List<MoveValue> getMovesToUndo() {return undone ? movesMade : movesToUndo;}
     public boolean hasTaken() {return taking;}
 }

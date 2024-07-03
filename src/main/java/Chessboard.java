@@ -78,6 +78,23 @@ public class Chessboard {
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
+    public void setKingMoved(PieceColour kingToSet){
+        getKing(kingToSet).firstMove();
+    }
+
+    public void setOtherRookMoved(int x, int y){
+        Rook rookNotMoved = (Rook) getPiece(x, y);
+        for(Piece piece : getAllColourPieces(rookNotMoved.getColour())){
+            if(piece instanceof Rook && piece != rookNotMoved){
+                piece.firstMove();
+            }
+        }
+    }
+
+    public void setPawnEnPassantable(int x, int y){
+        getPiece(x, y).firstMove();
+    }
+
     /** Adds the piece to the list of pieces. Used only when adding a new piece to the board. */
     public void addPiece(@NotNull Piece piece){
         if(piece.getColour() == PieceColour.BLACK)
@@ -188,6 +205,7 @@ public class Chessboard {
     }
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
+
     public PieceColour getCurrentTurn(){return currentTurn;}
 
     @NotNull
