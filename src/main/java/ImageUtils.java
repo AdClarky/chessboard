@@ -1,3 +1,4 @@
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.ImageIcon;
@@ -10,7 +11,7 @@ public final class ImageUtils {
     private ImageUtils() {}
 
     /** Generates an Icon which is larger than the original. */
-    private static ImageIcon getStretchedImage(URL imageURL) {
+    private static @NotNull ImageIcon getStretchedImage(@NotNull URL imageURL) {
         ImageIcon image = new ImageIcon(imageURL);
         return new ImageIcon((image.getImage().getScaledInstance(SCALE, SCALE,java.awt.Image.SCALE_SMOOTH)));
     }
@@ -21,6 +22,9 @@ public final class ImageUtils {
         String path = "/" +
                 PieceColour.getStringFromColour(colour) + "_" +
                  piece + ".png";
+        URL imageURL = ImageUtils.class.getResource(path);
+        if(imageURL == null)
+            throw new IllegalArgumentException("Piece must be in lower case with a PieceColour of black or white");
         return ImageUtils.getStretchedImage(Piece.class.getResource(path));
     }
 }
