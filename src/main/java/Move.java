@@ -97,6 +97,8 @@ public class Move {
     public int getX() {return x;}
     public int getY() {return y;}
     public Piece getPiece() {return piece;}
+    public boolean isPieceAPawn(){return piece instanceof Pawn;}
+    public boolean isPieceColourBlack(){return piece.getColour() == PieceColour.BLACK;}
     public List<MoveValue> getMovesToUndo() {return undone ? movesMade : movesToUndo;}
     public boolean hasTaken() {return taking;}
 }
