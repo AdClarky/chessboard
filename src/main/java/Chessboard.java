@@ -51,6 +51,12 @@ public class Chessboard {
         return getPiece(x, y).getColour();
     }
 
+    public boolean hasPieceHadFirstMove(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        return getPiece(x, y).hadFirstMove();
+    }
+
     public void movePiece(int x, int y, @NotNull Piece piece){
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
         board[y][x] = piece;

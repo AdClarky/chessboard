@@ -95,4 +95,12 @@ public class ChessLogic {
     public boolean isFriendlyPiece(int x, int y, PieceColour colour){
         return board.getPieceColour(x, y) == colour;
     }
+
+    public boolean hasPieceHadFirstMove(int x, int y){
+        return board.hasPieceHadFirstMove(x, y);
+    }
+
+    public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
+        return new MoveValue(board.getPiece(x, y), newX, newY);
+    }
 }
