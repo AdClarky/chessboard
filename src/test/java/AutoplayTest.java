@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@SuppressWarnings("SpellCheckingInspection")
 class AutoplayTest {
     @Test
     void emptyMovesInput(){

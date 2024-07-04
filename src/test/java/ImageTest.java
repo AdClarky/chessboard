@@ -55,4 +55,17 @@ class ImageTest {
         icon = ImageUtils.getPieceImage("queen", PieceColour.BLACK);
         assertNotNull(icon);
     }
+
+    @Test
+    void doAllImagesLoadWithoutError(){
+        assertDoesNotThrow(()->{
+           ChessGame game = new ChessGame();
+           for(Piece piece : game.getColourPieces(PieceColour.BLACK)){
+               assertNotNull(piece.getPieceIcon());
+           }
+            for(Piece piece : game.getColourPieces(PieceColour.WHITE)){
+                assertNotNull(piece.getPieceIcon());
+            }
+        });
+    }
 }
