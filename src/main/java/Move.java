@@ -123,7 +123,7 @@ public class Move {
     }
 
     public List<MoveValue> getMovesToUndo() {
-        return undone ? movesMade : movesToUndo;
+        return undone ? movesToUndo : movesMade;
     }
 
     public boolean hasTaken() {

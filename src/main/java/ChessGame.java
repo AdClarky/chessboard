@@ -70,7 +70,9 @@ public class ChessGame {
      * After {@link BoardListener#moveMade(int, int, int, int)}, this returns the individual moves performed on the
      * board.
      * @return a list of individual moves taken to reach the new board state. */
-    public Iterable<MoveValue> getLastMoveMade(){return board.getLastMoves();}
+    public List<MoveValue> getLastMoveMade(){
+        return board.getLastMoves();
+    }
 
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);

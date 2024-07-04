@@ -78,6 +78,7 @@ public class BoardHistory {
     public void setNumFullMoves(int numFullMoves) {
         this.numFullMoves = numFullMoves;
     }
+
     public void setNumHalfMoves(int numHalfMoves) {
         this.numHalfMoves = numHalfMoves;
     }
