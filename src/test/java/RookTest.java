@@ -4,27 +4,24 @@ import org.junit.jupiter.api.Test;
 class RookTest {
     @Test
     void rookNotMoved(){
-        Chessboard board = new Chessboard();
-        Rook rook = new Rook(1, 1, PieceColour.WHITE, board);
-        Rook rook2 = new Rook(1, 1, PieceColour.WHITE, board);
+        Rook rook = new Rook(1, 1, PieceColour.WHITE);
+        Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
         assertEquals(rook, rook2);
     }
 
     @Test
     void oneRookMoved(){
-        Chessboard board = new Chessboard();
-        Rook rook = new Rook(1, 1, PieceColour.WHITE, board);
+        Rook rook = new Rook(1, 1, PieceColour.WHITE);
         rook.firstMove();
-        Rook rook2 = new Rook(1, 1, PieceColour.WHITE, board);
+        Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
         assertNotEquals(rook, rook2);
     }
 
     @Test
     void bothRookMoved(){
-        Chessboard board = new Chessboard();
-        Rook rook = new Rook(1, 1, PieceColour.WHITE, board);
+        Rook rook = new Rook(1, 1, PieceColour.WHITE);
         rook.firstMove();
-        Rook rook2 = new Rook(1, 1, PieceColour.WHITE, board);
+        Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
         rook2.firstMove();
         assertEquals(rook, rook2);
     }

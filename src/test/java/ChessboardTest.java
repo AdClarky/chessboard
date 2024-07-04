@@ -19,12 +19,12 @@ class ChessboardTest {
         board = new Chessboard();
         Collection<Piece> whitePieces = new ArrayList<>(3);
         Collection<Piece> blackPieces = new ArrayList<>(3);
-        whitePieces.add(new King(0, 0, PieceColour.WHITE, board));
-        whitePieces.add(new King(0, 1, PieceColour.WHITE, board));
-        whitePieces.add(new King(0, 2, PieceColour.WHITE, board));
-        blackPieces.add(new King(0, 3, PieceColour.BLACK, board));
-        blackPieces.add(new King(0, 4, PieceColour.BLACK, board));
-        blackPieces.add(new King(0, 5, PieceColour.BLACK, board));
+        whitePieces.add(new King(0, 0, PieceColour.WHITE));
+        whitePieces.add(new King(0, 1, PieceColour.WHITE));
+        whitePieces.add(new King(0, 2, PieceColour.WHITE));
+        blackPieces.add(new King(0, 3, PieceColour.BLACK));
+        blackPieces.add(new King(0, 4, PieceColour.BLACK));
+        blackPieces.add(new King(0, 5, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
         for(int x = 1; x < 8; x++){
             for(int y = 0; y < 8; y++){
@@ -54,13 +54,13 @@ class ChessboardTest {
     @Test
     void isInvalidMoveSafe() {
         new Move(2, 0, board.getPiece(4, 7), null, board);
-        assertTrue(board.isMoveUnsafe(7, 2, board.getPiece(7, 1)));
+        assertTrue(new ChessLogic(board).isMoveUnsafe(7, 2, board.getPiece(7, 1)));
     }
 
     @Test
     void queenNextToKingInCheck(){
         new Move(2, 0, board.getPiece(4, 7), null, board);
-        assertTrue(board.isKingInCheck(PieceColour.WHITE));
+        assertTrue(new ChessLogic(board).isKingInCheck(PieceColour.WHITE));
     }
 
     @Test
