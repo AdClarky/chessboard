@@ -3,6 +3,10 @@ import org.jetbrains.annotations.NotNull;
 
 /** Coordinate class which stores the x and y value of a coordinate. */
 public record Coordinate(int x, int y) {
+    public Coordinate(Piece piece) {
+        this(piece.getX(), piece.getY());
+    }
+
     @Override
     public @NotNull String toString() {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "Invalid";
