@@ -25,7 +25,7 @@ public class ChessGame {
     }
 
     public ChessGame(String fenString){
-        board = new ChessboardBuilder().FromFen(fenString);
+        board = new ChessboardBuilder().fromFen(fenString);
         ChessLogic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);

@@ -58,7 +58,7 @@ class ChessboardBuilderTest {
 
     @Test
     void fenStartingMiddleOfBoardBlank(){
-        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {
             for(int y = 2; y < 6; y++) {
                 assertInstanceOf(Blank.class, board.getPiece(x, y));
@@ -68,7 +68,7 @@ class ChessboardBuilderTest {
 
     @Test
     void defaultWithFenWhitePieces(){
-        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 1));
             assertEquals(PieceColour.WHITE, board.getPiece(x, 1).getColour());
@@ -89,7 +89,7 @@ class ChessboardBuilderTest {
 
     @Test
     void defaultWithFenBlackPieces(){
-        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         for(int x = 0; x < 8; x++) {
             assertInstanceOf(Pawn.class, board.getPiece(x, 6));
             assertEquals(PieceColour.BLACK, board.getPiece(x, 6).getColour());

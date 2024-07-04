@@ -11,11 +11,11 @@ public class ChessboardBuilder {
     private int squaresProcessed = 7;
 
     public @NotNull Chessboard defaultSetup() {
-        FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
 
-    public @NotNull Chessboard FromFen(@NotNull String fenString) {
+    public @NotNull Chessboard fromFen(@NotNull String fenString) {
         String[] sections = fenString.split(" ");
         populateBoardFromFenString(sections[0]);
         setTurnToMove(sections[1]);
