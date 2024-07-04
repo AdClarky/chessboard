@@ -16,7 +16,7 @@ public final class ChessUtils {
         return Character.toString('h' - x) + (y+1);
     }
 
-    public static MoveValue chessToMove(String move, ChessGame chessGame){
+    public static MoveValue chessToMove(String move, ChessGame chessGame) throws InvalidMoveException {
         if("O-O".equals(move)) {
             return getCastlingMove(1, chessGame);
         }
@@ -38,6 +38,8 @@ public final class ChessUtils {
         }
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
+        if(possiblePieces.isEmpty())
+            throw new InvalidMoveException(move);
         Piece piece = possiblePieces.getFirst();
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
