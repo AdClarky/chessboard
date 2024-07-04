@@ -10,15 +10,13 @@ import java.util.Objects;
 public abstract class Piece {
     private Icon pieceIcon;
     protected final PieceColour colour;
-    protected final ChessLogic board;
     protected int x;
     protected int y;
 
-    protected Piece(int x, int y, PieceColour colour, ChessLogic board) {
+    protected Piece(int x, int y, PieceColour colour) {
         this.x = x;
         this.y = y;
         this.colour = colour;
-        this.board = board;
     }
 
     /**
@@ -84,19 +82,54 @@ public abstract class Piece {
     public int getX() {return x;}
     public int getY() {return y;}
 
-    protected void removeMovesInCheck(Collection<Coordinate> moves) {
+    protected void removeMovesInCheck(Collection<Coordinate> moves, ChessLogic board) {
         if(board.getCurrentTurn() != colour)
             return;
         moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
     }
 
     /**
+     * Calculates how far a piece can move in each diagonal direction.
+     *
+     * @param moves a list of possible moves
+     * @param board
+     */
+    protected void calculateDiagonalMoves(Collection<Coordinate> moves, ChessLogic board){
+        calculateSingleDirection(moves, board, 1, 1);
+        calculateSingleDirection(moves, board, -1, -1);
+        calculateSingleDirection(moves, board, 1, -1);
+        calculateSingleDirection(moves, board, -1, 1);
+    }
+
+    /**
+     * Calculates how far a piece can move in each straight direction.
+     *
+     * @param moves a list of possible moves
+     * @param board
+     */
+    protected void calculateStraightMoves(Collection<Coordinate> moves, ChessLogic board) {
+        calculateSingleDirection(moves, board, 1, 0);
+        calculateSingleDirection(moves, board, -1, 0);
+        calculateSingleDirection(moves, board, 0, 1);
+        calculateSingleDirection(moves, board, 0, -1);
+    }
+
+    private void calculateSingleDirection(Collection<Coordinate> moves, ChessLogic board, int xIncrement, int yIncrement){
+        for(int x = this.x+xIncrement, y = this.y+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
+            if(cantMove(moves, board, x, y))
+                break;
+        }
+    }
+
+    /**
      * Calculates if a move to a specific square is valid.
      * Validates the coords are within the board and then checks if it's a friendly piece.
+     *
      * @param moves a collection of possible moves
+     * @param board
      * @return if the move is valid
      */
-    protected boolean cantMove(int x, int y, Collection<Coordinate> moves) {
+    protected boolean cantMove(Collection<Coordinate> moves, ChessLogic board, int x, int y) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
@@ -106,34 +139,5 @@ public abstract class Piece {
         }
         moves.add(new Coordinate(x, y));
         return false;
-    }
-
-    /**
-     * Calculates how far a piece can move in each diagonal direction.
-     * @param moves a list of possible moves
-     */
-    protected void calculateDiagonalMoves(Collection<Coordinate> moves){
-        calculateSingleDirection(moves, 1, 1);
-        calculateSingleDirection(moves, -1, -1);
-        calculateSingleDirection(moves, 1, -1);
-        calculateSingleDirection(moves, -1, 1);
-    }
-
-    /**
-     * Calculates how far a piece can move in each straight direction.
-     * @param moves a list of possible moves
-     */
-    protected void calculateStraightMoves(Collection<Coordinate> moves) {
-        calculateSingleDirection(moves, 1, 0);
-        calculateSingleDirection(moves, -1, 0);
-        calculateSingleDirection(moves, 0, 1);
-        calculateSingleDirection(moves, 0, -1);
-    }
-
-    private void calculateSingleDirection(Collection<Coordinate> moves, int xIncrement, int yIncrement){
-        for(int x = this.x+xIncrement, y = this.y+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
-            if(cantMove(x, y, moves))
-                break;
-        }
     }
 }
