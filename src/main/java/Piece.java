@@ -10,11 +10,11 @@ import java.util.Objects;
 public abstract class Piece {
     private Icon pieceIcon;
     protected final PieceColour colour;
-    protected final Chessboard board;
+    protected final ChessLogic board;
     protected int x;
     protected int y;
 
-    protected Piece(int x, int y, PieceColour colour, Chessboard board) {
+    protected Piece(int x, int y, PieceColour colour, ChessLogic board) {
         this.x = x;
         this.y = y;
         this.colour = colour;
@@ -100,7 +100,7 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            if(board.getPiece(x, y).getColour() != colour) // if it's an enemy piece
+            if(!board.isFriendlyPiece(x, y, colour))
                 moves.add(new Coordinate(x, y));
             return true;
         }

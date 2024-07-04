@@ -7,7 +7,6 @@ public class ChessLogic {
         this.board = board;
     }
 
-
     /**
      * Calculates if moving a piece to a position would put that teams king in check.
      * This assumes the piece moving to the new position is a valid move.
@@ -81,5 +80,19 @@ public class ChessLogic {
 
     private boolean isDraw50Move(){
         return board.getNumHalfMoves() == 50;
+    }
+
+    public PieceColour getCurrentTurn(){
+        return board.getCurrentTurn();
+    }
+
+    public boolean isSquareBlank(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        return board.getPiece(x, y) instanceof Blank;
+    }
+
+    public boolean isFriendlyPiece(int x, int y, PieceColour colour){
+        return board.getPieceColour(x, y) == colour;
     }
 }

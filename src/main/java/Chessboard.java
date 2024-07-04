@@ -44,6 +44,13 @@ public class Chessboard {
         return board[y][x];
     }
 
+    @NotNull
+    public PieceColour getPieceColour(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return PieceColour.BLANK;
+        return getPiece(x, y).getColour();
+    }
+
     public void movePiece(int x, int y, @NotNull Piece piece){
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
         board[y][x] = piece;
@@ -61,12 +68,6 @@ public class Chessboard {
             return whitePieces;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
-    }
-
-    public boolean isSquareBlank(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        return board[y][x] instanceof Blank;
     }
 
     public King getKing(PieceColour colour){
