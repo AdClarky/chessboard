@@ -34,7 +34,7 @@ public class Move {
             previousPawn = previousPiece;
         else
             previousPawn = new Blank(0,0);
-        movesMade = piece.getMoves(, x, y);
+        movesMade = piece.getMoves(new ChessLogic(board), x, y);
         makeMove();
     }
 
@@ -110,9 +110,23 @@ public class Move {
         return piece.getY();
     }
 
-    public Piece getPiece() {return piece;}
-    public boolean isPieceAPawn(){return piece instanceof Pawn;}
-    public boolean isPieceColourBlack(){return piece.getColour() == PieceColour.BLACK;}
-    public List<MoveValue> getMovesToUndo() {return undone ? movesMade : movesToUndo;}
-    public boolean hasTaken() {return taking;}
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public boolean isPieceAPawn(){
+        return piece instanceof Pawn;
+    }
+
+    public boolean isPieceColourBlack(){
+        return piece.getColour() == PieceColour.BLACK;
+    }
+
+    public List<MoveValue> getMovesToUndo() {
+        return undone ? movesMade : movesToUndo;
+    }
+
+    public boolean hasTaken() {
+        return taking;
+    }
 }
