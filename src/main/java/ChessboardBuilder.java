@@ -21,8 +21,12 @@ public class ChessboardBuilder {
         setTurnToMove(sections[1]);
         setCastlingRights(sections[2]);
         setEnPassant(sections[3]);
-        setHalfMoves(sections[4]);
-        setFullMoves(sections[5]);
+        try {
+            setHalfMoves(sections[4]);
+            setFullMoves(sections[5]);
+        } catch (AccessedHistoryDuringGameException e) {
+            throw new RuntimeException(e); // should not be possible
+        }
         return board;
     }
 
@@ -118,11 +122,11 @@ public class ChessboardBuilder {
         board.setPawnEnPassantable(location.x(), location.y() + direction);
     }
 
-    private void setHalfMoves(String section){
+    private void setHalfMoves(String section) throws AccessedHistoryDuringGameException {
         board.setNumHalfMoves(Integer.parseInt(section));
     }
 
-    private void setFullMoves(String section){
+    private void setFullMoves(String section) throws AccessedHistoryDuringGameException {
         board.setNumFullMoves(Integer.parseInt(section));
     }
 

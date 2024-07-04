@@ -75,11 +75,15 @@ public class BoardHistory {
     }
     public int getNumFullMoves(){return numFullMoves;}
 
-    public void setNumFullMoves(int numFullMoves) {
+    public void setNumFullMoves(int numFullMoves) throws AccessedHistoryDuringGameException {
+        if(!redoMoves.isEmpty() || !moves.isEmpty())
+            throw new AccessedHistoryDuringGameException();
         this.numFullMoves = numFullMoves;
     }
 
-    public void setNumHalfMoves(int numHalfMoves) {
+    public void setNumHalfMoves(int numHalfMoves) throws AccessedHistoryDuringGameException {
+        if(!redoMoves.isEmpty() || !moves.isEmpty())
+            throw new AccessedHistoryDuringGameException();
         this.numHalfMoves = numHalfMoves;
     }
 }
