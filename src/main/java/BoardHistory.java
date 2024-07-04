@@ -27,7 +27,7 @@ public class BoardHistory {
         moves.push(move);
         if(move.isPieceColourBlack())
             numFullMoves++;
-        if(move.isPieceAPawn() || move.hasTaken())
+        if(!move.isPieceAPawn() && !move.hasTaken())
             numHalfMoves++;
         lastMove = moves;
     }
