@@ -46,16 +46,19 @@ public class Chessboard {
 
     @NotNull
     public PieceColour getPieceColour(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return PieceColour.BLANK;
         return getPiece(x, y).getColour();
     }
 
     public boolean hasPieceHadFirstMove(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
         return getPiece(x, y).hadFirstMove();
     }
+
+    public boolean isSquareBlank(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        return getPiece(x, y) instanceof Blank;
+    }
+
 
     public void movePiece(int x, int y, @NotNull Piece piece){
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
@@ -122,10 +125,7 @@ public class Chessboard {
             throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
-    /** Validates a move is correct then moves the piece. */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
-        if(!getPiece(oldX, oldY).getPossibleMoves().contains(new Coordinate(newX, newY))) // if invalid move
-            throw new InvalidMoveException(oldX, oldY, newX, newY);
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         history.push(move);
     }

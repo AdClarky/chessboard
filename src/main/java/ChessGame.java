@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.TestOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,17 +13,20 @@ import java.util.List;
  */
 public class ChessGame {
     private final Chessboard board;
+    private final ChessLogic logic;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
         board = new ChessboardBuilder().defaultSetup();
+        logic = new ChessLogic(board);
         fenGenerator = new FenGenerator(board);
     }
 
     public ChessGame(String fenString){
         board = new ChessboardBuilder().FromFen(fenString);
+        logic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);
     }
@@ -45,12 +47,14 @@ public class ChessGame {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
+        if(logic.isValidMove(getPiece(oldX, oldY), newX, newY))
+            throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyMoveMade(oldX, oldY, newX, newY);
-        if(board.isDraw())
+        if(logic.isDraw())
             notifyDraw();
-        if(board.isCheckmate()) {
+        if(logic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -104,7 +108,7 @@ public class ChessGame {
         if(move == null)
             return;
         notifyBoardChanged(move);
-        if(board.isCheckmate()) {
+        if(logic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -130,10 +134,21 @@ public class ChessGame {
         }
     }
 
-    public List<Piece> getColourPieces(PieceColour colour){return board.getAllColourPieces(colour);}
-    public Piece getPiece(int x, int y){return board.getPiece(x, y);}
-    public boolean isCheckmate(){return board.isCheckmate();}
-    public boolean isDraw(){return board.isDraw();}
+    public List<Piece> getColourPieces(PieceColour colour){
+        return board.getAllColourPieces(colour);
+    }
+
+    public Piece getPiece(int x, int y){
+        return board.getPiece(x, y);
+    }
+
+    public boolean isCheckmate(){
+        return logic.isCheckmate();
+    }
+
+    public boolean isDraw(){
+        return logic.isDraw();
+    }
 
     public String getFenString() {
         return fenGenerator.getFenString();

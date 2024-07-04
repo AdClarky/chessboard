@@ -87,9 +87,7 @@ public class ChessLogic {
     }
 
     public boolean isSquareBlank(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        return board.getPiece(x, y) instanceof Blank;
+        return board.isSquareBlank(x, y);
     }
 
     public boolean isEnemyPiece(int x, int y, PieceColour colour){
@@ -106,5 +104,9 @@ public class ChessLogic {
 
     public boolean isPiecePawn(int x, int y){
         return board.getPiece(x, y) instanceof Pawn;
+    }
+
+    public boolean isValidMove(Piece piece, int newX, int newY){
+        return !piece.getPossibleMoves(this).contains(new Coordinate(newX, newY));
     }
 }
