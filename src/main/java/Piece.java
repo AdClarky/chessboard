@@ -23,7 +23,7 @@ public abstract class Piece {
      * Calculates all possible moves based on surrounding pieces and checks.
      * @return a list of coordinates the piece can move to.
      */
-    public abstract List<Coordinate> getPossibleMoves();
+    public abstract List<Coordinate> getPossibleMoves(ChessLogic board);
 
     /**
      * For pieces where the first move must be tracked.
@@ -40,7 +40,7 @@ public abstract class Piece {
     public abstract boolean hadFirstMove();
 
     /** Calculates a list of moves required to move a piece to a new place. */
-    public List<MoveValue> getMoves(int newX, int newY) {
+    public List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
         moves.add(new MoveValue(this, newX, newY));
         return moves;
