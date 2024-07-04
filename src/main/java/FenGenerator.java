@@ -64,21 +64,21 @@ public class FenGenerator {
     }
 
     private void addCastlingRights() {
-        if(board.getKing(PieceColour.WHITE).hadFirstMove() && board.getKing(PieceColour.BLACK).hadFirstMove()) {
+        if(board.hasKingMoved(PieceColour.WHITE) && board.hasKingMoved(PieceColour.BLACK)){
             fenString.append("- ");
             return;
         }
-        if(!board.getKing(PieceColour.WHITE).hadFirstMove())
+        if(!board.hasKingMoved(PieceColour.WHITE))
             addColourCastleRight(0);
-        if(!board.getKing(PieceColour.BLACK).hadFirstMove())
+        if(!board.hasKingMoved(PieceColour.BLACK))
             addColourCastleRight(7);
         fenString.append(" ");
     }
 
     private void addColourCastleRight(int backRow){
-        if(!board.getPiece(0, backRow).hadFirstMove())
+        if(!board.hasPieceHadFirstMove(0, backRow))
             fenString.append(backRow == 0 ? 'K' : 'k');
-        if(!board.getPiece(7, backRow).hadFirstMove())
+        if(!board.hasPieceHadFirstMove(7, backRow))
             fenString.append(backRow == 0 ? 'Q' : 'q');
     }
 

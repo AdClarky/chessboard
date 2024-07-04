@@ -5,36 +5,36 @@ import java.util.Objects;
 public class King extends Piece{
     private boolean moved = false;
 
-    public King(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, board);
+    public King(int x, int y, PieceColour colour) {
+        super(x, y, colour);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves() {
+    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
-                cantMove(x, y, moves);
+                cantMove(moves, board, x, y);
             }
         }
         if(moved){
-            removeMovesInCheck(moves);
+            removeMovesInCheck(moves, board);
             return moves;
         }
-        calculateCastling(moves);
+        calculateCastling(moves, board);
         return moves;
     }
 
-    private void calculateCastling(Collection<Coordinate> moves){
-        if(!board.getPiece(x-3, y).hadFirstMove()){
+    private void calculateCastling(Collection<Coordinate> moves, ChessLogic board){
+        if(!board.hasPieceHadFirstMove(x-3, y)){
             if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
                 moves.add(new Coordinate(x-2, y));
         }
-        if(!board.getPiece(x+4, y).hadFirstMove()){
+        if(!board.hasPieceHadFirstMove(x-4, y)){
             if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
                 moves.add(new Coordinate(x+2, y));
         }
-        removeMovesInCheck(moves);
+        removeMovesInCheck(moves, board);
         // stops castling through check
         if(!moves.contains(new Coordinate(x-1, y)))
             moves.remove(new Coordinate(x-2, y));
@@ -43,12 +43,12 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<MoveValue> getMoves(int newX, int newY) {
+    public ArrayList<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         ArrayList<MoveValue> moves = new ArrayList<>(2);
         if(newX - x == -2) { // short castle
-            moves.add(new MoveValue(board.getPiece(0, newY), 2   , newY));
+            moves.add(board.getMoveForOtherPiece(0, newY, 2, newY));
         }else if(x - newX == -2) {
-            moves.add(new MoveValue(board.getPiece(7, newY), 4, newY));
+            moves.add(board.getMoveForOtherPiece(7, newY, 4, newY));
         }
         moves.add(new MoveValue(this, newX, newY));
         return moves;

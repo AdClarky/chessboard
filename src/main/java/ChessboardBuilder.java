@@ -46,22 +46,22 @@ public class ChessboardBuilder {
         List<Piece> pieces = getPiecesFromChar(character);
         switch(Character.toLowerCase(character)){
             case 'r':
-                pieces.add(new Rook(squaresProcessed, row, colour, board));
+                pieces.add(new Rook(squaresProcessed, row, colour));
                 break;
             case 'n':
-                pieces.add(new Knight(squaresProcessed, row, colour, board));
+                pieces.add(new Knight(squaresProcessed, row, colour));
                 break;
             case 'b':
-                pieces.add(new Bishop(squaresProcessed, row, colour, board));
+                pieces.add(new Bishop(squaresProcessed, row, colour));
                 break;
             case 'k':
-                pieces.addFirst(new King(squaresProcessed, row, colour, board));
+                pieces.addFirst(new King(squaresProcessed, row, colour));
                 break;
             case 'q':
-                pieces.add(new Queen(squaresProcessed, row, colour, board));
+                pieces.add(new Queen(squaresProcessed, row, colour));
                 break;
             case 'p':
-                pieces.add(new Pawn(squaresProcessed, row, colour, board));
+                pieces.add(new Pawn(squaresProcessed, row, colour));
                 break;
         }
         squaresProcessed--;

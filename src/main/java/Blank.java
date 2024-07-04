@@ -7,11 +7,11 @@ import java.util.List;
  */
 public class Blank extends Piece {
     public Blank(int x, int y) {
-        super(x, y, PieceColour.BLANK, null);
+        super(x, y, PieceColour.BLANK);
     }
 
     @Override
-    public List<Coordinate> getPossibleMoves() {
+    public List<Coordinate> getPossibleMoves(ChessLogic board) {
         return new ArrayList<>(0);
     }
 

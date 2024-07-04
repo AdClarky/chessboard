@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-class ChessGameAPITest {
+class ChessGameTest {
     private static class Listener implements BoardListener {
         int boardChanged = 0;
         int checkmate = 0;
@@ -70,5 +70,16 @@ class ChessGameAPITest {
         assertEquals(105, listener.boardChanged);
         assertEquals(0, listener.checkmate);
         assertEquals(1, listener.draw);
+    }
+
+
+    @Test
+    void invalidMove() {
+        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(0, 1, 0, 4));
+    }
+
+    @Test
+    void noPieceMove(){
+        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(4, 4, 4, 3));
     }
 }

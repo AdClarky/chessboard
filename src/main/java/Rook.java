@@ -4,15 +4,15 @@ import java.util.Objects;
 public class Rook extends Piece{
     private boolean moved = false;
 
-    public Rook(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, board);
+    public Rook(int x, int y, PieceColour colour) {
+        super(x, y, colour);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves() {
+    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
         ArrayList<Coordinate> moves = new ArrayList<>(10);
-        calculateStraightMoves(moves);
-        removeMovesInCheck(moves);
+        calculateStraightMoves(moves, board);
+        removeMovesInCheck(moves, board);
         return moves;
     }
 
