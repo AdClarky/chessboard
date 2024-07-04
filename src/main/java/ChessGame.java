@@ -13,20 +13,20 @@ import java.util.List;
  */
 public class ChessGame {
     private final Chessboard board;
-    private final ChessLogic logic;
+    private final ChessLogic ChessLogic;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
         board = new ChessboardBuilder().defaultSetup();
-        logic = new ChessLogic(board);
+        ChessLogic = new ChessLogic(board);
         fenGenerator = new FenGenerator(board);
     }
 
     public ChessGame(String fenString){
         board = new ChessboardBuilder().FromFen(fenString);
-        logic = new ChessLogic(board);
+        ChessLogic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);
     }
@@ -47,14 +47,14 @@ public class ChessGame {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(logic.isValidMove(getPiece(oldX, oldY), newX, newY))
+        if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyMoveMade(oldX, oldY, newX, newY);
-        if(logic.isDraw())
+        if(ChessLogic.isDraw())
             notifyDraw();
-        if(logic.isCheckmate()) {
+        if(ChessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -108,7 +108,7 @@ public class ChessGame {
         if(move == null)
             return;
         notifyBoardChanged(move);
-        if(logic.isCheckmate()) {
+        if(ChessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -143,14 +143,18 @@ public class ChessGame {
     }
 
     public boolean isCheckmate(){
-        return logic.isCheckmate();
+        return ChessLogic.isCheckmate();
     }
 
     public boolean isDraw(){
-        return logic.isDraw();
+        return ChessLogic.isDraw();
     }
 
     public String getFenString() {
         return fenGenerator.getFenString();
+    }
+
+    public ChessLogic getChessLogic(){
+        return ChessLogic;
     }
 }

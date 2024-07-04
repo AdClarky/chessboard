@@ -88,6 +88,10 @@ public class Chessboard {
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
+    public boolean hasKingMoved(PieceColour colour){
+        return getKing(colour).hadFirstMove();
+    }
+
     public void setKingMoved(PieceColour kingToSet){
         getKing(kingToSet).firstMove();
     }
