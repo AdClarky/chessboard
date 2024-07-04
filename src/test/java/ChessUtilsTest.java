@@ -90,7 +90,7 @@ class ChessUtilsTest {
 
     @Test
     void shortCastleWhite() {
-        ChessGame game = new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("O-O", game);
             assertEquals(new MoveValue(game.getPiece(3,0), 1, 0), move);
@@ -99,7 +99,7 @@ class ChessUtilsTest {
 
     @Test
     void longCastleWhite() {
-        ChessGame game = new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("O-O-O", game);
             assertEquals(new MoveValue(game.getPiece(3,0), 5, 0), move);
@@ -108,7 +108,7 @@ class ChessUtilsTest {
 
     @Test
     void shortCastleBlack() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("O-O", game);
             assertEquals(new MoveValue(game.getPiece(3,7), 1, 7), move);
@@ -117,7 +117,7 @@ class ChessUtilsTest {
 
     @Test
     void longCastleBlack() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("O-O-O", game);
             assertEquals(new MoveValue(game.getPiece(3,7), 5, 7), move);
@@ -126,7 +126,7 @@ class ChessUtilsTest {
 
     @Test
     void basicPawnMove() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("e4", game);
             assertEquals(new MoveValue(game.getPiece(3,1), 3, 3), move);
@@ -135,7 +135,7 @@ class ChessUtilsTest {
 
     @Test
     void takingPawnMove() {
-        ChessGame game = new ChessGame("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1"));
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove("exd5", game);
             assertEquals(new MoveValue(game.getPiece(3,3), 4, 4), move);

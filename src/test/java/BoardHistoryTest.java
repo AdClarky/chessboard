@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,9 +85,7 @@ class BoardHistoryTest {
     @Test
     void basicMoveGetLastMovesSize() {
         ChessGame game = new ChessGame();
-        assertDoesNotThrow(()->{
-            game.makeMove(4, 1, 4, 2);
-        });
+        assertDoesNotThrow(()-> game.makeMove(4, 1, 4, 2));
         assertEquals(1, game.getLastMoveMade().size());
     }
 
@@ -131,10 +128,8 @@ class BoardHistoryTest {
 
     @Test
     void castlingMoveLastMovesSize() {
-        ChessGame game = new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1");
-        assertDoesNotThrow(()->{
-            game.makeMove(3, 0, 1, 0);
-        });
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w KQkq - 0 1"));
+        assertDoesNotThrow(()-> game.makeMove(3, 0, 1, 0));
         assertEquals(2, game.getLastMoveMade().size());
     }
 
@@ -146,18 +141,14 @@ class BoardHistoryTest {
     @Test
     void canRedoWhenNoMovesUndone(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(()->{
-            history.push(new Move(4, 1, board.getPiece(3, 1), null, board));
-        });
+        assertDoesNotThrow(()-> history.push(new Move(4, 1, board.getPiece(3, 1), null, board)));
         assertFalse(history.canRedoMove());
     }
 
     @Test
     void canRedoWhenMoveUndone(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(()->{
-            history.push(new Move(4, 1, board.getPiece(3, 1), null, board));
-        });
+        assertDoesNotThrow(()-> history.push(new Move(4, 1, board.getPiece(3, 1), null, board)));
         history.undoMove();
         assertTrue(history.canRedoMove());
     }
@@ -184,9 +175,11 @@ class BoardHistoryTest {
 
     @Test
     void halfMovesAfterKnightTakesKnight(){
-        Chessboard board = new ChessboardBuilder().fromFen("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/RNBQKB1R w KQkq - 0 1");
-        board.makeMove(1, 2, 2, 4);
-        assertEquals(0, board.getNumHalfMoves());
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/RNBQKB1R w KQkq - 0 1");
+            board.makeMove(1, 2, 2, 4);
+            assertEquals(0, board.getNumHalfMoves());
+        });
     }
 
     @Test
