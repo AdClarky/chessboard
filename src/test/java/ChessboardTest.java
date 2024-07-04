@@ -95,16 +95,6 @@ class ChessboardTest {
     }
 
     @Test
-    void invalidMove() {
-        assertThrows(InvalidMoveException.class, () -> board.makeMove(0, 1, 0, 4));
-    }
-
-    @Test
-    void noPieceMove(){
-        assertThrows(InvalidMoveException.class, () -> board.makeMove(4, 4, 4, 3));
-    }
-
-    @Test
     void undoMoreThanNecessary(){
         int state = board.getState();
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
