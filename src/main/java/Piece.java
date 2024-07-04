@@ -133,7 +133,7 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            if(!board.isFriendlyPiece(x, y, colour))
+            if(board.isEnemyPiece(x, y, colour))
                 moves.add(new Coordinate(x, y));
             return true;
         }

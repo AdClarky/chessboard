@@ -26,7 +26,7 @@ public class ChessLogic {
         Coordinate kingPos = new Coordinate(king);
         Iterable<Piece> enemyPieces = board.getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
         for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves().contains(kingPos)){
+            if(piece.getPossibleMoves(this).contains(kingPos)){
                 return true;
             }
         }
@@ -38,7 +38,7 @@ public class ChessLogic {
             return false;
         Iterable<Piece> enemyPieces = board.getAllColourPieces(board.getCurrentTurn());
         for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves( )) {
+            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
                     return false;
             }
@@ -57,7 +57,7 @@ public class ChessLogic {
             return false;
         Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
-            if(!piece.getPossibleMoves().isEmpty())
+            if(!piece.getPossibleMoves(this).isEmpty())
                 return false;
         }
         return true;
@@ -92,8 +92,8 @@ public class ChessLogic {
         return board.getPiece(x, y) instanceof Blank;
     }
 
-    public boolean isFriendlyPiece(int x, int y, PieceColour colour){
-        return board.getPieceColour(x, y) == colour;
+    public boolean isEnemyPiece(int x, int y, PieceColour colour){
+        return board.getPieceColour(x, y) == PieceColour.getOtherColour(colour);
     }
 
     public boolean hasPieceHadFirstMove(int x, int y){
@@ -102,5 +102,9 @@ public class ChessLogic {
 
     public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
         return new MoveValue(board.getPiece(x, y), newX, newY);
+    }
+
+    public boolean isPiecePawn(int x, int y){
+        return board.getPiece(x, y) instanceof Pawn;
     }
 }
