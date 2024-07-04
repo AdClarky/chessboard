@@ -4,17 +4,17 @@ public class Knight extends Piece{
     private static final int[] POSSIBLE_X = {-1, -2, -2, -1, 1, 2, 2, 1};
     private static final int[] POSSIBLE_Y = {-2, -1, 1, 2, -2, -1, 1, 2};
 
-    public Knight(int x, int y, PieceColour colour, Chessboard board) {
-        super(x, y, colour, board);
+    public Knight(int x, int y, PieceColour colour) {
+        super(x, y, colour);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves() {
+    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
         ArrayList<Coordinate> moves = new ArrayList<>(8);
         for(int i = 0; i<8; i++){
-            cantMove(x+ POSSIBLE_X[i], y+ POSSIBLE_Y[i], moves);
+            cantMove(moves, board, x+ POSSIBLE_X[i], y+ POSSIBLE_Y[i]);
         }
-        removeMovesInCheck(moves);
+        removeMovesInCheck(moves, board);
         return moves;
     }
 

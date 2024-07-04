@@ -34,7 +34,7 @@ public class Move {
             previousPawn = previousPiece;
         else
             previousPawn = new Blank(0,0);
-        movesMade = piece.getMoves(x, y);
+        movesMade = piece.getMoves(, x, y);
         makeMove();
     }
 
