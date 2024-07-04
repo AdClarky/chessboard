@@ -44,12 +44,6 @@ public class Chessboard {
         return board[y][x];
     }
 
-    public boolean isSquareBlank(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        return board[y][x] instanceof Blank;
-    }
-
     public void movePiece(int x, int y, @NotNull Piece piece){
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
         board[y][x] = piece;
@@ -67,6 +61,12 @@ public class Chessboard {
             return whitePieces;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
+    }
+
+    public boolean isSquareBlank(int x, int y){
+        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+            return false;
+        return board[y][x] instanceof Blank;
     }
 
     public King getKing(PieceColour colour){
@@ -129,80 +129,6 @@ public class Chessboard {
         return Arrays.deepHashCode(board);
     }
 
-    /**
-     * Calculates if moving a piece to a position would put that teams king in check.
-     * This assumes the piece moving to the new position is a valid move.
-     * @param pieceToCheck the piece being moved.
-     * @return true if in check, false if not
-     */
-    public boolean isMoveUnsafe(int newX, int newY, @NotNull Piece pieceToCheck){
-        Piece lastPiece = history.getLastPieceMoved();
-        Move move = new Move(newX, newY, pieceToCheck, lastPiece, this);
-        boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getColour());
-        move.undo();
-        return isMoveUnsafe;
-    }
-
-    public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
-        King king = getKing(kingToCheck);
-        Coordinate kingPos = new Coordinate(king.getX(), king.getY());
-        Iterable<Piece> enemyPieces = getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
-        for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves().contains(kingPos)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean isCheckmate(){
-        if(!isKingInCheck(currentTurn))
-            return false;
-        Iterable<Piece> enemyPieces = getAllColourPieces(currentTurn);
-        for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves( )) {
-                if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isDraw(){
-        return isStalemate() ||
-                isDraw50Move() ||
-                isRepetition();
-    }
-
-    private boolean isStalemate(){
-        if(isKingInCheck(currentTurn))
-            return false;
-        Iterable<Piece> pieces = getAllColourPieces(currentTurn);
-        for(Piece piece : pieces){
-            if(!piece.getPossibleMoves().isEmpty())
-                return false;
-        }
-        return true;
-    }
-
-    private boolean isRepetition(){
-        if(history.getNumFullMoves() < 4)
-            return false;
-        int boardState = getState();
-        for(int i = 0; i < 2; i++){
-            history.undoMultipleMoves(4);
-            if(boardState != getState()) {
-                history.redoAllMoves();
-                return false;
-            }
-        }
-        history.undoMultipleMoves(4);
-        return true;
-    }
-
-    private boolean isDraw50Move(){
-        return history.getNumHalfMoves() == 50;
-    }
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
 
@@ -211,6 +137,11 @@ public class Chessboard {
     @NotNull
     public List<MoveValue> getLastMoves() {
         return history.getLastMoves();
+    }
+
+    @Nullable
+    public Piece getLastPieceMoved(){
+        return history.getLastPieceMoved();
     }
 
     @Nullable
