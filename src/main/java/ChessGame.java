@@ -24,7 +24,7 @@ public class ChessGame {
         fenGenerator = new FenGenerator(board);
     }
 
-    public ChessGame(String fenString){
+    public ChessGame(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
         ChessLogic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
