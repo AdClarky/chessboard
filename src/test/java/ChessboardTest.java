@@ -126,4 +126,60 @@ class ChessboardTest {
         board.redoMove();
         assertEquals(state, board.getState());
     }
+
+    @Test
+    void removeBlankSquare(){
+        assertThrows(IllegalArgumentException.class, ()-> board.removePiece(new Blank(0, 0)));
+    }
+
+    @Test
+    void addBlankSquare(){
+        assertThrows(IllegalArgumentException.class, ()-> board.addPiece(new Blank(0, 0)));
+    }
+
+    @Test
+    void getBlankKing(){
+        assertThrows(IllegalArgumentException.class, ()-> board.getKing(PieceColour.BLANK));
+    }
+
+    @Test
+    void getBlankPieces(){
+        assertThrows(IllegalArgumentException.class, ()-> board.getAllColourPieces(PieceColour.BLANK));
+    }
+
+    @Test
+    void areEdgeSquaresBlank(){
+        board = new Chessboard();
+        assertTrue(board.isSquareBlank(0, 0));
+        assertTrue(board.isSquareBlank(7, 0));
+        assertTrue(board.isSquareBlank(7, 7));
+        assertTrue(board.isSquareBlank(0, 7));
+    }
+
+    @Test
+    void areOutOfBoundarySquareNotBlank(){
+        board = new Chessboard();
+        assertFalse(board.isSquareBlank(-1, 0));
+        assertFalse(board.isSquareBlank(8, 0));
+        assertFalse(board.isSquareBlank(0, -1));
+        assertFalse(board.isSquareBlank(0, 8));
+    }
+
+
+    @Test
+    void areEdgeSquaresPieces(){
+        assertInstanceOf(Rook.class, board.getPiece(0, 0));
+        assertInstanceOf(Rook.class, board.getPiece(7, 0));
+        assertInstanceOf(Rook.class, board.getPiece(7, 7));
+        assertInstanceOf(Rook.class, board.getPiece(0, 7));
+    }
+
+
+    @Test
+    void areOutOfBoundsSquareBlank(){
+        assertInstanceOf(Blank.class, board.getPiece(-1, 0));
+        assertInstanceOf(Blank.class, board.getPiece(8, 0));
+        assertInstanceOf(Blank.class, board.getPiece(0, -1));
+        assertInstanceOf(Blank.class, board.getPiece(0, 8));
+    }
 }
