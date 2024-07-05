@@ -12,19 +12,18 @@ public class ChessboardBuilder {
     private int squaresProcessed = 7;
 
     public @NotNull Chessboard defaultSetup() {
-        try {
-            fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-        } catch (InvalidFenStringException e) {
-            throw new RuntimeException(e); // should not be possible as its a default fen string
-        }
+        getBoardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
 
     public @NotNull Chessboard fromFen(@NotNull String fenString) throws InvalidFenStringException{
-
-        String[] sections = fenString.split(" ");
         if(!doesStringMatchFen(fenString))
             throw new InvalidFenStringException();
+        return getBoardFromFen(fenString);
+    }
+
+    private Chessboard getBoardFromFen(@NotNull String fenString) {
+        String[] sections = fenString.split(" ");
         try {
             setHalfMoves(sections[4]);
             setFullMoves(sections[5]);
@@ -35,11 +34,10 @@ public class ChessboardBuilder {
         } catch (AccessedHistoryDuringGameException e) {
             throw new RuntimeException(e);
         }
-
         return board;
     }
 
-    private void populateBoardFromFenString(@NotNull String positionSection) throws InvalidFenStringException {
+    private void populateBoardFromFenString(@NotNull String positionSection) {
         String[] sections = positionSection.split("/");
         for(int row = 0; row < 8; row++){
             for(char character : sections[row].toCharArray()){
@@ -50,7 +48,7 @@ public class ChessboardBuilder {
         board.populateBoard(whitePieces, blackPieces);
     }
 
-    private void processCharacter(char character, int row) throws InvalidFenStringException {
+    private void processCharacter(char character, int row) {
         if(Character.isDigit(character)){
             squaresProcessed -= Character.getNumericValue(character);
             return;
@@ -76,8 +74,6 @@ public class ChessboardBuilder {
             case 'p':
                 pieces.add(new Pawn(squaresProcessed, row, colour));
                 break;
-            default:
-                throw new InvalidFenStringException();
         }
         squaresProcessed--;
     }
