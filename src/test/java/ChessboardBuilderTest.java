@@ -1,6 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.regex.Pattern;
+
 @SuppressWarnings("ALL")
 class ChessboardBuilderTest {
 
@@ -147,5 +149,17 @@ class ChessboardBuilderTest {
         String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
         assertDoesNotThrow(()->game.makeMove(3, 7, 1, 7));
+    }
+
+    @Test
+    void correctFirstSectionOnly(){
+        String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        assertThrows(InvalidFenStringException.class, ()-> new ChessboardBuilder().fromFen(fenString));
+    }
+
+    @Test
+    void randomStringWith6Sections(){
+        String fenString = "ajskd ajksd asljkd ajks asjdk alsjkd";
+        assertThrows(InvalidFenStringException.class, ()-> new ChessboardBuilder().fromFen(fenString));
     }
 }
