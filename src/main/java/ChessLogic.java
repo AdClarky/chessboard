@@ -38,10 +38,8 @@ public class ChessLogic {
             return false;
         Iterable<Piece> enemyPieces = board.getAllColourPieces(board.getCurrentTurn());
         for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
-                if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
-                    return false;
-            }
+            if(!enemyPiece.getPossibleMoves(this).isEmpty())
+                return false;
         }
         return true;
     }
