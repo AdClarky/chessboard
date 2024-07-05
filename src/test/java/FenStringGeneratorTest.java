@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
@@ -46,6 +47,46 @@ class FenStringGeneratorTest {
     @Test
     void validEnPassantTest(){
         String inputString = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+        Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
+        String fenString = new FenGenerator(board).getFenString();
+        assertEquals(inputString, fenString);
+    }
+
+    @Test
+    void whiteKingMovedBlackKingNotMoved(){
+        String inputString = "rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBK1BNR b kq - 1 1";
+        Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
+        String fenString = new FenGenerator(board).getFenString();
+        assertEquals(inputString, fenString);
+    }
+
+    @Test
+    void whiteKingSideRookMoved(){
+        String inputString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qkq - 0 1";
+        Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
+        String fenString = new FenGenerator(board).getFenString();
+        assertEquals(inputString, fenString);
+    }
+
+    @Test
+    void blackKingSideRookMoved(){
+        String inputString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQq - 0 1";
+        Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
+        String fenString = new FenGenerator(board).getFenString();
+        assertEquals(inputString, fenString);
+    }
+
+    @Test
+    void whiteQueenSideRookMoved(){
+        String inputString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kkq - 0 1";
+        Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
+        String fenString = new FenGenerator(board).getFenString();
+        assertEquals(inputString, fenString);
+    }
+
+    @Test
+    void blackQueenSideRookMoved(){
+        String inputString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1";
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen(inputString));
         String fenString = new FenGenerator(board).getFenString();
         assertEquals(inputString, fenString);
