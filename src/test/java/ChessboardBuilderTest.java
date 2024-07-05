@@ -120,4 +120,32 @@ class ChessboardBuilderTest {
     void fenStringWithRandomCharacterInBoard(){
         assertThrows(InvalidFenStringException.class, ()->new ChessboardBuilder().fromFen("ZZZZnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/RNBQKB1R w KQkq - 0 1"));
     }
+
+    @Test
+    void whiteCanOnlyCastleQueenSide(){
+        String fenString = "rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1";
+        ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
+        assertDoesNotThrow(()->game.makeMove(3, 0, 5, 0));
+    }
+
+    @Test
+    void blackCanOnlyCastleQueenSide(){
+        String fenString = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQq - 0 1";
+        ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
+        assertDoesNotThrow(()->game.makeMove(3, 7, 5, 7));
+    }
+
+    @Test
+    void whiteCanOnlyCastleKingSide(){
+        String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w Kkq - 0 1";
+        ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
+        assertDoesNotThrow(()->game.makeMove(3, 0, 1, 0));
+    }
+
+    @Test
+    void blackCanOnlyCastleKingSide(){
+        String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1";
+        ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
+        assertDoesNotThrow(()->game.makeMove(3, 7, 1, 7));
+    }
 }
