@@ -116,7 +116,7 @@ public class ChessboardBuilder {
 
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
-        int x = rookWithRights == 'k' ? 0 : 7;
+        int x = Character.toLowerCase(rookWithRights) == 'k' ? 0 : 7;
         board.setOtherRookMoved(x, y);
     }
 
