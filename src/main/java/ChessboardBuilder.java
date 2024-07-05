@@ -21,6 +21,8 @@ public class ChessboardBuilder {
 
     public @NotNull Chessboard fromFen(@NotNull String fenString) throws InvalidFenStringException{
         String[] sections = fenString.split(" ");
+        if(sections.length != 6)
+            throw new InvalidFenStringException();
         try {
             setHalfMoves(sections[4]);
             setFullMoves(sections[5]);
