@@ -2,6 +2,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /** Used to generate a {@link Chessboard}. Can be built in the default configuration or using a fen string.*/
 public class ChessboardBuilder {
@@ -20,8 +21,9 @@ public class ChessboardBuilder {
     }
 
     public @NotNull Chessboard fromFen(@NotNull String fenString) throws InvalidFenStringException{
+
         String[] sections = fenString.split(" ");
-        if(sections.length != 6)
+        if(!doesStringMatchFen(fenString))
             throw new InvalidFenStringException();
         try {
             setHalfMoves(sections[4]);
@@ -145,5 +147,10 @@ public class ChessboardBuilder {
 
     private List<Piece> getPiecesFromChar(char c){
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
+    }
+
+    private boolean doesStringMatchFen(String fenString){
+        Pattern regex = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
+        return regex.matcher(fenString).matches();
     }
 }
