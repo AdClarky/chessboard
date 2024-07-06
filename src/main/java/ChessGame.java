@@ -13,20 +13,20 @@ import java.util.List;
  */
 public class ChessGame {
     private final Chessboard board;
-    private final ChessLogic ChessLogic;
+    private final ChessLogic chessLogic;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private PieceColour currentTurn = PieceColour.WHITE;
 
     public ChessGame(){
         board = new ChessboardBuilder().defaultSetup();
-        ChessLogic = new ChessLogic(board);
+        chessLogic = new ChessLogic(board);
         fenGenerator = new FenGenerator(board);
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
-        ChessLogic = new ChessLogic(board);
+        chessLogic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);
     }
@@ -47,14 +47,14 @@ public class ChessGame {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
+        if(chessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();
         notifyMoveMade(oldX, oldY, newX, newY);
-        if(ChessLogic.isDraw())
+        if(chessLogic.isDraw())
             notifyDraw();
-        if(ChessLogic.isCheckmate()) {
+        if(chessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -110,7 +110,7 @@ public class ChessGame {
         if(move == null)
             return;
         notifyBoardChanged(move);
-        if(ChessLogic.isCheckmate()) {
+        if(chessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
         }
     }
@@ -140,16 +140,27 @@ public class ChessGame {
         return board.getAllColourPieces(colour);
     }
 
+    List<Piece> getPossiblePieces(char pieceLetter, Coordinate newCoordinate){
+        List<Piece> possiblePieces = new ArrayList<>(2);
+        for(Piece piece : getColourPieces(currentTurn)){
+            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
+                continue;
+            if(piece.getPossibleMoves(chessLogic).contains(newCoordinate))
+                possiblePieces.add(piece);
+        }
+        return possiblePieces;
+    }
+
     public Piece getPiece(int x, int y){
         return board.getPiece(x, y);
     }
 
     public boolean isCheckmate(){
-        return ChessLogic.isCheckmate();
+        return chessLogic.isCheckmate();
     }
 
     public boolean isDraw(){
-        return ChessLogic.isDraw();
+        return chessLogic.isDraw();
     }
 
     public String getFenString() {
@@ -157,6 +168,6 @@ public class ChessGame {
     }
 
     public ChessLogic getChessLogic(){
-        return ChessLogic;
+        return chessLogic;
     }
 }

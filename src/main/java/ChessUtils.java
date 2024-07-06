@@ -3,6 +3,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Contains functions relating to chess move notation in algebraic form.
@@ -29,13 +30,7 @@ public final class ChessUtils {
             pieceLetter = '\u0000';
         else // any other piece
             pieceLetter = move.charAt(0);
-        ArrayList<Piece> possiblePieces = new ArrayList<>(2);
-        for(Piece piece : chessGame.getColourPieces(chessGame.getCurrentTurn())){
-            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
-                continue;
-            if(piece.getPossibleMoves(chessGame.getChessLogic()).contains(newCoordinate))
-                possiblePieces.add(piece);
-        }
+        List<Piece> possiblePieces = chessGame.getPossiblePieces(pieceLetter, newCoordinate);
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())
