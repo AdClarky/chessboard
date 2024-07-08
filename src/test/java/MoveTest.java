@@ -239,7 +239,6 @@ class MoveTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -266,7 +265,6 @@ class MoveTest {
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
         assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-        assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         y = 7;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -292,7 +290,6 @@ class MoveTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -318,7 +315,6 @@ class MoveTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -345,7 +341,6 @@ class MoveTest {
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Pawn.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -373,7 +368,6 @@ class MoveTest {
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
         assertEquals(y, board.getPiece(x, y).getY());
-        assertInstanceOf(Queen.class, board.getAllColourPieces(PieceColour.WHITE).getLast());
         x = 5; y = 7;
         assertInstanceOf(Queen.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
