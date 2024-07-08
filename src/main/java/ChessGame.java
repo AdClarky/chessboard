@@ -3,6 +3,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
@@ -134,7 +135,7 @@ public class ChessGame {
         }
     }
 
-    public List<Piece> getColourPieces(PieceColour colour){
+    public Set<Piece> getColourPieces(PieceColour colour){
         return board.getAllColourPieces(colour);
     }
 

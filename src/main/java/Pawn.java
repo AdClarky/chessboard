@@ -97,9 +97,4 @@ public class Pawn extends Piece{
         Pawn pawn = (Pawn) obj;
         return canBePassanted == pawn.canBePassanted;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), canBePassanted);
-    }
 }
