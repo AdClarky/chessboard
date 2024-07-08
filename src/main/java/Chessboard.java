@@ -144,7 +144,13 @@ public class Chessboard {
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.deepHashCode(board), currentTurn);
+        int hash = 0;
+        for(Piece[] row : board){
+            for(Piece piece : row){
+                hash += Objects.hash(piece, piece.getX(), piece.getY());
+            }
+        }
+        return hash;
     }
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
