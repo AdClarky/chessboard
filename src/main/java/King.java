@@ -80,9 +80,4 @@ public class King extends Piece{
         King king = (King) obj;
         return moved == king.moved;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), moved);
-    }
 }

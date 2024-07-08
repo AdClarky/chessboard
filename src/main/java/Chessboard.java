@@ -1,17 +1,21 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Objects;
 
 /** A chess board that is automatically populated with blank squares. */
 public class Chessboard {
     private final Piece[][] board  =  new Piece[8][8];
     private final BoardHistory history;
-    private final ArrayList<Piece> blackPieces = new ArrayList<>(16);
-    private final ArrayList<Piece> whitePieces = new ArrayList<>(16);
+    private final Set<Piece> blackPieces = new HashSet<>(16);
+    private King blackKing;
+    private final Set<Piece> whitePieces = new HashSet<>(16);
+    private King whiteKing;
     private PieceColour currentTurn;
 
     /** Initialises the board with all squares blank. */
@@ -30,9 +34,13 @@ public class Chessboard {
         this.blackPieces.addAll(blackPieces);
         for(Piece piece : blackPieces){
             board[piece.getY()][piece.getX()] = piece;
+            if(piece instanceof King)
+                blackKing = (King) piece;
         }
         for(Piece piece : whitePieces){
             board[piece.getY()][piece.getX()] = piece;
+            if(piece instanceof King)
+                whiteKing = (King) piece;
         }
         calculatePossibleMoves();
     }
@@ -81,7 +89,7 @@ public class Chessboard {
         }
     }
 
-    public List<Piece> getAllColourPieces(PieceColour colour){
+    public Set<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
             return blackPieces;
         else if(colour == PieceColour.WHITE)
@@ -92,9 +100,9 @@ public class Chessboard {
 
     public King getKing(PieceColour colour){
         if(colour == PieceColour.BLACK)
-            return (King) blackPieces.getFirst();
+            return blackKing;
         else if(colour == PieceColour.WHITE)
-            return (King) whitePieces.getFirst();
+            return whiteKing;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }

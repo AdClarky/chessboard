@@ -43,9 +43,4 @@ public class Rook extends Piece{
         Rook rook = (Rook) obj;
         return moved == rook.moved;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), moved);
-    }
 }
