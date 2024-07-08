@@ -65,38 +65,38 @@ class ChessboardTest {
 
     @Test
     void hashcodeOnSameState(){
-        int state = board.getState();
-        assertEquals(state, board.getState());
+        int state = board.hashCode();
+        assertEquals(state, board.hashCode());
     }
 
     @Test
     void hashcodeTestOnBasicPawnMoveWithUndo() {
-        int state = board.getState();
+        int state = board.hashCode();
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
-        assertNotEquals(state, board.getState());
+        assertNotEquals(state, board.hashCode());
         board.undoMove();
-        assertEquals(state, board.getState());
+        assertEquals(state, board.hashCode());
     }
 
     @Test
     void hashcodeTestOnMoveWherePreviousWasPassantable() {
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
-        int state = board.getState();
+        int state = board.hashCode();
         int whitePawnHash = board.getPiece(4,3).hashCode();
         int blackPawnHash = board.getPiece(4,6).hashCode();
         int blankSquareHash = board.getPiece(4, 4).hashCode();
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
-        assertNotEquals(state, board.getState());
+        assertNotEquals(state, board.hashCode());
         board.undoMove();
         assertEquals(whitePawnHash, board.getPiece(4,3).hashCode());
         assertEquals(blackPawnHash, board.getPiece(4,6).hashCode());
         assertEquals(blankSquareHash, board.getPiece(4, 4).hashCode());
-        assertEquals(state, board.getState());
+        assertEquals(state, board.hashCode());
     }
 
     @Test
     void undoMoreThanNecessary(){
-        int state = board.getState();
+        int state = board.hashCode();
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
         assertDoesNotThrow(()->board.makeMove(3, 3, 4, 4));
@@ -105,7 +105,7 @@ class ChessboardTest {
         board.undoMove();
         board.undoMove();
         board.undoMove();
-        assertEquals(state, board.getState());
+        assertEquals(state, board.hashCode());
     }
 
 
@@ -114,7 +114,7 @@ class ChessboardTest {
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
         assertDoesNotThrow(()->board.makeMove(3, 3, 4, 4));
-        int state = board.getState();
+        int state = board.hashCode();
         board.undoMove();
         board.undoMove();
         board.undoMove();
@@ -124,6 +124,6 @@ class ChessboardTest {
         board.redoMove();
         board.redoMove();
         board.redoMove();
-        assertEquals(state, board.getState());
+        assertEquals(state, board.hashCode());
     }
 }
