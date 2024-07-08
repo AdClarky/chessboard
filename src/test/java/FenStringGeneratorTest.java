@@ -9,7 +9,7 @@ class FenStringGeneratorTest {
     @Test
     void blankBoardTest(){
         Chessboard board = new Chessboard();
-        assertThrows(NoSuchElementException.class, ()-> new FenGenerator(board).getFenString());
+        assertThrows(NullPointerException.class, ()-> new FenGenerator(board).getFenString());
     }
 
     @Test

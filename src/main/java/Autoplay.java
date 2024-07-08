@@ -23,7 +23,7 @@ public class Autoplay {
 
     public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
-            chessGame.makeMove(ChessUtils.chessToMove(move, chessGame));
+            chessGame.makeMove(move);
             TimeUnit.MILLISECONDS.sleep(delay);
 
         }

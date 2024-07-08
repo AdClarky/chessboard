@@ -17,12 +17,12 @@ public final class ChessUtils {
         return Character.toString('h' - x) + (y+1);
     }
 
-    public static MoveValue chessToMove(String move, ChessGame chessGame) throws InvalidMoveException {
+    public static MoveValue chessToMove(Chessboard board, String move) throws InvalidMoveException {
         if("O-O".equals(move)) {
-            return getCastlingMove(1, chessGame);
+            return getCastlingMove(board, 1);
         }
         if("O-O-O".equals(move)) {
-            return getCastlingMove(5, chessGame);
+            return getCastlingMove(board, 5);
         }
         Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
         char pieceLetter;
@@ -30,7 +30,13 @@ public final class ChessUtils {
             pieceLetter = '\u0000';
         else // any other piece
             pieceLetter = move.charAt(0);
-        List<Piece> possiblePieces = chessGame.getPossiblePieces(pieceLetter, newCoordinate);
+        ArrayList<Piece> possiblePieces = new ArrayList<>(2);
+        for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
+            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
+                continue;
+            possiblePieces.add(piece);
+        }
+        possiblePieces.removeIf(piece -> !piece.getPossibleMoves(new ChessLogic(board)).contains(newCoordinate));
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())
@@ -39,11 +45,11 @@ public final class ChessUtils {
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
 
-    private static MoveValue getCastlingMove(int newX, @NotNull ChessGame chessGame){
-        if(chessGame.getCurrentTurn() == PieceColour.BLACK){
-            return new MoveValue(chessGame.getPiece(3,7),newX,7);
+    private static MoveValue getCastlingMove(@NotNull Chessboard board, int newX){
+        if(board.getCurrentTurn() == PieceColour.BLACK){
+            return new MoveValue(board.getPiece(3,7),newX,7);
         }else{
-            return new MoveValue(chessGame.getPiece(3, 0), newX, 0);
+            return new MoveValue(board.getPiece(3, 0), newX, 0);
         }
     }
 

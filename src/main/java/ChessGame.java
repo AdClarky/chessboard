@@ -3,6 +3,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
@@ -59,10 +60,9 @@ public class ChessGame {
         }
     }
 
-    /**
-     * @see ChessGame#makeMove(int, int, int,int)
-     */
-    public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {
+    /** @see ChessGame#makeMove(int, int, int,int) */
+    public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
+        MoveValue move = ChessUtils.chessToMove(board, chessMove);
         makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 
@@ -136,7 +136,7 @@ public class ChessGame {
         }
     }
 
-    public List<Piece> getColourPieces(PieceColour colour){
+    public Set<Piece> getColourPieces(PieceColour colour){
         return board.getAllColourPieces(colour);
     }
 

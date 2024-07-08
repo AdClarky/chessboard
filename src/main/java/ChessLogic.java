@@ -64,10 +64,10 @@ public class ChessLogic {
     private boolean isRepetition(){
         if(board.getNumFullMoves() < 4)
             return false;
-        int boardState = board.getState();
+        int boardState = board.hashCode();
         for(int i = 0; i < 2; i++){
             board.undoMultipleMoves(4);
-            if(boardState != board.getState()) {
+            if(boardState != board.hashCode()) {
                 board.redoAllMoves();
                 return false;
             }
