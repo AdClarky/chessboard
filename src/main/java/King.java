@@ -16,10 +16,10 @@ public class King extends Piece{
                 cantMove(board, x, y);
             }
         }
-        if(moved){
+        if(moved)
             removeMovesInCheck(board);
-        }
-        calculateCastling(board);
+        else
+            calculateCastling(board);
     }
 
     private void calculateCastling(ChessLogic board){

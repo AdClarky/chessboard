@@ -2,7 +2,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +34,7 @@ public class Chessboard {
         for(Piece piece : whitePieces){
             board[piece.getY()][piece.getX()] = piece;
         }
+        calculatePossibleMoves();
     }
 
     /** Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}. */
@@ -69,6 +69,16 @@ public class Chessboard {
 
     public void movePiece(@NotNull MoveValue move){
         movePiece(move.newX(), move.newY(), move.piece());
+    }
+
+    public void calculatePossibleMoves(){
+        ChessLogic logicBoard = new ChessLogic(this);
+        for(Piece piece : whitePieces){
+            piece.calculatePossibleMoves(logicBoard);
+        }
+        for(Piece piece : blackPieces){
+            piece.calculatePossibleMoves(logicBoard);
+        }
     }
 
     public List<Piece> getAllColourPieces(PieceColour colour){
