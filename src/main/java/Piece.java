@@ -8,12 +8,16 @@ import java.util.Objects;
  * An abstract class which parents all chess pieces.
  */
 public abstract class Piece {
+    private final int startX;
+    private final int startY;
     private Icon pieceIcon;
     protected final PieceColour colour;
     protected int x;
     protected int y;
 
     protected Piece(int x, int y, PieceColour colour) {
+        startX = x;
+        startY = y;
         this.x = x;
         this.y = y;
         this.colour = colour;
@@ -56,12 +60,13 @@ public abstract class Piece {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Piece piece = (Piece) obj;
-        return x == piece.x && y == piece.y && colour == piece.colour;
+        return startX == piece.startX && x == piece.x && y == piece.y &&
+                startY == piece.startY && colour == piece.colour;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(x, y, colour, toCharacter());
+        return Objects.hash(startX, startY, colour, toCharacter());
     }
 
     public Icon getPieceIcon() {

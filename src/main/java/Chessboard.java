@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Objects;
 
 /** A chess board that is automatically populated with blank squares. */
 public class Chessboard {
@@ -141,12 +142,23 @@ public class Chessboard {
         history.push(move);
     }
 
-    /** Gets the hash of the board. The previous moves is not included in this calculation, only the state of each
-     * piece. */
-    public int getState(){
-        return Arrays.deepHashCode(board);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Chessboard otherChessboard)) return false;
+        return Objects.deepEquals(board, otherChessboard.board) && currentTurn == otherChessboard.currentTurn;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for(Piece[] row : board){
+            for(Piece piece : row){
+                hash += Objects.hash(piece, piece.getX(), piece.getY());
+            }
+        }
+        return hash;
+    }
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
 
