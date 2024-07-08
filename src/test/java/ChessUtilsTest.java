@@ -90,50 +90,50 @@ class ChessUtilsTest {
 
     @Test
     void shortCastleWhite() {
-        ChessGame game = new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("O-O", game);
-        assertEquals(new MoveValue(game.getPiece(3,0), 1, 0), move);
+        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "O-O");
+        assertEquals(new MoveValue(board.getPiece(3,0), 1, 0), move);
     }
 
     @Test
     void longCastleWhite() {
-        ChessGame game = new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("O-O-O", game);
-        assertEquals(new MoveValue(game.getPiece(3,0), 5, 0), move);
+        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
+        assertEquals(new MoveValue(board.getPiece(3,0), 5, 0), move);
     }
 
     @Test
     void shortCastleBlack() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("O-O", game);
-        assertEquals(new MoveValue(game.getPiece(3,7), 1, 7), move);
+        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "O-O");
+        assertEquals(new MoveValue(board.getPiece(3,7), 1, 7), move);
     }
 
     @Test
     void longCastleBlack() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("O-O-O", game);
-        assertEquals(new MoveValue(game.getPiece(3,7), 5, 7), move);
+        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
+        assertEquals(new MoveValue(board.getPiece(3,7), 5, 7), move);
     }
 
     @Test
     void basicPawnMove() {
-        ChessGame game = new ChessGame("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("e4", game);
-        assertEquals(new MoveValue(game.getPiece(3,1), 3, 3), move);
+        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "e4");
+        assertEquals(new MoveValue(board.getPiece(3,1), 3, 3), move);
     }
 
     @Test
     void takingPawnMove() {
-        ChessGame game = new ChessGame("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove("exd5", game);
-        assertEquals(new MoveValue(game.getPiece(3,3), 4, 4), move);
+        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
+        MoveValue move = ChessUtils.chessToMove(board, "exd5");
+        assertEquals(new MoveValue(board.getPiece(3,3), 4, 4), move);
     }
 
     @Test
     void knightMove() {
-        ChessGame game = new ChessGame();
-        MoveValue move = ChessUtils.chessToMove("Nf3", game);
-        assertEquals(new MoveValue(game.getPiece(1,0), 2, 2), move);
+        Chessboard board = new ChessboardBuilder().defaultSetup();
+        MoveValue move = ChessUtils.chessToMove(board, "Nf3");
+        assertEquals(new MoveValue(board.getPiece(1,0), 2, 2), move);
     }
 }

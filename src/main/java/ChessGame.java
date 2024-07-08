@@ -60,10 +60,9 @@ public class ChessGame {
         }
     }
 
-    /**
-     * @see ChessGame#makeMove(int, int, int,int)
-     */
-    public void makeMove(@NotNull MoveValue move) throws InvalidMoveException {
+    /** @see ChessGame#makeMove(int, int, int,int) */
+    public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
+        MoveValue move = ChessUtils.chessToMove(board, chessMove);
         makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
     }
 
