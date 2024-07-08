@@ -1,7 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Pawn extends Piece{
@@ -16,38 +15,31 @@ public class Pawn extends Piece{
         possibleMoves.clear();
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isSquareBlank(x, y+direction)) {// basic move forward
-            moves.add(new Coordinate(x, y + direction));
+            possibleMoves.add(new Coordinate(x, y + direction));
             if(board.isSquareBlank(x, y+(direction << 1))) // double move first go
-                moves.add(new Coordinate(x, y + (direction << 1)));
+                possibleMoves.add(new Coordinate(x, y + (direction << 1)));
         }
-        moves.addAll(getTakingMoves(board));
+        getTakingMoves(board);
         if((colour == PieceColour.BLACK && y == 3) || (colour == PieceColour.WHITE && y == 4)){ // en passant
-            moves.addAll(getEnPassantMoves(board));
+            getEnPassantMoves(board);
         }
-        removeMovesInCheck(moves, board);
-        return moves;
+        removeMovesInCheck(board);
     }
 
-    @NotNull
-    private List<Coordinate> getEnPassantMoves(@NotNull ChessLogic board){
-        List<Coordinate> moves = new ArrayList<>(2);
+    private void getEnPassantMoves(@NotNull ChessLogic board){
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isPiecePawn(x+1, y) && board.hasPieceHadFirstMove(x+1, y))
-             moves.add(new Coordinate(x+1,y+direction));
+             possibleMoves.add(new Coordinate(x+1,y+direction));
         if(board.isPiecePawn(x-1, y) && board.hasPieceHadFirstMove(x-1, y))
-            moves.add(new Coordinate(x-1,y+direction));
-        return moves;
+            possibleMoves.add(new Coordinate(x-1,y+direction));
     }
 
-    @NotNull
-    private List<Coordinate> getTakingMoves(@NotNull ChessLogic board){
-        List<Coordinate> moves = new ArrayList<>(2);
+    private void getTakingMoves(@NotNull ChessLogic board){
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isEnemyPiece(x + 1, y + direction, colour))
-            moves.add(new Coordinate(x+1,y+direction));
+            possibleMoves.add(new Coordinate(x+1,y+direction));
         if(board.isEnemyPiece(x-1, y + direction, colour))
-            moves.add(new Coordinate(x-1,y+direction));
-        return moves;
+            possibleMoves.add(new Coordinate(x-1,y+direction));
     }
 
     @Override

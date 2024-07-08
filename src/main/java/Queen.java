@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Queen extends Piece{
     public Queen(int x, int y, PieceColour colour) {
         super(x, y, colour);
@@ -8,10 +6,9 @@ public class Queen extends Piece{
     @Override
     public void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
-        calculateDiagonalMoves(moves, board);
-        calculateStraightMoves(moves, board);
-        removeMovesInCheck(moves, board);
-        return moves;
+        calculateDiagonalMoves(board);
+        calculateStraightMoves(board);
+        removeMovesInCheck(board);
     }
 
     @Override

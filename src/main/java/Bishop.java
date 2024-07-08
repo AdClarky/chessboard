@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Bishop extends Piece{
     public Bishop(int x, int y, PieceColour colour) {
         super(x, y, colour);
@@ -8,8 +6,8 @@ public class Bishop extends Piece{
     @Override
     public void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
-        calculateDiagonalMoves(moves, board);
-        removeMovesInCheck(moves, board);
+        calculateDiagonalMoves(board);
+        removeMovesInCheck(board);
     }
 
     @Override

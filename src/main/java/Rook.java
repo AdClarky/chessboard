@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Rook extends Piece{
@@ -11,8 +10,8 @@ public class Rook extends Piece{
     @Override
     public void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
-        calculateStraightMoves(moves, board);
-        removeMovesInCheck(moves, board);
+        calculateStraightMoves(board);
+        removeMovesInCheck(board);
     }
 
     @Override
