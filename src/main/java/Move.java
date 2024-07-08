@@ -55,6 +55,8 @@ public class Move {
         }
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
+        board.switchTurn();
+        board.calculatePossibleMoves();
     }
 
     private void takePiece(@NotNull MoveValue move){
@@ -81,6 +83,8 @@ public class Move {
         }
         if(notHadFirstMove)
             piece.undoMoveCondition();
+        board.switchTurn();
+        board.calculatePossibleMoves();
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */

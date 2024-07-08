@@ -171,6 +171,13 @@ public class Chessboard {
         return hash;
     }
 
+    public void switchTurn(){
+        if(currentTurn == PieceColour.WHITE)
+            currentTurn = PieceColour.BLACK;
+        else
+            currentTurn = PieceColour.WHITE;
+    }
+
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
 
     public PieceColour getCurrentTurn(){return currentTurn;}
