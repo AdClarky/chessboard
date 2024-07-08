@@ -6,8 +6,8 @@ public class Queen extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(10);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         calculateDiagonalMoves(moves, board);
         calculateStraightMoves(moves, board);
         removeMovesInCheck(moves, board);

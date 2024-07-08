@@ -10,8 +10,9 @@ import java.util.Objects;
 public abstract class Piece {
     private final int startX;
     private final int startY;
-    private Icon pieceIcon;
+    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
     protected final PieceColour colour;
+    private Icon pieceIcon;
     protected int x;
     protected int y;
 
@@ -27,7 +28,11 @@ public abstract class Piece {
      * Calculates all possible moves based on surrounding pieces and checks.
      * @return a list of coordinates the piece can move to.
      */
-    public abstract List<Coordinate> getPossibleMoves(ChessLogic board);
+    public List<Coordinate> getPossibleMoves(){
+        return possibleMoves;
+    }
+
+    public abstract void calculatePossibleMoves(ChessLogic board);
 
     /**
      * For pieces where the first move must be tracked.

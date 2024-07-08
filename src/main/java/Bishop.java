@@ -6,11 +6,10 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(8);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         calculateDiagonalMoves(moves, board);
         removeMovesInCheck(moves, board);
-        return moves;
     }
 
     @Override

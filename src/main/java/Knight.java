@@ -9,13 +9,12 @@ public class Knight extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(8);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         for(int i = 0; i<8; i++){
             cantMove(moves, board, x+ POSSIBLE_X[i], y+ POSSIBLE_Y[i]);
         }
         removeMovesInCheck(moves, board);
-        return moves;
     }
 
     @Override

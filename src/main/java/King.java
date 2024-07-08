@@ -10,8 +10,8 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(8);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
                 cantMove(moves, board, x, y);
@@ -19,10 +19,8 @@ public class King extends Piece{
         }
         if(moved){
             removeMovesInCheck(moves, board);
-            return moves;
         }
         calculateCastling(moves, board);
-        return moves;
     }
 
     private void calculateCastling(Collection<Coordinate> moves, ChessLogic board){

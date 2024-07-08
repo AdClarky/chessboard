@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,8 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(@NotNull ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(4);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isSquareBlank(x, y+direction)) {// basic move forward
             moves.add(new Coordinate(x, y + direction));

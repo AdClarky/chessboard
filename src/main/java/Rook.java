@@ -9,11 +9,10 @@ public class Rook extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(10);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         calculateStraightMoves(moves, board);
         removeMovesInCheck(moves, board);
-        return moves;
     }
 
     @Override

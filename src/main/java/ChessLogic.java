@@ -26,7 +26,7 @@ public class ChessLogic {
         Coordinate kingPos = new Coordinate(king);
         Iterable<Piece> enemyPieces = board.getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
         for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves(this).contains(kingPos)){
+            if(piece.getPossibleMoves().contains(kingPos)){
                 return true;
             }
         }
@@ -38,7 +38,7 @@ public class ChessLogic {
             return false;
         Iterable<Piece> enemyPieces = board.getAllColourPieces(board.getCurrentTurn());
         for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
+            for (Coordinate move : enemyPiece.getPossibleMoves()) {
                 if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
                     return false;
             }
@@ -57,7 +57,7 @@ public class ChessLogic {
             return false;
         Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
-            if(!piece.getPossibleMoves(this).isEmpty())
+            if(!piece.getPossibleMoves().isEmpty())
                 return false;
         }
         return true;
@@ -107,6 +107,6 @@ public class ChessLogic {
     }
 
     public boolean isValidMove(Piece piece, int newX, int newY){
-        return !piece.getPossibleMoves(this).contains(new Coordinate(newX, newY));
+        return !piece.getPossibleMoves().contains(new Coordinate(newX, newY));
     }
 }
