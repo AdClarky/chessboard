@@ -68,4 +68,19 @@ class ImageTest {
             }
         });
     }
+
+    @Test
+    void doAllImagesLoadWithoutErrorMultipleGets(){
+        assertDoesNotThrow(()->{
+            ChessGame game = new ChessGame();
+            for(Piece piece : game.getColourPieces(PieceColour.BLACK)){
+                assertNotNull(piece.getPieceIcon());
+                assertNotNull(piece.getPieceIcon());
+            }
+            for(Piece piece : game.getColourPieces(PieceColour.WHITE)){
+                assertNotNull(piece.getPieceIcon());
+                assertNotNull(piece.getPieceIcon());
+            }
+        });
+    }
 }
