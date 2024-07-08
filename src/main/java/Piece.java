@@ -60,7 +60,8 @@ public abstract class Piece {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Piece piece = (Piece) obj;
-        return startX == piece.startX && startY == piece.startY && colour == piece.colour;
+        return startX == piece.startX && x == piece.x && y == piece.y &&
+                startY == piece.startY && colour == piece.colour;
     }
 
     @Override
