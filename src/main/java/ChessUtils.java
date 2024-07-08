@@ -33,9 +33,9 @@ public final class ChessUtils {
         for(Piece piece : chessGame.getColourPieces(chessGame.getCurrentTurn())){
             if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
                 continue;
-            if(piece.getPossibleMoves(chessGame.getChessLogic()).contains(newCoordinate))
-                possiblePieces.add(piece);
+            possiblePieces.add(piece);
         }
+        possiblePieces.removeIf(piece -> !piece.getPossibleMoves(chessGame.getChessLogic()).contains(newCoordinate));
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         Piece piece = possiblePieces.getFirst();
