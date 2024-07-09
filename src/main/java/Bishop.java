@@ -7,7 +7,6 @@ public class Bishop extends Piece{
     public void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         calculateDiagonalMoves(board);
-        removeMovesInCheck(board);
     }
 
     @Override

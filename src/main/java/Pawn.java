@@ -23,7 +23,6 @@ public class Pawn extends Piece{
         if((colour == PieceColour.BLACK && y == 3) || (colour == PieceColour.WHITE && y == 4)){ // en passant
             getEnPassantMoves(board);
         }
-        removeMovesInCheck(board);
     }
 
     private void getEnPassantMoves(@NotNull ChessLogic board){

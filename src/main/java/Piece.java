@@ -91,12 +91,6 @@ public abstract class Piece {
     public int getX() {return x;}
     public int getY() {return y;}
 
-    protected void removeMovesInCheck(ChessLogic board) {
-        if(board.getCurrentTurn() != colour)
-            return;
-        possibleMoves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
-    }
-
     /**
      * Calculates how far a piece can move in each diagonal direction.
      */

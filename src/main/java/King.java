@@ -16,9 +16,7 @@ public class King extends Piece{
                 cantMove(board, x, y);
             }
         }
-        if(moved)
-            removeMovesInCheck(board);
-        else
+        if(!moved)
             calculateCastling(board);
     }
 
@@ -31,12 +29,6 @@ public class King extends Piece{
             if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
                 possibleMoves.add(new Coordinate(x+2, y));
         }
-        removeMovesInCheck(board);
-        // stops castling through check
-        if(!possibleMoves.contains(new Coordinate(x-1, y)))
-            possibleMoves.remove(new Coordinate(x-2, y));
-        if(!possibleMoves.contains(new Coordinate(x+1, y)))
-            possibleMoves.remove(new Coordinate(x+2, y));
     }
 
     @Override

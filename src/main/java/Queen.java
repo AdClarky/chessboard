@@ -8,7 +8,6 @@ public class Queen extends Piece{
         possibleMoves.clear();
         calculateDiagonalMoves(board);
         calculateStraightMoves(board);
-        removeMovesInCheck(board);
     }
 
     @Override

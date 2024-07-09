@@ -12,7 +12,6 @@ public class Knight extends Piece{
         for(int i = 0; i<8; i++){
             cantMove(board, x+ POSSIBLE_X[i], y+ POSSIBLE_Y[i]);
         }
-        removeMovesInCheck(board);
     }
 
     @Override

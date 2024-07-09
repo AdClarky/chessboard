@@ -11,7 +11,6 @@ public class Rook extends Piece{
     public void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         calculateStraightMoves(board);
-        removeMovesInCheck(board);
     }
 
     @Override
