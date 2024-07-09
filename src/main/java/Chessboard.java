@@ -94,9 +94,7 @@ public class Chessboard {
     }
 
     private Collection<Piece> getPieces(Collection<Piece> pieces){
-        Collection<Piece> piecesCopy = new ArrayList<>(pieces);
-        piecesCopy.addAll(pieces);
-        return piecesCopy;
+        return new ArrayList<>(pieces);
     }
 
     public King getKing(PieceColour colour){
