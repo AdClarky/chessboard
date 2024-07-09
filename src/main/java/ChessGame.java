@@ -134,7 +134,7 @@ public class ChessGame {
         }
     }
 
-    public Set<Piece> getColourPieces(PieceColour colour){
+    public Collection<Piece> getColourPieces(PieceColour colour){
         return board.getAllColourPieces(colour);
     }
 

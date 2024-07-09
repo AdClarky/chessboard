@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -83,13 +84,19 @@ public class Chessboard {
         movePiece(move.newX(), move.newY(), move.piece());
     }
 
-    public Set<Piece> getAllColourPieces(PieceColour colour){
+    public Collection<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
-            return blackPieces;
+            return getPieces(blackPieces);
         else if(colour == PieceColour.WHITE)
-            return whitePieces;
+            return getPieces(whitePieces);
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
+    }
+
+    private Collection<Piece> getPieces(Collection<Piece> pieces){
+        Collection<Piece> piecesCopy = new ArrayList<>(pieces);
+        piecesCopy.addAll(pieces);
+        return piecesCopy;
     }
 
     public King getKing(PieceColour colour){
