@@ -7,22 +7,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
 
+/**
+ * Parses a given file for Chess moves.
+ * Assumes there is a space after each move number and after each move.
+ */
 public class PGNParser {
     private final Collection<String> moves = new ArrayList<>(30);
     private final StringBuilder currentMove = new StringBuilder();
     private boolean active = false;
 
+    /**
+     * Creates {@code PGNParser} which immediately processes a file.
+     * @param path path of the file
+     * @throws IOException when an error occurs when accessing the file
+     */
     public PGNParser(Path path) throws IOException {
         try (Stream<String> lines = Files.lines(path)) {
             lines.forEach(this::processLine);
         }
     }
 
+    /**
+     * Creates {@code PGNParser} which immediately processes a string.
+     * @param pgnString a string which is the equivalent of a PGN file.
+     */
     public PGNParser(String pgnString) {
         processLine(pgnString);
     }
 
-
+    /**
+     * @return get the moves parsed.
+     */
     public Collection<String> getMoves(){
         return moves;
     }
