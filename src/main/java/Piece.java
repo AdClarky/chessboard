@@ -29,6 +29,7 @@ public abstract class Piece {
     protected int y;
 
     /**
+     * Creates a chess piece.
      * @param x starting x position.
      * @param y starting y position.
      * @param colour the colour of the piece.
