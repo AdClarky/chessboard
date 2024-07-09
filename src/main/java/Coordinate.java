@@ -1,9 +1,15 @@
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-/** Coordinate class which stores the x and y value of a coordinate. */
+/**
+ * Coordinate class which stores the x and y value of a coordinate.
+ */
 public record Coordinate(int x, int y) {
-    public Coordinate(Piece piece) {
+    /**
+     * Creates a new {@code Coordinate} based on the coordinate of a piece.
+     * @param piece the piece whose coordinate are being used.
+     */
+    public Coordinate(@NotNull Piece piece) {
         this(piece.getX(), piece.getY());
     }
 
@@ -15,12 +21,13 @@ public record Coordinate(int x, int y) {
 
     /**
      * Calculates the coordinates of a move.
+     * It must not be a castling move.
      * @param move the move in chess algebraic notation
      * @return the coordinate of a move
      * @throws IllegalArgumentException when a castling move is input
      */
     @Contract("_ -> new")
-    public static @NotNull Coordinate createCoordinateFromString(@NotNull String move) throws IllegalArgumentException {
+    static @NotNull Coordinate createCoordinateFromString(@NotNull String move) throws IllegalArgumentException {
         if(move.contains("O-"))
             throw new IllegalArgumentException("Invalid move - cannot create coordinate from castle");
         int length = move.length();
