@@ -40,6 +40,7 @@ public class ChessGame {
     }
 
     /**
+     * The current turn of the board, i.e. black or white.
      * @return the current turn
      */
     public PieceColour getCurrentTurn(){
@@ -197,6 +198,7 @@ public class ChessGame {
     }
 
     /**
+     * Calculates if the current position is checkmate.
      * @return true if the current position is checkmate
      */
     public boolean isCheckmate(){
@@ -204,6 +206,7 @@ public class ChessGame {
     }
 
     /**
+     * Calculates if the current position is a draw.
      * @return true if the current position is a draw
      */
     public boolean isDraw(){

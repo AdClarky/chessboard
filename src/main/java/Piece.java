@@ -10,12 +10,29 @@ import java.util.Objects;
 public abstract class Piece {
     private final int startX;
     private final int startY;
-    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
-    protected final PieceColour colour;
     private Icon pieceIcon;
+    /**
+     * The possible moves this pieces can make.
+     */
+    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
+    /**
+     * The colour of the piece.
+     */
+    protected final PieceColour colour;
+    /**
+     * The current x position of the piece.
+     */
     protected int x;
+    /**
+     * The current y position of the piece.
+     */
     protected int y;
 
+    /**
+     * @param x starting x position.
+     * @param y starting y position.
+     * @param colour the colour of the piece.
+     */
     protected Piece(int x, int y, PieceColour colour) {
         startX = x;
         startY = y;
@@ -85,6 +102,7 @@ public abstract class Piece {
     }
 
     /**
+     * Gets the colour of the piece.
      * @return if the piece is black or white
      */
     public PieceColour getColour() {return colour;}
@@ -96,6 +114,7 @@ public abstract class Piece {
     }
 
     /**
+     * The current x position of the piece.
      * @return the x position
      */
     public int getX() {
@@ -103,6 +122,7 @@ public abstract class Piece {
     }
 
     /**
+     * The current y position of the piece.
      * @return the y position
      */
     public int getY() {
@@ -111,6 +131,7 @@ public abstract class Piece {
 
     /**
      * Calculates how far a piece can move in each diagonal direction.
+     * @param board the board the piece is moving on.
      */
     protected void calculateDiagonalMoves(ChessLogic board){
         calculateSingleDirection(board, 1, 1);
@@ -121,6 +142,7 @@ public abstract class Piece {
 
     /**
      * Calculates how far a piece can move in each straight direction.
+     * @param board the board the piece is moving on.
      */
     protected void calculateStraightMoves(ChessLogic board) {
         calculateSingleDirection(board, 1, 0);
@@ -139,6 +161,9 @@ public abstract class Piece {
     /**
      * Calculates if a move to a specific square is valid.
      * Validates the coords are within the board and then checks if it's a friendly piece.
+     * @param board the board the piece is moving on.
+     * @param x the potential x
+     * @param y the potential y
      * @return if the move is valid
      */
     protected boolean cantMove(ChessLogic board, int x, int y) {

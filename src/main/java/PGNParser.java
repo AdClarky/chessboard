@@ -36,7 +36,8 @@ public class PGNParser {
     }
 
     /**
-     * @return get the moves parsed.
+     * Gets moves which have been calculated.
+     * @return get the chess moves.
      */
     public Collection<String> getMoves(){
         return moves;
