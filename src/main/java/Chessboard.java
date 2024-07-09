@@ -54,6 +54,11 @@ public class Chessboard {
     }
 
     @NotNull
+    public Piece getPiece(Coordinate coordinate){
+        return getPiece(coordinate.x(), coordinate.y());
+    }
+
+    @NotNull
     public PieceColour getPieceColour(int x, int y){
         return getPiece(x, y).getColour();
     }
@@ -80,13 +85,33 @@ public class Chessboard {
     }
 
     public void calculatePossibleMoves(){
+        calculatePieces(currentTurn);
+        removeMovesInCheck();
+        calculatePieces(PieceColour.getOtherColour(currentTurn));
+    }
+
+    private void calculatePieces(PieceColour colour){
+        Collection<Piece> pieces = getAllColourPieces(colour);
         ChessLogic logicBoard = new ChessLogic(this);
-        for(Piece piece : whitePieces){
+        for(Piece piece : pieces){
             piece.calculatePossibleMoves(logicBoard);
         }
-        for(Piece piece : blackPieces){
-            piece.calculatePossibleMoves(logicBoard);
+    }
+
+    private void removeMovesInCheck(){
+        ChessLogic logicBoard = new ChessLogic(this);
+        for(Piece piece : getAllColourPieces(currentTurn)){
+            piece.getPossibleMoves().removeIf(this::isMoveUnsafe);
         }
+    }
+
+    private boolean isMoveUnsafe(Coordinate movePos){
+        Move move = new Move(movePos.x(), movePos.y(), getPiece(movePos), getLastPieceMoved(), this);
+        PieceColour enemyColour = PieceColour.getOtherColour(currentTurn);
+        calculatePieces(enemyColour);
+        boolean isMoveUnsafe = new ChessLogic(this).isKingInCheck(currentTurn);
+        move.undo();
+        return isMoveUnsafe;
     }
 
     public Set<Piece> getAllColourPieces(PieceColour colour){
