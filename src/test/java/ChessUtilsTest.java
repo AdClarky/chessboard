@@ -90,50 +90,64 @@ class ChessUtilsTest {
 
     @Test
     void shortCastleWhite() {
-        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "O-O");
-        assertEquals(new MoveValue(board.getPiece(3,0), 1, 0), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "O-O");
+            assertEquals(new MoveValue(board.getPiece(3,0), 1, 0), move);
+        });
     }
 
     @Test
     void longCastleWhite() {
-        Chessboard board = new ChessboardBuilder().FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
-        assertEquals(new MoveValue(board.getPiece(3,0), 5, 0), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
+            assertEquals(new MoveValue(board.getPiece(3,0), 5, 0), move);
+        });
     }
 
     @Test
     void shortCastleBlack() {
-        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "O-O");
-        assertEquals(new MoveValue(board.getPiece(3,7), 1, 7), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "O-O");
+            assertEquals(new MoveValue(board.getPiece(3,7), 1, 7), move);
+        });
     }
 
     @Test
     void longCastleBlack() {
-        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
-        assertEquals(new MoveValue(board.getPiece(3,7), 5, 7), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
+            assertEquals(new MoveValue(board.getPiece(3,7), 5, 7), move);
+        });
     }
 
     @Test
     void basicPawnMove() {
-        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "e4");
-        assertEquals(new MoveValue(board.getPiece(3,1), 3, 3), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "e4");
+            assertEquals(new MoveValue(board.getPiece(3,1), 3, 3), move);
+        });
     }
 
     @Test
     void takingPawnMove() {
-        Chessboard board = new ChessboardBuilder().FromFen("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
-        MoveValue move = ChessUtils.chessToMove(board, "exd5");
-        assertEquals(new MoveValue(board.getPiece(3,3), 4, 4), move);
+        assertDoesNotThrow(()->{
+            Chessboard board = new ChessboardBuilder().fromFen("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
+            MoveValue move = ChessUtils.chessToMove(board, "exd5");
+            assertEquals(new MoveValue(board.getPiece(3,3), 4, 4), move);
+        });
     }
 
     @Test
     void knightMove() {
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        MoveValue move = ChessUtils.chessToMove(board, "Nf3");
-        assertEquals(new MoveValue(board.getPiece(1,0), 2, 2), move);
+        assertDoesNotThrow(()->{
+            MoveValue move = ChessUtils.chessToMove(board, "Nf3");
+            assertEquals(new MoveValue(board.getPiece(1,0), 2, 2), move);
+        });
     }
 }

@@ -12,14 +12,6 @@ public enum PieceColour {
         };
     }
 
-    public static PieceColour getOtherColour(@NotNull Piece piece) {
-        return switch (piece.getColour()) {
-            case WHITE -> BLACK;
-            case BLACK -> WHITE;
-            case BLANK -> BLANK;
-        };
-    }
-
     public static int getDirectionFromColour(@NotNull PieceColour colour){
         return switch (colour){
             case WHITE -> 1;

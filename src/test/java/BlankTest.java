@@ -22,4 +22,9 @@ class BlankTest {
     void stringTest(){
         assertEquals("Blank", blank.toString());
     }
+
+    @Test
+    void characterIsZ(){
+        assertEquals('Z', new Blank(0, 0).toCharacter());
+    }
 }

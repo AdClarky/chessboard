@@ -147,7 +147,7 @@ public class Chessboard {
             throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
-    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
+    public void makeMove(int oldX, int oldY, int newX, int newY) {
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         history.push(move);
     }
@@ -206,11 +206,11 @@ public class Chessboard {
         return history.getNumFullMoves();
     }
 
-    public void setNumFullMoves(int numFullMoves) {
+    public void setNumFullMoves(int numFullMoves) throws AccessedHistoryDuringGameException {
         history.setNumFullMoves(numFullMoves);
     }
 
-    public void setNumHalfMoves(int numHalfMoves) {
+    public void setNumHalfMoves(int numHalfMoves) throws AccessedHistoryDuringGameException {
         history.setNumHalfMoves(numHalfMoves);
     }
 

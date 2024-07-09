@@ -25,7 +25,7 @@ public class King extends Piece{
             if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
                 possibleMoves.add(new Coordinate(x-2, y));
         }
-        if(!board.hasPieceHadFirstMove(x-4, y)){
+        if(!board.hasPieceHadFirstMove(x+4, y)){
             if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
                 possibleMoves.add(new Coordinate(x+2, y));
         }

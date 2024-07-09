@@ -2,6 +2,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /** Used to generate a {@link Chessboard}. Can be built in the default configuration or using a fen string.*/
 public class ChessboardBuilder {
@@ -11,18 +12,28 @@ public class ChessboardBuilder {
     private int squaresProcessed = 7;
 
     public @NotNull Chessboard defaultSetup() {
-        FromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        getBoardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
 
-    public @NotNull Chessboard FromFen(@NotNull String fenString) {
+    public @NotNull Chessboard fromFen(@NotNull String fenString) throws InvalidFenStringException{
+        if(!doesStringMatchFen(fenString))
+            throw new InvalidFenStringException();
+        return getBoardFromFen(fenString);
+    }
+
+    private Chessboard getBoardFromFen(@NotNull String fenString) {
         String[] sections = fenString.split(" ");
-        setTurnToMove(sections[1]);
-        populateBoardFromFenString(sections[0]);
-        setCastlingRights(sections[2]);
-        setEnPassant(sections[3]);
-        setHalfMoves(sections[4]);
-        setFullMoves(sections[5]);
+        try {
+            setTurnToMove(sections[1]);
+            setHalfMoves(sections[4]);
+            setFullMoves(sections[5]);
+            populateBoardFromFenString(sections[0]);
+            setCastlingRights(sections[2]);
+            setEnPassant(sections[3]);
+        } catch (AccessedHistoryDuringGameException e) {
+            throw new RuntimeException(e);
+        }
         return board;
     }
 
@@ -105,7 +116,7 @@ public class ChessboardBuilder {
 
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
-        int x = rookWithRights == 'k' ? 0 : 7;
+        int x = Character.toLowerCase(rookWithRights) == 'k' ? 0 : 7;
         board.setOtherRookMoved(x, y);
     }
 
@@ -118,11 +129,11 @@ public class ChessboardBuilder {
         board.setPawnEnPassantable(location.x(), location.y() + direction);
     }
 
-    private void setHalfMoves(String section){
+    private void setHalfMoves(String section) throws AccessedHistoryDuringGameException {
         board.setNumHalfMoves(Integer.parseInt(section));
     }
 
-    private void setFullMoves(String section){
+    private void setFullMoves(String section) throws AccessedHistoryDuringGameException {
         board.setNumFullMoves(Integer.parseInt(section));
     }
 
@@ -132,5 +143,10 @@ public class ChessboardBuilder {
 
     private List<Piece> getPiecesFromChar(char c){
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
+    }
+
+    private boolean doesStringMatchFen(String fenString){
+        Pattern regex = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
+        return regex.matcher(fenString).matches();
     }
 }

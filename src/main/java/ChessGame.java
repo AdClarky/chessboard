@@ -2,7 +2,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
@@ -24,8 +24,8 @@ public class ChessGame {
         fenGenerator = new FenGenerator(board);
     }
 
-    public ChessGame(String fenString){
-        board = new ChessboardBuilder().FromFen(fenString);
+    public ChessGame(String fenString) throws InvalidFenStringException {
+        board = new ChessboardBuilder().fromFen(fenString);
         chessLogic = new ChessLogic(board);
         currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);
@@ -70,7 +70,9 @@ public class ChessGame {
      * After {@link BoardListener#moveMade(int, int, int, int)}, this returns the individual moves performed on the
      * board.
      * @return a list of individual moves taken to reach the new board state. */
-    public Iterable<MoveValue> getLastMoveMade(){return board.getLastMoves();}
+    public List<MoveValue> getLastMoveMade(){
+        return board.getLastMoves();
+    }
 
     public void addBoardListener(BoardListener listener){
         boardListeners.add(listener);
@@ -136,6 +138,17 @@ public class ChessGame {
 
     public Collection<Piece> getColourPieces(PieceColour colour){
         return board.getAllColourPieces(colour);
+    }
+
+    List<Piece> getPossiblePieces(char pieceLetter, Coordinate newCoordinate){
+        List<Piece> possiblePieces = new ArrayList<>(2);
+        for(Piece piece : getColourPieces(currentTurn)){
+            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
+                continue;
+            if(piece.getPossibleMoves().contains(newCoordinate))
+                possiblePieces.add(piece);
+        }
+        return possiblePieces;
     }
 
     public Piece getPiece(int x, int y){

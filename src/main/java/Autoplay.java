@@ -16,6 +16,11 @@ public class Autoplay {
         moves.addAll(new PGNParser(path).getMoves());
     }
 
+    public Autoplay(@NotNull ChessGame chessGame, Collection<String> moves){
+        this.chessGame = chessGame;
+        this.moves.addAll(moves);
+    }
+
     public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
             chessGame.makeMove(move);

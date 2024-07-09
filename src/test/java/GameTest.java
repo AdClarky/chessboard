@@ -57,4 +57,11 @@ class GameTest {
         assertDoesNotThrow(() -> autoplay.play());
         assertTrue(chessGame.isDraw());
     }
+
+    @Test
+    void draw50Move() throws IOException {
+        Autoplay autoplay = new Autoplay(chessGame, Path.of("src/test/resources/50move.pgn"));
+        assertDoesNotThrow(() -> autoplay.play());
+        assertTrue(chessGame.isDraw());
+    }
 }

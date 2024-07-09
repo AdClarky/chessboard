@@ -97,7 +97,7 @@ public class ChessLogic {
     }
 
     private boolean isDraw50Move(){
-        return board.getNumHalfMoves() == 50;
+        return board.getNumHalfMoves() >= 50;
     }
 
     public PieceColour getCurrentTurn(){

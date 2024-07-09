@@ -227,7 +227,7 @@ class MoveTest {
 
     @Test
     void basicPromotion(){
-        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
         new Move(4, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
@@ -245,7 +245,7 @@ class MoveTest {
 
     @Test
     void basicPromotionUndo(){
-        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
         Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         int x = 4, y = 6;
@@ -264,7 +264,7 @@ class MoveTest {
 
     @Test
     void basicPromotionRedo(){
-        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
         Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
@@ -284,9 +284,7 @@ class MoveTest {
 
     @Test
     void promotionTaking(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
         new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
@@ -304,9 +302,7 @@ class MoveTest {
 
     @Test
     void promotionTakingUndo(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         int x = 4, y = 6;
@@ -325,9 +321,7 @@ class MoveTest {
 
     @Test
     void promotionTakingRedo(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();

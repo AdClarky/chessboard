@@ -3,6 +3,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Contains functions relating to chess move notation in algebraic form.
@@ -16,7 +17,7 @@ public final class ChessUtils {
         return Character.toString('h' - x) + (y+1);
     }
 
-    public static MoveValue chessToMove(Chessboard board, String move){
+    public static MoveValue chessToMove(Chessboard board, String move) throws InvalidMoveException {
         if("O-O".equals(move)) {
             return getCastlingMove(board, 1);
         }
@@ -38,6 +39,8 @@ public final class ChessUtils {
         possiblePieces.removeIf(piece -> !piece.getPossibleMoves().contains(newCoordinate));
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
+        if(possiblePieces.isEmpty())
+            throw new InvalidMoveException(move);
         Piece piece = possiblePieces.getFirst();
         return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
     }
