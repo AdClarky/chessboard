@@ -36,7 +36,7 @@ public final class ChessUtils {
                 continue;
             possiblePieces.add(piece);
         }
-        possiblePieces.removeIf(piece -> !piece.getPossibleMoves(new ChessLogic(board)).contains(newCoordinate));
+        possiblePieces.removeIf(piece -> !piece.getPossibleMoves().contains(newCoordinate));
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())

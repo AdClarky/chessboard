@@ -1,7 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +16,7 @@ public class Chessboard {
     private King blackKing;
     private final Set<Piece> whitePieces = new HashSet<>(16);
     private King whiteKing;
-    private PieceColour currentTurn;
+    private PieceColour currentTurn = PieceColour.WHITE;
 
     /** Initialises the board with all squares blank. */
     public Chessboard(){
@@ -42,6 +42,7 @@ public class Chessboard {
             if(piece instanceof King)
                 whiteKing = (King) piece;
         }
+        new ChessLogic(this).calculatePossibleMoves();
     }
 
     /** Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}. */
@@ -50,6 +51,11 @@ public class Chessboard {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return new Blank(x, y);
         return board[y][x];
+    }
+
+    @NotNull
+    public Piece getPiece(Coordinate coordinate){
+        return getPiece(coordinate.x(), coordinate.y());
     }
 
     @NotNull
@@ -78,13 +84,17 @@ public class Chessboard {
         movePiece(move.newX(), move.newY(), move.piece());
     }
 
-    public Set<Piece> getAllColourPieces(PieceColour colour){
+    public Collection<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
-            return blackPieces;
+            return getPieces(blackPieces);
         else if(colour == PieceColour.WHITE)
-            return whitePieces;
+            return getPieces(whitePieces);
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
+    }
+
+    private Collection<Piece> getPieces(Collection<Piece> pieces){
+        return new ArrayList<>(pieces);
     }
 
     public King getKing(PieceColour colour){

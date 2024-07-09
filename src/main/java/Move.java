@@ -18,7 +18,7 @@ public class Move {
     private final List<MoveValue> movesMade;
     private boolean undone = false;
     private boolean taking = false;
-    private boolean notHadFirstMove = false;
+    private boolean hadFirstMove = false;
     private boolean wasPreviousPawnPassantable = false;
 
     /**
@@ -45,15 +45,15 @@ public class Move {
     public void makeMove(){
         undone = false;
         movesToUndo.clear();
-        wasPreviousPawnPassantable = previousPawn.hadFirstMove();
-        previousPawn.undoMoveCondition();
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY()))
                 takePiece(move);
             movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
             board.movePiece(move);
         }
-        notHadFirstMove = !piece.hadFirstMove();
+        wasPreviousPawnPassantable = previousPawn.hadFirstMove();
+        previousPawn.undoMoveCondition();
+        hadFirstMove = piece.hadFirstMove();
         piece.firstMove();
     }
 
@@ -73,14 +73,14 @@ public class Move {
      */
     public void undo(){
         undone = true;
-        if(wasPreviousPawnPassantable)
-            previousPawn.firstMove();
         for(MoveValue move : movesToUndo.reversed()){
             addOrRemovePiece(move.piece(), move);
             board.movePiece(move);
         }
-        if(notHadFirstMove)
+        if(!hadFirstMove)
             piece.undoMoveCondition();
+        if(wasPreviousPawnPassantable)
+            previousPawn.firstMove();
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */

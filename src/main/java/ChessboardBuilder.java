@@ -25,10 +25,10 @@ public class ChessboardBuilder {
     private Chessboard getBoardFromFen(@NotNull String fenString) {
         String[] sections = fenString.split(" ");
         try {
+            setTurnToMove(sections[1]);
             setHalfMoves(sections[4]);
             setFullMoves(sections[5]);
             populateBoardFromFenString(sections[0]);
-            setTurnToMove(sections[1]);
             setCastlingRights(sections[2]);
             setEnPassant(sections[3]);
         } catch (AccessedHistoryDuringGameException e) {
@@ -48,7 +48,7 @@ public class ChessboardBuilder {
         board.populateBoard(whitePieces, blackPieces);
     }
 
-    private void processCharacter(char character, int row) {
+    private void processCharacter(char character, int row){
         if(Character.isDigit(character)){
             squaresProcessed -= Character.getNumericValue(character);
             return;

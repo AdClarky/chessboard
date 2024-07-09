@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Objects;
 
 public class King extends Piece{
@@ -10,36 +9,33 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(8);
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
-                cantMove(moves, board, x, y);
+                cantMove(board, x, y);
             }
         }
-        if(moved){
-            removeMovesInCheck(moves, board);
-            return moves;
-        }
-        calculateCastling(moves, board);
-        return moves;
+        if(!moved)
+            calculateCastling(board);
     }
 
-    private void calculateCastling(Collection<Coordinate> moves, ChessLogic board){
+    private void calculateCastling(ChessLogic board){
         if(!board.hasPieceHadFirstMove(x-3, y)){
             if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
-                moves.add(new Coordinate(x-2, y));
+                possibleMoves.add(new Coordinate(x-2, y));
         }
         if(!board.hasPieceHadFirstMove(x+4, y)){
             if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
-                moves.add(new Coordinate(x+2, y));
+                possibleMoves.add(new Coordinate(x+2, y));
         }
-        removeMovesInCheck(moves, board);
-        // stops castling through check
-        if(!moves.contains(new Coordinate(x-1, y)))
-            moves.remove(new Coordinate(x-2, y));
-        if(!moves.contains(new Coordinate(x+1, y)))
-            moves.remove(new Coordinate(x+2, y));
+    }
+
+    void removeCastlingThroughCheck(){
+        if(!possibleMoves.contains(new Coordinate(x-1, y)))
+            possibleMoves.remove(new Coordinate(x-2, y));
+        if(!possibleMoves.contains(new Coordinate(x+1, y)))
+            possibleMoves.remove(new Coordinate(x+2, y));
     }
 
     @Override

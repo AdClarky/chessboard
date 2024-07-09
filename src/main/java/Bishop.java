@@ -1,16 +1,12 @@
-import java.util.ArrayList;
-
 public class Bishop extends Piece{
     public Bishop(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(8);
-        calculateDiagonalMoves(moves, board);
-        removeMovesInCheck(moves, board);
-        return moves;
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
+        calculateDiagonalMoves(board);
     }
 
     @Override
