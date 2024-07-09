@@ -99,12 +99,12 @@ public class Chessboard {
 
     private void removeMovesInCheck(){
         for(Piece piece : getAllColourPieces(currentTurn)){
-            piece.getPossibleMoves().removeIf(this::isMoveUnsafe);
+            piece.getPossibleMoves().removeIf(move -> isMoveUnsafe(piece, move));
         }
     }
 
-    private boolean isMoveUnsafe(Coordinate movePos){
-        Move move = new Move(movePos.x(), movePos.y(), getPiece(movePos), getLastPieceMoved(), this);
+    private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
+        Move move = new Move(movePos.x(), movePos.y(), piece, getLastPieceMoved(), this);
         PieceColour enemyColour = PieceColour.getOtherColour(currentTurn);
         calculatePieces(enemyColour);
         boolean isMoveUnsafe = new ChessLogic(this).isKingInCheck(currentTurn);
