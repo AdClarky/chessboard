@@ -3,7 +3,6 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Contains functions relating to chess move notation in algebraic form.
@@ -12,12 +11,17 @@ import java.util.List;
  */
 public final class ChessUtils {
     private ChessUtils(){}
-    /** Converts the chessboard coordinates to chess algebraic notation. */
+    /**
+     * Converts the chessboard coordinates to chess algebraic notation.
+     * @param x x position
+     * @param y y position
+     * @return the coordinate in algebraic form.
+     */
     public static @NotNull String coordsToChess(int x, int y){
         return Character.toString('h' - x) + (y+1);
     }
 
-    public static MoveValue chessToMove(Chessboard board, String move) throws InvalidMoveException {
+    static MoveValue chessToMove(Chessboard board, String move) throws InvalidMoveException {
         if("O-O".equals(move)) {
             return getCastlingMove(board, 1);
         }
