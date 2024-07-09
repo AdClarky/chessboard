@@ -15,7 +15,7 @@ public class Chessboard {
     private King blackKing;
     private final Set<Piece> whitePieces = new HashSet<>(16);
     private King whiteKing;
-    private PieceColour currentTurn;
+    private PieceColour currentTurn = PieceColour.WHITE;
 
     /** Initialises the board with all squares blank. */
     public Chessboard(){
