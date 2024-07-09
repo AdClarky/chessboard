@@ -5,6 +5,7 @@ import java.util.Objects;
 
 /**
  * An abstract class which parents all chess pieces.
+ *
  */
 public abstract class Piece {
     private final int startX;
@@ -24,22 +25,17 @@ public abstract class Piece {
     }
 
     /**
-     * Calculates all possible moves based on surrounding pieces and checks.
      * @return a list of coordinates the piece can move to.
      */
     public List<Coordinate> getPossibleMoves(){
         return possibleMoves;
     }
 
-    public abstract void calculatePossibleMoves(ChessLogic board);
+    abstract void calculatePossibleMoves(ChessLogic board);
 
-    /**
-     * For pieces where the first move must be tracked.
-     * Implementations in Pawn, King and Rook.
-     */
-    public abstract void firstMove();
+    abstract void firstMove();
 
-    public abstract void undoMoveCondition();
+    abstract void undoMoveCondition();
 
     /**
      * For pieces where the first move must be tracked.
@@ -47,8 +43,7 @@ public abstract class Piece {
      */
     public abstract boolean hadFirstMove();
 
-    /** Calculates a list of moves required to move a piece to a new place. */
-    public List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
+    List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
         moves.add(new MoveValue(this, newX, newY));
         return moves;
@@ -57,6 +52,10 @@ public abstract class Piece {
     @Override
     public abstract String toString();
 
+    /**
+     * The character used by FEN Strings for a chess piece.
+     * @return the uppercase piece character.
+     */
     public abstract char toCharacter();
 
     @Override
@@ -73,6 +72,10 @@ public abstract class Piece {
         return Objects.hash(startX, startY, colour, toCharacter());
     }
 
+    /**
+     * An {@code Icon} which can be useful for GUIs.
+     * @return the icon of the chess piece.
+     */
     public Icon getPieceIcon() {
         if(pieceIcon == null) {
             pieceIcon = ImageUtils.getPieceImage(toString(), colour);
@@ -80,16 +83,30 @@ public abstract class Piece {
         return pieceIcon;
     }
 
+    /**
+     * @return if the piece is black or white
+     */
     public PieceColour getColour() {return colour;}
 
 
-    public void setPos(int x, int y) {
+    void setPos(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public int getX() {return x;}
-    public int getY() {return y;}
+    /**
+     * @return the x position
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * @return the y position
+     */
+    public int getY() {
+        return y;
+    }
 
     /**
      * Calculates how far a piece can move in each diagonal direction.

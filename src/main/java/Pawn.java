@@ -1,17 +1,28 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
+/**
+ * A Pawn in chess which can move one space forward.
+ * On the first move it can move 2 spaces.
+ * It can only take diagonally forward.
+ */
 public class Pawn extends Piece{
     private boolean canBePassanted = false;
 
+    /**
+     * Creates a {@code Pawn}
+     * @param x starting x position
+     * @param y starting y position
+     * @param colour if it is black or white
+     */
     public Pawn(int x, int y, PieceColour colour) {
         super(x, y,  colour);
     }
 
     @Override
-    public void calculatePossibleMoves(ChessLogic board) {
+    void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isSquareBlank(x, y+direction)) {// basic move forward
@@ -42,8 +53,8 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public ArrayList<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
-        ArrayList<MoveValue> moves = new ArrayList<>(2);
+    List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
+        List<MoveValue> moves = new ArrayList<>(2);
         if(newY == 7 || newY == 0) { // if pawn promotion
             moves.add(new MoveValue(this, newX, newY));
             moves.add(new MoveValue(new Queen(newX, newY, colour), newX, newY));
@@ -58,7 +69,7 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void firstMove() {
+    void firstMove() {
         canBePassanted = true;
     }
 
@@ -68,11 +79,13 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public void undoMoveCondition(){canBePassanted = false;}
+    void undoMoveCondition(){canBePassanted = false;}
 
 
     @Override
-    public String toString() {return "pawn";}
+    public String toString() {
+        return "pawn";
+    }
 
     @Override
     public char toCharacter() {

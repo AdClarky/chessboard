@@ -1,20 +1,29 @@
+/**
+ * A Queen in chess which can move horizontally and diagonally.
+ */
 public class Queen extends Piece{
+    /**
+     * Creates a {@code Queen}
+     * @param x starting x position
+     * @param y starting y position
+     * @param colour if it is black or white
+     */
     public Queen(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public void calculatePossibleMoves(ChessLogic board) {
+    void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         calculateDiagonalMoves(board);
         calculateStraightMoves(board);
     }
 
     @Override
-    public void firstMove() {}
+    void firstMove() {}
 
     @Override
-    public void undoMoveCondition(){}
+    void undoMoveCondition(){}
 
     @Override
     public boolean hadFirstMove(){return false;}

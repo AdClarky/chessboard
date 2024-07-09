@@ -1,20 +1,27 @@
-import java.util.Objects;
-
+/**
+ * A Rook in chess which can only move horizontally.
+ */
 public class Rook extends Piece{
     private boolean moved = false;
 
+    /**
+     * Creates a {@code Rook}
+     * @param x starting x position
+     * @param y starting y position
+     * @param colour if it is black or white
+     */
     public Rook(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public void calculatePossibleMoves(ChessLogic board) {
+    void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         calculateStraightMoves(board);
     }
 
     @Override
-    public void firstMove(){
+    void firstMove(){
         moved = true;
     }
 

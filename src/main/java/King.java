@@ -1,15 +1,23 @@
 import java.util.ArrayList;
-import java.util.Objects;
-
+import java.util.List;
+/**
+ * A King in chess which can only move to adjacent squares.
+ */
 public class King extends Piece{
     private boolean moved = false;
 
+    /**
+     * Creates a {@code King}
+     * @param x starting x position
+     * @param y starting y position
+     * @param colour if it is black or white
+     */
     public King(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public void calculatePossibleMoves(ChessLogic board) {
+    void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
@@ -39,8 +47,8 @@ public class King extends Piece{
     }
 
     @Override
-    public ArrayList<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
-        ArrayList<MoveValue> moves = new ArrayList<>(2);
+    List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
+        List<MoveValue> moves = new ArrayList<>(2);
         if(newX - x == -2) { // short castle
             moves.add(board.getMoveForOtherPiece(0, newY, 2, newY));
         }else if(x - newX == -2) {
@@ -61,7 +69,7 @@ public class King extends Piece{
     }
 
     @Override
-    public void firstMove(){
+    void firstMove(){
         moved = true;
     }
 
@@ -69,7 +77,7 @@ public class King extends Piece{
     public boolean hadFirstMove(){return moved;}
 
     @Override
-    public void undoMoveCondition(){moved = false;}
+    void undoMoveCondition(){moved = false;}
 
     @Override
     public boolean equals(Object obj) {
