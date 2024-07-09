@@ -65,7 +65,7 @@ public class ChessGame {
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         redoAllMoves();
-        if(chessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
+        if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
         nextTurn();

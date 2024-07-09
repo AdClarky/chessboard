@@ -2,8 +2,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class ChessLogic {
-    private Chessboard board;
+class ChessLogic {
+    private final Chessboard board;
 
     public ChessLogic(Chessboard board) {
         this.board = board;
@@ -100,10 +100,6 @@ public class ChessLogic {
         return board.getNumHalfMoves() >= 50;
     }
 
-    public PieceColour getCurrentTurn(){
-        return board.getCurrentTurn();
-    }
-
     public boolean isSquareBlank(int x, int y){
         return board.isSquareBlank(x, y);
     }
@@ -124,7 +120,7 @@ public class ChessLogic {
         return board.getPiece(x, y) instanceof Pawn;
     }
 
-    public boolean isValidMove(Piece piece, int newX, int newY){
+    public static boolean isValidMove(@NotNull Piece piece, int newX, int newY){
         return !piece.getPossibleMoves().contains(new Coordinate(newX, newY));
     }
 }
