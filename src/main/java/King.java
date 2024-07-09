@@ -31,6 +31,13 @@ public class King extends Piece{
         }
     }
 
+    void removeCastlingThroughCheck(){
+        if(!possibleMoves.contains(new Coordinate(x-1, y)))
+            possibleMoves.remove(new Coordinate(x-2, y));
+        if(!possibleMoves.contains(new Coordinate(x+1, y)))
+            possibleMoves.remove(new Coordinate(x+2, y));
+    }
+
     @Override
     public ArrayList<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         ArrayList<MoveValue> moves = new ArrayList<>(2);

@@ -100,6 +100,9 @@ public class Chessboard {
     private void removeMovesInCheck(){
         for(Piece piece : getAllColourPieces(currentTurn)){
             piece.getPossibleMoves().removeIf(move -> isMoveUnsafe(piece, move));
+            if(piece instanceof King king){
+                king.removeCastlingThroughCheck();
+            }
         }
     }
 
