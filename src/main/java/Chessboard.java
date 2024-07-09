@@ -145,6 +145,7 @@ public class Chessboard {
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         history.push(move);
+        new ChessLogic(this).calculatePossibleMoves();
     }
 
     @Override
