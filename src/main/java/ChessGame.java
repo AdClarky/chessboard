@@ -34,6 +34,11 @@ public class ChessGame {
 
     public PieceColour getCurrentTurn(){return currentTurn;}
 
+    private void nextTurn(){
+        currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
+        board.setCurrentTurn(currentTurn);
+    }
+
     /**
      * Moves a piece to a new location while validating it is a valid move.
      * Assumes the provided old coordinates are valid coordinates for a piece.
@@ -46,6 +51,7 @@ public class ChessGame {
         if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
+        nextTurn();
         notifyMoveMade(oldX, oldY, newX, newY);
         if(ChessLogic.isDraw())
             notifyDraw();

@@ -17,8 +17,8 @@ public class ChessboardBuilder {
 
     public @NotNull Chessboard FromFen(@NotNull String fenString) {
         String[] sections = fenString.split(" ");
-        populateBoardFromFenString(sections[0]);
         setTurnToMove(sections[1]);
+        populateBoardFromFenString(sections[0]);
         setCastlingRights(sections[2]);
         setEnPassant(sections[3]);
         setHalfMoves(sections[4]);

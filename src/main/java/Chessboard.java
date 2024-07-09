@@ -1,7 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -99,7 +98,6 @@ public class Chessboard {
     }
 
     private void removeMovesInCheck(){
-        ChessLogic logicBoard = new ChessLogic(this);
         for(Piece piece : getAllColourPieces(currentTurn)){
             piece.getPossibleMoves().removeIf(this::isMoveUnsafe);
         }
@@ -194,13 +192,6 @@ public class Chessboard {
             }
         }
         return hash;
-    }
-
-    public void switchTurn(){
-        if(currentTurn == PieceColour.WHITE)
-            currentTurn = PieceColour.BLACK;
-        else
-            currentTurn = PieceColour.WHITE;
     }
 
     public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
