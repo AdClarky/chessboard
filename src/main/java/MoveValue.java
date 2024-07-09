@@ -3,6 +3,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * A move a piece could make.
+ * @param piece the piece being moved
+ * @param newX its new X position
+ * @param newY its new Y position
  */
 public record MoveValue(Piece piece, int newX, int newY) {
     /**

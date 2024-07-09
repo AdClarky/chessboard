@@ -59,6 +59,7 @@ public class Autoplay {
     }
 
     /**
+     * Gets the moves which are stored in the autoplayer.
      * @return the moves saved in the object, where each String is one move.
      */
     public Collection<String> getMoves(){return moves;}

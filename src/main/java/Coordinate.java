@@ -3,6 +3,8 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Coordinate class which stores the x and y value of a coordinate.
+ * @param x x coordinate
+ * @param y y coordinate
  */
 public record Coordinate(int x, int y) {
     /**

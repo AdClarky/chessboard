@@ -25,6 +25,7 @@ public abstract class Piece {
     }
 
     /**
+     * Pre-calculated, all the possible coordinates this piece can move to.
      * @return a list of coordinates the piece can move to.
      */
     public List<Coordinate> getPossibleMoves(){
