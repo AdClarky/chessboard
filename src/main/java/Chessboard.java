@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Objects;
 
 /** A chess board that is automatically populated with blank squares. */
-public class Chessboard {
+class Chessboard {
     private final Piece[][] board  =  new Piece[8][8];
     private final BoardHistory history;
-    private final Set<Piece> blackPieces = new HashSet<>(16);
+    private final Collection<Piece> blackPieces = new HashSet<>(16);
     private King blackKing;
-    private final Set<Piece> whitePieces = new HashSet<>(16);
+    private final Collection<Piece> whitePieces = new HashSet<>(16);
     private King whiteKing;
     private PieceColour currentTurn = PieceColour.WHITE;
 
@@ -86,15 +85,11 @@ public class Chessboard {
 
     public Collection<Piece> getAllColourPieces(PieceColour colour){
         if(colour == PieceColour.BLACK)
-            return getPieces(blackPieces);
+            return new ArrayList<>(blackPieces);
         else if(colour == PieceColour.WHITE)
-            return getPieces(whitePieces);
+            return new ArrayList<>(whitePieces);
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
-    }
-
-    private Collection<Piece> getPieces(Collection<Piece> pieces){
-        return new ArrayList<>(pieces);
     }
 
     public King getKing(PieceColour colour){
