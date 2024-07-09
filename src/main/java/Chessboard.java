@@ -41,7 +41,7 @@ public class Chessboard {
             if(piece instanceof King)
                 whiteKing = (King) piece;
         }
-        calculatePossibleMoves();
+        new ChessLogic(this).calculatePossibleMoves();
     }
 
     /** Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}. */
@@ -81,38 +81,6 @@ public class Chessboard {
 
     public void movePiece(@NotNull MoveValue move){
         movePiece(move.newX(), move.newY(), move.piece());
-    }
-
-    public void calculatePossibleMoves(){
-        calculatePieces(currentTurn);
-        removeMovesInCheck();
-        calculatePieces(PieceColour.getOtherColour(currentTurn));
-    }
-
-    private void calculatePieces(PieceColour colour){
-        Collection<Piece> pieces = getAllColourPieces(colour);
-        ChessLogic logicBoard = new ChessLogic(this);
-        for(Piece piece : pieces){
-            piece.calculatePossibleMoves(logicBoard);
-        }
-    }
-
-    private void removeMovesInCheck(){
-        for(Piece piece : getAllColourPieces(currentTurn)){
-            piece.getPossibleMoves().removeIf(move -> isMoveUnsafe(piece, move));
-            if(piece instanceof King king){
-                king.removeCastlingThroughCheck();
-            }
-        }
-    }
-
-    private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
-        Move move = new Move(movePos.x(), movePos.y(), piece, getLastPieceMoved(), this);
-        PieceColour enemyColour = PieceColour.getOtherColour(currentTurn);
-        calculatePieces(enemyColour);
-        boolean isMoveUnsafe = new ChessLogic(this).isKingInCheck(currentTurn);
-        move.undo();
-        return isMoveUnsafe;
     }
 
     public Set<Piece> getAllColourPieces(PieceColour colour){
