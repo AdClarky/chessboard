@@ -1,17 +1,13 @@
-import java.util.ArrayList;
-
 public class Queen extends Piece{
     public Queen(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public ArrayList<Coordinate> getPossibleMoves(ChessLogic board) {
-        ArrayList<Coordinate> moves = new ArrayList<>(10);
-        calculateDiagonalMoves(moves, board);
-        calculateStraightMoves(moves, board);
-        removeMovesInCheck(moves, board);
-        return moves;
+    public void calculatePossibleMoves(ChessLogic board) {
+        possibleMoves.clear();
+        calculateDiagonalMoves(board);
+        calculateStraightMoves(board);
     }
 
     @Override

@@ -1,5 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+
 public class ChessLogic {
     private Chessboard board;
 
@@ -7,16 +9,34 @@ public class ChessLogic {
         this.board = board;
     }
 
-    /**
-     * Calculates if moving a piece to a position would put that teams king in check.
-     * This assumes the piece moving to the new position is a valid move.
-     * @param pieceToCheck the piece being moved.
-     * @return true if in check, false if not
-     */
-    public boolean isMoveUnsafe(int newX, int newY, @NotNull Piece pieceToCheck){
-        Piece lastPiece = board.getLastPieceMoved();
-        Move move = new Move(newX, newY, pieceToCheck, lastPiece, board);
-        boolean isMoveUnsafe = isKingInCheck(pieceToCheck.getColour());
+
+    public void calculatePossibleMoves(){
+        calculatePieces(board.getCurrentTurn());
+        removeMovesInCheck();
+        calculatePieces(PieceColour.getOtherColour(board.getCurrentTurn()));
+    }
+
+    private void calculatePieces(PieceColour colour){
+        Collection<Piece> pieces = board.getAllColourPieces(colour);
+        for(Piece piece : pieces){
+            piece.calculatePossibleMoves(this);
+        }
+    }
+
+    private void removeMovesInCheck(){
+        for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
+            piece.getPossibleMoves().removeIf(move -> isMoveUnsafe(piece, move));
+            if(piece instanceof King king){
+                king.removeCastlingThroughCheck();
+            }
+        }
+    }
+
+    private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
+        Move move = new Move(movePos.x(), movePos.y(), piece, board.getLastPieceMoved(), board);
+        PieceColour enemyColour = PieceColour.getOtherColour(board.getCurrentTurn());
+        calculatePieces(enemyColour);
+        boolean isMoveUnsafe = isKingInCheck(board.getCurrentTurn());
         move.undo();
         return isMoveUnsafe;
     }
@@ -26,7 +46,7 @@ public class ChessLogic {
         Coordinate kingPos = new Coordinate(king);
         Iterable<Piece> enemyPieces = board.getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
         for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves(this).contains(kingPos)){
+            if(piece.getPossibleMoves().contains(kingPos)){
                 return true;
             }
         }
@@ -36,12 +56,10 @@ public class ChessLogic {
     public boolean isCheckmate(){
         if(!isKingInCheck(board.getCurrentTurn()))
             return false;
-        Iterable<Piece> enemyPieces = board.getAllColourPieces(board.getCurrentTurn());
-        for (Piece enemyPiece : enemyPieces) {
-            for (Coordinate move : enemyPiece.getPossibleMoves(this)) {
-                if (!isMoveUnsafe(move.x(), move.y(), enemyPiece))
-                    return false;
-            }
+        Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
+        for (Piece piece : pieces) {
+            if(!piece.getPossibleMoves().isEmpty())
+                return false;
         }
         return true;
     }
@@ -57,7 +75,7 @@ public class ChessLogic {
             return false;
         Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
-            if(!piece.getPossibleMoves(this).isEmpty())
+            if(!piece.getPossibleMoves().isEmpty())
                 return false;
         }
         return true;
@@ -107,6 +125,6 @@ public class ChessLogic {
     }
 
     public boolean isValidMove(Piece piece, int newX, int newY){
-        return !piece.getPossibleMoves(this).contains(new Coordinate(newX, newY));
+        return !piece.getPossibleMoves().contains(new Coordinate(newX, newY));
     }
 }

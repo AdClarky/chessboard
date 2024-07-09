@@ -227,13 +227,7 @@ class MoveTest {
 
     @Test
     void basicPromotion(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(1);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
         new Move(4, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
@@ -251,13 +245,7 @@ class MoveTest {
 
     @Test
     void basicPromotionUndo(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(1);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
         Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         int x = 4, y = 6;
@@ -276,13 +264,7 @@ class MoveTest {
 
     @Test
     void basicPromotionRedo(){
-        Collection<Piece> whitePieces = new ArrayList<>(2);
-        Collection<Piece> blackPieces = new ArrayList<>(1);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1");
         Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
@@ -304,12 +286,7 @@ class MoveTest {
     void promotionTaking(){
         Collection<Piece> whitePieces = new ArrayList<>(2);
         Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
         new Move(5, 7, board.getPiece(4, 6), null, board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
@@ -329,12 +306,7 @@ class MoveTest {
     void promotionTakingUndo(){
         Collection<Piece> whitePieces = new ArrayList<>(2);
         Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         int x = 4, y = 6;
@@ -355,12 +327,7 @@ class MoveTest {
     void promotionTakingRedo(){
         Collection<Piece> whitePieces = new ArrayList<>(2);
         Collection<Piece> blackPieces = new ArrayList<>(2);
-        board = new Chessboard();
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new Pawn(4, 6, PieceColour.WHITE));
-        blackPieces.add(new King(0, 7, PieceColour.BLACK));
-        blackPieces.add(new Pawn(5, 7, PieceColour.BLACK));
-        board.populateBoard(whitePieces, blackPieces);
+        board = new ChessboardBuilder().FromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1");
         Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), null, board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();

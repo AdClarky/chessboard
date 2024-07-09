@@ -1,6 +1,5 @@
 import javax.swing.Icon;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,8 +9,9 @@ import java.util.Objects;
 public abstract class Piece {
     private final int startX;
     private final int startY;
-    private Icon pieceIcon;
+    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
     protected final PieceColour colour;
+    private Icon pieceIcon;
     protected int x;
     protected int y;
 
@@ -27,7 +27,11 @@ public abstract class Piece {
      * Calculates all possible moves based on surrounding pieces and checks.
      * @return a list of coordinates the piece can move to.
      */
-    public abstract List<Coordinate> getPossibleMoves(ChessLogic board);
+    public List<Coordinate> getPossibleMoves(){
+        return possibleMoves;
+    }
+
+    public abstract void calculatePossibleMoves(ChessLogic board);
 
     /**
      * For pieces where the first move must be tracked.
@@ -87,41 +91,29 @@ public abstract class Piece {
     public int getX() {return x;}
     public int getY() {return y;}
 
-    protected void removeMovesInCheck(Collection<Coordinate> moves, ChessLogic board) {
-        if(board.getCurrentTurn() != colour)
-            return;
-        moves.removeIf(move -> board.isMoveUnsafe(move.x(), move.y(), this));
-    }
-
     /**
      * Calculates how far a piece can move in each diagonal direction.
-     *
-     * @param moves a list of possible moves
-     * @param board
      */
-    protected void calculateDiagonalMoves(Collection<Coordinate> moves, ChessLogic board){
-        calculateSingleDirection(moves, board, 1, 1);
-        calculateSingleDirection(moves, board, -1, -1);
-        calculateSingleDirection(moves, board, 1, -1);
-        calculateSingleDirection(moves, board, -1, 1);
+    protected void calculateDiagonalMoves(ChessLogic board){
+        calculateSingleDirection(board, 1, 1);
+        calculateSingleDirection(board, -1, -1);
+        calculateSingleDirection(board, 1, -1);
+        calculateSingleDirection(board, -1, 1);
     }
 
     /**
      * Calculates how far a piece can move in each straight direction.
-     *
-     * @param moves a list of possible moves
-     * @param board
      */
-    protected void calculateStraightMoves(Collection<Coordinate> moves, ChessLogic board) {
-        calculateSingleDirection(moves, board, 1, 0);
-        calculateSingleDirection(moves, board, -1, 0);
-        calculateSingleDirection(moves, board, 0, 1);
-        calculateSingleDirection(moves, board, 0, -1);
+    protected void calculateStraightMoves(ChessLogic board) {
+        calculateSingleDirection(board, 1, 0);
+        calculateSingleDirection(board, -1, 0);
+        calculateSingleDirection(board, 0, 1);
+        calculateSingleDirection(board, 0, -1);
     }
 
-    private void calculateSingleDirection(Collection<Coordinate> moves, ChessLogic board, int xIncrement, int yIncrement){
+    private void calculateSingleDirection(ChessLogic board, int xIncrement, int yIncrement){
         for(int x = this.x+xIncrement, y = this.y+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
-            if(cantMove(moves, board, x, y))
+            if(cantMove(board, x, y))
                 break;
         }
     }
@@ -129,20 +121,17 @@ public abstract class Piece {
     /**
      * Calculates if a move to a specific square is valid.
      * Validates the coords are within the board and then checks if it's a friendly piece.
-     *
-     * @param moves a collection of possible moves
-     * @param board
      * @return if the move is valid
      */
-    protected boolean cantMove(Collection<Coordinate> moves, ChessLogic board, int x, int y) {
+    protected boolean cantMove(ChessLogic board, int x, int y) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
             if(board.isEnemyPiece(x, y, colour))
-                moves.add(new Coordinate(x, y));
+                possibleMoves.add(new Coordinate(x, y));
             return true;
         }
-        moves.add(new Coordinate(x, y));
+        possibleMoves.add(new Coordinate(x, y));
         return false;
     }
 }

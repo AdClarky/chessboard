@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,9 +10,7 @@ public class Blank extends Piece {
     }
 
     @Override
-    public List<Coordinate> getPossibleMoves(ChessLogic board) {
-        return new ArrayList<>(0);
-    }
+    public void calculatePossibleMoves(ChessLogic board){}
 
     @Override
     public void firstMove() {}

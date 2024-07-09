@@ -52,14 +52,8 @@ class ChessboardTest {
     }
 
     @Test
-    void isInvalidMoveSafe() {
-        new Move(2, 0, board.getPiece(4, 7), null, board);
-        assertTrue(new ChessLogic(board).isMoveUnsafe(7, 2, board.getPiece(7, 1)));
-    }
-
-    @Test
     void queenNextToKingInCheck(){
-        new Move(2, 0, board.getPiece(4, 7), null, board);
+        Chessboard board = new ChessboardBuilder().FromFen("rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBqKBNR w KQkq - 0 1");
         assertTrue(new ChessLogic(board).isKingInCheck(PieceColour.WHITE));
     }
 
