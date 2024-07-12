@@ -22,11 +22,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         with:
           java-version: '21'
           distribution: 'temurin'
           cache: 'maven'
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Run the Maven verify phase
         run: mvn --batch-mode --update-snapshots verify
