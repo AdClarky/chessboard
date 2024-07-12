@@ -26,7 +26,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Configure GPG Key
-        run: ./builder.sh config_gpg
+        run:   mkdir -p ~/.gnupg/ | print "${GPG_SIGNING_KEY}" | base64 --decode > ~/.gnupg/private.key | gpg --import ~/.gnupg/private.key
         env:
           GPG_SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       - name: Run the Maven verify phase
