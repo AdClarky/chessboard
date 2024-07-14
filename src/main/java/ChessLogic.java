@@ -13,6 +13,7 @@ class ChessLogic {
     public void calculatePossibleMoves(){
         calculatePieces(board.getCurrentTurn());
         removeMovesInCheck();
+        removeMovesTakingFriendly();
         calculatePieces(PieceColour.getOtherColour(board.getCurrentTurn()));
     }
 
@@ -51,6 +52,17 @@ class ChessLogic {
             }
         }
         return false;
+    }
+
+    private void removeMovesTakingFriendly() {
+        for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
+            piece.getPossibleMoves().removeIf(move -> isMoveTakingFriendly(piece, move));
+        }
+    }
+
+    private boolean isMoveTakingFriendly(Piece piece, Coordinate movePos){
+        return board.getPiece(movePos).getColour() == piece.getColour() &&
+                board.getPiece(movePos) != piece;
     }
 
     public boolean isCheckmate(){

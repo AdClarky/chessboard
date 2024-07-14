@@ -171,8 +171,7 @@ public abstract class Piece {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            if(board.isEnemyPiece(x, y, colour))
-                possibleMoves.add(new Coordinate(x, y));
+            possibleMoves.add(new Coordinate(x, y));
             return true;
         }
         possibleMoves.add(new Coordinate(x, y));
