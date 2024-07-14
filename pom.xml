@@ -6,7 +6,7 @@
 
     <groupId>io.github.adclarky</groupId>
     <artifactId>chessboard</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
     <description>Standard Chessboard with a few Chess related features such as PGN parsing and
     FEN string generation</description>
     <url>https://github.com/AdClarky/chessboard</url>
