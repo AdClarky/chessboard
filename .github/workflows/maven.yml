@@ -31,6 +31,7 @@ jobs:
           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
       - name: Run the Maven verify phase
-        run: mvn --batch-mode --update-snapshots \
+        run: mvn \
+          --batch-mode \
           -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-          verify
+          clean verify
