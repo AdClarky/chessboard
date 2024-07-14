@@ -55,7 +55,7 @@ class Move {
         previousPawn.undoMoveCondition();
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
-        board.undoMove();
+        board.nextTurn();
     }
 
     private void takePiece(@NotNull MoveValue move){
