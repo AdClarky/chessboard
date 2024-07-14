@@ -26,7 +26,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: List secret keys
-        run: gpg --list-secret-keys --key-id-format LONG
+        run: gpg --list-secret-keys --keyid-format LONG
       - id: install-secret-key
         name: Install gpg secret key
         run: |
