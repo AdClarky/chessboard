@@ -139,6 +139,7 @@ public class ChessGame {
         Move move = board.redoMove();
         if(move == null)
             return;
+        chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
         if(chessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(currentTurn));
@@ -152,6 +153,7 @@ public class ChessGame {
         Move move = board.undoMove();
         if(move == null)
             return;
+        chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
     }
 
