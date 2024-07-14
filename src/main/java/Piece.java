@@ -50,6 +50,10 @@ public abstract class Piece {
         return new ArrayList<>(possibleMoves);
     }
 
+    void removePossibleMove(Coordinate move){
+        possibleMoves.remove(move);
+    }
+
     abstract void calculatePossibleMoves(ChessLogic board);
 
     abstract void firstMove();
