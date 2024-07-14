@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/** Used to generate a {@link Chessboard}. Can be built in the default configuration or using a fen string.*/
-public class ChessboardBuilder {
+/**
+ * Used to generate a {@link Chessboard}. Can be built in the default configuration or using a fen string.
+ */
+class ChessboardBuilder {
+    private final static Pattern REGEX = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
     private final Chessboard board = new Chessboard();
     private final List<Piece> whitePieces = new ArrayList<>(16);
     private final List<Piece> blackPieces = new ArrayList<>(16);
     private int squaresProcessed = 7;
+
+    ChessboardBuilder() {
+    }
 
     public @NotNull Chessboard defaultSetup() {
         getBoardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
@@ -145,8 +151,7 @@ public class ChessboardBuilder {
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
     }
 
-    private boolean doesStringMatchFen(String fenString){
-        Pattern regex = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
-        return regex.matcher(fenString).matches();
+    private static boolean doesStringMatchFen(CharSequence fenString){
+        return REGEX.matcher(fenString).matches();
     }
 }

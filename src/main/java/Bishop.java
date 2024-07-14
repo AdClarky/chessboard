@@ -1,22 +1,33 @@
+/**
+ * A Bishop in chess which can only move diagonally.
+ */
 public class Bishop extends Piece{
+    /**
+     * Creates a {@code Bishop}
+     * @param x starting x position
+     * @param y starting y position
+     * @param colour if it is black or white
+     */
     public Bishop(int x, int y, PieceColour colour) {
         super(x, y, colour);
     }
 
     @Override
-    public void calculatePossibleMoves(ChessLogic board) {
+    void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         calculateDiagonalMoves(board);
     }
 
     @Override
-    public void firstMove() {}
+    void firstMove() {}
 
     @Override
-    public void undoMoveCondition(){}
+    void undoMoveCondition(){}
 
     @Override
-    public boolean hadFirstMove(){return false;}
+    public boolean hadFirstMove(){
+        return false;
+    }
 
     @Override
     public String toString() {

@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-public class BoardHistory {
+class BoardHistory {
     private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
     private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
     private Deque<Move> lastMove = moves;
     private int numHalfMoves = 0;
     private int numFullMoves = 1;
+
+    BoardHistory() {
+
+    }
 
     public @Nullable Piece getLastPieceMoved(){
         return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();

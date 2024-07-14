@@ -1,9 +1,28 @@
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The colour of a piece.
+ */
 public enum PieceColour {
-    WHITE, BLACK, BLANK;
+    /**
+     * A White Chess piece.
+     */
+    WHITE,
+    /**
+     * A Black Chess piece.
+     */
+    BLACK,
+    /**
+     * A Blank square, a piece should never have this value.
+     */
+    BLANK;
 
+    /**
+     * Finds the opposite colour of a given colour. Blank returns blank.
+     * @param otherColour the colour you want the opposite of.
+     * @return the opposite colour.
+     */
     public static PieceColour getOtherColour(@NotNull PieceColour otherColour) {
         return switch (otherColour) {
             case WHITE -> BLACK;
@@ -12,7 +31,7 @@ public enum PieceColour {
         };
     }
 
-    public static int getDirectionFromColour(@NotNull PieceColour colour){
+    static int getDirectionFromColour(@NotNull PieceColour colour){
         return switch (colour){
             case WHITE -> 1;
             case BLACK -> -1;
@@ -21,7 +40,7 @@ public enum PieceColour {
     }
 
     @Contract(pure = true)
-    public static @NotNull String getStringFromColour(@NotNull PieceColour colour){
+    static @NotNull String getStringFromColour(@NotNull PieceColour colour){
         return switch(colour){
             case WHITE -> "white";
             case BLACK -> "black";

@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import java.net.URL;
 
 /** Used for generating a larger image. */
-public final class ImageUtils {
+final class ImageUtils {
     private static final int SCALE = 64;
 
     private ImageUtils() {}

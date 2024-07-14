@@ -3,7 +3,7 @@ import org.jetbrains.annotations.Nullable;
 
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called
  * at any point and the fen string will be calculated. */
-public class FenGenerator {
+class FenGenerator {
     private final Chessboard board;
     private final StringBuilder fenString = new StringBuilder();
 

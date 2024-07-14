@@ -6,21 +6,41 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
-/** Parses a set of moves in a text file and then plays the move in order to a given board. */
+/**
+ * Parses a set of moves in a text file and then plays the move in order to a given board.
+*/
 public class Autoplay {
     private final Collection<String> moves = new ArrayList<>(30);
     private final ChessGame chessGame;
 
+    /**
+     * Constructs an {@code Autoplay} object and parses a PGN file for chess moves.
+     * @param chessGame the game where the moves will be played.
+     * @param path the path of the PGN file.
+     * @throws IOException if there is an error while accessing the file.
+     */
     public Autoplay(@NotNull ChessGame chessGame, Path path) throws IOException {
         this.chessGame = chessGame;
         moves.addAll(new PGNParser(path).getMoves());
     }
 
+    /**
+     * Constructs an {@code Autoplay} object and takes a collection
+     * of chess moves as the move that will be made.
+     * @param chessGame the game where the moves will be played.
+     * @param moves the collection of moves where each string is one move.
+     */
     public Autoplay(@NotNull ChessGame chessGame, Collection<String> moves){
         this.chessGame = chessGame;
         this.moves.addAll(moves);
     }
 
+    /**
+     * Plays each move individually with a delay.
+     * @param delay the amount of time after each move in MS that the program stops.
+     * @throws InterruptedException when the thread is sleeping and an interrupt occurs.
+     * @throws InvalidMoveException a given move was invalid.
+     */
     public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
             chessGame.makeMove(move);
@@ -29,9 +49,18 @@ public class Autoplay {
         }
     }
 
+    /**
+     * Plays each move individually with no built-in delay.
+     * @throws InterruptedException when the thread is sleeping and an interrupt occurs.
+     * @throws InvalidMoveException a given move was invalid.
+     */
     public void play() throws InterruptedException, InvalidMoveException {
         play(0);
     }
 
+    /**
+     * Gets the moves which are stored in the autoplayer.
+     * @return the moves saved in the object, where each String is one move.
+     */
     public Collection<String> getMoves(){return moves;}
 }

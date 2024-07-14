@@ -8,7 +8,7 @@ import java.util.List;
  * Moves and stores all necessary pieces to make a chess move.
  * Allows the move to be undone and redone as many times as you would like.
  * There is no move validation, it will always make the move. */
-public class Move {
+class Move {
     private final Chessboard board;
     private final Piece piece;
     private final Piece previousPawn;
@@ -18,7 +18,7 @@ public class Move {
     private final List<MoveValue> movesMade;
     private boolean undone = false;
     private boolean taking = false;
-    private boolean hadFirstMove = false;
+    private boolean notHadFirstMove = true;
     private boolean wasPreviousPawnPassantable = false;
 
     /**
@@ -53,7 +53,7 @@ public class Move {
         }
         wasPreviousPawnPassantable = previousPawn.hadFirstMove();
         previousPawn.undoMoveCondition();
-        hadFirstMove = piece.hadFirstMove();
+        notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
     }
 
@@ -77,7 +77,7 @@ public class Move {
             addOrRemovePiece(move.piece(), move);
             board.movePiece(move);
         }
-        if(!hadFirstMove)
+        if(notHadFirstMove)
             piece.undoMoveCondition();
         if(wasPreviousPawnPassantable)
             previousPawn.firstMove();
