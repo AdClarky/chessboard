@@ -27,7 +27,7 @@ jobs:
           distribution: 'temurin'
       - name: List secret keys
         run: |
-          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}")
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --import
           gpg --list-secret-keys --keyid-format LONG
       - id: install-secret-key
         name: Install gpg secret key
