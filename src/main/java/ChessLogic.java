@@ -33,10 +33,10 @@ class ChessLogic {
     }
 
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
+        PieceColour previousTurn = board.getCurrentTurn();
         Move move = new Move(movePos.x(), movePos.y(), piece, board.getLastPieceMoved(), board);
-        PieceColour enemyColour = PieceColour.getOtherColour(board.getCurrentTurn());
-        calculatePieces(enemyColour);
-        boolean isMoveUnsafe = isKingInCheck(board.getCurrentTurn());
+        calculatePieces(board.getCurrentTurn());
+        boolean isMoveUnsafe = isKingInCheck(previousTurn);
         move.undo();
         return isMoveUnsafe;
     }
