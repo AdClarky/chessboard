@@ -65,7 +65,6 @@ public class ChessGame {
      * @throws InvalidMoveException when the move given is not a valid move.
      */
     public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
-        redoAllMoves();
         if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
