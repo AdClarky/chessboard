@@ -26,6 +26,7 @@ class MoveTest {
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
+        assertEquals(PieceColour.BLACK, board.getCurrentTurn());
     }
 
     @Test
@@ -41,6 +42,7 @@ class MoveTest {
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
+        assertEquals(PieceColour.WHITE, board.getCurrentTurn());
     }
 
     @Test
@@ -57,6 +59,7 @@ class MoveTest {
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
+        assertEquals(PieceColour.BLACK, board.getCurrentTurn());
     }
 
     @Test

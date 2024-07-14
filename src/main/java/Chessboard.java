@@ -165,7 +165,14 @@ class Chessboard {
         return hash;
     }
 
-    public void setCurrentTurn(PieceColour newTurn){currentTurn = newTurn;}
+    public void setCurrentTurn(PieceColour newTurn){
+        currentTurn = newTurn;
+    }
+
+
+    void nextTurn(){
+        currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
+    }
 
     public PieceColour getCurrentTurn(){return currentTurn;}
 

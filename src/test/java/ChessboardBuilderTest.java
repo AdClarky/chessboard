@@ -1,9 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.regex.Pattern;
-
-@SuppressWarnings("ALL")
+@SuppressWarnings("SpellCheckingInspection")
 class ChessboardBuilderTest {
 
     @Test
@@ -115,7 +113,7 @@ class ChessboardBuilderTest {
         ChessboardBuilder builder = new ChessboardBuilder();
         Chessboard board = builder.defaultSetup();
         board.makeMove(0, 1, 0, 2);
-        assertThrows(RuntimeException.class, ()->builder.defaultSetup());
+        assertThrows(RuntimeException.class, builder::defaultSetup);
     }
 
     @Test
