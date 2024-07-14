@@ -25,6 +25,16 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Check keystore file
+        run: |
+          echo "${{ secrets.OSSRH_GPG_SECRET_KEY }}" > release.keystore.asc
+          gpg -d --passphrase "${{ secrets.GPG_PASSPHRASE }}" --batch release.keystore.asc > signing-key.jks
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: release.keystore.asc
+          path: release.keystore.asc
+
       - id: install-secret-key
         name: Install gpg secret key
         run: |
