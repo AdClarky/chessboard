@@ -47,7 +47,7 @@ public abstract class Piece {
      * @return a list of coordinates the piece can move to.
      */
     public List<Coordinate> getPossibleMoves(){
-        return possibleMoves;
+        return new ArrayList<>(possibleMoves);
     }
 
     abstract void calculatePossibleMoves(ChessLogic board);

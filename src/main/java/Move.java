@@ -55,6 +55,7 @@ class Move {
         previousPawn.undoMoveCondition();
         notHadFirstMove = !piece.hadFirstMove();
         piece.firstMove();
+        board.undoMove();
     }
 
     private void takePiece(@NotNull MoveValue move){
@@ -81,6 +82,7 @@ class Move {
             piece.undoMoveCondition();
         if(wasPreviousPawnPassantable)
             previousPawn.firstMove();
+        board.nextTurn();
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */
