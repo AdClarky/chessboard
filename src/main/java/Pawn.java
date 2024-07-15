@@ -25,31 +25,31 @@ public class Pawn extends Piece{
     void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(board.isSquareBlank(x, y+direction)) {// basic move forward
-            possibleMoves.add(new Coordinate(x, y + direction));
-            if(board.isSquareBlank(x, y+(direction << 1))) // double move first go
-                possibleMoves.add(new Coordinate(x, y + (direction << 1)));
+        if(board.isSquareBlank(getX(), getY()+direction)) {// basic move forward
+            possibleMoves.add(new Coordinate(getX(), getY() + direction));
+            if(board.isSquareBlank(getX(), getY()+(direction << 1))) // double move first go
+                possibleMoves.add(new Coordinate(getX(), getY() + (direction << 1)));
         }
         getTakingMoves(board);
-        if((colour == PieceColour.BLACK && y == 3) || (colour == PieceColour.WHITE && y == 4)){ // en passant
+        if((colour == PieceColour.BLACK && getY() == 3) || (colour == PieceColour.WHITE && getY() == 4)){ // en passant
             getEnPassantMoves(board);
         }
     }
 
     private void getEnPassantMoves(@NotNull ChessLogic board){
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(board.isPiecePawn(x+1, y) && board.hasPieceHadFirstMove(x+1, y))
-             possibleMoves.add(new Coordinate(x+1,y+direction));
-        if(board.isPiecePawn(x-1, y) && board.hasPieceHadFirstMove(x-1, y))
-            possibleMoves.add(new Coordinate(x-1,y+direction));
+        if(board.isPiecePawn(getX()+1, getY()) && board.hasPieceHadFirstMove(getX()+1, getY()))
+             possibleMoves.add(new Coordinate(getX()+1,getY()+direction));
+        if(board.isPiecePawn(getX()-1, getY()) && board.hasPieceHadFirstMove(getX()-1, getY()))
+            possibleMoves.add(new Coordinate(getX()-1,getY()+direction));
     }
 
     private void getTakingMoves(@NotNull ChessLogic board){
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(board.isEnemyPiece(x + 1, y + direction, colour))
-            possibleMoves.add(new Coordinate(x+1,y+direction));
-        if(board.isEnemyPiece(x-1, y + direction, colour))
-            possibleMoves.add(new Coordinate(x-1,y+direction));
+        if(board.isEnemyPiece(getX() + 1, getY() + direction, colour))
+            possibleMoves.add(new Coordinate(getX()+1,getY()+direction));
+        if(board.isEnemyPiece(getX()-1, getY() + direction, colour))
+            possibleMoves.add(new Coordinate(getX()-1,getY()+direction));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Pawn extends Piece{
         if(newY == 7 || newY == 0) { // if pawn promotion
             moves.add(new MoveValue(this, newX, newY));
             moves.add(new MoveValue(new Queen(newX, newY, colour), newX, newY));
-        }else if(newX != x && board.isSquareBlank(newX, newY)){ // if passanting
+        }else if(newX != getX() && board.isSquareBlank(newX, newY)){ // if passanting
             int direction = PieceColour.getDirectionFromColour(colour);
             moves.add(board.getMoveForOtherPiece(newX, newY-direction, newX, newY));
             moves.add(new MoveValue(this, newX, newY));

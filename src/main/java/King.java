@@ -19,10 +19,10 @@ public class King extends Piece{
     @Override
     void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
-        for(int y = this.y-1; y <= this.y+1; y++) {
-            for(int x = this.x-1; x <= this.x+1 ; x++) {
+        for(int y = getY()-1; y <= getY()+1; y++) {
+            for(int x = getX()-1; x <= getX()+1 ; x++) {
                 cantMove(board, x, y);
-                if(x == this.x && y == this.y)
+                if(x == getX() && y == getY())
                     possibleMoves.removeLast();
             }
         }
@@ -31,29 +31,29 @@ public class King extends Piece{
     }
 
     private void calculateCastling(ChessLogic board){
-        if(!board.hasPieceHadFirstMove(x-3, y)){
-            if(board.isSquareBlank(x-1, y) && board.isSquareBlank(x-2, y))
-                possibleMoves.add(new Coordinate(x-2, y));
+        if(!board.hasPieceHadFirstMove(getX()-3, getY())){
+            if(board.isSquareBlank(getX()-1, getY()) && board.isSquareBlank(getX()-2, getY()))
+                possibleMoves.add(new Coordinate(getX()-2, getY()));
         }
-        if(!board.hasPieceHadFirstMove(x+4, y)){
-            if(board.isSquareBlank(x+1, y) && board.isSquareBlank(x+2, y) && board.isSquareBlank(x+3, y))
-                possibleMoves.add(new Coordinate(x+2, y));
+        if(!board.hasPieceHadFirstMove(getX()+4, getY())){
+            if(board.isSquareBlank(getX()+1, getY()) && board.isSquareBlank(getX()+2, getY()) && board.isSquareBlank(getX()+3, getY()))
+                possibleMoves.add(new Coordinate(getX()+2, getY()));
         }
     }
 
     void removeCastlingThroughCheck(){
-        if(!possibleMoves.contains(new Coordinate(x-1, y)))
-            possibleMoves.remove(new Coordinate(x-2, y));
-        if(!possibleMoves.contains(new Coordinate(x+1, y)))
-            possibleMoves.remove(new Coordinate(x+2, y));
+        if(!possibleMoves.contains(new Coordinate(getX()-1, getY())))
+            possibleMoves.remove(new Coordinate(getX()-2, getY()));
+        if(!possibleMoves.contains(new Coordinate(getX()+1, getY())))
+            possibleMoves.remove(new Coordinate(getX()+2, getY()));
     }
 
     @Override
     List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(2);
-        if(newX - x == -2) { // short castle
+        if(newX - getX() == -2) { // short castle
             moves.add(board.getMoveForOtherPiece(0, newY, 2, newY));
-        }else if(x - newX == -2) {
+        }else if(getX() - newX == -2) {
             moves.add(board.getMoveForOtherPiece(7, newY, 4, newY));
         }
         moves.add(new MoveValue(this, newX, newY));
