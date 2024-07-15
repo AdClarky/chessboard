@@ -25,7 +25,10 @@ class ChessLogic {
 
     private void removeMovesInCheck(){
         for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
-            piece.getPossibleMoves().removeIf(move -> isMoveUnsafe(piece, move));
+            for(Coordinate move : piece.getPossibleMoves()){
+                if(isMoveUnsafe(piece, move))
+                    piece.removePossibleMove(move);
+            }
             if(piece instanceof King king){
                 king.removeCastlingThroughCheck();
             }
@@ -33,10 +36,12 @@ class ChessLogic {
     }
 
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
+        if(isMoveTakingFriendly(piece, movePos))
+            return true;
+        PieceColour previousTurn = board.getCurrentTurn();
         Move move = new Move(movePos.x(), movePos.y(), piece, board.getLastPieceMoved(), board);
-        PieceColour enemyColour = PieceColour.getOtherColour(board.getCurrentTurn());
-        calculatePieces(enemyColour);
-        boolean isMoveUnsafe = isKingInCheck(board.getCurrentTurn());
+        calculatePieces(board.getCurrentTurn());
+        boolean isMoveUnsafe = isKingInCheck(previousTurn);
         move.undo();
         return isMoveUnsafe;
     }
@@ -51,6 +56,11 @@ class ChessLogic {
             }
         }
         return false;
+    }
+
+    private boolean isMoveTakingFriendly(Piece piece, Coordinate movePos){
+        return board.getPiece(movePos).getColour() == piece.getColour() &&
+                board.getPiece(movePos) != piece;
     }
 
     public boolean isCheckmate(){

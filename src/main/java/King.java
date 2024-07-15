@@ -22,6 +22,8 @@ public class King extends Piece{
         for(int y = this.y-1; y <= this.y+1; y++) {
             for(int x = this.x-1; x <= this.x+1 ; x++) {
                 cantMove(board, x, y);
+                if(x == this.x && y == this.y)
+                    possibleMoves.removeLast();
             }
         }
         if(!moved)

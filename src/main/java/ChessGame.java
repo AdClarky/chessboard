@@ -16,7 +16,6 @@ public class ChessGame {
     private final ChessLogic chessLogic;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private PieceColour currentTurn = PieceColour.WHITE;
 
     /**
      * Creates a {@code ChessGame} with the pieces in the default position.
@@ -35,7 +34,6 @@ public class ChessGame {
     public ChessGame(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
         chessLogic = new ChessLogic(board);
-        currentTurn = board.getCurrentTurn();
         fenGenerator = new FenGenerator(board);
     }
 
@@ -44,12 +42,7 @@ public class ChessGame {
      * @return the current turn
      */
     public PieceColour getCurrentTurn(){
-        return currentTurn;
-    }
-
-    private void nextTurn(){
-        currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
-        board.setCurrentTurn(currentTurn);
+        return board.getCurrentTurn();
     }
 
     /**
@@ -68,13 +61,12 @@ public class ChessGame {
         if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
             throw new InvalidMoveException(oldX, oldY, newX, newY);
         board.makeMove(oldX, oldY, newX, newY);
-        nextTurn();
         chessLogic.calculatePossibleMoves();
         notifyMoveMade(oldX, oldY, newX, newY);
         if(chessLogic.isDraw())
             notifyDraw();
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKing(currentTurn));
+            notifyCheckmate(board.getKing(board.getCurrentTurn()));
         }
     }
 
@@ -141,7 +133,7 @@ public class ChessGame {
         chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKing(currentTurn));
+            notifyCheckmate(board.getKing(board.getCurrentTurn()));
         }
     }
 
