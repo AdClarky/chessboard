@@ -27,7 +27,7 @@ public class Pawn extends Piece{
         int direction = PieceColour.getDirectionFromColour(colour);
         if(board.isSquareBlank(getX(), getY()+direction)) {// basic move forward
             possibleMoves.add(new Coordinate(getX(), getY() + direction));
-            if(board.isSquareBlank(getY(), getY()+(direction << 1))) // double move first go
+            if(board.isSquareBlank(getX(), getY()+(direction << 1))) // double move first go
                 possibleMoves.add(new Coordinate(getX(), getY() + (direction << 1)));
         }
         getTakingMoves(board);
