@@ -11,6 +11,7 @@ public abstract class Piece {
     private final int startX;
     private final int startY;
     private Icon pieceIcon;
+    private Coordinate position;
     /**
      * The possible moves this pieces can make.
      */
@@ -19,14 +20,6 @@ public abstract class Piece {
      * The colour of the piece.
      */
     protected final PieceColour colour;
-    /**
-     * The current x position of the piece.
-     */
-    protected int x;
-    /**
-     * The current y position of the piece.
-     */
-    protected int y;
 
     /**
      * Creates a chess piece.
@@ -37,8 +30,7 @@ public abstract class Piece {
     protected Piece(int x, int y, PieceColour colour) {
         startX = x;
         startY = y;
-        this.x = x;
-        this.y = y;
+        position = new Coordinate(x, y);
         this.colour = colour;
     }
 
@@ -86,7 +78,7 @@ public abstract class Piece {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Piece piece = (Piece) obj;
-        return startX == piece.startX && x == piece.x && y == piece.y &&
+        return startX == piece.startX && getX() == piece.getX() && getY() == piece.getY() &&
                 startY == piece.startY && colour == piece.colour;
     }
 
@@ -114,8 +106,7 @@ public abstract class Piece {
 
 
     void setPos(int x, int y) {
-        this.x = x;
-        this.y = y;
+        position = new Coordinate(x, y);
     }
 
     /**
@@ -123,7 +114,7 @@ public abstract class Piece {
      * @return the x position
      */
     public int getX() {
-        return x;
+        return position.x();
     }
 
     /**
@@ -131,7 +122,7 @@ public abstract class Piece {
      * @return the y position
      */
     public int getY() {
-        return y;
+        return position.y();
     }
 
     /**
@@ -157,7 +148,7 @@ public abstract class Piece {
     }
 
     private void calculateSingleDirection(ChessLogic board, int xIncrement, int yIncrement){
-        for(int x = this.x+xIncrement, y = this.y+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
+        for(int x = getX()+xIncrement, y = getY()+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
             if(cantMove(board, x, y))
                 break;
         }
