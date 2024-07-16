@@ -6,24 +6,32 @@ import java.util.Collection;
 
 class TotalMovesTest {
     @Test
-    void testTotalMovesDepth1(){
+    void depth1(){
         ChessGame board = new ChessGame();
         int positions = assertDoesNotThrow(()->testDepth(board, 1));
         assertEquals(20, positions);
     }
 
     @Test
-    void testTotalMovesDepth2(){
+    void depth2(){
         ChessGame board = new ChessGame();
         int positions = assertDoesNotThrow(()->testDepth(board, 2));
         assertEquals(400, positions);
     }
 
+    @Test
+    void depth3(){
+        ChessGame board = new ChessGame();
+        int positions = assertDoesNotThrow(()->testDepth(board, 3));
+        assertEquals(8902, positions);
+    }
 
-
-
-
-
+    @Test
+    void depth4(){
+        ChessGame board = new ChessGame();
+        int positions = assertDoesNotThrow(()->testDepth(board, 4));
+        assertEquals(197281902, positions);
+    }
 
     int testDepth(ChessGame board, int currentDepth) throws InvalidMoveException {
         if (currentDepth == 0)
@@ -33,14 +41,14 @@ class TotalMovesTest {
         Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
             Collection<Coordinate> positionCoordinates = new ArrayList<>(piece.getPossibleMoves());
-            positions += positionCoordinates.size();
+            if(currentDepth == 1)
+                positions += positionCoordinates.size();
             for(Coordinate position : positionCoordinates){
                 board.makeMove(piece.getX(), piece.getY(), position.x(), position.y());
                 positions += testDepth(board, currentDepth - 1);
                 board.undoMove();
             }
         }
-
         return positions;
     }
 }
