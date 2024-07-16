@@ -12,8 +12,7 @@ class Move {
     private final Chessboard board;
     private final Piece piece;
     private final Piece previousPawn;
-    private final int x;
-    private final int y;
+    private final Coordinate movePosition;
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
     private boolean undone = false;
@@ -26,8 +25,7 @@ class Move {
      * Used so it can undo the first move condition on the previous piece if necessary.
      */
     public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Chessboard board){
-        this.x = x;
-        this.y = y;
+        movePosition = new Coordinate(x, y);
         this.piece = piece;
         this.board = board;
         if(previousPiece instanceof Pawn) // only need to track it if it's a pawn
@@ -97,11 +95,11 @@ class Move {
     }
 
     public int getX() {
-        return x;
+        return movePosition.x();
     }
 
     public int getY() {
-        return y;
+        return movePosition.y();
     }
 
     public int getPieceX(){
