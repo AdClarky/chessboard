@@ -25,4 +25,8 @@ public class PossibleMoves {
         }
         return whiteBoard;
     }
+
+    public boolean isPossible(PieceColour colour, Coordinate move){
+        return getPossibleMovesBoard(colour).isPossible(move);
+    }
 }
