@@ -13,6 +13,7 @@ class FenGenerator {
 
     /** Calculates and returns the fen string */
     public String getFenString() {
+        fenString.setLength(0);
         addBoardPosition();
         addCurrentTurn();
         addCastlingRights();

@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -247,5 +249,56 @@ class BoardHistoryTest {
     void getLastMovesWhenNoMovesHaveBeenMade(){
         List<MoveValue> lastMoves = history.getLastMoves();
         assertTrue(lastMoves.isEmpty());
+    }
+
+    @Test
+    void areHalfMovesCorrectWhenClearingRedoAfterPawnMoves(){
+        ChessGame game = new ChessGame();
+        assertDoesNotThrow(()->game.makeMove("a4"));
+        assertDoesNotThrow(()->game.makeMove("a5"));
+        assertDoesNotThrow(()->game.makeMove("b4"));
+        assertDoesNotThrow(()->game.makeMove("b5"));
+        assertDoesNotThrow(()->game.makeMove("c4"));
+        assertDoesNotThrow(()->game.makeMove("c5"));
+        game.undoMove();
+        assertDoesNotThrow(()->game.makeMove("d5"));
+        assertEquals("rnbqkbnr/2p1pppp/8/pp1p4/PPP5/8/3PPPPP/RNBQKBNR w KQkq d6 0 4", game.getFenString());
+    }
+
+    @Test
+    void areFullMovesCorrectWhenClearingRedoBlackSecond(){
+        ChessGame game = new ChessGame();
+        assertDoesNotThrow(()->{
+            game.makeMove("e4");
+            game.makeMove("e5");
+            game.undoMove();
+            game.makeMove("d5");
+        });
+        assertEquals("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2", game.getFenString());
+    }
+
+    @Test
+    void areFullMovesCorrectWhenClearingRedoBlackStarts(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"));
+        assertDoesNotThrow(()->{
+           game.makeMove("e5");
+           game.undoMove();
+           game.makeMove("d5");
+        });
+        assertEquals("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2", game.getFenString());
+    }
+
+    @Test
+    void doesTheGameGoBackToDefaultPosAfterClearing(){
+        ChessGame game = new ChessGame();
+        Collection<String> moves = Arrays.asList("e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5");
+        assertDoesNotThrow(()->new Autoplay(game, moves).play());
+        game.undoMove();
+        assertDoesNotThrow(()->game.makeMove("Nf6"));
+        assertEquals("r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", game.getFenString());
+        game.undoMultipleMoves(6);
+        assertEquals("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", game.getFenString());
+        game.redoAllMoves();
+        assertEquals("r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", game.getFenString());
     }
 }

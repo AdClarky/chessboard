@@ -4,19 +4,15 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 class ChessboardTest {
-    private Chessboard board = new ChessboardBuilder().defaultSetup();
-
-    @AfterEach
-    void setUp() {
-        board = new ChessboardBuilder().defaultSetup();
-    }
-
-
     @Test
     void doesCustomPositionWork(){
-        board = new Chessboard();
+        Chessboard board = new Chessboard();
         Collection<Piece> whitePieces = new ArrayList<>(3);
         Collection<Piece> blackPieces = new ArrayList<>(3);
         whitePieces.add(new King(0, 0, PieceColour.WHITE));
@@ -38,6 +34,7 @@ class ChessboardTest {
 
     @Test
     void doesBlankCheckerWork() {
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         for(int x = 0; x < 8; x++) {
             for(int y = 2; y < 6; y++) {
                 assertTrue(board.isSquareBlank(x,y));
@@ -59,12 +56,14 @@ class ChessboardTest {
 
     @Test
     void hashcodeOnSameState(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         int state = board.hashCode();
         assertEquals(state, board.hashCode());
     }
 
     @Test
     void hashcodeTestOnBasicPawnMoveWithUndo() {
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         int state = board.hashCode();
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
         assertNotEquals(state, board.hashCode());
@@ -74,6 +73,7 @@ class ChessboardTest {
 
     @Test
     void hashcodeTestOnMoveWherePreviousWasPassantable() {
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
         int state = board.hashCode();
         int whitePawnHash = board.getPiece(4,3).hashCode();
@@ -89,7 +89,32 @@ class ChessboardTest {
     }
 
     @Test
+    void differentStatesAfterMoveThenUndo(){
+        Chessboard game = new ChessboardBuilder().defaultSetup();
+        assertDoesNotThrow(()->game.makeMove(7, 1, 7, 3));
+        assertDoesNotThrow(()->game.makeMove(7, 6, 7, 4));
+        int state = game.hashCode();
+        game.undoMove();
+        game.undoMove();
+        assertNotEquals(state, game.hashCode());
+    }
+
+    @Test
+    void areAllHashesDifferentOnStandardBoard(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
+        Collection<Integer> hashes = new HashSet<>(64);
+        for(int y = 0; y < 8; y++){
+            for(int x = 0; x < 8; x++){
+                Piece piece = board.getPiece(x, y);
+                hashes.add(Objects.hash(piece, piece.getX(), piece.getY()));
+            }
+        }
+        assertEquals(64, hashes.size());
+    }
+
+    @Test
     void undoMoreThanNecessary(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         int state = board.hashCode();
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
@@ -105,6 +130,7 @@ class ChessboardTest {
 
     @Test
     void redoMoreThanNecessary(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
         assertDoesNotThrow(()->board.makeMove(3, 3, 4, 4));
@@ -123,27 +149,31 @@ class ChessboardTest {
 
     @Test
     void removeBlankSquare(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertThrows(IllegalArgumentException.class, ()-> board.removePiece(new Blank(0, 0)));
     }
 
     @Test
     void addBlankSquare(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertThrows(IllegalArgumentException.class, ()-> board.addPiece(new Blank(0, 0)));
     }
 
     @Test
     void getBlankKing(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertThrows(IllegalArgumentException.class, ()-> board.getKing(PieceColour.BLANK));
     }
 
     @Test
     void getBlankPieces(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertThrows(IllegalArgumentException.class, ()-> board.getAllColourPieces(PieceColour.BLANK));
     }
 
     @Test
     void areEdgeSquaresBlank(){
-        board = new Chessboard();
+        Chessboard board = new Chessboard();
         assertTrue(board.isSquareBlank(0, 0));
         assertTrue(board.isSquareBlank(7, 0));
         assertTrue(board.isSquareBlank(7, 7));
@@ -152,7 +182,7 @@ class ChessboardTest {
 
     @Test
     void areOutOfBoundarySquareNotBlank(){
-        board = new Chessboard();
+        Chessboard board = new Chessboard();
         assertFalse(board.isSquareBlank(-1, 0));
         assertFalse(board.isSquareBlank(8, 0));
         assertFalse(board.isSquareBlank(0, -1));
@@ -162,6 +192,7 @@ class ChessboardTest {
 
     @Test
     void areEdgeSquaresPieces(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertInstanceOf(Rook.class, board.getPiece(0, 0));
         assertInstanceOf(Rook.class, board.getPiece(7, 0));
         assertInstanceOf(Rook.class, board.getPiece(7, 7));
@@ -171,6 +202,7 @@ class ChessboardTest {
 
     @Test
     void areOutOfBoundsSquareBlank(){
+        Chessboard board = new ChessboardBuilder().defaultSetup();
         assertInstanceOf(Blank.class, board.getPiece(-1, 0));
         assertInstanceOf(Blank.class, board.getPiece(8, 0));
         assertInstanceOf(Blank.class, board.getPiece(0, -1));
