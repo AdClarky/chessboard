@@ -228,4 +228,8 @@ class Chessboard {
     public boolean canRedoMove() {
         return history.canRedoMove();
     }
+
+    public boolean wasMoveCapture() {
+        return history.wasMoveCapture();
+    }
 }

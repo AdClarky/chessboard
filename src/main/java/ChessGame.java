@@ -213,4 +213,12 @@ public class ChessGame {
     public String getFenString() {
         return fenGenerator.getFenString();
     }
+
+    public boolean wasMoveCapture(){
+        return board.wasMoveCapture();
+    }
+
+    public boolean isInCheck(){
+        return chessLogic.isKingInCheck(getCurrentTurn());
+    }
 }
