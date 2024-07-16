@@ -2,6 +2,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -158,13 +159,15 @@ class Chessboard {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        for(Piece[] row : board){
-            for(Piece piece : row){
-                hash += Objects.hash(piece, piece.getX(), piece.getY());
+        int[] hashRows = new int[8];
+        for(int y = 0; y < 8; y++){
+            int hashRow = 0;
+            for(Piece piece : board[y]){
+                hashRow += Objects.hash(piece, piece.getX(), piece.getY());
             }
+            hashRows[y] = hashRow;
         }
-        return hash;
+        return Arrays.hashCode(hashRows);
     }
 
     public void setCurrentTurn(PieceColour newTurn){
