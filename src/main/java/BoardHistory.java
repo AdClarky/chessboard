@@ -28,6 +28,8 @@ class BoardHistory {
     }
 
     public void push(Move move){
+        if(canRedoMove())
+            clearRedoMoves();
         moves.push(move);
         if(move.isPieceColourBlack())
             numFullMoves++;
@@ -89,5 +91,27 @@ class BoardHistory {
         if(!redoMoves.isEmpty() || !moves.isEmpty())
             throw new AccessedHistoryDuringGameException();
         this.numHalfMoves = numHalfMoves;
+    }
+
+    private void clearRedoMoves() {
+        countHalfMoves();
+        while(!redoMoves.isEmpty()){
+            if(redoMoves.pop().isPieceColourBlack())
+                numFullMoves--;
+        }
+    }
+
+    private void countHalfMoves(){
+        Deque<Move> temp = new ArrayDeque<>(5);
+        numHalfMoves = 0;
+        while(!moves.isEmpty()){
+            Move move = moves.pop();
+            if(move.hasTaken() || move.isPieceAPawn())
+                break;
+            temp.push(move);
+        }
+        while(!temp.isEmpty()){
+            moves.push(temp.pop());
+        }
     }
 }
