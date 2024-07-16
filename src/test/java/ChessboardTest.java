@@ -89,6 +89,17 @@ class ChessboardTest {
     }
 
     @Test
+    void differentStatesAfterMoveThenUndo(){
+        Chessboard game = new ChessboardBuilder().defaultSetup();
+        assertDoesNotThrow(()->game.makeMove(7, 1, 7, 3));
+        assertDoesNotThrow(()->game.makeMove(7, 6, 7, 4));
+        int state = game.hashCode();
+        game.undoMove();
+        game.undoMove();
+        assertNotEquals(state, game.hashCode());
+    }
+
+    @Test
     void undoMoreThanNecessary(){
         int state = board.hashCode();
         assertDoesNotThrow(()->board.makeMove(3, 1, 3, 3));
