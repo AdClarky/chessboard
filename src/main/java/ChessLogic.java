@@ -20,6 +20,7 @@ class ChessLogic {
         Collection<Piece> pieces = board.getAllColourPieces(colour);
         for(Piece piece : pieces){
             piece.calculatePossibleMoves(this);
+            board.pieceCanMove(piece.getColour(), piece.getPossibleMoves());
         }
     }
 
@@ -49,12 +50,9 @@ class ChessLogic {
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
         King king = board.getKing(kingToCheck);
         Coordinate kingPos = new Coordinate(king);
-        Iterable<Piece> enemyPieces = board.getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
-        for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves().contains(kingPos)){
-                return true;
-            }
-        }
+        PieceColour enemyColour = PieceColour.getOtherColour(kingToCheck);
+        if(board.isPossible(enemyColour, kingPos))
+            return true;
         return false;
     }
 
