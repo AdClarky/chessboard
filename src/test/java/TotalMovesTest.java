@@ -1,58 +1,41 @@
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 class TotalMovesTest {
     @Test
     void depth1(){
         ChessGame board = new ChessGame();
-        int positions = assertDoesNotThrow(()->testDepth(board, 1));
-        assertEquals(20, positions);
+        DepthTester tester = new DepthTester(board);
+        assertDoesNotThrow(()->tester.testDepth(1));
+        assertEquals(20, tester.getPositions());
     }
 
     @Test
     void depth2(){
         ChessGame board = new ChessGame();
-        int positions = assertDoesNotThrow(()->testDepth(board, 2));
-        assertEquals(400, positions);
+        DepthTester tester = new DepthTester(board);
+        assertDoesNotThrow(()->tester.testDepth(2));
+        assertEquals(400, tester.getPositions());
     }
 
     @Test
     void depth3(){
         ChessGame board = new ChessGame();
-        int positions = assertDoesNotThrow(()->testDepth(board, 3));
-        assertEquals(8902, positions);
+        DepthTester tester = new DepthTester(board);
+        assertDoesNotThrow(()->tester.testDepth(3));
+        assertEquals(34, tester.getCaptures());
+        assertEquals(12, tester.getChecks());
+        assertEquals(8902, tester.getPositions());
     }
 
     @Test
     void depth4(){
         ChessGame board = new ChessGame();
-        int positions = assertDoesNotThrow(()->testDepth(board, 4));
-        assertEquals(197281902, positions);
-    }
-
-    int testDepth(ChessGame board, int currentDepth) throws InvalidMoveException {
-        if (currentDepth == 0)
-            return 0;
-
-        int positions = 0;
-        Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
-        for(Piece piece : pieces){
-            Collection<Coordinate> positionCoordinates = new ArrayList<>(piece.getPossibleMoves());
-            if(currentDepth == 1) {
-                positions += positionCoordinates.size();
-                continue;
-            }
-            for(Coordinate position : positionCoordinates){
-                Coordinate originalPos = new Coordinate(piece.getX(), piece.getY());
-                board.makeMove(piece.getX(), piece.getY(), position.x(), position.y());
-                int positionCurrent = testDepth(board, currentDepth - 1);
-                positions += positionCurrent;
-                board.undoMove();
-            }
-        }
-        return positions;
+        DepthTester tester = new DepthTester(board);
+        assertDoesNotThrow(()->tester.testDepth(4));
+        assertEquals(197281902, tester.getPositions());
     }
 }
