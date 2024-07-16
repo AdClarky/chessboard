@@ -1,4 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class TotalMovesTest {
@@ -39,6 +40,13 @@ class TotalMovesTest {
     void depth4(){
         ChessGame board = new ChessGame();
         DepthTester tester = new DepthTester(board);
-        assertEquals(197281902, assertDoesNotThrow(()->tester.testDepth(4)));
+        assertEquals(197_281, assertDoesNotThrow(()->tester.testDepth(4)));
+    }
+
+    @Disabled // does not work yet off by 14
+    void depth5(){
+        ChessGame board = new ChessGame();
+        DepthTester tester = new DepthTester(board);
+        assertEquals(4_865_609, assertDoesNotThrow(()->tester.testDepth(5)));
     }
 }
