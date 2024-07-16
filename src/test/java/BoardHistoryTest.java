@@ -301,4 +301,20 @@ class BoardHistoryTest {
         game.redoAllMoves();
         assertEquals("r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4", game.getFenString());
     }
+
+
+    @Test
+    void lastMoveCaptureTest(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/RNBQKBNR w KQkq d6 0 2"));
+        assertDoesNotThrow(()->game.makeMove("exd5"));
+        assertTrue(game.wasMoveCapture());
+    }
+
+    @Test
+    void isInCheckTest(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("4k3/8/8/8/8/8/8/3QK3 w - - 0 1"));
+        assertFalse(game.isInCheck());
+        assertDoesNotThrow(()->game.makeMove("Qe2+"));
+        assertTrue(game.isInCheck());
+    }
 }
