@@ -28,8 +28,6 @@ class BoardHistory {
     }
 
     public void push(Move move){
-        if(canRedoMove())
-            clearRedoMoves();
         moves.push(move);
         if(move.isPieceColourBlack())
             numFullMoves++;
@@ -93,8 +91,9 @@ class BoardHistory {
         this.numHalfMoves = numHalfMoves;
     }
 
-    private void clearRedoMoves() {
+    public void clearRedoMoves() {
         countHalfMoves();
+        lastMove = moves;
         while(!redoMoves.isEmpty()){
             if(redoMoves.pop().isPieceColourBlack())
                 numFullMoves--;
@@ -106,9 +105,9 @@ class BoardHistory {
         numHalfMoves = 0;
         while(!moves.isEmpty()){
             Move move = moves.pop();
+            temp.push(move);
             if(move.hasTaken() || move.isPieceAPawn())
                 break;
-            temp.push(move);
         }
         while(!temp.isEmpty()){
             moves.push(temp.pop());
