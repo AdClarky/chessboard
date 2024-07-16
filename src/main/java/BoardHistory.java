@@ -29,12 +29,7 @@ class BoardHistory {
 
     public void push(Move move){
         moves.push(move);
-        if(move.isPieceColourBlack())
-            numFullMoves++;
-        if(move.isPieceAPawn() || move.hasTaken())
-            numHalfMoves = 0;
-        else
-            numHalfMoves++;
+        countMoves(move);
         lastMove = moves;
     }
 
@@ -46,6 +41,7 @@ class BoardHistory {
         move.makeMove();
         lastMove = moves;
         moves.push(move);
+        countMoves(move);
         return move;
     }
 
@@ -63,6 +59,7 @@ class BoardHistory {
         move.undo();
         lastMove = redoMoves;
         redoMoves.push(move);
+        uncountMoves(move);
         return move;
     }
 
@@ -94,10 +91,7 @@ class BoardHistory {
     public void clearRedoMoves() {
         countHalfMoves();
         lastMove = moves;
-        while(!redoMoves.isEmpty()){
-            if(redoMoves.pop().isPieceColourBlack())
-                numFullMoves--;
-        }
+        redoMoves.clear();
     }
 
     private void countHalfMoves(){
@@ -113,5 +107,23 @@ class BoardHistory {
         while(!temp.isEmpty()){
             moves.push(temp.pop());
         }
+    }
+
+    private void countMoves(Move move){
+        if(move.isPieceColourBlack())
+            numFullMoves++;
+        if(move.isPieceAPawn() || move.hasTaken())
+            numHalfMoves = 0;
+        else
+            numHalfMoves++;
+    }
+
+    private void uncountMoves(Move move) {
+        if(move.isPieceColourBlack())
+            numFullMoves--;
+        if(move.isPieceAPawn() || move.hasTaken())
+            countHalfMoves();
+        else
+            numHalfMoves--;
     }
 }
