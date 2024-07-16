@@ -108,6 +108,7 @@ class BoardHistory {
             temp.push(move);
             if(move.hasTaken() || move.isPieceAPawn())
                 break;
+            numHalfMoves++;
         }
         while(!temp.isEmpty()){
             moves.push(temp.pop());
