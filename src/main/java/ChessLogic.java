@@ -102,7 +102,7 @@ class ChessLogic {
                 return false;
             }
         }
-        board.undoMultipleMoves(4);
+        board.redoAllMoves();
         return true;
     }
 
