@@ -41,11 +41,15 @@ class TotalMovesTest {
         Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
             Collection<Coordinate> positionCoordinates = new ArrayList<>(piece.getPossibleMoves());
-            if(currentDepth == 1)
+            if(currentDepth == 1) {
                 positions += positionCoordinates.size();
+                continue;
+            }
             for(Coordinate position : positionCoordinates){
+                Coordinate originalPos = new Coordinate(piece.getX(), piece.getY());
                 board.makeMove(piece.getX(), piece.getY(), position.x(), position.y());
-                positions += testDepth(board, currentDepth - 1);
+                int positionCurrent = testDepth(board, currentDepth - 1);
+                positions += positionCurrent;
                 board.undoMove();
             }
         }
