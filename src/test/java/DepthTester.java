@@ -3,7 +3,6 @@ import java.util.Collection;
 
 public class DepthTester {
     private final ChessGame board;
-    private int positions = 0;
     private int captures = 0;
     private int checks = 0;
 
@@ -11,7 +10,8 @@ public class DepthTester {
         this.board = board;
     }
 
-    public void testDepth(int currentDepth) throws InvalidMoveException {
+    public int testDepth(int currentDepth) throws InvalidMoveException {
+        int positions = 0;
         Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
             Collection<Coordinate> positionCoordinates = new ArrayList<>(piece.getPossibleMoves());
@@ -26,13 +26,11 @@ public class DepthTester {
                     captures++;
                 if(board.isInCheck())
                     checks++;
-                testDepth(currentDepth - 1);
+                int currentPos = testDepth(currentDepth - 1);
+                positions += currentPos;
                 board.undoMove();
             }
         }
-    }
-
-    public int getPositions() {
         return positions;
     }
 
@@ -43,4 +41,5 @@ public class DepthTester {
     public int getChecks() {
         return checks;
     }
+    // System.out.println("" + originalPos + position + ": " + currentPos);
 }
