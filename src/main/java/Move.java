@@ -19,6 +19,7 @@ class Move {
     private boolean taking = false;
     private boolean notHadFirstMove = true;
     private boolean wasPreviousPawnPassantable = false;
+    private long enemyPossible;
 
     /**
      * Initialises move and then moves the piece to the new location.
@@ -33,6 +34,7 @@ class Move {
         else
             previousPawn = new Blank(0,0);
         movesMade = piece.getMoves(new ChessLogic(board), x, y);
+        enemyPossible = board.getEnemyPossible();
         makeMove();
     }
 

@@ -265,4 +265,8 @@ class Chessboard {
     public boolean isCheckmate(PieceColour colour) {
         return possibleMoves.isCheckmate(colour);
     }
+
+    public long getEnemyPossible() {
+        return possibleMoves.getBoardValue(PieceColour.getOtherColour(currentTurn));
+    }
 }
