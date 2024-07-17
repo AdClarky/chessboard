@@ -254,6 +254,10 @@ class Chessboard {
         return possibleMoves.isPossible(colour, position);
     }
 
+    public void removePossible(PieceColour colour, Coordinate position){
+        possibleMoves.removePossible(colour, position);
+    }
+
     public void clearPossibleMoves(PieceColour colour) {
         possibleMoves.clearBoard(colour);
     }

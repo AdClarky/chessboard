@@ -19,6 +19,10 @@ public class PossibleMoves {
         }
     }
 
+    public void removePossible(PieceColour colour, Coordinate move){
+        getPossibleMovesBoard(colour).removePossible(move);
+    }
+
     private PossibleMovesBoard getPossibleMovesBoard(PieceColour colour){
         if(colour == PieceColour.BLACK){
             return blackBoard;

@@ -28,8 +28,10 @@ class ChessLogic {
     private void removeMovesInCheck(){
         for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
             for(Coordinate move : piece.getPossibleMoves()){
-                if(isMoveUnsafe(piece, move))
+                if(isMoveUnsafe(piece, move)) {
                     piece.removePossibleMove(move);
+                    board.removePossible(piece.getColour(), move);
+                }
             }
             if(piece instanceof King king){
                 king.removeCastlingThroughCheck();

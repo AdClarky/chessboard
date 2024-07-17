@@ -9,6 +9,10 @@ public class PossibleMovesBoard {
         board |= 1L << shift(coordinate);
     }
 
+    public void removePossible(Coordinate move) {
+        board &= ~(1L << shift(move));
+    }
+
     public void clear(){
         board = 0;
     }
