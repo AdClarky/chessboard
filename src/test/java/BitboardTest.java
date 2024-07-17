@@ -221,7 +221,7 @@ class BitboardTest {
         list.add(new Coordinate(7,7));
         list.add(new Coordinate(6,7));
         list.add(new Coordinate(5,7));
-        assertFalse(bitboard.addAll(list));
+        assertTrue(bitboard.addAll(list));
         assertEquals(6, bitboard.size());
     }
 
@@ -379,7 +379,8 @@ class BitboardTest {
         bitboard.add(new Coordinate(0, 1));
         bitboard.add(new Coordinate(1, 1));
         Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        assertFalse(bitboard.retainAll(bitboard2));
+        assertTrue(bitboard.retainAll(bitboard2));
+        assertTrue(bitboard.isEmpty());
     }
 
     @Test
@@ -400,7 +401,7 @@ class BitboardTest {
         Collection<Coordinate> bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.add(new Coordinate(1, 1));
-        bitboard.add(new Coordinate(1, 1));
+        bitboard.add(new Coordinate(2, 1));
         Collection<Coordinate> bitboard2 = new ArrayList<>(3);
         bitboard2.add(new Coordinate(0, 0));
         bitboard2.add(new Coordinate(1, 1));
@@ -462,7 +463,7 @@ class BitboardTest {
     @Test
     void containsNonCoordinate() {
         Collection<Coordinate> bitboard = new Bitboard();
-        assertFalse(bitboard.contains("hello"));
+        assertThrows(ClassCastException.class, ()->bitboard.contains("hello"));
     }
 
     @Test
@@ -643,11 +644,51 @@ class BitboardTest {
     @Test
     void getXTest() {
         Bitboard bitboard = new Bitboard();
+        assertEquals(0, bitboard.getX(0));
+        assertEquals(1, bitboard.getX(1));
+        assertEquals(2, bitboard.getX(2));
+        assertEquals(3, bitboard.getX(3));
+        assertEquals(4, bitboard.getX(4));
+        assertEquals(5, bitboard.getX(5));
+        assertEquals(6, bitboard.getX(6));
+        assertEquals(7, bitboard.getX(7));
+        assertEquals(0, bitboard.getX(8));
+        assertEquals(1, bitboard.getX(9));
+        assertEquals(2, bitboard.getX(10));
+        assertEquals(3, bitboard.getX(11));
+        assertEquals(4, bitboard.getX(12));
+        assertEquals(5, bitboard.getX(13));
+        assertEquals(6, bitboard.getX(14));
+        assertEquals(7, bitboard.getX(15));
+        assertEquals(0, bitboard.getX(16));
+        assertEquals(1, bitboard.getX(17));
+        assertEquals(2, bitboard.getX(18));
+        assertEquals(3, bitboard.getX(19));
     }
 
     @Test
     void getYTest() {
-
+        Bitboard bitboard = new Bitboard();
+        assertEquals(0, bitboard.getY(0));
+        assertEquals(0, bitboard.getY(1));
+        assertEquals(0, bitboard.getY(2));
+        assertEquals(0, bitboard.getY(3));
+        assertEquals(0, bitboard.getY(4));
+        assertEquals(0, bitboard.getY(5));
+        assertEquals(0, bitboard.getY(6));
+        assertEquals(0, bitboard.getY(7));
+        assertEquals(1, bitboard.getY(8));
+        assertEquals(1, bitboard.getY(9));
+        assertEquals(1, bitboard.getY(10));
+        assertEquals(1, bitboard.getY(11));
+        assertEquals(1, bitboard.getY(12));
+        assertEquals(1, bitboard.getY(13));
+        assertEquals(1, bitboard.getY(14));
+        assertEquals(1, bitboard.getY(15));
+        assertEquals(2, bitboard.getY(16));
+        assertEquals(2, bitboard.getY(17));
+        assertEquals(2, bitboard.getY(18));
+        assertEquals(2, bitboard.getY(19));
     }
 
     @Test
