@@ -27,5 +27,5 @@ public class DepthTester {
         }
         return positions;
     }
-    // System.out.println("" + originalPos + position + ": " + currentPos);
+    // new String("" + originalPos + position + ": " + currentPos)
 }
