@@ -38,4 +38,8 @@ public class PossibleMoves {
     public long getBoardValue(PieceColour otherColour) {
         return getPossibleMovesBoard(otherColour).getBoard();
     }
+
+    public void setPossible(PieceColour colour, long possibleMoves) {
+        getPossibleMovesBoard(colour).set(possibleMoves);
+    }
 }

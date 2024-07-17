@@ -83,6 +83,7 @@ class Move {
         if(wasPreviousPawnPassantable)
             previousPawn.firstMove();
         board.nextTurn();
+        board.setEnemyPossibleMoves(enemyPossible);
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */

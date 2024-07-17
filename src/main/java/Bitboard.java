@@ -129,6 +129,10 @@ public class Bitboard implements Collection<Coordinate> {
         return ((board >> shift(coordinate)) & 1) == 1;
     }
 
+    public void set(long possibleMoves) {
+        board = possibleMoves;
+    }
+
     private class Itr implements Iterator<Coordinate> {
         int current = 64;
         int previous = -1;
