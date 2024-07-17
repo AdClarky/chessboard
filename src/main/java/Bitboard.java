@@ -5,11 +5,11 @@ public class Bitboard {
 
     }
 
-    public void setPosition(Coordinate position){
+    public void add(Coordinate position){
         board |= 1L << shift(position);
     }
 
-    public void removePosition(Coordinate position) {
+    public void remove(Coordinate position) {
         board &= ~(1L << shift(position));
     }
 

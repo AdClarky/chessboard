@@ -15,12 +15,12 @@ public class PossibleMoves {
     public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves){
         Bitboard board = getPossibleMovesBoard(colour);
         for(Coordinate coord : moves){
-            board.setPosition(coord);
+            board.add(coord);
         }
     }
 
     public void removePossible(PieceColour colour, Coordinate move){
-        getPossibleMovesBoard(colour).removePosition(move);
+        getPossibleMovesBoard(colour).remove(move);
     }
 
     private Bitboard getPossibleMovesBoard(PieceColour colour){
