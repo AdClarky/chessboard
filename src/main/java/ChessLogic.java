@@ -44,6 +44,7 @@ class ChessLogic {
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
         if(isMoveTakingFriendly(piece, movePos))
             return true;
+        calculatePieces(PieceColour.getOtherColour(board.getCurrentTurn()));
         if(!isKingInCheck(board.getCurrentTurn()) && !canSquareSeeKing(piece.getPosition()))
             return false;
         PieceColour previousTurn = board.getCurrentTurn();
@@ -68,9 +69,7 @@ class ChessLogic {
         King king = board.getKing(kingToCheck);
         Coordinate kingPos = new Coordinate(king);
         PieceColour enemyColour = PieceColour.getOtherColour(kingToCheck);
-        if(board.isPossible(enemyColour, kingPos))
-            return true;
-        return false;
+        return board.isPossible(enemyColour, kingPos);
     }
 
     private boolean isMoveTakingFriendly(Piece piece, Coordinate movePos){
