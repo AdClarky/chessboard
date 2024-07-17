@@ -257,4 +257,8 @@ class Chessboard {
     public void clearPossibleMoves(PieceColour colour) {
         possibleMoves.clearBoard(colour);
     }
+
+    public boolean isCheckmate(PieceColour colour) {
+        return possibleMoves.isCheckmate(colour);
+    }
 }

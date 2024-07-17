@@ -20,4 +20,8 @@ public class PossibleMovesBoard {
     private int shift(Coordinate coordinate){
         return coordinate.x() + (coordinate.y() << 3);
     }
+
+    public boolean isBoardEmpty(){
+        return board == 0;
+    }
 }

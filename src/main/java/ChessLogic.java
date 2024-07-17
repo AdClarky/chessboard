@@ -65,12 +65,7 @@ class ChessLogic {
     public boolean isCheckmate(){
         if(!isKingInCheck(board.getCurrentTurn()))
             return false;
-        Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
-        for (Piece piece : pieces) {
-            if(!piece.getPossibleMoves().isEmpty())
-                return false;
-        }
-        return true;
+        return board.isCheckmate(board.getCurrentTurn());
     }
 
     public boolean isDraw(){
