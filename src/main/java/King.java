@@ -19,12 +19,13 @@ public class King extends Piece{
     @Override
     void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
-        for(int y = getY()-1; y <= getY()+1; y++) {
-            for(int x = getX()-1; x <= getX()+1 ; x++) {
-                if(x != getX() || y != getY())
-                    addIfInRange(x, y);
+        int currentX = getX(), currentY = getY();
+        for(int y = currentY-1; y <= currentY+1; y++) {
+            for(int x = currentX-1; x <= currentX+1 ; x++) {
+                addIfInRange(x, y);
             }
         }
+        possibleMoves.remove(new Coordinate(currentX, currentY));
         if(!moved)
             calculateCastling(board);
     }
