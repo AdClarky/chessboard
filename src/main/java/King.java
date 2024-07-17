@@ -21,9 +21,8 @@ public class King extends Piece{
         possibleMoves.clear();
         for(int y = getY()-1; y <= getY()+1; y++) {
             for(int x = getX()-1; x <= getX()+1 ; x++) {
-                addIfInRange(x, y);
-                if(x == getX() && y == getY())
-                    possibleMoves.removeLast();
+                if(x != getX() || y != getY())
+                    addIfInRange(x, y);
             }
         }
         if(!moved)
@@ -42,9 +41,9 @@ public class King extends Piece{
     }
 
     void removeCastlingThroughCheck(){
-        if(!possibleMoves.contains(new Coordinate(getX()-1, getY())))
+        if(!possibleMoves.isActive(new Coordinate(getX()-1, getY())))
             possibleMoves.remove(new Coordinate(getX()-2, getY()));
-        if(!possibleMoves.contains(new Coordinate(getX()+1, getY())))
+        if(!possibleMoves.isActive(new Coordinate(getX()+1, getY())))
             possibleMoves.remove(new Coordinate(getX()+2, getY()));
     }
 
