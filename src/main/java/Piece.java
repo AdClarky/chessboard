@@ -121,6 +121,10 @@ public abstract class Piece {
         return position.y();
     }
 
+    public Coordinate getPosition() {
+        return position;
+    }
+
     /**
      * Calculates how far a piece can move in each diagonal direction.
      * @param board the board the piece is moving on.
