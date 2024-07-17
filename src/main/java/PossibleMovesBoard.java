@@ -1,19 +1,23 @@
 public class PossibleMovesBoard {
-    private boolean[][] board = new boolean[8][8];
+    private long board = 0;
 
     public PossibleMovesBoard() {
 
     }
 
     public void possibleMove(Coordinate coordinate){
-        board[coordinate.y()][coordinate.x()] = true;
+        board += 1L << shift(coordinate);
     }
 
     public void clear(){
-        board = new boolean[8][8];
+        board = 0;
     }
 
     public boolean isPossible(Coordinate coordinate){
-        return board[coordinate.y()][coordinate.x()];
+        return ((board >> shift(coordinate)) & 1) == 1;
+    }
+
+    private int shift(Coordinate coordinate){
+        return coordinate.x() + (coordinate.y() << 3);
     }
 }
