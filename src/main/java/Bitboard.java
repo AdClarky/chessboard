@@ -17,7 +17,7 @@ public class Bitboard {
         board = 0;
     }
 
-    public boolean isActive(Coordinate coordinate){
+    public boolean contains(Coordinate coordinate){
         return ((board >> shift(coordinate)) & 1) == 1;
     }
 

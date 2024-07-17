@@ -41,9 +41,9 @@ public class King extends Piece{
     }
 
     void removeCastlingThroughCheck(){
-        if(!possibleMoves.isActive(new Coordinate(getX()-1, getY())))
+        if(!possibleMoves.contains(new Coordinate(getX()-1, getY())))
             possibleMoves.remove(new Coordinate(getX()-2, getY()));
-        if(!possibleMoves.isActive(new Coordinate(getX()+1, getY())))
+        if(!possibleMoves.contains(new Coordinate(getX()+1, getY())))
             possibleMoves.remove(new Coordinate(getX()+2, getY()));
     }
 

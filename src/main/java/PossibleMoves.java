@@ -31,7 +31,7 @@ public class PossibleMoves {
     }
 
     public boolean isPossible(PieceColour colour, Coordinate move){
-        return getPossibleMovesBoard(colour).isActive(move);
+        return getPossibleMovesBoard(colour).contains(move);
     }
 
     public boolean isCheckmate(PieceColour colour){
