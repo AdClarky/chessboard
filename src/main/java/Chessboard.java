@@ -1,7 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -266,11 +265,11 @@ class Chessboard {
         return possibleMoves.isCheckmate(colour);
     }
 
-    public long getEnemyPossible() {
-        return possibleMoves.getBoardValue(PieceColour.getOtherColour(currentTurn));
+    public long getPossible(PieceColour colour) {
+        return possibleMoves.getBoardValue(colour);
     }
 
-    public void setEnemyPossibleMoves(long enemyPossible) {
-        possibleMoves.setPossible(PieceColour.getOtherColour(currentTurn), enemyPossible);
+    public void setPossibleMoves(PieceColour colour, long enemyPossible) {
+        possibleMoves.setPossible(colour, enemyPossible);
     }
 }
