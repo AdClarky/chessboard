@@ -38,4 +38,23 @@ class PossibleMovesTest {
             }
         }
     }
+
+    @Test
+    void goesG3Work(){
+        PossibleMoves possibleMoves = new PossibleMoves();
+        Collection<Coordinate> moves = new ArrayList<>(1);
+        moves.add(new Coordinate(1, 2));
+        possibleMoves.updatePossibleMoves(PieceColour.WHITE, moves);
+        assertTrue(possibleMoves.isPossible(PieceColour.WHITE, new Coordinate(1, 2)));
+    }
+
+    @Test
+    void goesG3WorkTwoPiecesCanMoveThere(){
+        PossibleMoves possibleMoves = new PossibleMoves();
+        Collection<Coordinate> moves = new ArrayList<>(1);
+        moves.add(new Coordinate(1, 2));
+        possibleMoves.updatePossibleMoves(PieceColour.WHITE, moves);
+        possibleMoves.updatePossibleMoves(PieceColour.WHITE, moves);
+        assertTrue(possibleMoves.isPossible(PieceColour.WHITE, new Coordinate(1, 2)));
+    }
 }
