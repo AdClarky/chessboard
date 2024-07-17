@@ -34,8 +34,8 @@ public abstract class Piece {
         this.colour = colour;
     }
 
-    public long getPossibleMoves(){
-        return possibleMoves.getBoard();
+    public Bitboard getPossibleMoves(){
+        return possibleMoves;
     }
 
     void removePossibleMove(Coordinate move){

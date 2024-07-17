@@ -21,7 +21,7 @@ public class Bitboard {
         return ((board >> shift(coordinate)) & 1) == 1;
     }
 
-    public boolean isBoardEmpty(){
+    public boolean isEmpty(){
         return board == 0;
     }
 
