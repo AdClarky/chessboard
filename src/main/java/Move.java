@@ -34,7 +34,7 @@ class Move {
         else
             previousPawn = new Blank(0,0);
         movesMade = piece.getMoves(new ChessLogic(board), x, y);
-        enemyPossible = board.getEnemyPossible();
+        enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
     }
 
@@ -83,7 +83,7 @@ class Move {
         if(wasPreviousPawnPassantable)
             previousPawn.firstMove();
         board.nextTurn();
-        board.setEnemyPossibleMoves(enemyPossible);
+        board.setPossibleMoves(PieceColour.getOtherColour(board.getCurrentTurn()), enemyPossible);
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */
