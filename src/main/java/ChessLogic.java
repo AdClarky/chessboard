@@ -17,17 +17,21 @@ class ChessLogic {
     }
 
     private void calculatePieces(PieceColour colour){
+        board.clearPossibleMoves(colour);
         Collection<Piece> pieces = board.getAllColourPieces(colour);
         for(Piece piece : pieces){
             piece.calculatePossibleMoves(this);
+            board.updatePossibleMoves(piece.getColour(), piece.getPossibleMoves());
         }
     }
 
     private void removeMovesInCheck(){
         for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
             for(Coordinate move : piece.getPossibleMoves()){
-                if(isMoveUnsafe(piece, move))
+                if(isMoveUnsafe(piece, move)) {
                     piece.removePossibleMove(move);
+                    board.removePossible(piece.getColour(), move);
+                }
             }
             if(piece instanceof King king){
                 king.removeCastlingThroughCheck();
@@ -49,12 +53,9 @@ class ChessLogic {
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
         King king = board.getKing(kingToCheck);
         Coordinate kingPos = new Coordinate(king);
-        Iterable<Piece> enemyPieces = board.getAllColourPieces(PieceColour.getOtherColour(kingToCheck));
-        for(Piece piece : enemyPieces){
-            if(piece.getPossibleMoves().contains(kingPos)){
-                return true;
-            }
-        }
+        PieceColour enemyColour = PieceColour.getOtherColour(kingToCheck);
+        if(board.isPossible(enemyColour, kingPos))
+            return true;
         return false;
     }
 
@@ -66,12 +67,7 @@ class ChessLogic {
     public boolean isCheckmate(){
         if(!isKingInCheck(board.getCurrentTurn()))
             return false;
-        Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
-        for (Piece piece : pieces) {
-            if(!piece.getPossibleMoves().isEmpty())
-                return false;
-        }
-        return true;
+        return board.isCheckmate(board.getCurrentTurn());
     }
 
     public boolean isDraw(){

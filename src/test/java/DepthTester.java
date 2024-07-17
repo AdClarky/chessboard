@@ -12,7 +12,7 @@ public class DepthTester {
         int positions = 0;
         Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
-            Collection<Coordinate> positionCoordinates = new ArrayList<>(piece.getPossibleMoves());
+            Collection<Coordinate> positionCoordinates = piece.getPossibleMoves();
             if(currentDepth == 1) {
                 positions += positionCoordinates.size();
                 continue;

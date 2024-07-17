@@ -21,6 +21,10 @@ public record Coordinate(int x, int y) {
         return ChessUtils.coordsToChess(x, y);
     }
 
+    public boolean isInRange(){
+        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
+    }
+
     /**
      * Calculates the coordinates of a move.
      * It must not be a castling move.
