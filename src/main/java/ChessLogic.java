@@ -1,5 +1,6 @@
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 class ChessLogic {
@@ -26,7 +27,8 @@ class ChessLogic {
     }
 
     private void removeMovesInCheck(){
-        for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
+        Iterable<Piece> pieces = new ArrayList<>(board.getAllColourPieces(board.getCurrentTurn()));
+        for(Piece piece : pieces){
             for(Coordinate move : piece.getPossibleMoves()){
                 if(isMoveUnsafe(piece, move)) {
                     piece.removePossibleMove(move);

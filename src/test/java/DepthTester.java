@@ -10,7 +10,7 @@ public class DepthTester {
 
     public int testDepth(int currentDepth) throws InvalidMoveException {
         int positions = 0;
-        Collection<Piece> pieces = board.getColourPieces(board.getCurrentTurn());
+        Collection<Piece> pieces = new ArrayList<>(board.getColourPieces(board.getCurrentTurn()));
         for(Piece piece : pieces){
             Collection<Coordinate> positionCoordinates = piece.getPossibleMoves();
             if(currentDepth == 1) {
