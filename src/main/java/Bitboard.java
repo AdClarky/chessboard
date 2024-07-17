@@ -25,6 +25,10 @@ public class Bitboard {
         return board == 0;
     }
 
+    public long getBoard(){
+        return board;
+    }
+
     private static int shift(Coordinate coordinate){
         return coordinate.x() + (coordinate.y() << 3);
     }
