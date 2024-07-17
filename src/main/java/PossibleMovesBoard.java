@@ -6,7 +6,7 @@ public class PossibleMovesBoard {
     }
 
     public void possibleMove(Coordinate coordinate){
-        board += 1L << shift(coordinate);
+        board |= 1L << shift(coordinate);
     }
 
     public void clear(){
