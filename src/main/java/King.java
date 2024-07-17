@@ -21,9 +21,8 @@ public class King extends Piece{
         possibleMoves.clear();
         for(int y = getY()-1; y <= getY()+1; y++) {
             for(int x = getX()-1; x <= getX()+1 ; x++) {
-                cantMove(board, x, y);
-                if(x == getX() && y == getY())
-                    possibleMoves.removeLast();
+                if(x != getX() || y != getY())
+                    addIfInRange(x, y);
             }
         }
         if(!moved)

@@ -15,7 +15,7 @@ public abstract class Piece {
     /**
      * The possible moves this pieces can make.
      */
-    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
+    protected final Bitboard possibleMoves = new Bitboard();
     /**
      * The colour of the piece.
      */
@@ -34,12 +34,8 @@ public abstract class Piece {
         this.colour = colour;
     }
 
-    /**
-     * Pre-calculated, all the possible coordinates this piece can move to.
-     * @return a list of coordinates the piece can move to.
-     */
-    public List<Coordinate> getPossibleMoves(){
-        return new ArrayList<>(possibleMoves);
+    public Bitboard getPossibleMoves(){
+        return possibleMoves;
     }
 
     void removePossibleMove(Coordinate move){
@@ -149,7 +145,8 @@ public abstract class Piece {
 
     private void calculateSingleDirection(ChessLogic board, int xIncrement, int yIncrement){
         for(int x = getX()+xIncrement, y = getY()+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
-            if(cantMove(board, x, y))
+            possibleMoves.add(new Coordinate(x, y));
+            if(!board.isSquareBlank(x,y))
                 break;
         }
     }
@@ -157,19 +154,13 @@ public abstract class Piece {
     /**
      * Calculates if a move to a specific square is valid.
      * Validates the coords are within the board and then checks if it's a friendly piece.
-     * @param board the board the piece is moving on.
+     *
      * @param x the potential x
      * @param y the potential y
-     * @return if the move is valid
      */
-    protected boolean cantMove(ChessLogic board, int x, int y) {
+    protected void addIfInRange(int x, int y) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            possibleMoves.add(new Coordinate(x, y));
-            return true;
-        }
+            return;
         possibleMoves.add(new Coordinate(x, y));
-        return false;
     }
 }
