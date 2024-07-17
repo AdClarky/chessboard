@@ -151,8 +151,6 @@ public class Bitboard implements Collection<Coordinate> {
             }
             do{
                 current--;
-                if(current < 0)
-                    throw new NoSuchElementException();
             } while(((board >> current) & 1) == 0);
             numFound++;
             previous = current;
