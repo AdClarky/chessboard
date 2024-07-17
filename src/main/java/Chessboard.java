@@ -10,7 +10,8 @@ import java.util.Objects;
 
 /** A chess board that is automatically populated with blank squares. */
 class Chessboard {
-    private final Piece[][] board  =  new Piece[8][8];
+    private final Piece[][] board = new Piece[8][8];
+    private final PossibleMoves possibleMoves = new PossibleMoves();
     private final BoardHistory history;
     private final Collection<Piece> blackPieces = new HashSet<>(16);
     private King blackKing;
@@ -18,133 +19,143 @@ class Chessboard {
     private King whiteKing;
     private PieceColour currentTurn = PieceColour.WHITE;
 
-    /** Initialises the board with all squares blank. */
-    public Chessboard(){
+    /**
+     * Initialises the board with all squares blank.
+     */
+    public Chessboard() {
         history = new BoardHistory();
-        for(int y = 0; y < 8; y++){
-            for(int x = 0; x < 8; x++){
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 board[y][x] = new Blank(x, y);
             }
         }
     }
 
-    /** Adds all the pieces in the collections to the board based on the pieces x and y values */
-    void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces){
+    /**
+     * Adds all the pieces in the collections to the board based on the pieces x and y values
+     */
+    void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces) {
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
-        for(Piece piece : blackPieces){
+        for (Piece piece : blackPieces) {
             board[piece.getY()][piece.getX()] = piece;
-            if(piece instanceof King)
+            if (piece instanceof King)
                 blackKing = (King) piece;
         }
-        for(Piece piece : whitePieces){
+        for (Piece piece : whitePieces) {
             board[piece.getY()][piece.getX()] = piece;
-            if(piece instanceof King)
+            if (piece instanceof King)
                 whiteKing = (King) piece;
         }
         new ChessLogic(this).calculatePossibleMoves();
     }
 
-    /** Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}. */
+    /**
+     * Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}.
+     */
     @NotNull
-    public Piece getPiece(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+    public Piece getPiece(int x, int y) {
+        if (x < 0 || x >= 8 || y < 0 || y >= 8)
             return new Blank(x, y);
         return board[y][x];
     }
 
     @NotNull
-    public Piece getPiece(Coordinate coordinate){
+    public Piece getPiece(Coordinate coordinate) {
         return getPiece(coordinate.x(), coordinate.y());
     }
 
     @NotNull
-    public PieceColour getPieceColour(int x, int y){
+    public PieceColour getPieceColour(int x, int y) {
         return getPiece(x, y).getColour();
     }
 
-    public boolean hasPieceHadFirstMove(int x, int y){
+    public boolean hasPieceHadFirstMove(int x, int y) {
         return getPiece(x, y).hadFirstMove();
     }
 
-    public boolean isSquareBlank(int x, int y){
-        if(x < 0 || x >= 8 || y < 0 || y >= 8)
+    public boolean isSquareBlank(int x, int y) {
+        if (x < 0 || x >= 8 || y < 0 || y >= 8)
             return false;
         return getPiece(x, y) instanceof Blank;
     }
 
 
-    public void movePiece(int x, int y, @NotNull Piece piece){
+    public void movePiece(int x, int y, @NotNull Piece piece) {
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
         board[y][x] = piece;
         piece.setPos(x, y);
     }
 
-    public void movePiece(@NotNull MoveValue move){
+    public void movePiece(@NotNull MoveValue move) {
         movePiece(move.newX(), move.newY(), move.piece());
     }
 
-    public Collection<Piece> getAllColourPieces(PieceColour colour){
-        if(colour == PieceColour.BLACK)
+    public Collection<Piece> getAllColourPieces(PieceColour colour) {
+        if (colour == PieceColour.BLACK)
             return new ArrayList<>(blackPieces);
-        else if(colour == PieceColour.WHITE)
+        else if (colour == PieceColour.WHITE)
             return new ArrayList<>(whitePieces);
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
-    public King getKing(PieceColour colour){
-        if(colour == PieceColour.BLACK)
+    public King getKing(PieceColour colour) {
+        if (colour == PieceColour.BLACK)
             return blackKing;
-        else if(colour == PieceColour.WHITE)
+        else if (colour == PieceColour.WHITE)
             return whiteKing;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }
 
-    public boolean hasKingMoved(PieceColour colour){
+    public boolean hasKingMoved(PieceColour colour) {
         return getKing(colour).hadFirstMove();
     }
 
-    public void setKingMoved(PieceColour kingToSet){
+    public void setKingMoved(PieceColour kingToSet) {
         getKing(kingToSet).firstMove();
     }
 
-    public void setOtherRookMoved(int x, int y){
+    public void setOtherRookMoved(int x, int y) {
         Rook rookNotMoved = (Rook) getPiece(x, y);
-        for(Piece piece : getAllColourPieces(rookNotMoved.getColour())){
-            if(piece instanceof Rook && piece != rookNotMoved){
+        for (Piece piece : getAllColourPieces(rookNotMoved.getColour())) {
+            if (piece instanceof Rook && piece != rookNotMoved) {
                 piece.firstMove();
             }
         }
     }
 
-    public void setPawnEnPassantable(int x, int y){
+    public void setPawnEnPassantable(int x, int y) {
         getPiece(x, y).firstMove();
     }
 
-    /** Adds the piece to the list of pieces. Used only when adding a new piece to the board. */
-    public void addPiece(@NotNull Piece piece){
-        if(piece.getColour() == PieceColour.BLACK)
+    /**
+     * Adds the piece to the list of pieces. Used only when adding a new piece to the board.
+     */
+    public void addPiece(@NotNull Piece piece) {
+        if (piece.getColour() == PieceColour.BLACK)
             blackPieces.add(piece);
-        else if(piece.getColour() == PieceColour.WHITE)
+        else if (piece.getColour() == PieceColour.WHITE)
             whitePieces.add(piece);
         else
             throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
-    /** Removes the piece from the list of pieces. Should only be used if a piece is no longer on the board. */
-    public void removePiece(@NotNull Piece piece){
-        if(piece.getColour() == PieceColour.BLACK)
+    /**
+     * Removes the piece from the list of pieces. Should only be used if a piece is no longer on the board.
+     */
+    public void removePiece(@NotNull Piece piece) {
+        if (piece.getColour() == PieceColour.BLACK)
             blackPieces.remove(piece);
-        else if(piece.getColour() == PieceColour.WHITE)
+        else if (piece.getColour() == PieceColour.WHITE)
             whitePieces.remove(piece);
         else
             throw new IllegalArgumentException("Invalid piece: " + piece);
     }
 
     public void makeMove(int oldX, int oldY, int newX, int newY) {
-        if(history.canRedoMove())
+        if (history.canRedoMove())
             history.clearRedoMoves();
         Move move = new Move(newX, newY, getPiece(oldX, oldY), history.getLastPieceMoved(), this);
         history.push(move);
@@ -160,9 +171,9 @@ class Chessboard {
     @Override
     public int hashCode() {
         int[] hashRows = new int[8];
-        for(int y = 0; y < 8; y++){
+        for (int y = 0; y < 8; y++) {
             int hashRow = 0;
-            for(Piece piece : board[y]){
+            for (Piece piece : board[y]) {
                 hashRow += Objects.hash(piece, piece.getX(), piece.getY());
             }
             hashRows[y] = hashRow;
@@ -170,16 +181,18 @@ class Chessboard {
         return Arrays.hashCode(hashRows);
     }
 
-    public void setCurrentTurn(PieceColour newTurn){
+    public void setCurrentTurn(PieceColour newTurn) {
         currentTurn = newTurn;
     }
 
 
-    void nextTurn(){
+    void nextTurn() {
         currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
     }
 
-    public PieceColour getCurrentTurn(){return currentTurn;}
+    public PieceColour getCurrentTurn() {
+        return currentTurn;
+    }
 
     @NotNull
     public List<MoveValue> getLastMoves() {
@@ -187,7 +200,7 @@ class Chessboard {
     }
 
     @Nullable
-    public Piece getLastPieceMoved(){
+    public Piece getLastPieceMoved() {
         return history.getLastPieceMoved();
     }
 
@@ -231,5 +244,25 @@ class Chessboard {
 
     public boolean wasMoveCapture() {
         return history.wasMoveCapture();
+    }
+
+    public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves) {
+        possibleMoves.updatePossibleMoves(colour, moves);
+    }
+
+    public boolean isPossible(PieceColour colour, Coordinate position) {
+        return possibleMoves.isPossible(colour, position);
+    }
+
+    public void removePossible(PieceColour colour, Coordinate position){
+        possibleMoves.removePossible(colour, position);
+    }
+
+    public void clearPossibleMoves(PieceColour colour) {
+        possibleMoves.clearBoard(colour);
+    }
+
+    public boolean isCheckmate(PieceColour colour) {
+        return possibleMoves.isCheckmate(colour);
     }
 }
