@@ -100,6 +100,8 @@ class ChessLogic {
     private boolean isStalemate(){
         if(isKingInCheck(board.getCurrentTurn()))
             return false;
+        //TODO :: test this
+//        return board.isCheckmate(board.getCurrentTurn());
         Iterable<Piece> pieces = board.getAllColourPieces(board.getCurrentTurn());
         for(Piece piece : pieces){
             if(!piece.getPossibleMoves().isEmpty())
@@ -112,14 +114,20 @@ class ChessLogic {
         if(board.getNumFullMoves() < 4)
             return false;
         int boardState = board.hashCode();
+        long possibleMovesWhite = board.getPossible(PieceColour.WHITE);
+        long possibleMovesBlack = board.getPossible(PieceColour.BLACK);
         for(int i = 0; i < 2; i++){
             board.undoMultipleMoves(4);
             if(boardState != board.hashCode()) {
                 board.redoAllMoves();
+                board.setPossibleMoves(PieceColour.WHITE, possibleMovesWhite);
+                board.setPossibleMoves(PieceColour.BLACK, possibleMovesBlack);
                 return false;
             }
         }
         board.redoAllMoves();
+        board.setPossibleMoves(PieceColour.WHITE, possibleMovesWhite);
+        board.setPossibleMoves(PieceColour.BLACK, possibleMovesBlack);
         return true;
     }
 
