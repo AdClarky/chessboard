@@ -158,19 +158,13 @@ public abstract class Piece {
     /**
      * Calculates if a move to a specific square is valid.
      * Validates the coords are within the board and then checks if it's a friendly piece.
-     * @param board the board the piece is moving on.
+     *
      * @param x the potential x
      * @param y the potential y
-     * @return if the move is valid
      */
-    protected boolean cantMove(ChessLogic board, int x, int y) {
+    protected void addIfInRange(int x, int y) {
         if(x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        if(!board.isSquareBlank(x,y)){ // if there is a piece in the square
-            possibleMoves.add(new Coordinate(x, y));
-            return true;
-        }
+            return;
         possibleMoves.add(new Coordinate(x, y));
-        return false;
     }
 }
