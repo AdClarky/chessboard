@@ -44,12 +44,24 @@ class ChessLogic {
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
         if(isMoveTakingFriendly(piece, movePos))
             return true;
+        if(!isKingInCheck(board.getCurrentTurn()) && !canSquareSeeKing(piece.getPosition()))
+            return false;
         PieceColour previousTurn = board.getCurrentTurn();
         Move move = new Move(movePos.x(), movePos.y(), piece, board.getLastPieceMoved(), board);
         calculatePieces(board.getCurrentTurn());
         boolean isMoveUnsafe = isKingInCheck(previousTurn);
         move.undo();
         return isMoveUnsafe;
+    }
+
+    private boolean canSquareSeeKing(Coordinate position) {
+        Coordinate kingPos = board.getKing(board.getCurrentTurn()).getPosition();
+        if(position.x() == kingPos.x() ||
+                position.y() == kingPos.y() ||
+                Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())){
+            return true;
+        }
+        return false;
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
