@@ -149,7 +149,8 @@ public abstract class Piece {
 
     private void calculateSingleDirection(ChessLogic board, int xIncrement, int yIncrement){
         for(int x = getX()+xIncrement, y = getY()+yIncrement; x < 8 && x>=0 && y>=0 && y < 8; x+=xIncrement, y+=yIncrement) {
-            if(cantMove(board, x, y))
+            possibleMoves.add(new Coordinate(x, y));
+            if(!board.isSquareBlank(x,y))
                 break;
         }
     }
