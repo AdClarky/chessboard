@@ -269,4 +269,8 @@ class Chessboard {
     public long getEnemyPossible() {
         return possibleMoves.getBoardValue(PieceColour.getOtherColour(currentTurn));
     }
+
+    public void setEnemyPossibleMoves(long enemyPossible) {
+        possibleMoves.setPossible(PieceColour.getOtherColour(currentTurn), enemyPossible);
+    }
 }
