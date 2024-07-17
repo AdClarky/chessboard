@@ -93,9 +93,9 @@ class Chessboard {
 
     public Collection<Piece> getAllColourPieces(PieceColour colour) {
         if (colour == PieceColour.BLACK)
-            return new ArrayList<>(blackPieces);
+            return blackPieces;
         else if (colour == PieceColour.WHITE)
-            return new ArrayList<>(whitePieces);
+            return whitePieces;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
     }
