@@ -19,7 +19,9 @@ public class Knight extends Piece{
     void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         for(int i = 0; i<8; i++){
-            addIfInRange(getX()+ POSSIBLE_X[i], getY()+ POSSIBLE_Y[i]);
+            Coordinate move = new Coordinate(getX()+ POSSIBLE_X[i], getY()+ POSSIBLE_Y[i]);
+            if(move.isInRange())
+                possibleMoves.add(move);
         }
     }
 
