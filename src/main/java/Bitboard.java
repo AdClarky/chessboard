@@ -9,7 +9,7 @@ public class Bitboard {
         board |= 1L << shift(position);
     }
 
-    public void removePossible(Coordinate position) {
+    public void removePosition(Coordinate position) {
         board &= ~(1L << shift(position));
     }
 

@@ -20,7 +20,7 @@ public class PossibleMoves {
     }
 
     public void removePossible(PieceColour colour, Coordinate move){
-        getPossibleMovesBoard(colour).removePossible(move);
+        getPossibleMovesBoard(colour).removePosition(move);
     }
 
     private Bitboard getPossibleMovesBoard(PieceColour colour){
