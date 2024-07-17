@@ -467,6 +467,17 @@ class BitboardTest {
     }
 
     @Test
+    void containsCoordinateOutOfRange() {
+        Collection<Coordinate> bitboard = new Bitboard();
+        for(int x = 0; x < 8; x++) {
+            for(int y = 0; y < 8; y++) {
+                bitboard.add(new Coordinate(x, y));
+            }
+        }
+        assertFalse(bitboard.contains(new Coordinate(0, 50)));
+    }
+
+    @Test
     void containsButNotInCollection() {
         Collection<Coordinate> bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 1));

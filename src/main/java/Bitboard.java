@@ -124,6 +124,8 @@ public class Bitboard implements Collection<Coordinate> {
             throw new NullPointerException();
         if(!(o instanceof Coordinate coordinate))
             throw new ClassCastException();
+        if(!coordinate.isInRange())
+            return false;
         return ((board >> shift(coordinate)) & 1) == 1;
     }
 
