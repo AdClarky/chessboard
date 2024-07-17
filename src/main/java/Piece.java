@@ -15,7 +15,7 @@ public abstract class Piece {
     /**
      * The possible moves this pieces can make.
      */
-    protected final List<Coordinate> possibleMoves = new ArrayList<>(15);
+    protected final Bitboard possibleMoves = new Bitboard();
     /**
      * The colour of the piece.
      */
@@ -34,12 +34,8 @@ public abstract class Piece {
         this.colour = colour;
     }
 
-    /**
-     * Pre-calculated, all the possible coordinates this piece can move to.
-     * @return a list of coordinates the piece can move to.
-     */
-    public List<Coordinate> getPossibleMoves(){
-        return new ArrayList<>(possibleMoves);
+    public long getPossibleMoves(){
+        return possibleMoves.getBoard();
     }
 
     void removePossibleMove(Coordinate move){
