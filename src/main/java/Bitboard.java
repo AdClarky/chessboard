@@ -30,7 +30,15 @@ public class Bitboard implements Collection<Coordinate> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return false;
+        if(c instanceof Bitboard bitboard)
+            return (bitboard.getBoard() & board) == bitboard.getBoard();
+        for(Object o : c) {
+            if (!(o instanceof Coordinate))
+                throw new ClassCastException();
+            if(!contains((Coordinate) o))
+                return false;
+        }
+        return true;
     }
 
     @Override
