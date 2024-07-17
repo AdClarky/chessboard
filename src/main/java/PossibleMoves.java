@@ -35,6 +35,6 @@ public class PossibleMoves {
     }
 
     public boolean isCheckmate(PieceColour colour){
-        return getPossibleMovesBoard(colour).isBoardEmpty();
+        return getPossibleMovesBoard(colour).isEmpty();
     }
 }
