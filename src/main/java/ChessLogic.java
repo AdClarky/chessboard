@@ -17,6 +17,7 @@ class ChessLogic {
     }
 
     private void calculatePieces(PieceColour colour){
+        board.clearPossibleMoves(colour);
         Collection<Piece> pieces = board.getAllColourPieces(colour);
         for(Piece piece : pieces){
             piece.calculatePossibleMoves(this);
