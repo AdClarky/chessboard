@@ -57,12 +57,23 @@ class ChessLogic {
 
     private boolean canSquareSeeKing(Coordinate position) {
         Coordinate kingPos = board.getKing(board.getCurrentTurn()).getPosition();
-        if(position.x() == kingPos.x() ||
-                position.y() == kingPos.y() ||
-                Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())){
-            return true;
-        }
+        if(position.x() == kingPos.x())
+            return areSquareBetweenBlank(position, kingPos);
+        else if(position.y() == kingPos.y())
+            return areSquareBetweenBlank(position, kingPos);
+        else if(Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y()))
+            return areSquareBetweenBlank(position, kingPos);
         return false;
+    }
+
+    private boolean areSquareBetweenBlank(Coordinate position1, Coordinate position2){
+        int xDifference = Integer.signum(Math.abs(position1.x() - position2.x()));
+        int yDifference = Integer.signum(Math.abs(position1.y() - position2.y()));
+        for(int x = position1.x()+xDifference, y = position1.y()+yDifference; x != position2.x() && y != position2.y(); x+=xDifference, y+=yDifference) {
+            if(!board.isSquareBlank(x, y))
+                return false;
+        }
+        return true;
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
