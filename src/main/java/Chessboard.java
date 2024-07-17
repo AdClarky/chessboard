@@ -246,8 +246,8 @@ class Chessboard {
         return history.wasMoveCapture();
     }
 
-    public void pieceCanMove(PieceColour colour, Collection<Coordinate> moves) {
-        possibleMoves.pieceCanMove(colour, moves);
+    public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves) {
+        possibleMoves.updatePossibleMoves(colour, moves);
     }
 
     public boolean isPossible(PieceColour colour, Coordinate position) {

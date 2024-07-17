@@ -12,7 +12,7 @@ public class PossibleMoves {
         getPossibleMovesBoard(colour).clear();
     }
 
-    public void pieceCanMove(PieceColour colour, Collection<Coordinate> moves){
+    public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves){
         PossibleMovesBoard board = getPossibleMovesBoard(colour);
         for(Coordinate coord : moves){
             board.possibleMove(coord);
