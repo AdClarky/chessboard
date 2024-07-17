@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -18,6 +19,8 @@ public class Bitboard implements Collection<Coordinate> {
             throw new NullPointerException();
         if(!position.isInRange())
             throw new OutOfRangeException(position);
+        if(contains(position))
+            return false;
         board |= 1L << shift(position);
         return true;
     }
@@ -39,6 +42,8 @@ public class Bitboard implements Collection<Coordinate> {
         if(c instanceof Bitboard bitboard)
             return (bitboard.getBoard() & board) == bitboard.getBoard();
         for(Object o : c) {
+            if(o == null)
+                throw new NullPointerException();
             if (!(o instanceof Coordinate))
                 throw new ClassCastException();
             if(!contains(o))
@@ -50,8 +55,9 @@ public class Bitboard implements Collection<Coordinate> {
     @Override
     public boolean addAll(@NotNull Collection<? extends Coordinate> c) {
         if(c instanceof Bitboard bitboard){
+            long tempBoard = board;
             board |= bitboard.getBoard();
-            return true;
+            return tempBoard != board;
         }
         boolean changed = false;
         for(Coordinate coordinate : c)
@@ -63,8 +69,9 @@ public class Bitboard implements Collection<Coordinate> {
     @Override
     public boolean removeAll(@NotNull Collection<?> c) {
         if(c instanceof Bitboard bitboard){
+            long tempBoard = board;
             board &= ~bitboard.getBoard();
-            return true;
+            return tempBoard != board;
         }
         boolean changed = false;
         for(Object o : c) {
@@ -77,10 +84,13 @@ public class Bitboard implements Collection<Coordinate> {
     @Override
     public boolean retainAll(@NotNull Collection<?> c) {
         if(c instanceof Bitboard bitboard){
+            long tempBoard = board;
             board = bitboard.getBoard() & board;
-            return true;
+            return tempBoard != board;
         }
         boolean changed = false;
+        if(c.contains(null))
+            throw new NullPointerException();
         Iterator<Coordinate> iterator = iterator();
         while(iterator.hasNext()){
             if(!c.contains(iterator.next())){
@@ -118,26 +128,40 @@ public class Bitboard implements Collection<Coordinate> {
     }
 
     private class Itr implements Iterator<Coordinate> {
-        int current = 63;
+        int current = 64;
+        int previous = -1;
         int numFound = 0;
+        int size;
 
-        Itr() {}
+        Itr() {
+            size = size();
+        }
 
         @Override
         public boolean hasNext() {
-            return numFound != size();
+            return numFound < size;
         }
 
         @Override
         public Coordinate next() {
-            if(current < 0 || numFound > size()){
+            if(current < 0 || numFound >= size){
                 throw new NoSuchElementException();
             }
-            while(((board << current) & 1) == 0 && current >= 0){
+            do{
                 current--;
-            }
+                if(current < 0)
+                    throw new NoSuchElementException();
+            } while(((board >> current) & 1) == 0);
             numFound++;
+            previous = current;
             return new Coordinate(getX(current), getY(current));
+        }
+
+        @Override
+        public void remove() {
+            Bitboard.this.remove(new Coordinate(getX(current), getY(current)));
+            current = previous;
+            previous = -1;
         }
     }
 
@@ -194,12 +218,13 @@ public class Bitboard implements Collection<Coordinate> {
         return coordinate.x() + (coordinate.y() << 3);
     }
 
-    private int getX(int bit){
-        int x = 8 - ((bit + 1) % 8);
-        return x == 8 ? 0 : x;
+    @VisibleForTesting
+    int getX(int bit){
+        return bit % 8;
     }
 
-    private int getY(int bit){
-        return 8 - Math.ceilDiv(bit + 1, 8);
+    @VisibleForTesting
+    int getY(int bit){
+        return bit / 8;
     }
 }
