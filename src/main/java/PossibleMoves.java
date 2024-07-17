@@ -1,8 +1,8 @@
 import java.util.Collection;
 
 public class PossibleMoves {
-    private PossibleMovesBoard whiteBoard = new PossibleMovesBoard();
-    private PossibleMovesBoard blackBoard = new PossibleMovesBoard();
+    private Bitboard whiteBoard = new Bitboard();
+    private Bitboard blackBoard = new Bitboard();
 
     public PossibleMoves(){
 
@@ -13,9 +13,9 @@ public class PossibleMoves {
     }
 
     public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves){
-        PossibleMovesBoard board = getPossibleMovesBoard(colour);
+        Bitboard board = getPossibleMovesBoard(colour);
         for(Coordinate coord : moves){
-            board.possibleMove(coord);
+            board.setPosition(coord);
         }
     }
 
@@ -23,7 +23,7 @@ public class PossibleMoves {
         getPossibleMovesBoard(colour).removePossible(move);
     }
 
-    private PossibleMovesBoard getPossibleMovesBoard(PieceColour colour){
+    private Bitboard getPossibleMovesBoard(PieceColour colour){
         if(colour == PieceColour.BLACK){
             return blackBoard;
         }
@@ -31,7 +31,7 @@ public class PossibleMoves {
     }
 
     public boolean isPossible(PieceColour colour, Coordinate move){
-        return getPossibleMovesBoard(colour).isPossible(move);
+        return getPossibleMovesBoard(colour).isActive(move);
     }
 
     public boolean isCheckmate(PieceColour colour){
