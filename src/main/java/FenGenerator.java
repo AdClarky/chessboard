@@ -84,13 +84,13 @@ class FenGenerator {
     }
 
     private void addEnPassant(){
-        Pawn pawn = findEnPassantPawn();
-        if(pawn == null) {
+        Coordinate enPassantSquare = board.getEnPassantSquare();
+        if(enPassantSquare == null) {
             fenString.append("- ");
             return;
         }
-        int direction = PieceColour.getDirectionFromColour(pawn.getColour());
-        Coordinate coordinateBehind = new Coordinate(pawn.getX(), pawn.getY() - direction);
+        int direction = enPassantSquare.y() == 4 ? -1 : 1;
+        Coordinate coordinateBehind = new Coordinate(enPassantSquare.x(), enPassantSquare.y() + direction);
         fenString.append(coordinateBehind).append(" ");
     }
 
