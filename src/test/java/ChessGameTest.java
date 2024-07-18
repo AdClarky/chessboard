@@ -43,7 +43,7 @@ class ChessGameTest {
 
     @Test
     void basicMove(){
-        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow(()-> chessGame.makeMove(new Coordinate(3, 1), new Coordinate(3, 3)));
         assertEquals(1, listener.movesMade);
         assertEquals(0, listener.checkmate);
         assertEquals(0, listener.draw);
@@ -79,7 +79,7 @@ class ChessGameTest {
 
     @Test
     void oneMoveOneUndo(){
-        assertDoesNotThrow( ()->chessGame.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow( ()->chessGame.makeMove(new Coordinate(3, 1), new Coordinate(3, 3)));
         chessGame.undoMove();
         assertEquals(1, listener.movesMade);
         assertEquals(0, listener.checkmate);
@@ -89,7 +89,7 @@ class ChessGameTest {
 
     @Test
     void oneMoveUndoAndRedo(){
-        assertDoesNotThrow( ()->chessGame.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow( ()->chessGame.makeMove(new Coordinate(3, 1), new Coordinate(3, 3)));
         chessGame.undoMove();
         chessGame.redoMove();
         assertEquals(1, listener.movesMade);
@@ -111,7 +111,7 @@ class ChessGameTest {
 
     @Test
     void basicMoveThenRedoManyTimes(){
-        assertDoesNotThrow( ()->chessGame.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow( ()->chessGame.makeMove(new Coordinate(3, 1), new Coordinate(3, 3)));
         chessGame.undoMove();
         chessGame.redoMove();
         chessGame.redoMove();
@@ -124,7 +124,7 @@ class ChessGameTest {
 
     @Test
     void basicMoveThenUndoManyTimes(){
-        assertDoesNotThrow( ()->chessGame.makeMove(3, 1, 3, 3));
+        assertDoesNotThrow( ()->chessGame.makeMove(new Coordinate(3, 1), new Coordinate(3, 3)));
         chessGame.undoMove();
         chessGame.undoMove();
         chessGame.undoMove();
@@ -138,11 +138,11 @@ class ChessGameTest {
 
     @Test
     void invalidMove() {
-        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(0, 1, 0, 4));
+        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(new Coordinate(0, 1), new Coordinate(0, 4)));
     }
 
     @Test
     void noPieceMove(){
-        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(4, 4, 4, 3));
+        assertThrows(InvalidMoveException.class, () -> chessGame.makeMove(new Coordinate(4, 4), new Coordinate(4, 3)));
     }
 }

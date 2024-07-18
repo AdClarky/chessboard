@@ -19,7 +19,7 @@ public class DepthTester {
             }
             for(Coordinate position : positionCoordinates){
                 Coordinate originalPos = new Coordinate(piece.getX(), piece.getY());
-                board.makeMove(piece.getX(), piece.getY(), position.x(), position.y());
+                board.makeMove(piece.getPosition(), position);
                 int currentPos = testDepth(currentDepth - 1);
                 positions += currentPos;
                 board.undoMove();

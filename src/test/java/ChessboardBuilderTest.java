@@ -29,7 +29,7 @@ class ChessboardBuilderTest {
         assertInstanceOf(Bishop.class, board.getPiece(5, 0));
         assertInstanceOf(Bishop.class, board.getPiece(2, 0));
         assertInstanceOf(Queen.class, board.getPiece(4, 0));
-        assertInstanceOf(King.class, board.getPiece(3, 0));
+        assertInstanceOf(King.class, board.getPiece(new Coordinate(3, 0)));
     }
 
     @Test
@@ -44,7 +44,7 @@ class ChessboardBuilderTest {
         assertInstanceOf(Rook.class, board.getPiece(0, 7));
         assertInstanceOf(Knight.class, board.getPiece(6, 7));
         assertInstanceOf(Knight.class, board.getPiece(1, 7));
-        assertInstanceOf(Bishop.class, board.getPiece(5, 7));
+        assertInstanceOf(Bishop.class, board.getPiece(new Coordinate(5, 7)));
         assertInstanceOf(Bishop.class, board.getPiece(2, 7));
         assertInstanceOf(Queen.class, board.getPiece(4, 7));
         assertInstanceOf(King.class, board.getPiece(3, 7));
@@ -75,7 +75,7 @@ class ChessboardBuilderTest {
         assertInstanceOf(Bishop.class, board.getPiece(5, 0));
         assertInstanceOf(Bishop.class, board.getPiece(2, 0));
         assertInstanceOf(Queen.class, board.getPiece(4, 0));
-        assertInstanceOf(King.class, board.getPiece(3, 0));
+        assertInstanceOf(King.class, board.getPiece(new Coordinate(3, 0)));
     }
 
     @Test
@@ -90,7 +90,7 @@ class ChessboardBuilderTest {
         assertInstanceOf(Rook.class, board.getPiece(0, 7));
         assertInstanceOf(Knight.class, board.getPiece(6, 7));
         assertInstanceOf(Knight.class, board.getPiece(1, 7));
-        assertInstanceOf(Bishop.class, board.getPiece(5, 7));
+        assertInstanceOf(Bishop.class, board.getPiece(new Coordinate(5, 7)));
         assertInstanceOf(Bishop.class, board.getPiece(2, 7));
         assertInstanceOf(Queen.class, board.getPiece(4, 7));
         assertInstanceOf(King.class, board.getPiece(3, 7));
@@ -113,28 +113,28 @@ class ChessboardBuilderTest {
     void whiteCanOnlyCastleQueenSide(){
         String fenString = "rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(3, 0, 5, 0));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), 5, 0));
     }
 
     @Test
     void blackCanOnlyCastleQueenSide(){
         String fenString = "r3kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQq - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(3, 7, 5, 7));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 7), new Coordinate(5, 7)));
     }
 
     @Test
     void whiteCanOnlyCastleKingSide(){
         String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w Kkq - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(3, 0, 1, 0));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), 1, 0));
     }
 
     @Test
     void blackCanOnlyCastleKingSide(){
         String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(3, 7, 1, 7));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 7), new Coordinate(1, 7)));
     }
 
     @Test

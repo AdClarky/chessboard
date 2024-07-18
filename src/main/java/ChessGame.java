@@ -65,19 +65,15 @@ public class ChessGame {
             notifyCheckmate(board.getKing(board.getCurrentTurn()));
         }
     }
-
-    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
-        makeMove(new Coordinate(oldX, oldY), new Coordinate(newX, newY));
-    }
-
+    
     /**
-     * {@link ChessGame#makeMove(int, int, int, int)}
+     * {@link ChessGame#makeMove(Coordinate, Coordinate)}
      * @param chessMove a chess move in algabraic notation
      * @throws InvalidMoveException when the move given is not a valid move
      */
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = ChessUtils.chessToMove(board, chessMove);
-        makeMove(move.piece().getX(), move.piece().getY(), move.newPos().x(), move.newPos().y());
+        makeMove(move.piece().getPosition(), move.newPos());
     }
 
     /**
