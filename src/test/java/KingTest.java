@@ -11,15 +11,6 @@ class KingTest {
     }
 
     @Test
-    void oneKingMoved(){
-        Chessboard board = new Chessboard();
-        King king = new King(1, 1, PieceColour.BLACK);
-        king.firstMove();
-        King king2 = new King(1, 1, PieceColour.BLACK);
-        assertNotEquals(king, king2);
-    }
-
-    @Test
     void bothKingMoved(){
         Chessboard board = new Chessboard();
         King king = new King(1, 1, PieceColour.BLACK);

@@ -4,8 +4,6 @@ import java.util.List;
  * A King in chess which can only move to adjacent squares.
  */
 public class King extends Piece{
-    private boolean moved = false;
-
     /**
      * Creates a {@code King}
      * @param x starting x position
@@ -80,22 +78,11 @@ public class King extends Piece{
     }
 
     @Override
-    void firstMove(){
-        moved = true;
-    }
+    void firstMove(){}
 
     @Override
-    public boolean hadFirstMove(){return moved;}
+    public boolean hadFirstMove(){return false;}
 
     @Override
-    void undoMoveCondition(){moved = false;}
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
-        King king = (King) obj;
-        return moved == king.moved;
-    }
+    void undoMoveCondition(){}
 }
