@@ -68,6 +68,10 @@ class Chessboard {
         return board[y][x];
     }
 
+    public Piece getPiece(Coordinate square) {
+        return getPiece(square.x(), square.y());
+    }
+
     public boolean isSquareColour(Coordinate position, PieceColour colour){
         if(!position.isInRange())
             return false;
