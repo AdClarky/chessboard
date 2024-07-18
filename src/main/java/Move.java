@@ -11,14 +11,13 @@ import java.util.List;
 class Move {
     private final Chessboard board;
     private final Piece piece;
-    private final Piece previousPawn;
     private final Coordinate movePosition;
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
+    private final Coordinate previousEnPassant;
     private boolean undone = false;
     private boolean taking = false;
     private boolean notHadFirstMove = true;
-    private boolean wasPreviousPawnPassantable = false;
     private long enemyPossible;
 
     /**
@@ -29,10 +28,7 @@ class Move {
         movePosition = new Coordinate(x, y);
         this.piece = piece;
         this.board = board;
-        if(previousPiece instanceof Pawn) // only need to track it if it's a pawn
-            previousPawn = previousPiece;
-        else
-            previousPawn = new Blank(0,0);
+        previousEnPassant = board.getEnPassantSquare();
         movesMade = piece.getMoves(new ChessLogic(board), x, y);
         enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
@@ -45,16 +41,17 @@ class Move {
     public void makeMove(){
         undone = false;
         movesToUndo.clear();
+        if(piece instanceof Pawn && Math.abs(movePosition.y() - piece.getY()) == 2)
+            board.setPawnEnPassantable(movePosition);
+        else
+            board.setPawnEnPassantable(null);
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY()))
                 takePiece(move);
             movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
             board.movePiece(move);
         }
-        wasPreviousPawnPassantable = previousPawn.hadFirstMove();
-        previousPawn.undoMoveCondition();
         notHadFirstMove = !piece.hadFirstMove();
-        piece.firstMove();
         board.nextTurn();
     }
 
@@ -80,8 +77,7 @@ class Move {
         }
         if(notHadFirstMove)
             piece.undoMoveCondition();
-        if(wasPreviousPawnPassantable)
-            previousPawn.firstMove();
+        board.setPawnEnPassantable(previousEnPassant);
         board.nextTurn();
         board.setPossibleMoves(PieceColour.getOtherColour(board.getCurrentTurn()), enemyPossible);
     }
