@@ -25,7 +25,7 @@ class BoardHistoryTest {
     void lastPieceMovedTest(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(1, 0));
-        history.push(new Move(new Coordinate(0, 0), board.getPiece(new Coordinate(1, 0)), board));
+        history.push(new Move(board.getPiece(new Coordinate(1, 0)), new Coordinate(0, 0), board));
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
     }
@@ -34,8 +34,8 @@ class BoardHistoryTest {
     void lastPieceMovedMultipleMoves(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
-        history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
+        history.push(new Move(board.getPiece(new Coordinate(4, 1)), new Coordinate(4, 2), board));
+        history.push(new Move(board.getPiece(4, 6), new Coordinate(4, 5), board));
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
     }
@@ -44,8 +44,8 @@ class BoardHistoryTest {
     void lastPieceMovedMultipleMovesThenUndoOnce(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
-        history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
+        history.push(new Move(board.getPiece(new Coordinate(4, 1)), new Coordinate(4, 2), board));
+        history.push(new Move(board.getPiece(4, 6), new Coordinate(4, 5), board));
         history.undoMove();
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
@@ -55,8 +55,8 @@ class BoardHistoryTest {
     void lastPieceMovedMultipleMovesThenUndoMultipleTimes(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(4, 1));
-        history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
+        history.push(new Move(board.getPiece(new Coordinate(4, 1)), new Coordinate(4, 2), board));
+        history.push(new Move(board.getPiece(4, 6), new Coordinate(4, 5), board));
         history.undoMultipleMoves(2);
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
@@ -66,8 +66,8 @@ class BoardHistoryTest {
     void lastPieceMovedMultipleMovesThenUndoThenRedo(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(4, 1));
-        history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
+        history.push(new Move(board.getPiece(new Coordinate(4, 1)), new Coordinate(4, 2), board));
+        history.push(new Move(board.getPiece(4, 6), new Coordinate(4, 5), board));
         history.undoMultipleMoves(2);
         history.redoMove();
         Piece lastMoved = history.getLastPieceMoved();
@@ -78,8 +78,8 @@ class BoardHistoryTest {
     void lastPieceMovedMultipleMovesThenUndoThenRedoAll(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
-        history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
+        history.push(new Move(board.getPiece(new Coordinate(4, 1)), new Coordinate(4, 2), board));
+        history.push(new Move(board.getPiece(4, 6), new Coordinate(4, 5), board));
         history.undoMultipleMoves(2);
         history.redoAllMoves();
         Piece lastMoved = history.getLastPieceMoved();
@@ -145,14 +145,14 @@ class BoardHistoryTest {
     @Test
     void canRedoWhenNoMovesUndone(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(()-> history.push(new Move(new Coordinate(4, 1), board.getPiece(3, 1), board)));
+        assertDoesNotThrow(()-> history.push(new Move(board.getPiece(3, 1), new Coordinate(4, 1), board)));
         assertFalse(history.canRedoMove());
     }
 
     @Test
     void canRedoWhenMoveUndone(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(()-> history.push(new Move(new Coordinate(4, 1), board.getPiece(3, 1), board)));
+        assertDoesNotThrow(()-> history.push(new Move(board.getPiece(3, 1), new Coordinate(4, 1), board)));
         history.undoMove();
         assertTrue(history.canRedoMove());
     }
