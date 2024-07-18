@@ -96,16 +96,15 @@ class Chessboard {
         return colourBoard.isSquareBlank(coordinate);
     }
 
-    public void movePiece(int x, int y, @NotNull Piece piece) {
-        Coordinate newPosition = new Coordinate(x, y);
-        colourBoard.movePiece(piece.getColour(), piece.getPosition(), newPosition);
+    public void movePiece(@NotNull Piece piece, Coordinate newPos) {
+        colourBoard.movePiece(piece.getColour(), piece.getPosition(), newPos);
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
-        board[y][x] = piece;
-        piece.setPos(newPosition);
+        board[newPos.y()][newPos.x()] = piece;
+        piece.setPos(newPos);
     }
 
     public void movePiece(@NotNull MoveValue move) {
-        movePiece(move.newX(), move.newY(), move.piece());
+        movePiece(move.piece(), new Coordinate(move.newX(), move.newY()));
     }
 
     public Collection<Piece> getAllColourPieces(PieceColour colour) {
