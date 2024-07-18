@@ -113,7 +113,7 @@ class ChessboardBuilderTest {
     void whiteCanOnlyCastleQueenSide(){
         String fenString = "rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), 5, 0));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), new Coordinate(5, 0)));
     }
 
     @Test
@@ -127,7 +127,7 @@ class ChessboardBuilderTest {
     void whiteCanOnlyCastleKingSide(){
         String fenString = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/RNBQK2R w Kkq - 0 1";
         ChessGame game = assertDoesNotThrow(()->new ChessGame(fenString));
-        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), 1, 0));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(3, 0), new Coordinate(1, 0)));
     }
 
     @Test

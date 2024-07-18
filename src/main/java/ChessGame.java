@@ -65,7 +65,7 @@ public class ChessGame {
             notifyCheckmate(board.getKing(board.getCurrentTurn()));
         }
     }
-    
+
     /**
      * {@link ChessGame#makeMove(Coordinate, Coordinate)}
      * @param chessMove a chess move in algabraic notation
