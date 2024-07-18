@@ -19,4 +19,10 @@ public class Board {
         else if(colour == PieceColour.BLACK)
             blackPieces.add(newPosition);
     }
+
+    public boolean isSquareBlank(Coordinate coordinate) {
+        if(!whitePieces.contains(coordinate) && !blackPieces.contains(coordinate))
+            return true;
+        return false;
+    }
 }
