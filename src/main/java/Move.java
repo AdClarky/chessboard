@@ -53,7 +53,7 @@ class Move {
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newPos()))
                 takePiece(move);
-            movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
+            movesToUndo.add(MoveValue.createStationaryMove(move.oldPos()));
             board.movePiece(move);
         }
         board.nextTurn();
