@@ -8,13 +8,4 @@ class RookTest {
         Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
         assertEquals(rook, rook2);
     }
-
-    @Test
-    void bothRookMoved(){
-        Rook rook = new Rook(1, 1, PieceColour.WHITE);
-        rook.firstMove();
-        Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
-        rook2.firstMove();
-        assertEquals(rook, rook2);
-    }
 }

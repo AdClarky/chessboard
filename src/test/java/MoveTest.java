@@ -459,7 +459,6 @@ class MoveTest {
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE));
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
-        blackPieces.getLast().firstMove();
         board.populateBoard(whitePieces, blackPieces);
         new Move(2, 5, board.getPiece(3, 4), null, board);
         int x = 3, y = 4;
@@ -491,7 +490,6 @@ class MoveTest {
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE));
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
-        blackPieces.getLast().firstMove();
         board.populateBoard(whitePieces, blackPieces);
         Move enPassant = new Move(2, 5, board.getPiece(3, 4), null, board);
         enPassant.undo();
@@ -524,7 +522,6 @@ class MoveTest {
         whitePieces.add(new Pawn(3, 4, PieceColour.WHITE));
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
-        blackPieces.getLast().firstMove();
         board.populateBoard(whitePieces, blackPieces);
         Move enPassant = new Move(2, 5, board.getPiece(3, 4), null, board);
         enPassant.undo();

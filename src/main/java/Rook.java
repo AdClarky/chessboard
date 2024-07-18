@@ -21,11 +21,6 @@ public class Rook extends Piece{
     }
 
     @Override
-    void firstMove(){
-
-    }
-
-    @Override
     public String toString() {
         return "rook";
     }
