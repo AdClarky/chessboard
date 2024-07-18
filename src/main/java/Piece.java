@@ -8,8 +8,7 @@ import java.util.Objects;
  *
  */
 public abstract class Piece {
-    private final int startX;
-    private final int startY;
+    private final Coordinate startingPos;
     private Icon pieceIcon;
     private Coordinate position;
     /**
@@ -23,14 +22,11 @@ public abstract class Piece {
 
     /**
      * Creates a chess piece.
-     * @param x starting x position.
-     * @param y starting y position.
      * @param colour the colour of the piece.
      */
-    protected Piece(int x, int y, PieceColour colour) {
-        startX = x;
-        startY = y;
-        position = new Coordinate(x, y);
+    protected Piece(Coordinate position, PieceColour colour) {
+        startingPos = position;
+        this.position = position;
         this.colour = colour;
     }
 
@@ -64,13 +60,12 @@ public abstract class Piece {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Piece piece = (Piece) obj;
-        return startX == piece.startX && getX() == piece.getX() && getY() == piece.getY() &&
-                startY == piece.startY && colour == piece.colour;
+        return startingPos.equals(piece.startingPos) && position.equals(piece.position) && colour == piece.colour;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(startX, startY, colour, toCharacter());
+        return Objects.hash(startingPos, colour, toCharacter());
     }
 
     /**
