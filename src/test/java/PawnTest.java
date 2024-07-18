@@ -6,72 +6,66 @@ class PawnTest {
     void isNotPassantableAfterAnotherPawnMove() {
         ChessGame chessGame = new ChessGame();
         assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
-        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 4), chessGame.getEnPassantSquare());
     }
 
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenUndone() {
         ChessGame chessGame = new ChessGame();
         assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
-        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 4), chessGame.getEnPassantSquare());
         chessGame.undoMove();
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,6).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
     }
 
     @Test
     void isNotPassantableAfterAnotherPawnMoveThenRedoAfterUndone() {
         ChessGame chessGame = new ChessGame();
         assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         assertDoesNotThrow(()-> chessGame.makeMove(3, 6, 3, 4));
-        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 4), chessGame.getEnPassantSquare());
         chessGame.undoMove();
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,6).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         chessGame.redoMove();
-        assertTrue(chessGame.getPiece(3,4).hadFirstMove());
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 4), chessGame.getEnPassantSquare());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMove() {
         ChessGame chessGame = new ChessGame();
-        assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
-        assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertDoesNotThrow(() -> chessGame.makeMove(3, 1, 3, 3));
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
+        assertDoesNotThrow(() -> chessGame.makeMove(6, 7, 5, 5));
+        assertNull(chessGame.getEnPassantSquare());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenUndone() {
         ChessGame chessGame = new ChessGame();
         assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertNull(chessGame.getEnPassantSquare());
         chessGame.undoMove();
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
     }
 
     @Test
     void isNotPassantableAfterAnotherPieceMoveThenRedoAfterUndone() {
         ChessGame chessGame = new ChessGame();
         assertDoesNotThrow(()-> chessGame.makeMove(3, 1, 3, 3));
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         assertDoesNotThrow(()-> chessGame.makeMove(6, 7, 5, 5));
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertNull(chessGame.getEnPassantSquare());
         chessGame.undoMove();
-        assertTrue(chessGame.getPiece(3,3).hadFirstMove());
+        assertEquals(new Coordinate(3, 3), chessGame.getEnPassantSquare());
         chessGame.redoMove();
-        assertFalse(chessGame.getPiece(3,3).hadFirstMove());
+        assertNull(chessGame.getEnPassantSquare());
     }
 
     @Test

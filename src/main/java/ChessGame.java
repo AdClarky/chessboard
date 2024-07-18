@@ -221,4 +221,8 @@ public class ChessGame {
     public boolean isInCheck(){
         return chessLogic.isKingInCheck(getCurrentTurn());
     }
+
+    public Coordinate getEnPassantSquare() {
+        return board.getEnPassantSquare();
+    }
 }
