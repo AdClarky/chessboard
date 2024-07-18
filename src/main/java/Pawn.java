@@ -9,8 +9,6 @@ import java.util.List;
  * It can only take diagonally forward.
  */
 public class Pawn extends Piece{
-    private boolean canBePassanted = false;
-
     /**
      * Creates a {@code Pawn}
      * @param x starting x position
@@ -77,17 +75,15 @@ public class Pawn extends Piece{
     }
 
     @Override
-    void firstMove() {
-        canBePassanted = true;
-    }
+    void firstMove() {}
 
     @Override
     public boolean hadFirstMove(){
-        return canBePassanted;
+        return false;
     }
 
     @Override
-    void undoMoveCondition(){canBePassanted = false;}
+    void undoMoveCondition(){}
 
 
     @Override
@@ -98,14 +94,5 @@ public class Pawn extends Piece{
     @Override
     public char toCharacter() {
         return '\u0000';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        if (!super.equals(obj)) return false;
-        Pawn pawn = (Pawn) obj;
-        return canBePassanted == pawn.canBePassanted;
     }
 }
