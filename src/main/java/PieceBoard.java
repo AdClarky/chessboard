@@ -115,8 +115,6 @@ public class PieceBoard {
     }
 
     public Collection<Coordinate> getKingPositions(){
-        Bitboard newKings = new Bitboard();
-        newKings.set(kings.getBoard());
-        return newKings;
+        return new Bitboard(kings.getBoard());
     }
 }

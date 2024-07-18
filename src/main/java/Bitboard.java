@@ -13,6 +13,10 @@ public class Bitboard implements Collection<Coordinate> {
 
     }
 
+    public Bitboard(long board) {
+        this.board = board;
+    }
+
     @Override
     public boolean add(Coordinate position) {
         if(position == null)
