@@ -21,9 +21,7 @@ public class Board {
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
-        if(!whitePieces.contains(coordinate) && !blackPieces.contains(coordinate))
-            return true;
-        return false;
+        return !whitePieces.contains(coordinate) && !blackPieces.contains(coordinate);
     }
 
     public boolean isPositionColour(Coordinate position, PieceColour colour) {

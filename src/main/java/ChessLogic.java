@@ -137,7 +137,7 @@ class ChessLogic {
     }
 
     public boolean isEnemyPiece(int x, int y, PieceColour colour){
-        return board.isEnemyPiece(new Coordinate(x, y), colour);
+        return board.isSquareColour(new Coordinate(x, y), PieceColour.getOtherColour(colour));
     }
 
     public boolean hasPieceHadFirstMove(int x, int y){

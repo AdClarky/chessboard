@@ -67,10 +67,10 @@ class Chessboard {
         return getPiece(coordinate.x(), coordinate.y());
     }
 
-    public boolean isEnemyPiece(Coordinate position, PieceColour friendlyColour){
+    public boolean isSquareColour(Coordinate position, PieceColour colour){
         if(!position.isInRange())
             return false;
-        return colourBoard.isPositionColour(position, PieceColour.getOtherColour(friendlyColour));
+        return colourBoard.isPositionColour(position, colour);
     }
 
     public boolean hasPieceHadFirstMove(int x, int y) {
