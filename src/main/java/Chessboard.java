@@ -129,11 +129,12 @@ class Chessboard {
         }
     }
 
-    public void setPawnEnPassantable(Coordinate position) {
+    public void setPawnEnPassantable(@Nullable Coordinate position) {
         getPiece(position.x(), position.y()).firstMove();
         enPassantSquare = position;
     }
 
+    @Nullable
     public Coordinate getEnPassantSquare() {
         return enPassantSquare;
     }
