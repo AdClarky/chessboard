@@ -8,11 +8,11 @@ public class ColourBoard {
 
     public ColourBoard(){}
 
-    public void add(Piece piece){
-        if(piece.getColour() == PieceColour.WHITE)
-            whitePieces.add(piece.getPosition());
-        else if(piece.getColour() == PieceColour.BLACK)
-            blackPieces.add(piece.getPosition());
+    public void add(PieceValue piece){
+        if(piece.colour() == PieceColour.WHITE)
+            whitePieces.add(piece.position());
+        else if(piece.colour() == PieceColour.BLACK)
+            blackPieces.add(piece.position());
     }
 
     public void movePiece(Coordinate oldPosition, Coordinate newPosition){

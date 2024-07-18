@@ -13,19 +13,8 @@ public class PieceBoard {
 
     public PieceBoard(){}
 
-    public void add(Piece piece){
-        if(piece instanceof Pawn)
-            pawns.add(piece.getPosition());
-        else if(piece instanceof Knight)
-            knights.add(piece.getPosition());
-        else if(piece instanceof Rook)
-            rooks.add(piece.getPosition());
-        else if(piece instanceof Bishop)
-            bishops.add(piece.getPosition());
-        else if(piece instanceof Queen)
-            queens.add(piece.getPosition());
-        else if(piece instanceof King)
-            kings.add(piece.getPosition());
+    public void add(PieceValue piece){
+        add(piece.pieceType(), piece.position());
     }
 
     public void add(Pieces piece, Coordinate position){
