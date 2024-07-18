@@ -25,8 +25,9 @@ public class Pawn extends Piece{
     void calculatePossibleMoves(ChessLogic board) {
         possibleMoves.clear();
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(board.isSquareBlank(getX(), getY()+direction)) {// basic move forward
-            possibleMoves.add(new Coordinate(getX(), getY() + direction));
+        Coordinate forwardOne = new Coordinate(getX(), getY()+direction);
+        if(board.isSquareBlank(forwardOne)) {
+            possibleMoves.add(forwardOne);
             if(board.isSquareBlank(getX(), getY()+(direction << 1)) && (getY() == 6 || getY() == 1)) // double move first go
                 possibleMoves.add(new Coordinate(getX(), getY() + (direction << 1)));
         }
