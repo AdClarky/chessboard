@@ -97,10 +97,11 @@ class Chessboard {
     }
 
     public void movePiece(int x, int y, @NotNull Piece piece) {
-        colourBoard.movePiece(piece.getColour(), piece.getPosition(), new Coordinate(x, y));
+        Coordinate newPosition = new Coordinate(x, y);
+        colourBoard.movePiece(piece.getColour(), piece.getPosition(), newPosition);
         board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
         board[y][x] = piece;
-        piece.setPos(x, y);
+        piece.setPos(newPosition);
     }
 
     public void movePiece(@NotNull MoveValue move) {
