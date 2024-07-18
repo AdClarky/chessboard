@@ -29,7 +29,7 @@ class Move {
         this.board = board;
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
-        movesMade = piece.getMoves(new ChessLogic(board), newPos.x(), newPos.y());
+        movesMade = piece.getMoves(new ChessLogic(board), newPos);
         enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
     }
