@@ -166,14 +166,14 @@ class BoardHistoryTest {
     @Test
     void halfMovesAfterKnightMove(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        board.makeMove(new Coordinate(1, 0), 0, 3);
+        board.makeMove(new Coordinate(1, 0), new Coordinate(0, 3));
         assertEquals(1, board.getNumHalfMoves());
     }
 
     @Test
     void halfMovesAfterPawnMove(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        board.makeMove(0, new Coordinate(1, 0), 3);
+        board.makeMove(new Coordinate(0, 1), new Coordinate(0, 3));
         assertEquals(0, board.getNumHalfMoves());
     }
 
@@ -189,7 +189,7 @@ class BoardHistoryTest {
     @Test
     void fullMovesAfterWhiteMove(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        board.makeMove(0, new Coordinate(1, 0), 3);
+        board.makeMove(new Coordinate(0, 1), new Coordinate(0, 3));
         assertEquals(1, board.getNumFullMoves());
     }
 
@@ -211,7 +211,7 @@ class BoardHistoryTest {
     void setFullMovesAfterMoveMade(){
         assertThrows(AccessedHistoryDuringGameException.class, ()->{
             Chessboard board = new ChessboardBuilder().defaultSetup();
-            board.makeMove(0, new Coordinate(1, 0), 3);
+            board.makeMove(new Coordinate(1, 0), new Coordinate(0, 3));
             board.setNumFullMoves(2);
         });
     }
@@ -220,7 +220,7 @@ class BoardHistoryTest {
     void setHalfMovesAfterMoveMade(){
         assertThrows(AccessedHistoryDuringGameException.class, ()->{
             Chessboard board = new ChessboardBuilder().defaultSetup();
-            board.makeMove(0, new Coordinate(1, 0), 3);
+            board.makeMove(new Coordinate(1, 0), new Coordinate(0, 3));
             board.setNumHalfMoves(2);
         });
     }
@@ -229,7 +229,7 @@ class BoardHistoryTest {
     void setFullMovesAfterMoveMadeAndUndone(){
         assertThrows(AccessedHistoryDuringGameException.class, ()->{
             Chessboard board = new ChessboardBuilder().defaultSetup();
-            board.makeMove(0, new Coordinate(1, 0), 3);
+            board.makeMove(new Coordinate(1, 0), new Coordinate(0, 3));
             board.undoMove();
             board.setNumFullMoves(2);
         });
@@ -239,7 +239,7 @@ class BoardHistoryTest {
     void setHalfMovesAfterMoveMadeAndUndone(){
         assertThrows(AccessedHistoryDuringGameException.class, ()->{
             Chessboard board = new ChessboardBuilder().defaultSetup();
-            board.makeMove(0, new Coordinate(1, 0), 3);
+            board.makeMove(new Coordinate(1, 0), new Coordinate(0, 3));
             board.undoMove();
             board.setNumHalfMoves(2);
         });
