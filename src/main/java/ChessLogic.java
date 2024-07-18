@@ -145,19 +145,23 @@ class ChessLogic {
         return board.isSquareColour(new Coordinate(x, y), PieceColour.getOtherColour(colour));
     }
 
-    public boolean hasPieceHadFirstMove(int x, int y){
-        return board.hasPieceHadFirstMove(x, y);
-    }
-
     public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
         return new MoveValue(board.getPiece(x, y), newX, newY);
     }
 
-    public boolean isPiecePawn(int x, int y){
-        return board.getPiece(x, y) instanceof Pawn;
-    }
-
     public static boolean isValidMove(@NotNull Piece piece, int newX, int newY){
         return !piece.getPossibleMoves().contains(new Coordinate(newX, newY));
+    }
+
+    public boolean canAnythingCastle() {
+        return board.canAnythingCastle();
+    }
+
+    public boolean canKingCastle(PieceColour colour) {
+        return board.canKingCastle(colour);
+    }
+
+    public boolean canCastle(Coordinate position) {
+        return board.canCastle(position);
     }
 }
