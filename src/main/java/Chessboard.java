@@ -33,7 +33,7 @@ class Chessboard {
             }
         }
         castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
-                new Coordinate(3, 0), new Coordinate(0, 7), new Coordinate(7, 7),
+                new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
                 new Coordinate(3, 7)));
     }
 
