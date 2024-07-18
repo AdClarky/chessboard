@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ class Move {
      * Initialises move and then moves the piece to the new location.
      * Used so it can undo the first move condition on the previous piece if necessary.
      */
-    public Move(int x, int y, @NotNull Piece piece, @Nullable Piece previousPiece, Chessboard board){
+    public Move(int x, int y, @NotNull Piece piece, Chessboard board){
         movePosition = new Coordinate(x, y);
         this.piece = piece;
         this.board = board;
