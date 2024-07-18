@@ -1,5 +1,8 @@
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.NoSuchElementException;
+
 public class PieceBoard {
     private final Bitboard pawns = new Bitboard();
     private final Bitboard knights = new Bitboard();
@@ -84,10 +87,13 @@ public class PieceBoard {
             return Pieces.QUEEN;
         if(kings.remove(position))
             return Pieces.KING;
+        throw new NoSuchElementException();
     }
 
     @Nullable
     public Pieces get(Coordinate position){
+        if(!position.isInRange())
+            return null;
         if(pawns.contains(position))
             return Pieces.PAWN;
         if(knights.contains(position))
@@ -100,11 +106,17 @@ public class PieceBoard {
             return Pieces.QUEEN;
         if(kings.contains(position))
             return Pieces.KING;
-        return null;
+        return Pieces.BLANK;
     }
 
     public void move(Coordinate from, Coordinate to){
         Pieces piece = remove(from);
         add(piece, to);
+    }
+
+    public Collection<Coordinate> getKingPositions(){
+        Bitboard newKings = new Bitboard();
+        newKings.set(kings.getBoard());
+        return newKings;
     }
 }
