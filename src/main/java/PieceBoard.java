@@ -1,12 +1,10 @@
-import java.util.Collection;
-
 public class PieceBoard {
-    private Bitboard pawns = new Bitboard();
-    private Bitboard knights = new Bitboard();
-    private Bitboard rooks = new Bitboard();
-    private Bitboard bishops = new Bitboard();
-    private Bitboard queens = new Bitboard();
-    private Bitboard kings = new Bitboard();
+    private final Bitboard pawns = new Bitboard();
+    private final Bitboard knights = new Bitboard();
+    private final Bitboard rooks = new Bitboard();
+    private final Bitboard bishops = new Bitboard();
+    private final Bitboard queens = new Bitboard();
+    private final Bitboard kings = new Bitboard();
 
     public PieceBoard(){}
 
@@ -23,5 +21,20 @@ public class PieceBoard {
             queens.add(piece.getPosition());
         else if(piece instanceof King)
             kings.add(piece.getPosition());
+    }
+
+    public void remove(Piece piece){
+        if(piece instanceof Pawn)
+            pawns.remove(piece.getPosition());
+        else if(piece instanceof Knight)
+            knights.remove(piece.getPosition());
+        else if(piece instanceof Rook)
+            rooks.remove(piece.getPosition());
+        else if(piece instanceof Bishop)
+            bishops.remove(piece.getPosition());
+        else if(piece instanceof Queen)
+            queens.remove(piece.getPosition());
+        else if(piece instanceof King)
+            kings.remove(piece.getPosition());
     }
 }
