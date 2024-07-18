@@ -61,24 +61,25 @@ class ChessboardBuilder {
         }
         PieceColour colour = getColourFromCharacter(character);
         List<Piece> pieces = getPiecesFromChar(character);
+        Coordinate position = new Coordinate(squaresProcessed, row);
         switch(Character.toLowerCase(character)){
             case 'r':
-                pieces.add(new Rook(squaresProcessed, row, colour));
+                pieces.add(new Rook(position, colour));
                 break;
             case 'n':
-                pieces.add(new Knight(squaresProcessed, row, colour));
+                pieces.add(new Knight(position, colour));
                 break;
             case 'b':
-                pieces.add(new Bishop(squaresProcessed, row, colour));
+                pieces.add(new Bishop(position, colour));
                 break;
             case 'k':
-                pieces.addFirst(new King(squaresProcessed, row, colour));
+                pieces.addFirst(new King(position, colour));
                 break;
             case 'q':
-                pieces.add(new Queen(squaresProcessed, row, colour));
+                pieces.add(new Queen(position, colour));
                 break;
             case 'p':
-                pieces.add(new Pawn(squaresProcessed, row, colour));
+                pieces.add(new Pawn(position, colour));
                 break;
         }
         squaresProcessed--;

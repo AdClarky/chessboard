@@ -15,12 +15,12 @@ class ChessboardTest {
         Chessboard board = new Chessboard();
         Collection<Piece> whitePieces = new ArrayList<>(3);
         Collection<Piece> blackPieces = new ArrayList<>(3);
-        whitePieces.add(new King(0, 0, PieceColour.WHITE));
-        whitePieces.add(new King(0, 1, PieceColour.WHITE));
-        whitePieces.add(new King(0, 2, PieceColour.WHITE));
-        blackPieces.add(new King(0, 3, PieceColour.BLACK));
-        blackPieces.add(new King(0, 4, PieceColour.BLACK));
-        blackPieces.add(new King(0, 5, PieceColour.BLACK));
+        whitePieces.add(new King(new Coordinate(0, 0), PieceColour.WHITE));
+        whitePieces.add(new King(new Coordinate(0, 1), PieceColour.WHITE));
+        whitePieces.add(new King(new Coordinate(0, 2), PieceColour.WHITE));
+        blackPieces.add(new King(new Coordinate(0, 3), PieceColour.BLACK));
+        blackPieces.add(new King(new Coordinate(0, 4), PieceColour.BLACK));
+        blackPieces.add(new King(new Coordinate(0, 5), PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
         for(int x = 1; x < 8; x++){
             for(int y = 0; y < 8; y++){
@@ -150,13 +150,13 @@ class ChessboardTest {
     @Test
     void removeBlankSquare(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertThrows(IllegalArgumentException.class, ()-> board.removePiece(new Blank(0, 0)));
+        assertThrows(IllegalArgumentException.class, ()-> board.removePiece(new Blank(new Coordinate(0, 0))));
     }
 
     @Test
     void addBlankSquare(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertThrows(IllegalArgumentException.class, ()-> board.addPiece(new Blank(0, 0)));
+        assertThrows(IllegalArgumentException.class, ()-> board.addPiece(new Blank(new Coordinate(0, 0))));
     }
 
     @Test
@@ -174,7 +174,7 @@ class ChessboardTest {
     @Test
     void areEdgeSquaresBlank(){
         Chessboard board = new Chessboard();
-        assertTrue(board.isSquareBlank(0, 0));
+        assertTrue(board.isSquareBlank(new Coordinate(0, 0)));
         assertTrue(board.isSquareBlank(7, 0));
         assertTrue(board.isSquareBlank(7, 7));
         assertTrue(board.isSquareBlank(0, 7));
@@ -193,7 +193,7 @@ class ChessboardTest {
     @Test
     void areEdgeSquaresPieces(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertInstanceOf(Rook.class, board.getPiece(0, 0));
+        assertInstanceOf(Rook.class, board.getPiece(new Coordinate(0, 0)));
         assertInstanceOf(Rook.class, board.getPiece(7, 0));
         assertInstanceOf(Rook.class, board.getPiece(7, 7));
         assertInstanceOf(Rook.class, board.getPiece(0, 7));

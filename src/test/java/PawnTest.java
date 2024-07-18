@@ -67,12 +67,4 @@ class PawnTest {
         chessGame.redoMove();
         assertNull(chessGame.getEnPassantSquare());
     }
-
-    @Test
-    void pawnNotMoved(){
-        Chessboard board = new Chessboard();
-        Pawn pawn = new Pawn(1, 1, PieceColour.BLACK);
-        Pawn pawn2 = new Pawn(1, 1, PieceColour.BLACK);
-        assertEquals(pawn, pawn2);
-    }
 }

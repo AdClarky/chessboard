@@ -30,7 +30,7 @@ class Chessboard {
         history = new BoardHistory();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {
-                board[y][x] = new Blank(x, y);
+                board[y][x] = new Blank(new Coordinate(x, y));
             }
         }
         castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
@@ -67,7 +67,7 @@ class Chessboard {
     @NotNull
     public Piece getPiece(int x, int y) {
         if (x < 0 || x >= 8 || y < 0 || y >= 8)
-            return new Blank(x, y);
+            return new Blank(new Coordinate(x, y));
         return board[y][x];
     }
 
@@ -98,7 +98,7 @@ class Chessboard {
 
     public void movePiece(@NotNull Piece piece, Coordinate newPos) {
         colourBoard.movePiece(piece.getColour(), piece.getPosition(), newPos);
-        board[piece.getY()][piece.getX()] = new Blank(piece.getX(), piece.getY());
+        board[piece.getY()][piece.getX()] = new Blank(piece.getPosition());
         board[newPos.y()][newPos.x()] = piece;
         piece.setPos(newPos);
     }
