@@ -58,18 +58,17 @@ public class Pawn extends Piece{
     }
 
     @Override
-    List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
+    List<MoveValue> getMoves(ChessLogic board, Coordinate position) {
         List<MoveValue> moves = new ArrayList<>(2);
-        Coordinate newPosition = new Coordinate(newX, newY);
-        if(newY == 7 || newY == 0) { // if pawn promotion
-            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
-            moves.add(new MoveValue(new Queen(newX, newY, colour), new Coordinate(newX, newY)));
-        }else if(newX != getX() && board.isSquareBlank(newPosition)){ // if passanting
+        if(position.y() == 7 || position.y() == 0) { // if pawn promotion
+            moves.add(new MoveValue(this, position));
+            moves.add(new MoveValue(new Queen(newX, newY, colour), position));
+        }else if(position.x() != getX() && board.isSquareBlank(position)){ // if passanting
             int direction = PieceColour.getDirectionFromColour(colour);
-            moves.add(board.getMoveForOtherPiece(newX, newY-direction, newX, newY));
-            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
+            moves.add(board.getMoveForOtherPiece(position.x(), position.y()-direction, position.x(), position.y()));
+            moves.add(new MoveValue(this, position));
         }else{
-            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
+            moves.add(new MoveValue(this, position));
         }
         return moves;
     }

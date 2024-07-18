@@ -56,14 +56,14 @@ public class King extends Piece{
     }
 
     @Override
-    List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
+    List<MoveValue> getMoves(ChessLogic board, Coordinate position) {
         List<MoveValue> moves = new ArrayList<>(2);
-        if(newX - getX() == -2) { // short castle
-            moves.add(board.getMoveForOtherPiece(0, newY, 2, newY));
-        }else if(getX() - newX == -2) {
-            moves.add(board.getMoveForOtherPiece(7, newY, 4, newY));
+        if(position.x() - getX() == -2) { // short castle
+            moves.add(board.getMoveForOtherPiece(0, position.y(), 2, position.y()));
+        }else if(getX() - position.x() == -2) {
+            moves.add(board.getMoveForOtherPiece(7, position.y(), 4, position.y()));
         }
-        moves.add(new MoveValue(this, new Coordinate(newX, newY)));
+        moves.add(new MoveValue(this, position));
         return moves;
     }
 
