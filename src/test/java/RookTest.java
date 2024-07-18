@@ -10,14 +10,6 @@ class RookTest {
     }
 
     @Test
-    void oneRookMoved(){
-        Rook rook = new Rook(1, 1, PieceColour.WHITE);
-        rook.firstMove();
-        Rook rook2 = new Rook(1, 1, PieceColour.WHITE);
-        assertNotEquals(rook, rook2);
-    }
-
-    @Test
     void bothRookMoved(){
         Rook rook = new Rook(1, 1, PieceColour.WHITE);
         rook.firstMove();

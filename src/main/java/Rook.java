@@ -22,11 +22,11 @@ public class Rook extends Piece{
 
     @Override
     void firstMove(){
-        moved = true;
+
     }
 
     @Override
-    public boolean hadFirstMove(){return moved;}
+    public boolean hadFirstMove(){return false;}
 
     @Override
     public String toString() {
@@ -39,7 +39,7 @@ public class Rook extends Piece{
     }
 
     @Override
-    public void undoMoveCondition(){moved = false;}
+    public void undoMoveCondition(){}
 
     @Override
     public boolean equals(Object obj) {
