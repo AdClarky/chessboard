@@ -81,14 +81,14 @@ class Move {
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */
-    private void addOrRemovePiece(@NotNull Piece pieceToMove, @NotNull MoveValue move){
+    private void addOrRemovePiece(Pieces piece, MoveValue move){
         if(!move.isPieceInSamePosition())
             return;
         // a piece moving to the same spot only occurs as the last move when it's a promotion
         if(move == movesToUndo.getLast())
-            board.removePiece(pieceToMove);
+            board.removePiece(move.newPos());
         else
-            board.addPiece(pieceToMove);
+            board.addPiece(piece, move.newPos());
     }
 
     public Coordinate getOldPos() {
