@@ -18,6 +18,7 @@ class Chessboard {
     private final Collection<Piece> whitePieces = new HashSet<>(16);
     private King whiteKing;
     private PieceColour currentTurn = PieceColour.WHITE;
+    private Coordinate enPassantSquare;
 
     /**
      * Initialises the board with all squares blank.
@@ -130,6 +131,11 @@ class Chessboard {
 
     public void setPawnEnPassantable(int x, int y) {
         getPiece(x, y).firstMove();
+        enPassantSquare = new Coordinate(x, y);
+    }
+
+    public Coordinate getEnPassantSquare() {
+        return enPassantSquare;
     }
 
     /**
