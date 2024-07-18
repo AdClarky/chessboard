@@ -67,11 +67,6 @@ class Chessboard {
         return getPiece(coordinate.x(), coordinate.y());
     }
 
-    @NotNull
-    public PieceColour getPieceColour(int x, int y) {
-        return getPiece(x, y).getColour();
-    }
-
     public boolean isEnemyPiece(Coordinate position, PieceColour friendlyColour){
         if(!position.isInRange())
             return false;
