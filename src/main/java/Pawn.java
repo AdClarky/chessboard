@@ -11,12 +11,10 @@ import java.util.List;
 public class Pawn extends Piece{
     /**
      * Creates a {@code Pawn}
-     * @param x starting x position
-     * @param y starting y position
      * @param colour if it is black or white
      */
-    public Pawn(int x, int y, PieceColour colour) {
-        super(x, y,  colour);
+    public Pawn(Coordinate position, PieceColour colour) {
+        super(position,  colour);
     }
 
     @Override
@@ -62,7 +60,7 @@ public class Pawn extends Piece{
         List<MoveValue> moves = new ArrayList<>(2);
         if(position.y() == 7 || position.y() == 0) { // if pawn promotion
             moves.add(new MoveValue(this, position));
-            moves.add(new MoveValue(new Queen(newX, newY, colour), position));
+            moves.add(new MoveValue(new Queen(position, colour), position));
         }else if(position.x() != getX() && board.isSquareBlank(position)){ // if passanting
             int direction = PieceColour.getDirectionFromColour(colour);
             moves.add(board.getMoveForOtherPiece(position.x(), position.y()-direction, position.x(), position.y()));

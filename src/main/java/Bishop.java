@@ -4,12 +4,10 @@
 public class Bishop extends Piece{
     /**
      * Creates a {@code Bishop}
-     * @param x starting x position
-     * @param y starting y position
      * @param colour if it is black or white
      */
-    public Bishop(int x, int y, PieceColour colour) {
-        super(x, y, colour);
+    public Bishop(Coordinate position, PieceColour colour) {
+        super(position, colour);
     }
 
     @Override

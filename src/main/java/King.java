@@ -6,12 +6,10 @@ import java.util.List;
 public class King extends Piece{
     /**
      * Creates a {@code King}
-     * @param x starting x position
-     * @param y starting y position
      * @param colour if it is black or white
      */
-    public King(int x, int y, PieceColour colour) {
-        super(x, y, colour);
+    public King(Coordinate position, PieceColour colour) {
+        super(position, colour);
     }
 
     @Override

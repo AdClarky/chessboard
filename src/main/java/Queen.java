@@ -4,12 +4,10 @@
 public class Queen extends Piece{
     /**
      * Creates a {@code Queen}
-     * @param x starting x position
-     * @param y starting y position
      * @param colour if it is black or white
      */
-    public Queen(int x, int y, PieceColour colour) {
-        super(x, y, colour);
+    public Queen(Coordinate position, PieceColour colour) {
+        super(position, colour);
     }
 
     @Override
