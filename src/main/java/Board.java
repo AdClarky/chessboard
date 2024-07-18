@@ -12,12 +12,16 @@ public class Board {
     }
 
     public void movePiece(PieceColour colour, Coordinate oldPosition, Coordinate newPosition){
-        whitePieces.remove(oldPosition);
-        blackPieces.remove(oldPosition);
-        if(colour == PieceColour.WHITE)
+        whitePieces.remove(newPosition);
+        blackPieces.remove(newPosition);
+        if(colour == PieceColour.WHITE) {
+            whitePieces.remove(oldPosition);
             whitePieces.add(newPosition);
-        else if(colour == PieceColour.BLACK)
+        }
+        else if(colour == PieceColour.BLACK) {
+            blackPieces.remove(oldPosition);
             blackPieces.add(newPosition);
+        }
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
