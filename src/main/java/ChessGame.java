@@ -77,7 +77,7 @@ public class ChessGame {
      */
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = ChessUtils.chessToMove(board, chessMove);
-        makeMove(move.piece().getX(), move.piece().getY(), move.newX(), move.newY());
+        makeMove(move.piece().getX(), move.piece().getY(), move.newPos().x(), move.newPos().y());
     }
 
     /**
