@@ -90,9 +90,8 @@ public abstract class Piece {
      */
     public PieceColour getColour() {return colour;}
 
-
-    void setPos(int x, int y) {
-        position = new Coordinate(x, y);
+    void setPos(Coordinate newPos){
+        position = newPos;
     }
 
     /**
