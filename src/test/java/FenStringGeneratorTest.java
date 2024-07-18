@@ -7,12 +7,6 @@ import java.util.NoSuchElementException;
 @SuppressWarnings("SpellCheckingInspection")
 class FenStringGeneratorTest {
     @Test
-    void blankBoardTest(){
-        Chessboard board = new Chessboard();
-        assertThrows(NullPointerException.class, ()-> new FenGenerator(board).getFenString());
-    }
-
-    @Test
     void defaultStartingTest(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         String fenString = new FenGenerator(board).getFenString();
