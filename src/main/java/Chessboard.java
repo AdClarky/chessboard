@@ -10,6 +10,7 @@ import java.util.Objects;
 /** A chess board that is automatically populated with blank squares. */
 class Chessboard {
     private final Piece[][] board = new Piece[8][8];
+    private final PieceBoard pieceBoard = new PieceBoard();
     private final ColourBoard colourBoard = new ColourBoard();
     private final PossibleMoves possibleMoves = new PossibleMoves();
     private final BoardHistory history;
@@ -45,12 +46,14 @@ class Chessboard {
         this.blackPieces.addAll(blackPieces);
         for (Piece piece : blackPieces) {
             colourBoard.add(piece);
+            pieceBoard.add(piece);
             board[piece.getY()][piece.getX()] = piece;
             if (piece instanceof King)
                 blackKing = (King) piece;
         }
         for (Piece piece : whitePieces) {
             colourBoard.add(piece);
+            pieceBoard.add(piece);
             board[piece.getY()][piece.getX()] = piece;
             if (piece instanceof King)
                 whiteKing = (King) piece;
