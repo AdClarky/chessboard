@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class ColourBoard {
     Bitboard whitePieces = new Bitboard();
@@ -14,15 +13,15 @@ public class ColourBoard {
             blackPieces.add(piece.getPosition());
     }
 
-    public void movePiece(PieceColour colour, Coordinate oldPosition, Coordinate newPosition){
+    public void movePiece(Coordinate oldPosition, Coordinate newPosition){
+        boolean white = whitePieces.remove(oldPosition);
+        boolean black = blackPieces.remove(oldPosition);
         whitePieces.remove(newPosition);
         blackPieces.remove(newPosition);
-        if(colour == PieceColour.WHITE) {
-            whitePieces.remove(oldPosition);
+        if(white) {
             whitePieces.add(newPosition);
         }
-        else if(colour == PieceColour.BLACK) {
-            blackPieces.remove(oldPosition);
+        else if(black) {
             blackPieces.add(newPosition);
         }
     }
