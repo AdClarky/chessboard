@@ -94,19 +94,19 @@ class ChessboardBuilder {
         if(length == 4)
             return;
         if(rights.contains("-")){
-            board.setKingMoved(PieceColour.WHITE);
-            board.setKingMoved(PieceColour.BLACK);
+            board.removeAllCastling(PieceColour.WHITE);
+            board.removeAllCastling(PieceColour.BLACK);
             return;
         }
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
         getUpperAndLower(rights, upper, lower);
         if(upper.isEmpty())
-            board.setKingMoved(PieceColour.WHITE);
+            board.removeAllCastling(PieceColour.WHITE);
         else if(upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
         if(lower.isEmpty())
-            board.setKingMoved(PieceColour.BLACK);
+            board.removeAllCastling(PieceColour.BLACK);
         else if(lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }
@@ -122,8 +122,8 @@ class ChessboardBuilder {
 
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
-        int x = Character.toLowerCase(rookWithRights) == 'k' ? 0 : 7;
-        board.setOtherRookMoved(x, y);
+        int x = Character.toLowerCase(rookWithRights) == 'k' ? 7 : 0;
+        board.removeCastlingRight(new Coordinate(x, y));
     }
 
     private void setEnPassant(@NotNull String section){
