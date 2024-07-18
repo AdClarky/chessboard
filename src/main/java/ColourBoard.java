@@ -1,3 +1,6 @@
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class ColourBoard {
     Bitboard whitePieces = new Bitboard();
     Bitboard blackPieces = new Bitboard();
@@ -36,5 +39,14 @@ public class ColourBoard {
         if(colour == PieceColour.WHITE)
             return whitePieces;
         return blackPieces;
+    }
+
+    @NotNull
+    public PieceColour getColourAtPosition(Coordinate kingPos) {
+        if(whitePieces.contains(kingPos))
+            return PieceColour.WHITE;
+        if(blackPieces.contains(kingPos))
+            return PieceColour.BLACK;
+        return PieceColour.BLANK;
     }
 }
