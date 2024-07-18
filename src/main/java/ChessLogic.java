@@ -82,7 +82,7 @@ class ChessLogic {
     }
 
     private boolean isMoveTakingFriendly(Piece piece, Coordinate movePos){
-        return board.getPiece(movePos).getColour() == piece.getColour();
+        return board.isSquareColour(movePos, piece.getColour());
     }
 
     public boolean isCheckmate(){

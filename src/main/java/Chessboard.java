@@ -62,11 +62,6 @@ class Chessboard {
         return board[y][x];
     }
 
-    @NotNull
-    public Piece getPiece(Coordinate coordinate) {
-        return getPiece(coordinate.x(), coordinate.y());
-    }
-
     public boolean isSquareColour(Coordinate position, PieceColour colour){
         if(!position.isInRange())
             return false;
