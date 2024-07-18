@@ -46,14 +46,14 @@ public final class ChessUtils {
         if(possiblePieces.isEmpty())
             throw new InvalidMoveException(move);
         Piece piece = possiblePieces.getFirst();
-        return new MoveValue(piece, newCoordinate.x(), newCoordinate.y());
+        return new MoveValue(piece, newCoordinate);
     }
 
     private static MoveValue getCastlingMove(@NotNull Chessboard board, int newX){
         if(board.getCurrentTurn() == PieceColour.BLACK){
-            return new MoveValue(board.getPiece(3,7),newX,7);
+            return new MoveValue(board.getPiece(3,7),new Coordinate(newX,7));
         }else{
-            return new MoveValue(board.getPiece(3, 0), newX, 0);
+            return new MoveValue(board.getPiece(3, 0), new Coordinate(newX, 0));
         }
     }
 

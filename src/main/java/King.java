@@ -63,7 +63,7 @@ public class King extends Piece{
         }else if(getX() - newX == -2) {
             moves.add(board.getMoveForOtherPiece(7, newY, 4, newY));
         }
-        moves.add(new MoveValue(this, newX, newY));
+        moves.add(new MoveValue(this, new Coordinate(newX, newY)));
         return moves;
     }
 

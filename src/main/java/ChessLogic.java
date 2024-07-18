@@ -172,11 +172,11 @@ class ChessLogic {
     }
 
     public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
-        return new MoveValue(board.getPiece(x, y), newX, newY);
+        return new MoveValue(board.getPiece(x, y), new Coordinate(newX, newY));
     }
 
-    public static boolean isValidMove(@NotNull Piece piece, int newX, int newY){
-        return !piece.getPossibleMoves().contains(new Coordinate(newX, newY));
+    public static boolean isValidMove(@NotNull Piece piece, Coordinate newPos){
+        return !piece.getPossibleMoves().contains(newPos);
     }
 
     public boolean canAnythingCastle() {

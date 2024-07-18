@@ -201,6 +201,10 @@ class Chessboard {
         history.push(move);
     }
 
+    public void makeMove(Coordinate oldPos, Coordinate newPos){
+        makeMove(oldPos.x(), oldPos.y(), newPos.x(), newPos.y());
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
