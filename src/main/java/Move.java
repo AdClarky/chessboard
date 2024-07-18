@@ -18,7 +18,6 @@ class Move {
     private final long castlingRights;
     private boolean undone = false;
     private boolean taking = false;
-    private boolean notHadFirstMove = true;
     private long enemyPossible;
 
     /**
@@ -54,7 +53,6 @@ class Move {
             movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
             board.movePiece(move);
         }
-        notHadFirstMove = !piece.hadFirstMove();
         board.nextTurn();
     }
 

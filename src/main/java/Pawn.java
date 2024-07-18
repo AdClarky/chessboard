@@ -78,15 +78,6 @@ public class Pawn extends Piece{
     void firstMove() {}
 
     @Override
-    public boolean hadFirstMove(){
-        return false;
-    }
-
-    @Override
-    void undoMoveCondition(){}
-
-
-    @Override
     public String toString() {
         return "pawn";
     }
