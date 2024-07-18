@@ -32,15 +32,15 @@ class Chessboard {
                 board[y][x] = new Blank(x, y);
             }
         }
+        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
+                new Coordinate(3, 0), new Coordinate(0, 7), new Coordinate(7, 7),
+                new Coordinate(3, 7)));
     }
 
     /**
      * Adds all the pieces in the collections to the board based on the pieces x and y values
      */
     void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces) {
-        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
-                new Coordinate(3, 0), new Coordinate(0, 7), new Coordinate(7, 7),
-                new Coordinate(3, 7)));
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
         for (Piece piece : blackPieces) {
@@ -127,7 +127,7 @@ class Chessboard {
     }
 
     public boolean canAnythingCastle(){
-        return castlingRights.isEmpty();
+        return !castlingRights.isEmpty();
     }
 
     public void removeAllCastling(PieceColour colour){

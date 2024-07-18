@@ -34,17 +34,18 @@ public class King extends Piece{
             return;
         if(!board.canKingCastle(colour))
             return;
-        if(!board.canCastle(new Coordinate(getX()-3, getY()))){
-            if(board.isSquareBlank(getX()-1, getY()) &&
-                    board.isSquareBlank(getX()-2, getY())) {
-                possibleMoves.add(new Coordinate(getX() - 2, getY()));
+        int backRow = colour == PieceColour.WHITE ? 0 : 7;
+        if(board.canCastle(new Coordinate(getX()-3, backRow))){
+            if(board.isSquareBlank(getX()-1, backRow) &&
+                    board.isSquareBlank(getX()-2, backRow)) {
+                possibleMoves.add(new Coordinate(getX() - 2, backRow));
             }
         }
-        if(!board.canCastle(new Coordinate(getX()+4, getY()))){
-            if(board.isSquareBlank(getX()+1, getY()) &&
-                    board.isSquareBlank(getX()+2, getY()) &&
-                    board.isSquareBlank(getX()+3, getY())) {
-                possibleMoves.add(new Coordinate(getX() + 2, getY()));
+        if(board.canCastle(new Coordinate(getX()+4, backRow))){
+            if(board.isSquareBlank(getX()+1, backRow) &&
+                    board.isSquareBlank(getX()+2, backRow) &&
+                    board.isSquareBlank(getX()+3, backRow)) {
+                possibleMoves.add(new Coordinate(getX() + 2, backRow));
             }
         }
     }
