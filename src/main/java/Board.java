@@ -25,4 +25,14 @@ public class Board {
             return true;
         return false;
     }
+
+    public boolean isPositionColour(Coordinate position, PieceColour colour) {
+        return getBoard(colour).contains(position);
+    }
+
+    private Bitboard getBoard(PieceColour colour){
+        if(colour == PieceColour.WHITE)
+            return whitePieces;
+        return blackPieces;
+    }
 }
