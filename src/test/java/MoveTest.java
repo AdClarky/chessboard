@@ -557,4 +557,11 @@ class MoveTest {
         game.undoMove();
         assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1", game.getFenString());
     }
+
+    @Test
+    void doesMovingChangeCastlingRights() {
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        assertDoesNotThrow(()->game.makeMove("Kd1"));
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
+    }
 }
