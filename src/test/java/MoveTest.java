@@ -548,4 +548,13 @@ class MoveTest {
         assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
     }
+
+    @Test
+    void doesCastlingGoBackAfterUndo() {
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        assertDoesNotThrow(()->game.makeMove("Kd1"));
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
+        game.undoMove();
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1", game.getFenString());
+    }
 }
