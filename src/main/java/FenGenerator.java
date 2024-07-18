@@ -69,17 +69,17 @@ class FenGenerator {
             fenString.append("- ");
             return;
         }
-        if(!board.canKingCastle(PieceColour.WHITE))
+        if(board.canKingCastle(PieceColour.WHITE))
             addColourCastleRight(0);
-        if(!board.canKingCastle(PieceColour.BLACK))
+        if(board.canKingCastle(PieceColour.BLACK))
             addColourCastleRight(7);
         fenString.append(" ");
     }
 
     private void addColourCastleRight(int backRow){
-        if(!board.canCastle(new Coordinate(0, backRow)))
+        if(board.canCastle(new Coordinate(0, backRow)))
             fenString.append(backRow == 0 ? 'K' : 'k');
-        if(!board.canCastle(new Coordinate(7, backRow)))
+        if(board.canCastle(new Coordinate(7, backRow)))
             fenString.append(backRow == 0 ? 'Q' : 'q');
     }
 
