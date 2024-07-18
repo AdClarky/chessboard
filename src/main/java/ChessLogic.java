@@ -61,19 +61,33 @@ class ChessLogic {
         else if(position.y() == kingPos.y() && movePosition.y() != position.y())
             return areSquareBetweenBlank(position, kingPos);
         else if((Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())) &&
-                (Math.abs(movePosition.x() - kingPos.x()) != Math.abs(movePosition.y() - kingPos.y())))
-            return areSquareBetweenBlank(position, kingPos);
+                (Math.abs(movePosition.x() - kingPos.x()) != Math.abs(movePosition.y() - kingPos.y()))) {
+            if (areSquareBetweenBlank(position, kingPos))
+                return canEnemyPieceSeeKing(kingPos, position);
+            return false;
+        }
         return false;
     }
 
-    private boolean areSquareBetweenBlank(Coordinate position1, Coordinate position2){
-        int xDifference = Integer.signum(Math.abs(position1.x() - position2.x()));
-        int yDifference = Integer.signum(Math.abs(position1.y() - position2.y()));
-        for(int x = position1.x()+xDifference, y = position1.y()+yDifference; x != position2.x() && y != position2.y(); x+=xDifference, y+=yDifference) {
+    private boolean areSquareBetweenBlank(Coordinate position, Coordinate kingPos){
+        int xDifference = Integer.signum(kingPos.x() - position.x());
+        int yDifference = Integer.signum(kingPos.y() - position.y());
+        for(int x = position.x()+xDifference, y = position.y()+yDifference; x != kingPos.x() || y != kingPos.y(); x+=xDifference, y+=yDifference) {
             if(!board.isSquareBlank(x, y))
                 return false;
         }
         return true;
+    }
+
+    private boolean canEnemyPieceSeeKing(Coordinate kingPos, Coordinate position) {
+//        int xDifference = Integer.signum(Math.abs(position.x() - kingPos.x()));
+//        int yDifference = Integer.signum(Math.abs(position.y() - kingPos.y()));
+//        for(int x = position1.x()+xDifference, y = position1.y()+yDifference; x != position2.x() && y != position2.y(); x+=xDifference, y+=yDifference) {
+//            if(!board.isSquareBlank(x, y))
+//                return false;
+//        }
+        return true;
+//        return false;
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
