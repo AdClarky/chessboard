@@ -47,7 +47,7 @@ class ChessLogic {
         if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(piece.getPosition(), movePos))
             return false;
         PieceColour previousTurn = board.getCurrentTurn();
-        Move move = new Move(movePos.x(), movePos.y(), piece, board);
+        Move move = new Move(movePos, piece, board);
         calculatePieces(board.getCurrentTurn());
         boolean isMoveUnsafe = isKingInCheck(previousTurn);
         move.undo();

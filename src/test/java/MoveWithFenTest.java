@@ -5,7 +5,7 @@ class MoveWithFenTest {
     @Test
     void basicPromotion(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        new Move(4, 7, board.getPiece(4, 6), board);
+        new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -23,7 +23,7 @@ class MoveWithFenTest {
     @Test
     void basicPromotionUndo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -42,7 +42,7 @@ class MoveWithFenTest {
     @Test
     void basicPromotionRedo(){
         Chessboard board = assertDoesNotThrow(()-> new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -62,7 +62,7 @@ class MoveWithFenTest {
     @Test
     void promotionTaking(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        new Move(5, 7, board.getPiece(4, 6), board);
+        new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -80,7 +80,7 @@ class MoveWithFenTest {
     @Test
     void promotionTakingUndo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -99,7 +99,7 @@ class MoveWithFenTest {
     @Test
     void promotionTakingRedo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -119,7 +119,7 @@ class MoveWithFenTest {
     @Test
     void castling(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/4K2R w - - 0 1"));
-        new Move(1, 0, board.getPiece(3, 0), board);
+        new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         int x = 0, y = 0;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -148,7 +148,7 @@ class MoveWithFenTest {
     @Test
     void castlingUndo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/4K2R w - - 0 1"));
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         shortCastle.undo();
         int x = 0, y = 0;
         assertInstanceOf(Rook.class, board.getPiece(x, y));
@@ -178,7 +178,7 @@ class MoveWithFenTest {
     @Test
     void castlingRedo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/4K2R w - - 0 1"));
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         shortCastle.undo();
         shortCastle.makeMove();
         int x = 0, y = 0;
@@ -209,7 +209,7 @@ class MoveWithFenTest {
     @Test
     void enPassant(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/4Pp2/8/8/8/4K3 w - f6 0 1"));
-        new Move(2, 5, board.getPiece(3, 4), board);
+        new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         int x = 3, y = 4;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -233,7 +233,7 @@ class MoveWithFenTest {
     @Test
     void enPassantUndo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/4Pp2/8/8/8/4K3 w - f6 0 1"));
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         enPassant.undo();
         int x = 3, y = 4;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -258,7 +258,7 @@ class MoveWithFenTest {
     @Test
     void enPassantRedo(){
         Chessboard board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/4Pp2/8/8/8/4K3 w - f6 0 1"));
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         enPassant.undo();
         enPassant.makeMove();
         int x = 3, y = 4;
