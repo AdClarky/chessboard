@@ -62,14 +62,14 @@ public class Pawn extends Piece{
         List<MoveValue> moves = new ArrayList<>(2);
         Coordinate newPosition = new Coordinate(newX, newY);
         if(newY == 7 || newY == 0) { // if pawn promotion
-            moves.add(new MoveValue(this, newX, newY));
-            moves.add(new MoveValue(new Queen(newX, newY, colour), newX, newY));
+            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
+            moves.add(new MoveValue(new Queen(newX, newY, colour), new Coordinate(newX, newY)));
         }else if(newX != getX() && board.isSquareBlank(newPosition)){ // if passanting
             int direction = PieceColour.getDirectionFromColour(colour);
             moves.add(board.getMoveForOtherPiece(newX, newY-direction, newX, newY));
-            moves.add(new MoveValue(this, newX, newY));
+            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
         }else{
-            moves.add(new MoveValue(this, newX, newY));
+            moves.add(new MoveValue(this, new Coordinate(newX, newY)));
         }
         return moves;
     }

@@ -14,6 +14,10 @@ public class InvalidMoveException extends Exception {
         super("Cannot move from " + new Coordinate(oldX, oldY) + " to " + new Coordinate(newX, newY));
     }
 
+    public InvalidMoveException(Coordinate oldPos, Coordinate newPos){
+        super("Cannot move from " + oldPos + " to " + newPos);
+    }
+
     /**
      * Creates an {@code InvalidMoveException} giving the move given.
      * @param move the move which was invalid.

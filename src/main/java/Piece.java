@@ -46,7 +46,7 @@ public abstract class Piece {
 
     List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
-        moves.add(new MoveValue(this, newX, newY));
+        moves.add(new MoveValue(this, new Coordinate(newX, newY)));
         return moves;
     }
 

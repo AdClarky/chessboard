@@ -51,23 +51,23 @@ public class ChessGame {
      * If any moves have been undone, it sets the board back to the current position.
      * After a move has been made, it notifies all listeners then moves on to the next turn.
      * Checks for checkmate and draws.
-     * @param oldX the previous x position
-     * @param oldY the previous y position
-     * @param newX the new x position
-     * @param newY the new y position
      * @throws InvalidMoveException when the move given is not a valid move.
      */
-    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
-        if(ChessLogic.isValidMove(getPiece(oldX, oldY), newX, newY))
-            throw new InvalidMoveException(oldX, oldY, newX, newY);
-        board.makeMove(oldX, oldY, newX, newY);
+    public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
+        if(ChessLogic.isValidMove(getPiece(oldPos), newPos))
+            throw new InvalidMoveException(oldPos, newPos);
+        board.makeMove(oldPos, newPos);
         chessLogic.calculatePossibleMoves();
-        notifyMoveMade(oldX, oldY, newX, newY);
+        notifyMoveMade(oldPos, newPos);
         if(chessLogic.isDraw())
             notifyDraw();
         if(chessLogic.isCheckmate()) {
             notifyCheckmate(board.getKing(board.getCurrentTurn()));
         }
+    }
+
+    public void makeMove(int oldX, int oldY, int newX, int newY) throws InvalidMoveException {
+        makeMove(new Coordinate(oldX, oldY), new Coordinate(newX, newY));
     }
 
     /**
@@ -97,9 +97,9 @@ public class ChessGame {
         boardListeners.add(listener);
     }
 
-    private void notifyMoveMade(int oldX, int oldY, int newX, int newY){
+    private void notifyMoveMade(Coordinate oldPos, Coordinate newPos){
         for(BoardListener listener : boardListeners){
-            listener.moveMade(oldX, oldY, newX, newY);
+            listener.moveMade(oldPos.x(), oldPos.y(), newPos.x(), newPos.y());
         }
     }
 
@@ -188,6 +188,10 @@ public class ChessGame {
      */
     public Piece getPiece(int x, int y){
         return board.getPiece(x, y);
+    }
+
+    public Piece getPiece(Coordinate position){
+        return board.getPiece(position);
     }
 
     /**

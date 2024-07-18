@@ -93,7 +93,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "O-O");
-            assertEquals(new MoveValue(board.getPiece(3,0), 1, 0), move);
+            assertEquals(new MoveValue(board.getPiece(3,0), new Coordinate(1, 0)), move);
         });
     }
 
@@ -102,7 +102,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
-            assertEquals(new MoveValue(board.getPiece(3,0), 5, 0), move);
+            assertEquals(new MoveValue(board.getPiece(3,0), new Coordinate(5, 0)), move);
         });
     }
 
@@ -111,7 +111,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "O-O");
-            assertEquals(new MoveValue(board.getPiece(3,7), 1, 7), move);
+            assertEquals(new MoveValue(board.getPiece(3,7), new Coordinate(1, 7)), move);
         });
     }
 
@@ -120,7 +120,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R b kq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "O-O-O");
-            assertEquals(new MoveValue(board.getPiece(3,7), 5, 7), move);
+            assertEquals(new MoveValue(board.getPiece(3,7), new Coordinate(5, 7)), move);
         });
     }
 
@@ -129,7 +129,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w kq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "e4");
-            assertEquals(new MoveValue(board.getPiece(3,1), 3, 3), move);
+            assertEquals(new MoveValue(board.getPiece(3,1), new Coordinate(3, 3)), move);
         });
     }
 
@@ -138,7 +138,7 @@ class ChessUtilsTest {
         assertDoesNotThrow(()->{
             Chessboard board = new ChessboardBuilder().fromFen("r3k2r/ppp1pppp/8/3p4/4P3/8/PPPP1PPP/R3K2R w kq - 0 1");
             MoveValue move = ChessUtils.chessToMove(board, "exd5");
-            assertEquals(new MoveValue(board.getPiece(3,3), 4, 4), move);
+            assertEquals(new MoveValue(board.getPiece(3,3), new Coordinate(4, 4)), move);
         });
     }
 
@@ -147,7 +147,7 @@ class ChessUtilsTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         assertDoesNotThrow(()->{
             MoveValue move = ChessUtils.chessToMove(board, "Nf3");
-            assertEquals(new MoveValue(board.getPiece(1,0), 2, 2), move);
+            assertEquals(new MoveValue(board.getPiece(1,0), new Coordinate(2, 2)), move);
         });
     }
 }
