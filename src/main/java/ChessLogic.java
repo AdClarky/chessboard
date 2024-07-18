@@ -86,6 +86,10 @@ class ChessLogic {
         return board.isSquareColour(movePos, piece.getColour());
     }
 
+    public Coordinate getEnPassantSquare(){
+        return board.getEnPassantSquare();
+    }
+
     public boolean isCheckmate(){
         if(!isKingInCheck(board.getCurrentTurn()))
             return false;
