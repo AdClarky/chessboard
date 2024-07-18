@@ -19,14 +19,6 @@ public class Blank extends Piece {
     void firstMove() {}
 
     @Override
-    void undoMoveCondition(){}
-
-    @Override
-    public boolean hadFirstMove() {
-        return false;
-    }
-
-    @Override
     public String toString() {
         return "Blank";
     }

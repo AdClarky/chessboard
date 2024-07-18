@@ -94,17 +94,6 @@ class FenGenerator {
         fenString.append(coordinateBehind).append(" ");
     }
 
-    private @Nullable Pawn findEnPassantPawn(){
-        for(int y = 3; y < 5; y++) {
-            for (int x = 0; x < 8; x++) {
-                Piece possiblePiece = board.getPiece(x, y);
-                if(possiblePiece instanceof Pawn pawn && possiblePiece.hadFirstMove())
-                    return pawn;
-            }
-        }
-        return null;
-    }
-
     private void addHalfMoves(){
         fenString.append(board.getNumHalfMoves()).append(' ');
     }

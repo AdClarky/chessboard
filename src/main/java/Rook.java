@@ -26,9 +26,6 @@ public class Rook extends Piece{
     }
 
     @Override
-    public boolean hadFirstMove(){return false;}
-
-    @Override
     public String toString() {
         return "rook";
     }
@@ -37,9 +34,6 @@ public class Rook extends Piece{
     public char toCharacter() {
         return 'R';
     }
-
-    @Override
-    public void undoMoveCondition(){}
 
     @Override
     public boolean equals(Object obj) {

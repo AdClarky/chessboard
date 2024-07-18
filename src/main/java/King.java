@@ -79,10 +79,4 @@ public class King extends Piece{
 
     @Override
     void firstMove(){}
-
-    @Override
-    public boolean hadFirstMove(){return false;}
-
-    @Override
-    void undoMoveCondition(){}
 }

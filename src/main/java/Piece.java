@@ -46,14 +46,6 @@ public abstract class Piece {
 
     abstract void firstMove();
 
-    abstract void undoMoveCondition();
-
-    /**
-     * For pieces where the first move must be tracked.
-     * @return if they've had their first move.
-     */
-    public abstract boolean hadFirstMove();
-
     List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
         moves.add(new MoveValue(this, newX, newY));
