@@ -15,6 +15,7 @@ class Move {
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
     private final Coordinate previousEnPassant;
+    private final long castlingRights;
     private boolean undone = false;
     private boolean taking = false;
     private boolean notHadFirstMove = true;
@@ -29,6 +30,7 @@ class Move {
         this.piece = piece;
         this.board = board;
         previousEnPassant = board.getEnPassantSquare();
+        castlingRights = board.getCastlingRights();
         movesMade = piece.getMoves(new ChessLogic(board), x, y);
         enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
@@ -45,6 +47,7 @@ class Move {
             board.setEnPassantSquare(movePosition);
         else
             board.setEnPassantSquare(null);
+        board.pieceMoved(piece.getPosition());
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY()))
                 takePiece(move);
@@ -75,9 +78,8 @@ class Move {
             addOrRemovePiece(move.piece(), move);
             board.movePiece(move);
         }
-        if(notHadFirstMove)
-            piece.undoMoveCondition();
         board.setEnPassantSquare(previousEnPassant);
+        board.setCastlingRights(castlingRights);
         board.nextTurn();
         board.setPossibleMoves(PieceColour.getOtherColour(board.getCurrentTurn()), enemyPossible);
     }
