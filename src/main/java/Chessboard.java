@@ -82,6 +82,9 @@ class Chessboard {
         return getPiece(x, y) instanceof Blank;
     }
 
+    public boolean isSquareBlank(Coordinate coordinate) {
+        return colourBoard.isSquareBlank(coordinate);
+    }
 
     public void movePiece(int x, int y, @NotNull Piece piece) {
         colourBoard.movePiece(piece.getColour(), piece.getPosition(), new Coordinate(x, y));
