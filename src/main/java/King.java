@@ -26,18 +26,21 @@ public class King extends Piece{
             }
         }
         possibleMoves.remove(new Coordinate(currentX, currentY));
-        if(!moved)
-            calculateCastling(board);
+        calculateCastling(board);
     }
 
     private void calculateCastling(ChessLogic board){
-        if(!board.hasPieceHadFirstMove(getX()-3, getY())){
+        if(!board.canAnythingCastle())
+            return;
+        if(!board.canKingCastle(colour))
+            return;
+        if(!board.canCastle(new Coordinate(getX()-3, getY()))){
             if(board.isSquareBlank(getX()-1, getY()) &&
                     board.isSquareBlank(getX()-2, getY())) {
                 possibleMoves.add(new Coordinate(getX() - 2, getY()));
             }
         }
-        if(!board.hasPieceHadFirstMove(getX()+4, getY())){
+        if(!board.canCastle(new Coordinate(getX()+4, getY()))){
             if(board.isSquareBlank(getX()+1, getY()) &&
                     board.isSquareBlank(getX()+2, getY()) &&
                     board.isSquareBlank(getX()+3, getY())) {
