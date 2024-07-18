@@ -28,12 +28,12 @@ class Chessboard {
     /**
      * Adds all the pieces in the collections to the board based on the pieces x and y values
      */
-    void populateBoard(Iterable<Piece> whitePieces, Iterable<Piece> blackPieces) {
-        for (Piece piece : blackPieces) {
+    void populateBoard(Iterable<PieceValue> whitePieces, Iterable<PieceValue> blackPieces) {
+        for (PieceValue piece : blackPieces) {
             colourBoard.add(piece);
             pieceBoard.add(piece);
         }
-        for (Piece piece : whitePieces) {
+        for (PieceValue piece : whitePieces) {
             colourBoard.add(piece);
             pieceBoard.add(piece);
         }
