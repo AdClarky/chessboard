@@ -25,7 +25,7 @@ class BoardHistoryTest {
     void lastPieceMovedTest(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(1, 0));
-        history.push(new Move(0, 0, board.getPiece(new Coordinate(1, 0)), board));
+        history.push(new Move(new Coordinate(0, 0), board.getPiece(new Coordinate(1, 0)), board));
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
     }
@@ -35,7 +35,7 @@ class BoardHistoryTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
         history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(4, 5, board.getPiece(4, 6), board));
+        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
     }
@@ -45,7 +45,7 @@ class BoardHistoryTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
         history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(4, 5, board.getPiece(4, 6), board));
+        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
         history.undoMove();
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
@@ -56,7 +56,7 @@ class BoardHistoryTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(4, 1));
         history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(4, 5, board.getPiece(4, 6), board));
+        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
         history.undoMultipleMoves(2);
         Piece lastMoved = history.getLastPieceMoved();
         assertEquals(piece, lastMoved);
@@ -67,7 +67,7 @@ class BoardHistoryTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(new Coordinate(4, 1));
         history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(4, 5, board.getPiece(4, 6), board));
+        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
         history.undoMultipleMoves(2);
         history.redoMove();
         Piece lastMoved = history.getLastPieceMoved();
@@ -79,7 +79,7 @@ class BoardHistoryTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         Piece piece = board.getPiece(4, 6);
         history.push(new Move(new Coordinate(4, 2), board.getPiece(new Coordinate(4, 1)), board));
-        history.push(new Move(4, 5, board.getPiece(4, 6), board));
+        history.push(new Move(new Coordinate(4, 5), board.getPiece(4, 6), board));
         history.undoMultipleMoves(2);
         history.redoAllMoves();
         Piece lastMoved = history.getLastPieceMoved();

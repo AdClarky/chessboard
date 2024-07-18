@@ -34,10 +34,6 @@ class Move {
         makeMove();
     }
 
-    public Move(int x, int y, @NotNull Piece piece, Chessboard board){
-        this(new Coordinate(x, y), piece, board);
-    }
-
     /**
      * Moves the relevant pieces with no validation.
      * Saves the moves made so they can be undone.

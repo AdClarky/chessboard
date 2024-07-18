@@ -16,13 +16,14 @@ class MoveTest {
 
     @Test
     void basicMove(){
-        new Move(3, 3, board.getPiece(3, 1), board);
+        Coordinate e4 = new Coordinate(3,  3);
+        new Move(e4, board.getPiece(3, 1), board);
         assertInstanceOf(Blank.class, board.getPiece(3, 1));
         assertEquals(3, board.getPiece(3, 1).getX());
         assertEquals(1, board.getPiece(3, 1).getY());
-        assertInstanceOf(Pawn.class, board.getPiece(3, 3));
-        assertEquals(3, board.getPiece(3, 3).getX());
-        assertEquals(3, board.getPiece(3, 3).getY());
+        assertInstanceOf(Pawn.class, board.getPiece(e4));
+        assertEquals(3, board.getPiece(e4).getX());
+        assertEquals(3, board.getPiece(e4).getY());
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
@@ -31,11 +32,12 @@ class MoveTest {
 
     @Test
     void basicMoveUndo(){
-        Move move = new Move(3, 3, board.getPiece(3, 1), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Move move = new Move(e4, board.getPiece(3, 1), board);
         move.undo();
-        assertInstanceOf(Blank.class, board.getPiece(3, 3));
-        assertEquals(3, board.getPiece(3, 3).getX());
-        assertEquals(3, board.getPiece(3, 3).getY());
+        assertInstanceOf(Blank.class, board.getPiece(e4));
+        assertEquals(3, board.getPiece(e4).getX());
+        assertEquals(3, board.getPiece(e4).getY());
         assertInstanceOf(Pawn.class, board.getPiece(3, 1));
         assertEquals(3, board.getPiece(3, 1).getX());
         assertEquals(1, board.getPiece(3, 1).getY());
@@ -47,15 +49,16 @@ class MoveTest {
 
     @Test
     void basicMoveRedo(){
-        Move move = new Move(3, 3, board.getPiece(3, 1), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Move move = new Move(e4, board.getPiece(3, 1), board);
         move.undo();
         move.makeMove();
         assertInstanceOf(Blank.class, board.getPiece(3, 1));
         assertEquals(3, board.getPiece(3, 1).getX());
         assertEquals(1, board.getPiece(3, 1).getY());
-        assertInstanceOf(Pawn.class, board.getPiece(3, 3));
-        assertEquals(3, board.getPiece(3, 3).getX());
-        assertEquals(3, board.getPiece(3, 3).getY());
+        assertInstanceOf(Pawn.class, board.getPiece(e4));
+        assertEquals(3, board.getPiece(e4).getX());
+        assertEquals(3, board.getPiece(e4).getY());
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
@@ -64,16 +67,18 @@ class MoveTest {
 
     @Test
     void takingMove(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        new Move(4, 4, board.getPiece(3, 3), board);
-        assertInstanceOf(Blank.class, board.getPiece(3, 3));
-        assertEquals(3, board.getPiece(3, 3).getX());
-        assertEquals(3, board.getPiece(3, 3).getY());
-        assertInstanceOf(Pawn.class, board.getPiece(4, 4));
-        assertEquals(4, board.getPiece(4, 4).getX());
-        assertEquals(4, board.getPiece(4, 4).getY());
-        assertEquals(PieceColour.WHITE, board.getPiece(4, 4).getColour());
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        new Move(d5, board.getPiece(e4), board);
+        assertInstanceOf(Blank.class, board.getPiece(e4));
+        assertEquals(3, board.getPiece(e4).getX());
+        assertEquals(3, board.getPiece(e4).getY());
+        assertInstanceOf(Pawn.class, board.getPiece(d5));
+        assertEquals(4, board.getPiece(d5).getX());
+        assertEquals(4, board.getPiece(d5).getY());
+        assertEquals(PieceColour.WHITE, board.getPiece(d5).getColour());
 
         assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
         assertEquals(15, board.getAllColourPieces(PieceColour.BLACK).size());
@@ -81,9 +86,11 @@ class MoveTest {
 
     @Test
     void takingMoveUndo(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(d5, board.getPiece(e4), board);
         pawnXD5.undo();
         int x = 3, y = 3;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -102,9 +109,11 @@ class MoveTest {
 
     @Test
     void takingMoveUndoRedoRepeated(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(d5, board.getPiece(e4), board);
         pawnXD5.undo();
         pawnD5.undo();
         pawnD5.makeMove();
@@ -143,9 +152,11 @@ class MoveTest {
 
     @Test
     void takingMoveDoubleUndo(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(d5, board.getPiece(e4), board);
         pawnXD5.undo();
         pawnD5.undo();
         int x = 3, y = 1;
@@ -175,9 +186,11 @@ class MoveTest {
 
     @Test
     void takingMoveDoubleRedo(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(d5, board.getPiece(e4), board);
         pawnXD5.undo();
         pawnD5.undo();
         pawnD5.makeMove();
@@ -209,9 +222,11 @@ class MoveTest {
 
     @Test
     void takingMoveRedo(){
-        Move pawnE4 = new Move(3, 3, board.getPiece(3, 1), board);
-        Move pawnD5 = new Move(4, 4, board.getPiece(4, 6), board);
-        Move pawnXD5 = new Move(4, 4, board.getPiece(3, 3), board);
+        Coordinate e4 = new Coordinate(3, 3);
+        Coordinate d5 = new Coordinate(4, 4);
+        Move pawnE4 = new Move(e4, board.getPiece(3, 1), board);
+        Move pawnD5 = new Move(d5, board.getPiece(4, 6), board);
+        Move pawnXD5 = new Move(d5, board.getPiece(e4), board);
         pawnXD5.undo();
         pawnXD5.makeMove();
         int x = 3, y = 3;
@@ -231,7 +246,7 @@ class MoveTest {
     @Test
     void basicPromotion(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        new Move(4, 7, board.getPiece(4, 6), board);
+        new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -249,7 +264,7 @@ class MoveTest {
     @Test
     void basicPromotionUndo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -268,7 +283,7 @@ class MoveTest {
     @Test
     void basicPromotionRedo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(4, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(4, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -288,7 +303,7 @@ class MoveTest {
     @Test
     void promotionTaking(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        new Move(5, 7, board.getPiece(4, 6), board);
+        new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         int x = 4, y = 6;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -306,7 +321,7 @@ class MoveTest {
     @Test
     void promotionTakingUndo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         int x = 4, y = 6;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -325,7 +340,7 @@ class MoveTest {
     @Test
     void promotionTakingRedo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(5, 7, board.getPiece(4, 6), board);
+        Move pawnPromotion = new Move(new Coordinate(5, 7), board.getPiece(4, 6), board);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         int x = 4, y = 6;
@@ -351,7 +366,7 @@ class MoveTest {
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE));
         blackPieces.add(new King(0, 7, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        new Move(1, 0, board.getPiece(3, 0), board);
+        new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         int x = 0, y = 0;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -386,7 +401,7 @@ class MoveTest {
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE));
         blackPieces.add(new King(0, 7, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         shortCastle.undo();
         int x = 0, y = 0;
         assertInstanceOf(Rook.class, board.getPiece(x, y));
@@ -422,7 +437,7 @@ class MoveTest {
         whitePieces.add(new Rook(0, 0, PieceColour.WHITE));
         blackPieces.add(new King(0, 7, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        Move shortCastle = new Move(1, 0, board.getPiece(3, 0), board);
+        Move shortCastle = new Move(new Coordinate(1, 0), board.getPiece(3, 0), board);
         shortCastle.undo();
         shortCastle.makeMove();
         int x = 0, y = 0;
@@ -460,7 +475,7 @@ class MoveTest {
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        new Move(2, 5, board.getPiece(3, 4), board);
+        new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         int x = 3, y = 4;
         assertInstanceOf(Blank.class, board.getPiece(x, y));
         assertEquals(x, board.getPiece(x, y).getX());
@@ -491,7 +506,7 @@ class MoveTest {
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         enPassant.undo();
         int x = 3, y = 4;
         assertInstanceOf(Pawn.class, board.getPiece(x, y));
@@ -523,7 +538,7 @@ class MoveTest {
         blackPieces.add(new King(3, 7, PieceColour.BLACK));
         blackPieces.add(new Pawn(2, 4, PieceColour.BLACK));
         board.populateBoard(whitePieces, blackPieces);
-        Move enPassant = new Move(2, 5, board.getPiece(3, 4), board);
+        Move enPassant = new Move(new Coordinate(2, 5), board.getPiece(3, 4), board);
         enPassant.undo();
         enPassant.makeMove();
         int x = 3, y = 4;

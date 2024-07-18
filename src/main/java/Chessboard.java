@@ -197,7 +197,7 @@ class Chessboard {
     public void makeMove(int oldX, int oldY, int newX, int newY) {
         if (history.canRedoMove())
             history.clearRedoMoves();
-        Move move = new Move(newX, newY, getPiece(oldX, oldY), this);
+        Move move = new Move(new Coordinate(newX, newY), getPiece(oldX, oldY), this);
         history.push(move);
     }
 
