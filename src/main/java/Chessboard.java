@@ -129,9 +129,9 @@ class Chessboard {
         }
     }
 
-    public void setPawnEnPassantable(int x, int y) {
-        getPiece(x, y).firstMove();
-        enPassantSquare = new Coordinate(x, y);
+    public void setPawnEnPassantable(Coordinate position) {
+        getPiece(position.x(), position.y()).firstMove();
+        enPassantSquare = position;
     }
 
     public Coordinate getEnPassantSquare() {
