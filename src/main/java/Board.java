@@ -4,19 +4,19 @@ public class Board {
 
     public Board(){}
 
-    public void addPiece(Piece piece){
+    public void add(Piece piece){
         if(piece.getColour() == PieceColour.WHITE)
             whitePieces.add(piece.getPosition());
         else if(piece.getColour() == PieceColour.BLACK)
             blackPieces.add(piece.getPosition());
     }
 
-    public void movePiece(PieceColour colour, Coordinate position1, Coordinate position2){
-        whitePieces.remove(position1);
-        blackPieces.remove(position2);
+    public void movePiece(PieceColour colour, Coordinate oldPosition, Coordinate newPosition){
+        whitePieces.remove(oldPosition);
+        blackPieces.remove(oldPosition);
         if(colour == PieceColour.WHITE)
-            whitePieces.add(position1);
+            whitePieces.add(newPosition);
         else if(colour == PieceColour.BLACK)
-            blackPieces.add(position2);
+            blackPieces.add(newPosition);
     }
 }
