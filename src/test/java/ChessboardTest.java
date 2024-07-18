@@ -24,11 +24,11 @@ class ChessboardTest {
         board.populateBoard(whitePieces, blackPieces);
         for(int x = 1; x < 8; x++){
             for(int y = 0; y < 8; y++){
-                assertInstanceOf(Blank.class, board.getPiece(x, y));
+                assertInstanceOf(Blank.class, board.getPiece(new Coordinate(x, y)));
             }
         }
         for(int y = 0; y < 6; y++){
-            assertInstanceOf(King.class, board.getPiece(0, y));
+            assertInstanceOf(King.class, board.getPiece(new Coordinate(0, y)));
         }
     }
 
@@ -37,13 +37,13 @@ class ChessboardTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         for(int x = 0; x < 8; x++) {
             for(int y = 2; y < 6; y++) {
-                assertTrue(board.isSquareBlank(x,y));
+                assertTrue(board.isSquareBlank(new Coordinate(x,y)));
             }
         }
         for(int x = 0; x < 8; x++){
             for(int y = 0; y < 2; y++){
-                assertFalse(board.isSquareBlank(x,y));
-                assertFalse(board.isSquareBlank(x,y+6));
+                assertFalse(board.isSquareBlank(new Coordinate(x,y)));
+                assertFalse(board.isSquareBlank(new Coordinate(x,y+6)));
             }
         }
     }
@@ -76,15 +76,15 @@ class ChessboardTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         assertDoesNotThrow(()->board.makeMove(4, 1, 4, 3));
         int state = board.hashCode();
-        int whitePawnHash = board.getPiece(4,3).hashCode();
-        int blackPawnHash = board.getPiece(4,6).hashCode();
-        int blankSquareHash = board.getPiece(4, 4).hashCode();
+        int whitePawnHash = board.getPiece(new Coordinate(4,3)).hashCode();
+        int blackPawnHash = board.getPiece(new Coordinate(4,6)).hashCode();
+        int blankSquareHash = board.getPiece(new Coordinate(4, 4)).hashCode();
         assertDoesNotThrow(()->board.makeMove(4, 6, 4, 4));
         assertNotEquals(state, board.hashCode());
         board.undoMove();
-        assertEquals(whitePawnHash, board.getPiece(4,3).hashCode());
-        assertEquals(blackPawnHash, board.getPiece(4,6).hashCode());
-        assertEquals(blankSquareHash, board.getPiece(4, 4).hashCode());
+        assertEquals(whitePawnHash, board.getPiece(new Coordinate(4,3)).hashCode());
+        assertEquals(blackPawnHash, board.getPiece(new Coordinate(4,6)).hashCode());
+        assertEquals(blankSquareHash, board.getPiece(new Coordinate(4, 4)).hashCode());
         assertEquals(state, board.hashCode());
     }
 
@@ -105,7 +105,7 @@ class ChessboardTest {
         Collection<Integer> hashes = new HashSet<>(64);
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                Piece piece = board.getPiece(x, y);
+                Piece piece = board.getPiece(new Coordinate(x, y));
                 hashes.add(Objects.hash(piece, piece.getX(), piece.getY()));
             }
         }
@@ -175,18 +175,18 @@ class ChessboardTest {
     void areEdgeSquaresBlank(){
         Chessboard board = new Chessboard();
         assertTrue(board.isSquareBlank(new Coordinate(0, 0)));
-        assertTrue(board.isSquareBlank(7, 0));
-        assertTrue(board.isSquareBlank(7, 7));
-        assertTrue(board.isSquareBlank(0, 7));
+        assertTrue(board.isSquareBlank(new Coordinate(7, 0)));
+        assertTrue(board.isSquareBlank(new Coordinate(7, 7)));
+        assertTrue(board.isSquareBlank(new Coordinate(0, 7)));
     }
 
     @Test
     void areOutOfBoundarySquareNotBlank(){
         Chessboard board = new Chessboard();
-        assertFalse(board.isSquareBlank(-1, 0));
-        assertFalse(board.isSquareBlank(8, 0));
-        assertFalse(board.isSquareBlank(0, -1));
-        assertFalse(board.isSquareBlank(0, 8));
+        assertFalse(board.isSquareBlank(new Coordinate(-1, 0)));
+        assertFalse(board.isSquareBlank(new Coordinate(8, 0)));
+        assertFalse(board.isSquareBlank(new Coordinate(0, -1)));
+        assertFalse(board.isSquareBlank(new Coordinate(0, 8)));
     }
 
 
@@ -194,18 +194,18 @@ class ChessboardTest {
     void areEdgeSquaresPieces(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         assertInstanceOf(Rook.class, board.getPiece(new Coordinate(0, 0)));
-        assertInstanceOf(Rook.class, board.getPiece(7, 0));
-        assertInstanceOf(Rook.class, board.getPiece(7, 7));
-        assertInstanceOf(Rook.class, board.getPiece(0, 7));
+        assertInstanceOf(Rook.class, board.getPiece(new Coordinate(7, 0)));
+        assertInstanceOf(Rook.class, board.getPiece(new Coordinate(7, 7)));
+        assertInstanceOf(Rook.class, board.getPiece(new Coordinate(0, 7)));
     }
 
 
     @Test
     void areOutOfBoundsSquareBlank(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertInstanceOf(Blank.class, board.getPiece(-1, 0));
-        assertInstanceOf(Blank.class, board.getPiece(8, 0));
-        assertInstanceOf(Blank.class, board.getPiece(0, -1));
-        assertInstanceOf(Blank.class, board.getPiece(0, 8));
+        assertInstanceOf(Blank.class, board.getPiece(new Coordinate(-1, 0)));
+        assertInstanceOf(Blank.class, board.getPiece(new Coordinate(8, 0)));
+        assertInstanceOf(Blank.class, board.getPiece(new Coordinate(0, -1)));
+        assertInstanceOf(Blank.class, board.getPiece(new Coordinate(0, 8)));
     }
 }
