@@ -132,6 +132,10 @@ class ChessLogic {
         return board.isSquareBlank(x, y);
     }
 
+    public boolean isSquareBlank(Coordinate position){
+        return board.isSquareBlank(position);
+    }
+
     public boolean isEnemyPiece(int x, int y, PieceColour colour){
         return board.getPieceColour(x, y) == PieceColour.getOtherColour(colour);
     }
