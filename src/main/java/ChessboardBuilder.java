@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 class ChessboardBuilder {
     private final static Pattern REGEX = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
     private final Chessboard board = new Chessboard();
-    private final List<Piece> whitePieces = new ArrayList<>(16);
-    private final List<Piece> blackPieces = new ArrayList<>(16);
+    private final List<PieceValue> whitePieces = new ArrayList<>(16);
+    private final List<PieceValue> blackPieces = new ArrayList<>(16);
     private int squaresProcessed = 7;
 
     ChessboardBuilder() {
@@ -60,26 +60,26 @@ class ChessboardBuilder {
             return;
         }
         PieceColour colour = getColourFromCharacter(character);
-        List<Piece> pieces = getPiecesFromChar(character);
+        List<PieceValue> pieces = getPiecesFromChar(character);
         Coordinate position = new Coordinate(squaresProcessed, row);
         switch(Character.toLowerCase(character)){
             case 'r':
-                pieces.add(new Rook(position, colour));
+                pieces.add(new PieceValue(position, Pieces.ROOK, colour));
                 break;
             case 'n':
-                pieces.add(new Knight(position, colour));
+                pieces.add(new PieceValue(position, Pieces.KNIGHT, colour));
                 break;
             case 'b':
-                pieces.add(new Bishop(position, colour));
+                pieces.add(new PieceValue(position, Pieces.BISHOP, colour));
                 break;
             case 'k':
-                pieces.addFirst(new King(position, colour));
+                pieces.addFirst(new PieceValue(position, Pieces.KING, colour));
                 break;
             case 'q':
-                pieces.add(new Queen(position, colour));
+                pieces.add(new PieceValue(position, Pieces.QUEEN, colour));
                 break;
             case 'p':
-                pieces.add(new Pawn(position, colour));
+                pieces.add(new PieceValue(position, Pieces.PAWN, colour));
                 break;
         }
         squaresProcessed--;
@@ -148,7 +148,7 @@ class ChessboardBuilder {
         return Character.isUpperCase(c) ? PieceColour.WHITE : PieceColour.BLACK;
     }
 
-    private List<Piece> getPiecesFromChar(char c){
+    private List<PieceValue> getPiecesFromChar(char c){
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
     }
 
