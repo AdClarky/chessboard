@@ -55,7 +55,7 @@ class ChessLogic {
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
-        Coordinate kingPos = board.getKing(board.getCurrentTurn()).getPosition();
+        Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
         if(position.x() == kingPos.x() && movePosition.x() != position.x()) {
             return canEnemyPieceSeeKing(kingPos, position);
         }
@@ -103,7 +103,7 @@ class ChessLogic {
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
-        Coordinate kingPos = board.getKing(kingToCheck).getPosition();
+        Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
         PieceColour enemyColour = PieceColour.getOtherColour(kingToCheck);
         return board.isPossible(enemyColour, kingPos);
     }
