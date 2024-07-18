@@ -74,10 +74,6 @@ class Chessboard {
         return colourBoard.isPositionColour(position, colour);
     }
 
-    public boolean hasPieceHadFirstMove(int x, int y) {
-        return getPiece(x, y).hadFirstMove();
-    }
-
     public boolean isSquareBlank(int x, int y) {
         return isSquareBlank(new Coordinate(x, y));
     }
@@ -125,32 +121,20 @@ class Chessboard {
         return castlingRights.contains(position);
     }
 
+    public boolean canKingCastle(PieceColour colour){
+        int backRow = colour == PieceColour.WHITE ? 0 : 7;
+        return canCastle(new Coordinate(3, backRow));
+    }
+
     public boolean canAnythingCastle(){
         return castlingRights.isEmpty();
     }
 
-    public void removeCastlingRights(PieceColour colour){
+    public void removeAllCastling(PieceColour colour){
         int backRow = colour == PieceColour.WHITE ? 0 : 7;
         Collection<Coordinate> positions = List.of(new Coordinate(0, backRow), new Coordinate(3, backRow),
                 new Coordinate(7, backRow));
         castlingRights.removeAll(positions);
-    }
-
-    public boolean hasKingMoved(PieceColour colour) {
-        return getKing(colour).hadFirstMove();
-    }
-
-    public void setKingMoved(PieceColour kingToSet) {
-        getKing(kingToSet).firstMove();
-    }
-
-    public void setOtherRookMoved(int x, int y) {
-        Rook rookNotMoved = (Rook) getPiece(x, y);
-        for (Piece piece : getAllColourPieces(rookNotMoved.getColour())) {
-            if (piece instanceof Rook && piece != rookNotMoved) {
-                piece.firstMove();
-            }
-        }
     }
 
     public void setEnPassantSquare(@Nullable Coordinate position) {
