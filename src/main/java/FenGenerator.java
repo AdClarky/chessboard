@@ -89,7 +89,7 @@ class FenGenerator {
             fenString.append("- ");
             return;
         }
-        int direction = enPassantSquare.y() == 4 ? -1 : 1;
+        int direction = enPassantSquare.y() == 4 ? 1 : -1;
         Coordinate coordinateBehind = new Coordinate(enPassantSquare.x(), enPassantSquare.y() + direction);
         fenString.append(coordinateBehind).append(" ");
     }
