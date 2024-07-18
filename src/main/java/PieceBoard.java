@@ -10,6 +10,21 @@ public class PieceBoard {
 
     public PieceBoard(){}
 
+    public void add(Piece piece){
+        if(piece instanceof Pawn)
+            pawns.add(piece.getPosition());
+        else if(piece instanceof Knight)
+            knights.add(piece.getPosition());
+        else if(piece instanceof Rook)
+            rooks.add(piece.getPosition());
+        else if(piece instanceof Bishop)
+            bishops.add(piece.getPosition());
+        else if(piece instanceof Queen)
+            queens.add(piece.getPosition());
+        else if(piece instanceof King)
+            kings.add(piece.getPosition());
+    }
+
     public void add(Pieces piece, Coordinate position){
         switch(piece) {
             case PAWN:
@@ -56,8 +71,23 @@ public class PieceBoard {
         }
     }
 
+    public Pieces remove(Coordinate position){
+        if(pawns.remove(position))
+            return Pieces.PAWN;
+        if(knights.remove(position))
+            return Pieces.KNIGHT;
+        if(rooks.remove(position))
+            return Pieces.ROOK;
+        if(bishops.remove(position))
+            return Pieces.BISHOP;
+        if(queens.remove(position))
+            return Pieces.QUEEN;
+        if(kings.remove(position))
+            return Pieces.KING;
+    }
+
     @Nullable
-    public Pieces getPiece(Coordinate position){
+    public Pieces get(Coordinate position){
         if(pawns.contains(position))
             return Pieces.PAWN;
         if(knights.contains(position))
@@ -71,5 +101,10 @@ public class PieceBoard {
         if(kings.contains(position))
             return Pieces.KING;
         return null;
+    }
+
+    public void move(Coordinate from, Coordinate to){
+        Pieces piece = remove(from);
+        add(piece, to);
     }
 }
