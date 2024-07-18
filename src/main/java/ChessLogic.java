@@ -56,38 +56,38 @@ class ChessLogic {
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
         Coordinate kingPos = board.getKing(board.getCurrentTurn()).getPosition();
-        if(position.x() == kingPos.x() && movePosition.x() != position.x())
-            return areSquareBetweenBlank(position, kingPos);
-        else if(position.y() == kingPos.y() && movePosition.y() != position.y())
-            return areSquareBetweenBlank(position, kingPos);
+        if(position.x() == kingPos.x() && movePosition.x() != position.x()) {
+            return canEnemyPieceSeeKing(kingPos, position);
+        }
+        else if(position.y() == kingPos.y() && movePosition.y() != position.y()) {
+            return canEnemyPieceSeeKing(kingPos, position);
+        }
         else if((Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())) &&
                 (Math.abs(movePosition.x() - kingPos.x()) != Math.abs(movePosition.y() - kingPos.y()))) {
-            if (areSquareBetweenBlank(position, kingPos))
-                return canEnemyPieceSeeKing(kingPos, position);
-            return false;
+            return canEnemyPieceSeeKing(kingPos, position);
         }
         return false;
     }
 
-    private boolean areSquareBetweenBlank(Coordinate position, Coordinate kingPos){
-        int xDifference = Integer.signum(kingPos.x() - position.x());
-        int yDifference = Integer.signum(kingPos.y() - position.y());
-        for(int x = position.x()+xDifference, y = position.y()+yDifference; x != kingPos.x() || y != kingPos.y(); x+=xDifference, y+=yDifference) {
-            if(!board.isSquareBlank(x, y))
-                return false;
-        }
-        return true;
-    }
-
     private boolean canEnemyPieceSeeKing(Coordinate kingPos, Coordinate position) {
-//        int xDifference = Integer.signum(Math.abs(position.x() - kingPos.x()));
-//        int yDifference = Integer.signum(Math.abs(position.y() - kingPos.y()));
-//        for(int x = position1.x()+xDifference, y = position1.y()+yDifference; x != position2.x() && y != position2.y(); x+=xDifference, y+=yDifference) {
-//            if(!board.isSquareBlank(x, y))
-//                return false;
-//        }
-        return true;
-//        return false;
+        int xDifference = Integer.signum(position.x() - kingPos.x());
+        int yDifference = Integer.signum(position.y() - kingPos.y());
+        if(xDifference == 0 && yDifference == 0)
+            return true;
+        PieceColour colour = board.getColourAtPosition(kingPos);
+        if(colour == PieceColour.BLANK)
+            throw new RuntimeException();
+        for(int x = kingPos.x()+xDifference, y = kingPos.y()+yDifference; ; x+=xDifference, y+=yDifference) {
+            Coordinate square = new Coordinate(x, y);
+            if(!square.isInRange())
+                return false;
+            if(square.x() == position.x() && square.y() == position.y())
+                continue;
+            if(board.isSquareColour(square, colour))
+                return false;
+            if(board.isSquareColour(square, PieceColour.getOtherColour(colour)))
+                return true;
+        }
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
