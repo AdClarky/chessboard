@@ -44,7 +44,7 @@ class ChessLogic {
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
         if(isMoveTakingFriendly(piece, movePos))
             return true;
-        if(!isKingInCheck(board.getCurrentTurn()) && !canSquareSeeKing(piece.getPosition()))
+        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(piece.getPosition(), movePos))
             return false;
         PieceColour previousTurn = board.getCurrentTurn();
         Move move = new Move(movePos.x(), movePos.y(), piece, board.getLastPieceMoved(), board);
@@ -54,13 +54,14 @@ class ChessLogic {
         return isMoveUnsafe;
     }
 
-    private boolean canSquareSeeKing(Coordinate position) {
+    private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
         Coordinate kingPos = board.getKing(board.getCurrentTurn()).getPosition();
-        if(position.x() == kingPos.x())
+        if(position.x() == kingPos.x() && movePosition.x() != position.x())
             return areSquareBetweenBlank(position, kingPos);
-        else if(position.y() == kingPos.y())
+        else if(position.y() == kingPos.y() && movePosition.y() != position.y())
             return areSquareBetweenBlank(position, kingPos);
-        else if(Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y()))
+        else if((Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())) &&
+                (Math.abs(movePosition.x() - kingPos.x()) != Math.abs(movePosition.y() - kingPos.y())))
             return areSquareBetweenBlank(position, kingPos);
         return false;
     }
