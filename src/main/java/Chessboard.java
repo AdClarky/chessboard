@@ -28,7 +28,7 @@ class Chessboard {
     /**
      * Adds all the pieces in the collections to the board based on the pieces x and y values
      */
-    void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces) {
+    void populateBoard(Iterable<Piece> whitePieces, Iterable<Piece> blackPieces) {
         for (Piece piece : blackPieces) {
             colourBoard.add(piece);
             pieceBoard.add(piece);
@@ -43,7 +43,7 @@ class Chessboard {
     /**
      * Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}.
      */
-    @NotNull
+    @Nullable
     public Pieces getPiece(Coordinate position) {
         return board.get(position);
     }
@@ -91,7 +91,7 @@ class Chessboard {
         return !castlingRights.isEmpty();
     }
 
-    public void pieceMoved(Coordinate position){
+    public void calculateCastling(Coordinate position){
         castlingRights.remove(position);
     }
 
@@ -122,7 +122,7 @@ class Chessboard {
     public void makeMove(Coordinate oldPos, Coordinate newPos){
         if (history.canRedoMove())
             history.clearRedoMoves();
-        Move move = new Move(newPos, oldPos, this);
+        Move move = new Move(oldPos, newPos, this);
         history.push(move);
     }
 
@@ -136,6 +136,11 @@ class Chessboard {
 
     public PieceColour getCurrentTurn() {
         return currentTurn;
+    }
+
+    public Coordinate getKingPos(PieceColour colour) {
+        Collection<Coordinate> kingPositions = board.getKingPositions();
+        return colourBoard.getKingPosition(kingPositions, colour);
     }
 
     @NotNull
@@ -211,5 +216,19 @@ class Chessboard {
 
     public void setPossibleMoves(PieceColour colour, long enemyPossible) {
         possibleMoves.setPossible(colour, enemyPossible);
+    }
+
+    public PieceColour getPieceColour(Coordinate position) {
+        return colourBoard.getColourAtPosition(position);
+    }
+
+    public void promotion(Coordinate position) {
+        board.add(Pieces.QUEEN, position);
+        colourBoard.add(currentTurn, position);
+    }
+
+    public void removePiece(Coordinate position) {
+        board.remove(position);
+        colourBoard.remove(position);
     }
 }
