@@ -104,7 +104,7 @@ class Chessboard {
     }
 
     public void movePiece(@NotNull MoveValue move) {
-        movePiece(move.piece(), new Coordinate(move.newX(), move.newY()));
+        movePiece(move.piece(), move.newPos());
     }
 
     public Collection<Piece> getAllColourPieces(PieceColour colour) {

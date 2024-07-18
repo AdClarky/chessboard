@@ -47,7 +47,7 @@ class Move {
             board.setEnPassantSquare(null);
         board.pieceMoved(piece.getPosition());
         for(MoveValue move : movesMade){
-            if(!board.isSquareBlank(move.newX(), move.newY()))
+            if(!board.isSquareBlank(move.newPos()))
                 takePiece(move);
             movesToUndo.add(MoveValue.createStationaryMove(move.piece()));
             board.movePiece(move);
@@ -60,8 +60,8 @@ class Move {
             board.addPiece(move.piece());
         else
             taking = true;
-        Piece pieceTaken = board.getPiece(move.newX(), move.newY());
-        movesToUndo.add(new MoveValue(pieceTaken, move.newX(), move.newY()));
+        Piece pieceTaken = board.getPiece(move.newPos());
+        movesToUndo.add(new MoveValue(pieceTaken, move.newPos()));
         board.removePiece(pieceTaken);
     }
 
