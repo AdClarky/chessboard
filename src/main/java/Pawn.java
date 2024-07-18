@@ -28,8 +28,9 @@ public class Pawn extends Piece{
         Coordinate forwardOne = new Coordinate(getX(), getY()+direction);
         if(board.isSquareBlank(forwardOne)) {
             possibleMoves.add(forwardOne);
-            if(board.isSquareBlank(getX(), getY()+(direction << 1)) && (getY() == 6 || getY() == 1)) // double move first go
-                possibleMoves.add(new Coordinate(getX(), getY() + (direction << 1)));
+            Coordinate forwardTwo = new Coordinate(getX(), getY()+(direction << 1));
+            if(board.isSquareBlank(forwardTwo) && (getY() == 6 || getY() == 1)) // double move first go
+                possibleMoves.add(forwardTwo);
         }
         getTakingMoves(board);
         if((colour == PieceColour.BLACK && getY() == 3) || (colour == PieceColour.WHITE && getY() == 4)){ // en passant
@@ -56,10 +57,11 @@ public class Pawn extends Piece{
     @Override
     List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(2);
+        Coordinate newPosition = new Coordinate(newX, newY);
         if(newY == 7 || newY == 0) { // if pawn promotion
             moves.add(new MoveValue(this, newX, newY));
             moves.add(new MoveValue(new Queen(newX, newY, colour), newX, newY));
-        }else if(newX != getX() && board.isSquareBlank(newX, newY)){ // if passanting
+        }else if(newX != getX() && board.isSquareBlank(newPosition)){ // if passanting
             int direction = PieceColour.getDirectionFromColour(colour);
             moves.add(board.getMoveForOtherPiece(newX, newY-direction, newX, newY));
             moves.add(new MoveValue(this, newX, newY));
