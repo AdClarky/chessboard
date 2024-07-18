@@ -43,7 +43,7 @@ class TotalMovesTest {
         assertEquals(197_281, assertDoesNotThrow(()->tester.testDepth(4)));
     }
 
-    @Disabled // does not work yet off by 14
+    @Test
     void depth5(){
         ChessGame board = new ChessGame();
         DepthTester tester = new DepthTester(board);
