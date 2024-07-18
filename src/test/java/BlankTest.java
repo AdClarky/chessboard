@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class BlankTest {
-    private final Blank blank = new Blank(0, 0);
+    private final Blank blank = new Blank(new Coordinate(0, 0));
 
     @Test
     void testPossibleMoves(){
@@ -18,6 +18,6 @@ class BlankTest {
 
     @Test
     void characterIsZ(){
-        assertEquals('Z', new Blank(0, 0).toCharacter());
+        assertEquals('Z', new Blank(new Coordinate(0, 0)).toCharacter());
     }
 }
