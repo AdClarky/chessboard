@@ -76,7 +76,4 @@ public class King extends Piece{
     public char toCharacter() {
         return 'K';
     }
-
-    @Override
-    void firstMove(){}
 }

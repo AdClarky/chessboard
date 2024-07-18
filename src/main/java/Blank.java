@@ -16,9 +16,6 @@ public class Blank extends Piece {
     void calculatePossibleMoves(ChessLogic board){}
 
     @Override
-    void firstMove() {}
-
-    @Override
     public String toString() {
         return "Blank";
     }

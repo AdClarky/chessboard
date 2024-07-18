@@ -20,9 +20,6 @@ public class Queen extends Piece{
     }
 
     @Override
-    void firstMove() {}
-
-    @Override
     public String toString() {
         return "queen";
     }

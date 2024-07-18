@@ -26,9 +26,6 @@ public class Knight extends Piece{
     }
 
     @Override
-    void firstMove() {}
-
-    @Override
     public String toString() {
         return "knight";
     }

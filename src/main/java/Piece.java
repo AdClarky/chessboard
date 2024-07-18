@@ -44,8 +44,6 @@ public abstract class Piece {
 
     abstract void calculatePossibleMoves(ChessLogic board);
 
-    abstract void firstMove();
-
     List<MoveValue> getMoves(ChessLogic board, int newX, int newY) {
         List<MoveValue> moves = new ArrayList<>(1);
         moves.add(new MoveValue(this, newX, newY));
