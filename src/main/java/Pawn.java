@@ -40,9 +40,12 @@ public class Pawn extends Piece{
 
     private void getEnPassantMoves(@NotNull ChessLogic board){
         int direction = PieceColour.getDirectionFromColour(colour);
-        if(board.isPiecePawn(getX()+1, getY()) && board.hasPieceHadFirstMove(getX()+1, getY()))
-             possibleMoves.add(new Coordinate(getX()+1,getY()+direction));
-        if(board.isPiecePawn(getX()-1, getY()) && board.hasPieceHadFirstMove(getX()-1, getY()))
+        Coordinate enPassantSquare = board.getEnPassantSquare();
+        if(getY() != enPassantSquare.y())
+            return;
+        if(getX()+1 == enPassantSquare.x())
+            possibleMoves.add(new Coordinate(getX()+1,getY()+direction));
+        else if(getX()-1 == enPassantSquare.x())
             possibleMoves.add(new Coordinate(getX()-1,getY()+direction));
     }
 
