@@ -191,7 +191,7 @@ public class Bitboard implements Collection<Coordinate> {
         Object[] array = new Object[size()];
         int i = 0;
         for(int bit = 63; bit >= 0; bit--){
-            if(((board >> 63) & 1) == 0)
+            if(((board >> bit) & 1) == 0)
                 continue;
             array[i++] = new Coordinate(getX(bit), getY(bit));
         }
