@@ -1,8 +1,8 @@
-public class Board {
+public class ColourBoard {
     Bitboard whitePieces = new Bitboard();
     Bitboard blackPieces = new Bitboard();
 
-    public Board(){}
+    public ColourBoard(){}
 
     public void add(Piece piece){
         if(piece.getColour() == PieceColour.WHITE)
