@@ -132,7 +132,7 @@ class ChessboardBuilder {
         Coordinate location = Coordinate.createCoordinateFromString(section);
         PieceColour enPassantColour = PieceColour.getOtherColour(board.getCurrentTurn());
         int direction = PieceColour.getDirectionFromColour(enPassantColour);
-        board.setPawnEnPassantable(new Coordinate(location.x(), location.y()-1));
+        board.setEnPassantSquare(new Coordinate(location.x(), location.y()-1));
     }
 
     private void setHalfMoves(String section) throws AccessedHistoryDuringGameException {

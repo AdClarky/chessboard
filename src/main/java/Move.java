@@ -42,9 +42,9 @@ class Move {
         undone = false;
         movesToUndo.clear();
         if(piece instanceof Pawn && Math.abs(movePosition.y() - piece.getY()) == 2)
-            board.setPawnEnPassantable(movePosition);
+            board.setEnPassantSquare(movePosition);
         else
-            board.setPawnEnPassantable(null);
+            board.setEnPassantSquare(null);
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newX(), move.newY()))
                 takePiece(move);
@@ -77,7 +77,7 @@ class Move {
         }
         if(notHadFirstMove)
             piece.undoMoveCondition();
-        board.setPawnEnPassantable(previousEnPassant);
+        board.setEnPassantSquare(previousEnPassant);
         board.nextTurn();
         board.setPossibleMoves(PieceColour.getOtherColour(board.getCurrentTurn()), enemyPossible);
     }
