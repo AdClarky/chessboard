@@ -1,5 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+
 public class ColourBoard {
     Bitboard whitePieces = new Bitboard();
     Bitboard blackPieces = new Bitboard();
@@ -47,5 +49,19 @@ public class ColourBoard {
         if(blackPieces.contains(kingPos))
             return PieceColour.BLACK;
         return PieceColour.BLANK;
+    }
+
+    public void add(PieceColour colour, Coordinate position) {
+        getBoard(colour).add(position);
+    }
+
+    public void remove(Coordinate position) {
+        whitePieces.remove(position);
+        blackPieces.remove(position);
+    }
+
+    public Coordinate getKingPosition(Collection<Coordinate> kingPositions, PieceColour colour) {
+        kingPositions.retainAll(getBoard(colour));
+        return kingPositions.iterator().next();
     }
 }
