@@ -7,12 +7,10 @@ public class Knight extends Piece{
 
     /**
      * Creates a {@code Knight}
-     * @param x starting x position
-     * @param y starting y position
      * @param colour if it is black or white
      */
-    public Knight(int x, int y, PieceColour colour) {
-        super(x, y, colour);
+    public Knight(Coordinate position, PieceColour colour) {
+        super(position, colour);
     }
 
     @Override

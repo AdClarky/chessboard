@@ -5,11 +5,9 @@
 public class Blank extends Piece {
     /**
      * Creates a {@code Blank}
-     * @param x x position
-     * @param y y position
      */
-    public Blank(int x, int y) {
-        super(x, y, PieceColour.BLANK);
+    public Blank(Coordinate position) {
+        super(position, PieceColour.BLANK);
     }
 
     @Override
