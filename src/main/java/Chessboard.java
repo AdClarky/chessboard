@@ -77,9 +77,7 @@ class Chessboard {
     }
 
     public boolean isSquareBlank(int x, int y) {
-        if (x < 0 || x >= 8 || y < 0 || y >= 8)
-            return false;
-        return getPiece(x, y) instanceof Blank;
+        return isSquareBlank(new Coordinate(x, y));
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {

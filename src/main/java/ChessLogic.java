@@ -69,7 +69,7 @@ class ChessLogic {
         int xDifference = Integer.signum(Math.abs(position1.x() - position2.x()));
         int yDifference = Integer.signum(Math.abs(position1.y() - position2.y()));
         for(int x = position1.x()+xDifference, y = position1.y()+yDifference; x != position2.x() && y != position2.y(); x+=xDifference, y+=yDifference) {
-            if(!board.isSquareBlank(new Coordinate(x, y)))
+            if(!board.isSquareBlank(x, y))
                 return false;
         }
         return true;
@@ -126,6 +126,10 @@ class ChessLogic {
 
     private boolean isDraw50Move(){
         return board.getNumHalfMoves() >= 50;
+    }
+
+    public boolean isSquareBlank(int x, int y){
+        return isSquareBlank(new Coordinate(x, y));
     }
 
     public boolean isSquareBlank(Coordinate position){
