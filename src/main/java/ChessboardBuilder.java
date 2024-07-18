@@ -34,8 +34,8 @@ class ChessboardBuilder {
             setTurnToMove(sections[1]);
             setHalfMoves(sections[4]);
             setFullMoves(sections[5]);
-            populateBoardFromFenString(sections[0]);
             setCastlingRights(sections[2]);
+            populateBoardFromFenString(sections[0]);
             setEnPassant(sections[3]);
         } catch (AccessedHistoryDuringGameException e) {
             throw new RuntimeException(e);
