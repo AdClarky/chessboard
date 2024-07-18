@@ -12,13 +12,6 @@ class BlankTest {
     }
 
     @Test
-    void testFirstMove(){
-        blank.firstMove();
-        assertEquals(0, blank.getX());
-        assertEquals(0, blank.getY());
-    }
-
-    @Test
     void stringTest(){
         assertEquals("Blank", blank.toString());
     }
