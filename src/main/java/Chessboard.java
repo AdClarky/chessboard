@@ -78,6 +78,11 @@ class Chessboard {
         return isSquareBlank(new Coordinate(x, y));
     }
 
+    @NotNull
+    public PieceColour getColourAtPosition(Coordinate kingPos) {
+        return colourBoard.getColourAtPosition(kingPos);
+    }
+
     public boolean isSquareBlank(Coordinate coordinate) {
         if(!coordinate.isInRange())
             return false;
