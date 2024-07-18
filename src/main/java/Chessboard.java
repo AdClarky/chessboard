@@ -83,6 +83,8 @@ class Chessboard {
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
+        if(!coordinate.isInRange())
+            return false;
         return colourBoard.isSquareBlank(coordinate);
     }
 
