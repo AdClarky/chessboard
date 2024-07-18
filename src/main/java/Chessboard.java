@@ -13,12 +13,14 @@ class Chessboard {
     private final ColourBoard colourBoard = new ColourBoard();
     private final PossibleMoves possibleMoves = new PossibleMoves();
     private final BoardHistory history;
+    private final Bitboard castlingRights = new Bitboard();
     private final Collection<Piece> blackPieces = new HashSet<>(16);
     private King blackKing;
     private final Collection<Piece> whitePieces = new HashSet<>(16);
     private King whiteKing;
     private PieceColour currentTurn = PieceColour.WHITE;
     private Coordinate enPassantSquare;
+
 
     /**
      * Initialises the board with all squares blank.
@@ -36,6 +38,9 @@ class Chessboard {
      * Adds all the pieces in the collections to the board based on the pieces x and y values
      */
     void populateBoard(Collection<Piece> whitePieces, Collection<Piece> blackPieces) {
+        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
+                new Coordinate(3, 0), new Coordinate(0, 7), new Coordinate(7, 7),
+                new Coordinate(3, 7)));
         this.whitePieces.addAll(whitePieces);
         this.blackPieces.addAll(blackPieces);
         for (Piece piece : blackPieces) {
@@ -110,6 +115,25 @@ class Chessboard {
             return whiteKing;
         else
             throw new IllegalArgumentException("Invalid colour: " + colour);
+    }
+
+    public void removeCastlingRight(Coordinate position){
+        castlingRights.remove(position);
+    }
+
+    public boolean canCastle(Coordinate position){
+        return castlingRights.contains(position);
+    }
+
+    public boolean canAnythingCastle(){
+        return castlingRights.isEmpty();
+    }
+
+    public void removeCastlingRights(PieceColour colour){
+        int backRow = colour == PieceColour.WHITE ? 0 : 7;
+        Collection<Coordinate> positions = List.of(new Coordinate(0, backRow), new Coordinate(3, backRow),
+                new Coordinate(7, backRow));
+        castlingRights.removeAll(positions);
     }
 
     public boolean hasKingMoved(PieceColour colour) {
