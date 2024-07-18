@@ -9,27 +9,31 @@ import java.util.List;
  * There is no move validation, it will always make the move. */
 class Move {
     private final Chessboard board;
-    private final Piece piece;
-    private final Coordinate movePosition;
+    private final Coordinate oldPos;
+    private final Coordinate newPos;
+    private final Pieces piece;
+    private final PieceColour pieceColour;
     private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
     private final Coordinate previousEnPassant;
     private final long castlingRights;
+    private final long enemyPossible;
     private boolean undone = false;
     private boolean taking = false;
-    private long enemyPossible;
 
     /**
      * Initialises move and then moves the piece to the new location.
      * Used so it can undo the first move condition on the previous piece if necessary.
      */
-    public Move(Coordinate newPos, @NotNull Piece piece, Chessboard board){
-        movePosition = newPos;
-        this.piece = piece;
+    public Move(Coordinate oldPos, Coordinate newPos, Chessboard board){
+        this.oldPos = oldPos;
+        this.newPos = newPos;
         this.board = board;
+        piece = board.getPiece(oldPos);
+        pieceColour = board.getPieceColour(oldPos);
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
-        movesMade = piece.getMoves(new ChessLogic(board), newPos);
+        movesMade = board.getMoves(oldPos, newPos);
         enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
     }
@@ -41,11 +45,11 @@ class Move {
     public void makeMove(){
         undone = false;
         movesToUndo.clear();
-        if(piece instanceof Pawn && Math.abs(movePosition.y() - piece.getY()) == 2)
-            board.setEnPassantSquare(movePosition);
+        if(piece == Pieces.PAWN && Math.abs(newPos.y() - oldPos.y()) == 2)
+            board.setEnPassantSquare(newPos);
         else
             board.setEnPassantSquare(null);
-        board.pieceMoved(piece.getPosition());
+        board.calculateCastling(oldPos);
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newPos()))
                 takePiece(move);
@@ -57,18 +61,13 @@ class Move {
 
     private void takePiece(@NotNull MoveValue move){
         if(move.isPieceInSamePosition()) // promotion
-            board.addPiece(move.piece());
+            board.promotion(move.newPos());
         else
             taking = true;
-        Piece pieceTaken = board.getPiece(move.newPos());
+        Pieces pieceTaken = board.getPiece(move.newPos());
         movesToUndo.add(new MoveValue(pieceTaken, move.newPos()));
-        board.removePiece(pieceTaken);
     }
 
-    /**
-     * Undoes the move that was just made.
-     * The board is left in the exact same state as before being run.
-     */
     public void undo(){
         undone = true;
         for(MoveValue move : movesToUndo.reversed()){
@@ -92,32 +91,20 @@ class Move {
             board.addPiece(pieceToMove);
     }
 
-    public int getX() {
-        return movePosition.x();
+    public Coordinate getOldPos() {
+        return oldPos;
     }
 
-    public int getY() {
-        return movePosition.y();
-    }
-
-    public int getPieceX(){
-        return piece.getX();
-    }
-
-    public int getPieceY(){
-        return piece.getY();
-    }
-
-    public Piece getPiece() {
-        return piece;
+    public Coordinate getNewPos() {
+        return newPos;
     }
 
     public boolean isPieceAPawn(){
-        return piece instanceof Pawn;
+        return piece == Pieces.PAWN;
     }
 
     public boolean isPieceColourBlack(){
-        return piece.getColour() == PieceColour.BLACK;
+        return pieceColour == PieceColour.BLACK;
     }
 
     public List<MoveValue> getMovesToUndo() {
