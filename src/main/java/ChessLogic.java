@@ -86,19 +86,19 @@ class ChessLogic {
             if(board.isSquareColour(square, colour))
                 return false;
             if(board.isSquareColour(square, PieceColour.getOtherColour(colour)))
-                return canPieceSeeSquare(board.getPiece(square), kingPos, xDifference, yDifference);
+                return canPieceSeeSquare(board.getPiece(square), square, kingPos, xDifference, yDifference);
         }
     }
 
-    private boolean canPieceSeeSquare(Piece piece, Coordinate kingPos, int xDiff, int yDiff) {
+    private boolean canPieceSeeSquare(Pieces piece, Coordinate piecePos, Coordinate kingPos, int xDiff, int yDiff) {
         int absDiff = Math.abs(yDiff) +  Math.abs(xDiff);
         if(absDiff == 2){ // diagonal, bishop, pawn, queen
-            if(piece instanceof Bishop || piece instanceof Queen)
+            if(piece == Pieces.BISHOP || piece == Pieces.QUEEN)
                 return true;
-            return piece instanceof Pawn && kingPos.x() + xDiff == piece.getX() && kingPos.y() + yDiff == piece.getY();
+            return piece == Pieces.PAWN && kingPos.x() + xDiff == piecePos.x() && kingPos.y() + yDiff == piecePos.y();
         }
         else{ // horizontal, rook, queen
-            return piece instanceof Rook || piece instanceof Queen;
+            return piece == Pieces.ROOK || piece == Pieces.QUEEN;
         }
     }
 
