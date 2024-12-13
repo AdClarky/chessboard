@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called
  * at any point and the fen string will be calculated. */
@@ -27,16 +26,17 @@ class FenGenerator {
         int blankSquare = 0;
         for(int y = 7; y >= 0; y--) {
             for(int x = 7; x >= 0; x--) {
-                Piece piece = board.getPiece(x, y);
-                if(piece instanceof Blank)
+                Coordinate pos = new Coordinate(x, y);
+                if(board.isSquareBlank(pos)) {
                     blankSquare++;
-                else {
-                    if(blankSquare != 0){
-                        fenString.append(blankSquare);
-                        blankSquare = 0;
-                    }
-                    fenString.append(charFromPiece(piece));
+                    continue;
                 }
+                Pieces piece = board.getPiece(pos);
+                if(blankSquare != 0){
+                    fenString.append(blankSquare);
+                    blankSquare = 0;
+                }
+                fenString.append(charFromPiece(piece, board.getPieceColour(pos)));
             }
             if(blankSquare != 0)
                 fenString.append(blankSquare);
@@ -47,12 +47,17 @@ class FenGenerator {
         fenString.append(' ');
     }
 
-    private static char charFromPiece(@NotNull Piece piece) {
-        char character = piece.toCharacter();
-        if(character == '\u0000') {
-            character = 'P';
-        }
-        if(piece.getColour() == PieceColour.BLACK)
+    private static char charFromPiece(@NotNull Pieces piece, PieceColour colour) {
+        char character = switch (piece) {
+            case PAWN -> 'P';
+            case KNIGHT -> 'N';
+            case BISHOP -> 'B';
+            case ROOK -> 'R';
+            case QUEEN -> 'Q';
+            case KING -> 'K';
+            case BLANK -> 'Z';
+        };
+        if(colour == PieceColour.BLACK)
             character = Character.toLowerCase(character);
         return character;
     }

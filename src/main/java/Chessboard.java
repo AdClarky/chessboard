@@ -43,7 +43,7 @@ class Chessboard {
     /**
      * Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}.
      */
-    @Nullable
+    @NotNull
     public Pieces getPiece(Coordinate position) {
         return board.get(position);
     }
