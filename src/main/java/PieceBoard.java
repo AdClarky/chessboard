@@ -1,4 +1,4 @@
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -79,7 +79,7 @@ public class PieceBoard {
         throw new NoSuchElementException();
     }
 
-    @Nullable
+    @NotNull
     public Pieces get(Coordinate position){
         if(!position.isInRange())
             return null;
