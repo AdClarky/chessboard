@@ -49,7 +49,7 @@ class Chessboard {
     }
 
     public boolean isSquareColour(Coordinate position, PieceColour colour){
-        if(!position.isInRange())
+        if(position.isNotInRange())
             return false;
         return colourBoard.isPositionColour(position, colour);
     }
@@ -60,7 +60,7 @@ class Chessboard {
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
-        if(!coordinate.isInRange())
+        if(coordinate.isNotInRange())
             return false;
         return colourBoard.isSquareBlank(coordinate);
     }

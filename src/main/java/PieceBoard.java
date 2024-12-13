@@ -81,7 +81,7 @@ public class PieceBoard {
 
     @NotNull
     public Pieces get(Coordinate position){
-        if(!position.isInRange())
+        if(position.isNotInRange())
             return null;
         if(pawns.contains(position))
             return Pieces.PAWN;

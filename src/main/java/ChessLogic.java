@@ -79,7 +79,7 @@ class ChessLogic {
             throw new RuntimeException();
         for(int x = kingPos.x()+xDifference, y = kingPos.y()+yDifference; ; x+=xDifference, y+=yDifference) {
             Coordinate square = new Coordinate(x, y);
-            if(!square.isInRange())
+            if(square.isNotInRange())
                 return false;
             if(square.x() == position.x() && square.y() == position.y())
                 continue;

@@ -51,9 +51,9 @@ public final class ChessUtils {
 
     private static MoveValue getCastlingMove(@NotNull Chessboard board, int newX){
         if(board.getCurrentTurn() == PieceColour.BLACK){
-            return new MoveValue(board.getPiece(3,7),new Coordinate(newX,7));
+            return new MoveValue(new Coordinate(3,7),new Coordinate(newX,7));
         }else{
-            return new MoveValue(board.getPiece(3, 0), new Coordinate(newX, 0));
+            return new MoveValue(new Coordinate(3, 0), new Coordinate(newX, 0));
         }
     }
 

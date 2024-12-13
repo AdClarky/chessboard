@@ -3,6 +3,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.ImageIcon;
 import java.net.URL;
+import java.util.Objects;
 
 /** Used for generating a larger image. */
 final class ImageUtils {
@@ -25,6 +26,6 @@ final class ImageUtils {
         URL imageURL = ImageUtils.class.getResource(path);
         if(imageURL == null)
             throw new IllegalArgumentException("Piece must be in lower case with a PieceColour of black or white");
-        return ImageUtils.getStretchedImage(Piece.class.getResource(path));
+        return ImageUtils.getStretchedImage(Objects.requireNonNull(ImageUtils.class.getResource(path)));
     }
 }
