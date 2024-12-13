@@ -21,7 +21,7 @@ public class Bitboard implements Collection<Coordinate> {
     public boolean add(Coordinate position) {
         if(position == null)
             throw new NullPointerException();
-        if(!position.isInRange())
+        if(position.isNotInRange())
             throw new OutOfRangeException(position);
         if(contains(position))
             return false;
@@ -128,7 +128,7 @@ public class Bitboard implements Collection<Coordinate> {
             throw new NullPointerException();
         if(!(o instanceof Coordinate coordinate))
             throw new ClassCastException();
-        if(!coordinate.isInRange())
+        if(coordinate.isNotInRange())
             return false;
         return ((board >> shift(coordinate)) & 1) == 1;
     }

@@ -7,22 +7,14 @@ import org.jetbrains.annotations.NotNull;
  * @param y y coordinate
  */
 public record Coordinate(int x, int y) {
-    /**
-     * Creates a new {@code Coordinate} based on the coordinate of a piece.
-     * @param piece the piece whose coordinate are being used.
-     */
-    public Coordinate(@NotNull Piece piece) {
-        this(piece.getX(), piece.getY());
-    }
-
     @Override
     public @NotNull String toString() {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "Invalid";
         return ChessUtils.coordsToChess(x, y);
     }
 
-    public boolean isInRange(){
-        return x >= 0 && x <= 7 && y >= 0 && y <= 7;
+    public boolean isNotInRange(){
+        return x < 0 || x > 7 || y < 0 || y > 7;
     }
 
     /**
