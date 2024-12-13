@@ -22,7 +22,7 @@ class ChessGameTest {
         }
 
         @Override
-        public void draw(int whiteX, int whiteY, int blackX, int blackY) {
+        public void draw(Coordinate whitePos, Coordinate blackPos) {
             draw++;
         }
 
