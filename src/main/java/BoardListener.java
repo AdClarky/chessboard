@@ -18,20 +18,18 @@ public interface BoardListener {
     /**
      * Called when a checkmate has occurred on the board.
      * Only called after all the move logic is completed.
-     * @param kingX the x of the king who has been checkmated
-     * @param kingY the y of the king who has been checkmated
+     * @param kingPos the position of the king which has been checkmated
      */
-    void checkmate(int kingX, int kingY);
+    void checkmate(Coordinate kingPos);
 
     /**
      * Called when a draw has occurred on the board.
      * Only called after all the move logic is completed.
-     * @param whiteX the x of the white king
-     * @param whiteY the y of the white king
-     * @param blackX the x of the black king
-     * @param blackY the y of the black king
+     *
+     * @param whitePos the x of the white king
+     * @param blackPos the y of the white king
      */
-    void draw(int whiteX, int whiteY, int blackX, int blackY);
+    void draw(Coordinate whitePos, Coordinate blackPos);
 
     /**
      * Called when the board has changed, i.e. undo or redo.

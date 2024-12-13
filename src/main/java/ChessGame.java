@@ -106,17 +106,16 @@ public class ChessGame {
         }
     }
 
-    private void notifyCheckmate(King king){
-        int x = king.getX(), y = king.getY();
+    private void notifyCheckmate(Coordinate kingPos){
         for(BoardListener listener : boardListeners)
-            listener.checkmate(x, y);
+            listener.checkmate(kingPos);
     }
 
     private void notifyDraw(){
-        King whiteKing = board.getKing(PieceColour.WHITE);
-        King blackKing = board.getKing(PieceColour.BLACK);
+        Coordinate whitePos = board.getKingPos(PieceColour.WHITE);
+        Coordinate blackPos = board.getKingPos(PieceColour.BLACK);
         for(BoardListener listener : boardListeners)
-            listener.draw(whiteKing.getX(), whiteKing.getY(), blackKing.getX(), blackKing.getY());
+            listener.draw(whitePos, blackPos);
     }
 
     /**

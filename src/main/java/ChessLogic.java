@@ -35,7 +35,7 @@ class ChessLogic {
                     board.removePossible(piece.getColour(), move);
                 }
             }
-            if(piece instanceof King king){
+            if(piece == Pieces.KING){
                 king.removeCastlingThroughCheck();
             }
         }
