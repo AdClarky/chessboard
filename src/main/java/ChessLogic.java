@@ -10,7 +10,6 @@ class ChessLogic {
         this.board = board;
     }
 
-
     public void calculatePossibleMoves(){
         calculatePieces(board.getCurrentTurn());
         calculatePieces(PieceColour.getOtherColour(board.getCurrentTurn()));
@@ -19,11 +18,16 @@ class ChessLogic {
 
     private void calculatePieces(PieceColour colour){
         board.clearPossibleMoves(colour);
-        Collection<Piece> pieces = board.getAllColourPieces(colour);
-        for(Piece piece : pieces){
-            piece.calculatePossibleMoves(this);
-            board.updatePossibleMoves(piece.getColour(), piece.getPossibleMoves());
+        Collection<Coordinate> pieces = board.getAllColourPositions(colour);
+        for(Coordinate piecePos : pieces){
+            Pieces piece = board.getPiece(piecePos);
+            Bitboard possibleMoves = calculatePossibleMoves(piece, colour);
+            board.updatePossibleMoves(colour, possibleMoves);
         }
+    }
+
+    private Bitboard calculatePossibleMoves(Pieces piece, PieceColour colour){
+
     }
 
     private void removeMovesInCheck(){

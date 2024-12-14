@@ -36,7 +36,7 @@ public class ColourBoard {
         return getBoard(colour).contains(position);
     }
 
-    private Bitboard getBoard(PieceColour colour){
+    public Bitboard getBoard(PieceColour colour){
         if(colour == PieceColour.WHITE)
             return whitePieces;
         return blackPieces;
