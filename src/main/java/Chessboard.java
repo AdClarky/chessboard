@@ -70,6 +70,10 @@ class Chessboard {
         board.move(oldPos, newPos);
     }
 
+    public Collection<Coordinate> getAllColourPositions(PieceColour colour){
+        return colourBoard.getBoard(colour);
+    }
+
     public void movePiece(@NotNull MoveValue move) {
         movePiece(move.oldPos(), move.newPos());
     }
