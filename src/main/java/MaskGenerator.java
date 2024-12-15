@@ -10,23 +10,36 @@ public class MaskGenerator {
     public long getMaskForPiece(Coordinate piecePos){
         Pieces piece = board.getPiece(piecePos);
         return switch (piece) {
-            case PAWN -> getPawnMask();
+            case PAWN -> getPawnMask(piecePos);
             case BISHOP -> getBishopMask(piecePos);
             case ROOK -> getRookMask(piecePos);
             case QUEEN -> getQueenMask(piecePos);
-            case KNIGHT -> KNIGHT_ATTACKS[piecePos.getBitboardIndex()];
-            case KING -> KING_ATTACKS[piecePos.getBitboardIndex()];
+            case KNIGHT -> getKnightMask(piecePos);
+            case KING -> getKingMask(piecePos);
             case BLANK -> 0;
         };
     }
 
-    private long getPawnMask() {
+    private long getPawnMask(Coordinate piecePos) {
         return 0;
     }
 
     private long getKingMask(Coordinate piecePos) {
-        return 0;
+        Bitboard mask = new Bitboard(KING_ATTACKS[piecePos.getBitboardIndex()]);
+        return removeFriendlyPieces(mask, board.getPieceColour(piecePos));
     }
+
+    private long getKnightMask(Coordinate piecePos) {
+        Bitboard mask = new Bitboard(KNIGHT_ATTACKS[piecePos.getBitboardIndex()]);
+        return removeFriendlyPieces(mask, board.getPieceColour(piecePos));
+    }
+
+    private long removeFriendlyPieces(Bitboard mask, PieceColour colour){
+        Bitboard friendlyPieces = board.getAllColourPositions(colour);
+        mask.removeAll(friendlyPieces);
+        return mask.getBoard();
+    }
+
 
     private long getBishopMask(Coordinate piecePos) {
         return 0;
@@ -39,6 +52,8 @@ public class MaskGenerator {
     private long getQueenMask(Coordinate piecePos) {
         return 0;
     }
+
+    private
 
     static {
         long notAFile = 0xFEFEFEFEFEFEFEFEL;
