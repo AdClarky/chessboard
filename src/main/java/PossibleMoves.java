@@ -1,45 +1,32 @@
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-public class PossibleMoves {
-    private Bitboard whiteBoard = new Bitboard();
-    private Bitboard blackBoard = new Bitboard();
+public class PossibleMoves{
+    private final Map<Coordinate, Bitboard> possibleMovesBoard = new HashMap<>(16);
 
-    public PossibleMoves(){
+    public PossibleMoves(){}
 
+    public void addMoves(Coordinate position, Bitboard map){
+        possibleMovesBoard.put(position, map);
     }
 
-    public void clearBoard(PieceColour colour){
-        getPossibleMovesBoard(colour).clear();
+    public void removeMoves(Coordinate position, Bitboard moves){
+        possibleMovesBoard.get(position).removeAll(moves);
     }
 
-    public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves){
-        getPossibleMovesBoard(colour).addAll(moves);
+    public Bitboard getPossibleMove(Coordinate position){
+        return possibleMovesBoard.get(position);
     }
 
-    public void removePossible(PieceColour colour, Coordinate move){
-        getPossibleMovesBoard(colour).remove(move);
+    public boolean isPossible(Coordinate currentPos, Coordinate move){
+        return possibleMovesBoard.get(currentPos).contains(move);
     }
 
-    private Bitboard getPossibleMovesBoard(PieceColour colour){
-        if(colour == PieceColour.BLACK){
-            return blackBoard;
+    public boolean isCheckmate(){
+        for(Bitboard moves : possibleMovesBoard.values()){
+            if(!moves.isEmpty())
+                return false;
         }
-        return whiteBoard;
-    }
-
-    public boolean isPossible(PieceColour colour, Coordinate move){
-        return getPossibleMovesBoard(colour).contains(move);
-    }
-
-    public boolean isCheckmate(PieceColour colour){
-        return getPossibleMovesBoard(colour).isEmpty();
-    }
-
-    public long getBoardValue(PieceColour otherColour) {
-        return getPossibleMovesBoard(otherColour).getBoard();
-    }
-
-    public void setPossible(PieceColour colour, long possibleMoves) {
-        getPossibleMovesBoard(colour).set(possibleMoves);
+        return true;
     }
 }
