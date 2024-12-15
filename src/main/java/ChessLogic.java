@@ -4,59 +4,52 @@ import java.util.Collection;
 
 class ChessLogic {
     private final Chessboard board;
+    private MaskGenerator maskGenerator;
+    private Bitboard enemyPossible;
+    private PossibleMoves possibleMoves = new PossibleMoves();
 
     public ChessLogic(Chessboard board) {
         this.board = board;
+        maskGenerator = new MaskGenerator(board);
     }
 
     public void calculatePossibleMoves(){
-        calculatePieces(board.getCurrentTurn());
-        calculatePieces(board.getCurrentTurn().invert());
-        removeMovesInCheck();
+        calculateFriendlyPieces();
+        enemyPossible = calculatePieces(board.getEnemyTurn());
     }
 
-    private void calculatePieces(PieceColour colour){
-        board.clearPossibleMoves(colour);
+    private Bitboard calculatePieces(PieceColour colour){
         Collection<Coordinate> pieces = board.getAllColourPositions(colour);
+        Bitboard possible = new Bitboard();
+        for(Coordinate piecePos : pieces) {
+            possible.addAll(new Bitboard(maskGenerator.getMaskForPiece(piecePos)));
+        }
+        return possible;
+    }
+
+    private void calculateFriendlyPieces(){
+        Collection<Coordinate> pieces = board.getAllColourPositions(board.getCurrentTurn());
         for(Coordinate piecePos : pieces){
-            Pieces piece = board.getPiece(piecePos);
-            Bitboard possibleMoves = calculatePossibleMoves(piece, colour);
-            board.updatePossibleMoves(colour, possibleMoves);
+            Bitboard possible = new Bitboard(maskGenerator.getMaskForPiece(piecePos));
+            removeMovesInCheck(piecePos, possible);
+            possibleMoves.addMoves(piecePos, possible);
         }
     }
 
-    private Bitboard calculatePossibleMoves(Pieces piece, PieceColour colour){
-        return new Bitboard(0);
+    private void removeMovesInCheck(Coordinate pos, Bitboard possible){
+        possible.removeIf(move -> isMoveUnsafe(pos, move));
+        if(board.getPiece(pos) == Pieces.KING)
+            removeCastlingThroughCheck();
     }
 
-    private void removeMovesInCheck(){
-//        Iterable<Coordinate> pieces = new ArrayList<>(board.getAllColourPositions(board.getCurrentTurn()));
-//        for(Coordinate piecePos : pieces){
-//            Pieces piece = board.getPiece(piecePos);
-//            for(Coordinate move : piece.getPossibleMoves()){
-//                if(isMoveUnsafe(piece, move)) {
-//                    piece.removePossibleMove(move);
-//                    board.removePossible(piece.getColour(), move);
-//                }
-//            }
-//            if(piece == Pieces.KING){
-//                king.removeCastlingThroughCheck();
-//            }
-//        }
-    }
-
-    private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
-//        if(isMoveTakingFriendly(piece, movePos))
-//            return true;
-//        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(piece.getPosition(), movePos))
-//            return false;
-//        PieceColour previousTurn = board.getCurrentTurn();
-//        Move move = new Move(piece, movePos, board);
-//        calculatePieces(board.getCurrentTurn());
-//        boolean isMoveUnsafe = isKingInCheck(previousTurn);
-//        move.undo();
-//        return isMoveUnsafe;
-        return true;
+    private boolean isMoveUnsafe(Coordinate position, Coordinate movePos){
+        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(position, movePos))
+            return false;
+        PieceColour previousTurn = board.getCurrentTurn();
+        Move move = new Move(position, movePos, board);
+        Bitboard possible = calculatePieces(board.getCurrentTurn());
+        move.undo();
+        return isKingInCheck(previousTurn, possible);
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
@@ -107,14 +100,18 @@ class ChessLogic {
         }
     }
 
+    private void removeCastlingThroughCheck(){
+        ;
+    }
+
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
         Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
         PieceColour enemyColour = kingToCheck.invert();
         return board.isPossible(enemyColour, kingPos);
     }
 
-    private boolean isMoveTakingFriendly(Piece piece, Coordinate movePos){
-        return board.isSquareColour(movePos, piece.getColour());
+    public boolean isKingInCheck(PieceColour colour, Bitboard possible){
+        return possible.contains(board.getKingPos(colour));
     }
 
     public Coordinate getEnPassantSquare(){
