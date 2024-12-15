@@ -35,7 +35,7 @@ public final class ChessUtils {
         else // any other piece
             pieceLetter = move.charAt(0);
         ArrayList<Coordinate> possiblePieces = new ArrayList<>(2);
-        for(Coordinate piecePos : board.getAllColourPositions(board.getCurrentTurn())){
+        for(Coordinate piecePos : board.getAllColourPositions(board.getTurn())){
             Pieces piece = board.getPiece(piecePos);
             if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
                 continue;
@@ -52,7 +52,7 @@ public final class ChessUtils {
     }
 
     private static MoveValue getCastlingMove(@NotNull Chessboard board, int newX){
-        if(board.getCurrentTurn() == PieceColour.BLACK){
+        if(board.getTurn() == PieceColour.BLACK){
             return new MoveValue(new Coordinate(3,7),new Coordinate(newX,7));
         }else{
             return new MoveValue(new Coordinate(3, 0), new Coordinate(newX, 0));

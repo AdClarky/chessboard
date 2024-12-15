@@ -87,7 +87,8 @@ class ChessboardBuilder {
 
     private void setTurnToMove(@NotNull CharSequence turnSection){
         char character = turnSection.charAt(0);
-        board.setCurrentTurn(character == 'w' ? PieceColour.WHITE : PieceColour.BLACK);
+        if(character == 'b')
+            board.nextTurn();
     }
 
     private void setCastlingRights(@NotNull String rights){
@@ -131,7 +132,7 @@ class ChessboardBuilder {
         if(section.contains("-"))
             return;
         Coordinate location = Coordinate.createCoordinateFromString(section);
-        PieceColour enPassantColour = board.getEnemyTurn();
+        PieceColour enPassantColour = board.getTurn().invert();
         int direction = enPassantColour.direction();
         board.setEnPassantSquare(new Coordinate(location.x(), location.y()+direction));
     }

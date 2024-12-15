@@ -15,7 +15,7 @@ class ChessLogic {
 
     public void calculatePossibleMoves(){
         calculateFriendlyPieces();
-        enemyPossible = calculatePieces(board.getEnemyTurn());
+        enemyPossible = calculatePieces(board.getTurn().invert());
     }
 
     private Bitboard calculatePieces(PieceColour colour){
@@ -28,7 +28,7 @@ class ChessLogic {
     }
 
     private void calculateFriendlyPieces(){
-        Collection<Coordinate> pieces = board.getAllColourPositions(board.getCurrentTurn());
+        Collection<Coordinate> pieces = board.getAllColourPositions(board.getTurn());
         for(Coordinate piecePos : pieces){
             Bitboard possible = new Bitboard(maskGenerator.getMaskForPiece(piecePos));
             removeMovesInCheck(piecePos, possible);
@@ -43,17 +43,17 @@ class ChessLogic {
     }
 
     private boolean isMoveUnsafe(Coordinate position, Coordinate movePos){
-        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(position, movePos))
+        if(!isKingInCheck(board.getTurn()) && !doesMoveExposeKing(position, movePos))
             return false;
-        PieceColour previousTurn = board.getCurrentTurn();
+        PieceColour previousTurn = board.getTurn();
         Move move = new Move(board, position, movePos);
-        Bitboard possible = calculatePieces(board.getCurrentTurn());
+        Bitboard possible = calculatePieces(board.getTurn());
         move.undo();
         return isKingInCheck(previousTurn, possible);
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
-        Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
+        Coordinate kingPos = board.getKingPos(board.getTurn());
         if(position.x() == kingPos.x() && movePosition.x() != position.x()) {
             return canEnemyPieceSeeKing(kingPos, position);
         }
@@ -72,7 +72,7 @@ class ChessLogic {
         int yDifference = Integer.signum(position.y() - kingPos.y());
         if(xDifference == 0 && yDifference == 0)
             return true;
-        PieceColour colour = board.getColourAtPosition(kingPos);
+        PieceColour colour = board.getColour(kingPos);
         if(colour == PieceColour.BLANK)
             throw new RuntimeException();
         for(int x = kingPos.x()+xDifference, y = kingPos.y()+yDifference; ; x+=xDifference, y+=yDifference) {
@@ -105,7 +105,7 @@ class ChessLogic {
     }
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
-        Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
+        Coordinate kingPos = board.getKingPos(board.getTurn());
         PieceColour enemyColour = kingToCheck.invert();
         return board.isPossible(enemyColour, kingPos);
     }
@@ -119,9 +119,9 @@ class ChessLogic {
     }
 
     public boolean isCheckmate(){
-        if(!isKingInCheck(board.getCurrentTurn()))
+        if(!isKingInCheck(board.getTurn()))
             return false;
-        return board.isCheckmate(board.getCurrentTurn());
+        return board.isCheckmate(board.getTurn());
     }
 
     public boolean isDraw(){
@@ -131,9 +131,9 @@ class ChessLogic {
     }
 
     private boolean isStalemate(){
-        if(isKingInCheck(board.getCurrentTurn()))
+        if(isKingInCheck(board.getTurn()))
             return false;
-        return board.isCheckmate(board.getCurrentTurn());
+        return board.isCheckmate(board.getTurn());
     }
 
     private boolean isRepetition(){
