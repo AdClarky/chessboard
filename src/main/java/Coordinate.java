@@ -38,7 +38,11 @@ public record Coordinate(int x, int y) {
         return new Coordinate(x, y);
     }
 
-    public long toBitboardCoordinate(){
-        return (x + ((long) y << 3));
+    public int getBitboardIndex(){
+        return (x + (y << 3));
+    }
+
+    public long getBitboardValue(){
+        return 1L << getBitboardIndex();
     }
 }
