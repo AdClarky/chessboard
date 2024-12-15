@@ -42,7 +42,7 @@ public abstract class Piece {
 
     List<MoveValue> getMoves(ChessLogic board, Coordinate position) {
         List<MoveValue> moves = new ArrayList<>(1);
-        moves.add(new MoveValue(this, position));
+        moves.add(new MoveValue(position, position));
         return moves;
     }
 

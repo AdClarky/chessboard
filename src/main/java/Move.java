@@ -33,7 +33,8 @@ class Move {
         pieceColour = board.getPieceColour(oldPos);
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
-        movesMade = board.getMoves(oldPos, newPos);
+//        movesMade = board.getMoves(oldPos, newPos);
+        movesMade = null;
         enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
         makeMove();
     }
@@ -65,13 +66,14 @@ class Move {
         else
             taking = true;
         Pieces pieceTaken = board.getPiece(move.newPos());
-        movesToUndo.add(new MoveValue(pieceTaken, move.newPos()));
+//        movesToUndo.add(new MoveValue(pieceTaken, move.newPos()));
+        movesToUndo.add(new MoveValue(move.oldPos(), move.newPos()));
     }
 
     public void undo(){
         undone = true;
         for(MoveValue move : movesToUndo.reversed()){
-            addOrRemovePiece(move.piece(), move);
+            addOrRemovePiece(Pieces.QUEEN, move); // TODO: Fix
             board.movePiece(move);
         }
         board.setEnPassantSquare(previousEnPassant);
@@ -87,8 +89,8 @@ class Move {
         // a piece moving to the same spot only occurs as the last move when it's a promotion
         if(move == movesToUndo.getLast())
             board.removePiece(move.newPos());
-        else
-            board.addPiece(piece, move.newPos());
+        else;
+//            board.addPiece(piece, move.newPos());
     }
 
     public Coordinate getOldPos() {

@@ -27,35 +27,37 @@ class ChessLogic {
     }
 
     private Bitboard calculatePossibleMoves(Pieces piece, PieceColour colour){
-
+        return new Bitboard(0);
     }
 
     private void removeMovesInCheck(){
-        Iterable<Piece> pieces = new ArrayList<>(board.getAllColourPieces(board.getCurrentTurn()));
-        for(Piece piece : pieces){
-            for(Coordinate move : piece.getPossibleMoves()){
-                if(isMoveUnsafe(piece, move)) {
-                    piece.removePossibleMove(move);
-                    board.removePossible(piece.getColour(), move);
-                }
-            }
-            if(piece == Pieces.KING){
-                king.removeCastlingThroughCheck();
-            }
-        }
+//        Iterable<Coordinate> pieces = new ArrayList<>(board.getAllColourPositions(board.getCurrentTurn()));
+//        for(Coordinate piecePos : pieces){
+//            Pieces piece = board.getPiece(piecePos);
+//            for(Coordinate move : piece.getPossibleMoves()){
+//                if(isMoveUnsafe(piece, move)) {
+//                    piece.removePossibleMove(move);
+//                    board.removePossible(piece.getColour(), move);
+//                }
+//            }
+//            if(piece == Pieces.KING){
+//                king.removeCastlingThroughCheck();
+//            }
+//        }
     }
 
     private boolean isMoveUnsafe(Piece piece, Coordinate movePos){
-        if(isMoveTakingFriendly(piece, movePos))
-            return true;
-        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(piece.getPosition(), movePos))
-            return false;
-        PieceColour previousTurn = board.getCurrentTurn();
-        Move move = new Move(piece, movePos, board);
-        calculatePieces(board.getCurrentTurn());
-        boolean isMoveUnsafe = isKingInCheck(previousTurn);
-        move.undo();
-        return isMoveUnsafe;
+//        if(isMoveTakingFriendly(piece, movePos))
+//            return true;
+//        if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(piece.getPosition(), movePos))
+//            return false;
+//        PieceColour previousTurn = board.getCurrentTurn();
+//        Move move = new Move(piece, movePos, board);
+//        calculatePieces(board.getCurrentTurn());
+//        boolean isMoveUnsafe = isKingInCheck(previousTurn);
+//        move.undo();
+//        return isMoveUnsafe;
+        return true;
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
@@ -176,11 +178,12 @@ class ChessLogic {
     }
 
     public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
-        return new MoveValue(board.getPiece(x, y), new Coordinate(newX, newY));
+        return new MoveValue(new Coordinate(x, y), new Coordinate(newX, newY));
     }
 
-    public static boolean isValidMove(@NotNull Piece piece, Coordinate newPos){
-        return !piece.getPossibleMoves().contains(newPos);
+    public static boolean isValidMove(@NotNull Pieces piece, Coordinate newPos){
+//        return !piece.getPossibleMoves().contains(newPos);
+        return false;
     }
 
     public boolean canAnythingCastle() {

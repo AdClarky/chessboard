@@ -34,18 +34,20 @@ public final class ChessUtils {
             pieceLetter = '\u0000';
         else // any other piece
             pieceLetter = move.charAt(0);
-        ArrayList<Piece> possiblePieces = new ArrayList<>(2);
-        for(Piece piece : board.getAllColourPieces(board.getCurrentTurn())){
+        ArrayList<Coordinate> possiblePieces = new ArrayList<>(2);
+        for(Coordinate piecePos : board.getAllColourPositions(board.getCurrentTurn())){
+            Pieces piece = board.getPiece(piecePos);
             if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
                 continue;
-            possiblePieces.add(piece);
+            possiblePieces.add(piecePos);
         }
-        possiblePieces.removeIf(piece -> !piece.getPossibleMoves().contains(newCoordinate));
+//        possiblePieces.removeIf(piece -> !piece.getPossibleMoves().contains(newCoordinate));
+        possiblePieces.removeAll(possiblePieces); // TODO: Fix
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())
             throw new InvalidMoveException(move);
-        Piece piece = possiblePieces.getFirst();
+        Coordinate piece = possiblePieces.getFirst();
         return new MoveValue(piece, newCoordinate);
     }
 
@@ -63,15 +65,15 @@ public final class ChessUtils {
      * @param move the algebraic chess move
      */
     @VisibleForTesting
-    static void disambiguatePiece(Collection<Piece> possiblePieces, @NotNull CharSequence move){
+    static void disambiguatePiece(Collection<Coordinate> possiblePieces, @NotNull CharSequence move){
         int length = move.length();
         for(int i = 0; i < length - 2; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x'){ // x value given
                 Coordinate correctX = Coordinate.createCoordinateFromString(move.charAt(i) + "0");
-                possiblePieces.removeIf(piece -> piece.getX() != correctX.x());
+                possiblePieces.removeIf(piece -> piece.x() != correctX.x());
             }else if(Character.isDigit(move.charAt(i))){ // y value given
                 Coordinate correctY = Coordinate.createCoordinateFromString("a" + move.charAt(i));
-                possiblePieces.removeIf(piece -> piece.getY() != correctY.y());
+                possiblePieces.removeIf(piece -> piece.y() != correctY.y());
             }
         }
     }

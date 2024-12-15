@@ -8,12 +8,11 @@ public interface BoardListener {
      * Called when a piece is moved on the board.
      * After being called, getMoves() will return a list of individual moves which can make promotion,
      * en passant and castling easier to deal with.
-     * @param oldX the old x position of the piece
-     * @param oldY the old y position of the piece
-     * @param newX the new x position of the piece
-     * @param newY the new y position of the piece
+     *
+     * @param oldPos
+     * @param newPos
      */
-    void moveMade(int oldX, int oldY, int newX, int newY);
+    void moveMade(Coordinate oldPos, Coordinate newPos);
 
     /**
      * Called when a checkmate has occurred on the board.
@@ -33,11 +32,7 @@ public interface BoardListener {
 
     /**
      * Called when the board has changed, i.e. undo or redo.
-     * Works like {@link BoardListener#moveMade(int, int, int, int)}
-     * @param oldX the old x position of the piece
-     * @param oldY the old y position of the piece
-     * @param newX the new x position of the piece
-     * @param newY the new y position of the piece
+     * Works like {@link BoardListener#moveMade(Coordinate, Coordinate)}
      */
-    void boardChanged(int oldX, int oldY, int newX, int newY);
+    void boardChanged(Coordinate oldPos, Coordinate newPos);
 }

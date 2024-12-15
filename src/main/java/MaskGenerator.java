@@ -9,7 +9,7 @@ public class MaskGenerator {
 
     public long getMaskForPiece(Coordinate piecePos){
         Pieces piece = board.getPiece(piecePos);
-        long mask = switch (piece) {
+        return switch (piece) {
             case PAWN -> getPawnMask();
             case BISHOP -> getBishopMask(piecePos);
             case ROOK -> getRookMask(piecePos);
