@@ -146,6 +146,10 @@ class Chessboard {
         return currentTurn;
     }
 
+    public PieceColour getEnemyTurn(){
+        return currentTurn.invert();
+    }
+
     public Coordinate getKingPos(PieceColour colour) {
         Collection<Coordinate> kingPositions = board.getKingPositions();
         return colourBoard.getKingPosition(kingPositions, colour);
