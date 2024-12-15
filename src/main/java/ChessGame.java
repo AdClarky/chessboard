@@ -62,7 +62,7 @@ public class ChessGame {
         if(chessLogic.isDraw())
             notifyDraw();
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKing(board.getCurrentTurn()));
+            notifyCheckmate(board.getKingPos(board.getCurrentTurn()));
         }
     }
 
@@ -73,12 +73,12 @@ public class ChessGame {
      */
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = ChessUtils.chessToMove(board, chessMove);
-        makeMove(move.piece().getPosition(), move.newPos());
+        makeMove(move.oldPos(), move.newPos());
     }
 
     /**
-     * After {@link BoardListener#moveMade(int, int, int, int)} or
-     * {@link BoardListener#boardChanged(int, int, int, int)},
+     * After {@link BoardListener#moveMade(Coordinate, Coordinate)} or
+     * {@link BoardListener#boardChanged(Coordinate, Coordinate)},
      * this returns the individual moves performed on the board.
      * @return a list of individual moves taken to reach the new board state. */
     public List<MoveValue> getLastMoveMade(){
@@ -95,14 +95,13 @@ public class ChessGame {
 
     private void notifyMoveMade(Coordinate oldPos, Coordinate newPos){
         for(BoardListener listener : boardListeners){
-            listener.moveMade(oldPos.x(), oldPos.y(), newPos.x(), newPos.y());
+            listener.moveMade(oldPos, newPos);
         }
     }
 
     private void notifyBoardChanged(@NotNull Move move){
-        int oldX = move.getPieceX(), oldY = move.getPieceY();
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(oldX, oldY, move.getX(), move.getY());
+            listener.boardChanged(move.getOldPos(), move.getNewPos());
         }
     }
 
@@ -128,7 +127,7 @@ public class ChessGame {
         chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKing(board.getCurrentTurn()));
+            notifyCheckmate(board.getKingPos(board.getCurrentTurn()));
         }
     }
 
@@ -169,24 +168,17 @@ public class ChessGame {
      * @param colour the coloured pieces desired.
      * @return a collection of colour pieces
      */
-    public Collection<Piece> getColourPieces(PieceColour colour){
-        return board.getAllColourPieces(colour);
+    public Collection<Coordinate> getColourPieces(PieceColour colour){
+        return board.getAllColourPositions(colour);
     }
 
     /**
      * Gets the piece located at x and y.
-     * Returns {@link Blank} with invalid x and y if the x and y entered are out of range
-     * or if there is no piece on that square.
-     * @param x x position
-     * @param y y position
-     * @return Piece in that position
+     *
+     * @param pos@return Piece in that position
      */
-    public Piece getPiece(int x, int y){
-        return board.getPiece(x, y);
-    }
-
-    public Piece getPiece(Coordinate position){
-        return board.getPiece(position);
+    public Pieces getPiece(Coordinate pos){
+        return board.getPiece(pos);
     }
 
     /**

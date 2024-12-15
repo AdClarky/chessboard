@@ -18,7 +18,8 @@ class BoardHistory {
     }
 
     public @Nullable Piece getLastPieceMoved(){
-        return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
+//        return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
+        return null;
     }
 
     public @NotNull List<MoveValue> getLastMoves(){
