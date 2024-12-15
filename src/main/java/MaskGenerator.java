@@ -59,15 +59,34 @@ public class MaskGenerator {
     }
 
     private long getBishopMask(Coordinate piecePos) {
-        return 0;
+        long mask = 0L;
+        mask |= getMaskForLine(piecePos, 7);
+        mask |= getMaskForLine(piecePos, 9);
+        mask |= getMaskForLine(piecePos, -7);
+        mask |= getMaskForLine(piecePos, -9);
+        return mask;
     }
 
     private long getRookMask(Coordinate piecePos) {
-        return 0;
+        long mask = 0L;
+        mask |= getMaskForLine(piecePos, 8);
+        mask |= getMaskForLine(piecePos, -8);
+        mask |= getMaskForLine(piecePos, 1);
+        mask |= getMaskForLine(piecePos, -1);
+        return mask;
     }
 
     private long getQueenMask(Coordinate piecePos) {
-        return 0;
+        long mask = 0L;
+        mask |= getMaskForLine(piecePos, 8);
+        mask |= getMaskForLine(piecePos, -8);
+        mask |= getMaskForLine(piecePos, 1);
+        mask |= getMaskForLine(piecePos, -1);
+        mask |= getMaskForLine(piecePos, 7);
+        mask |= getMaskForLine(piecePos, 9);
+        mask |= getMaskForLine(piecePos, -7);
+        mask |= getMaskForLine(piecePos, -9);
+        return mask;
     }
 
     // top left - << 7
