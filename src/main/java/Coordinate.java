@@ -37,4 +37,8 @@ public record Coordinate(int x, int y) {
         int y = move.charAt(length - 1) - '0' - 1;
         return new Coordinate(x, y);
     }
+
+    public long toBitboardCoordinate(){
+        return (x + ((long) y << 3));
+    }
 }
