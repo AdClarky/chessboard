@@ -19,7 +19,7 @@ class Move {
     private final long castlingRights;
     private final long enemyPossible;
     private boolean undone = false;
-    private boolean taking = false;
+    private Pieces pieceTaken = null;
 
     /**
      * Initialises move and then moves the piece to the new location.
@@ -33,10 +33,21 @@ class Move {
         pieceColour = board.getPieceColour(oldPos);
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
-        movesMade = board.getMoves(oldPos, newPos);
-        movesMade = null;
+        movesMade = getMoves();
         enemyPossible = board.getPossible(board.getEnemyTurn());
         makeMove();
+    }
+
+    private List<MoveValue> getMoves(){
+        if(piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2)
+            ; // castling
+        else if(piece == Pieces.PAWN){
+            if(oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
+                ; // en passant
+            else if(newPos.y() == 7 || newPos.y() == 0)
+                ; // promotion
+        }
+        return List.of(new MoveValue(oldPos, newPos));
     }
 
     /**
@@ -54,7 +65,7 @@ class Move {
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newPos()))
                 takePiece(move);
-            movesToUndo.add(MoveValue.createStationaryMove(move.oldPos()));
+            movesToUndo.add(new MoveValue(move.oldPos(), move.newPos()));
             board.movePiece(move);
         }
         board.nextTurn();
@@ -63,11 +74,8 @@ class Move {
     private void takePiece(@NotNull MoveValue move){
         if(move.isPieceInSamePosition()) // promotion
             board.promotion(move.newPos());
-        else
-            taking = true;
-        Pieces pieceTaken = board.getPiece(move.newPos());
-//        movesToUndo.add(new MoveValue(pieceTaken, move.newPos()));
-        movesToUndo.add(new MoveValue(move.oldPos(), move.newPos()));
+        pieceTaken = board.getPiece(move.newPos());
+        movesToUndo.add(new MoveValue(move.newPos(), move.newPos()));
     }
 
     public void undo(){
@@ -114,6 +122,6 @@ class Move {
     }
 
     public boolean hasTaken() {
-        return taking;
+        return pieceTaken != null;
     }
 }
