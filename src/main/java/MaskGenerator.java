@@ -1,7 +1,11 @@
 public class MaskGenerator {
     private Chessboard board;
+    private final static long RANK_TWO = 0xff00L;
+    private final static long RANK_SEVEN = 0xff000000000000L;
     private static final long[] KNIGHT_ATTACKS = new long[64];
     private static final long[] KING_ATTACKS = new long[64];
+    private static final long[] WHITE_PAWN_ATTACKS = new long[64];
+    private static final long[] BLACK_PAWN_ATTACKS = new long[64];
 
     public MaskGenerator(Chessboard board) {
         this.board = board;
@@ -21,7 +25,19 @@ public class MaskGenerator {
     }
 
     private long getPawnMask(Coordinate piecePos) {
-        return 0;
+        PieceColour colour = board.getPieceColour(piecePos);
+        long emptySquares = board.getEmptySquares().getBoard();
+        long enemyPieces = board.getAllColourPositions(colour.getOppositeColour()).getBoard();
+        long pawnMask = 0L;
+        long pos = piecePos.getBitboardValue();
+        if (colour == PieceColour.BLACK) {
+            pawnMask = ((pos >> 8) & emptySquares) | ((((pos & RANK_SEVEN) >> 16) & emptySquares) & (emptySquares >> 8));
+            pawnMask |= BLACK_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
+        }else if (colour == PieceColour.WHITE) {
+            pawnMask = ((pos << 8) & emptySquares) | ((((pos & RANK_TWO) << 16) & emptySquares) & (emptySquares << 8));
+            pawnMask |= WHITE_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
+        }
+        return pawnMask;
     }
 
     private long getKingMask(Coordinate piecePos) {
@@ -53,36 +69,36 @@ public class MaskGenerator {
         return 0;
     }
 
-    private
-
     static {
         long notAFile = 0xFEFEFEFEFEFEFEFEL;
         long notHFile = 0x7F7F7F7F7F7F7F7FL;
         long notABFile = 0xFCFCFCFCFCFCFCFCL;
         long notHGFile = 0x3F3F3F3F3F3F3F3FL;
         for (int square = 0; square < 64; square++) {
-            long knight = 1L << square;
-            long attacks = 0L;
-            if ((knight & notHFile) != 0)
-                attacks |= (knight << 6) | (knight >> 10);
-            if ((knight & notAFile) != 0)
-                attacks |= (knight << 10) | (knight >> 6);
-            if ((knight & notHGFile) != 0)
-                attacks |= (knight << 15) | (knight >> 17);
-            if ((knight & notABFile) != 0)
-                attacks |= (knight << 17) | (knight >> 15);
-            KNIGHT_ATTACKS[square] = attacks;
-        }
+            long pos = 1L << square;
 
-        for (int square = 0; square < 64; square++) {
-            long king = 1L << square;
-            long attacks = 0L;
-            if ((king & notAFile) != 0)
-                attacks |= (king >> 1) | (king >> 9) | (king << 7);
-            if ((king & notHFile) != 0)
-                attacks |= (king >> 7) | (king << 1) | (king << 9);
-            attacks |= (king >> 8) | (king << 8);
-            KING_ATTACKS[square] = attacks;
+            long knightMoves = 0L;
+            if ((pos & notHFile) != 0)
+                knightMoves |= (pos << 6) | (pos >> 10);
+            if ((pos & notAFile) != 0)
+                knightMoves |= (pos << 10) | (pos >> 6);
+            if ((pos & notHGFile) != 0)
+                knightMoves |= (pos << 15) | (pos >> 17);
+            if ((pos & notABFile) != 0)
+                knightMoves |= (pos << 17) | (pos >> 15);
+            KNIGHT_ATTACKS[square] = knightMoves;
+
+            long kingMoves = 0L;
+            if ((pos & notAFile) != 0)
+                kingMoves |= (pos >> 1) | (pos >> 9) | (pos << 7);
+            if ((pos & notHFile) != 0)
+                kingMoves |= (pos >> 7) | (pos << 1) | (pos << 9);
+            kingMoves |= (pos >> 8) | (pos << 8);
+            KING_ATTACKS[square] = kingMoves;
+
+            WHITE_PAWN_ATTACKS[square] = ((pos << 7) & notHFile) | ((pos << 9) & notAFile);
+            BLACK_PAWN_ATTACKS[square] = ((pos >> 9) & notHFile) | ((pos >> 7) & notAFile);
+        }
         }
     }
 }
