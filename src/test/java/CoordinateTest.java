@@ -65,4 +65,22 @@ class CoordinateTest {
     void pieceMove() {
         assertEquals(new Coordinate(0, 7), Coordinate.createCoordinateFromString("Kh8"));
     }
+
+    @Test
+    void cornersTestCoordinate(){
+        Coordinate a1 = new Coordinate(0, 0);
+        Coordinate a8 = new Coordinate(0, 7);
+        Coordinate h1 = new Coordinate(7, 0);
+        Coordinate h8 = new Coordinate(7, 7);
+
+        assertEquals(0, a1.getBitboardIndex());
+        assertEquals(7, h1.getBitboardIndex());
+        assertEquals(56, a8.getBitboardIndex());
+        assertEquals(63, h8.getBitboardIndex());
+
+        assertEquals(1, a1.getBitboardValue());
+        assertEquals(128, h1.getBitboardValue());
+        assertEquals(0x100000000000000L, a8.getBitboardValue());
+        assertEquals(0x8000000000000000L, h8.getBitboardValue());
+    }
 }
