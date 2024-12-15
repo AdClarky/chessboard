@@ -4,46 +4,46 @@ import org.junit.jupiter.api.Test;
 class PieceColourTest {
     @Test
     void whiteColourOtherColour(){
-        assertEquals(PieceColour.BLACK, PieceColour.getOtherColour(PieceColour.WHITE));
+        assertEquals(PieceColour.BLACK, PieceColour.WHITE.invert());
     }
 
     @Test
     void blackOtherColour(){
-        assertEquals(PieceColour.WHITE, PieceColour.getOtherColour(PieceColour.BLACK));
+        assertEquals(PieceColour.WHITE, PieceColour.BLACK.invert());
     }
 
     @Test
     void blankOtherColour(){
-        assertEquals(PieceColour.BLANK, PieceColour.getOtherColour(PieceColour.BLANK));
+        assertEquals(PieceColour.BLANK, PieceColour.BLANK.invert());
     }
 
     @Test
     void whiteDirection(){
-        assertEquals(1, PieceColour.getDirectionFromColour(PieceColour.WHITE));
+        assertEquals(1, PieceColour.WHITE.direction());
     }
 
     @Test
     void blackDirection(){
-        assertEquals(-1, PieceColour.getDirectionFromColour(PieceColour.BLACK));
+        assertEquals(-1, PieceColour.BLACK.direction());
     }
 
     @Test
     void blankDirection(){
-        assertEquals(0, PieceColour.getDirectionFromColour(PieceColour.BLANK));
+        assertEquals(0, PieceColour.BLANK.direction());
     }
 
     @Test
     void whiteString(){
-        assertEquals("white", PieceColour.getStringFromColour(PieceColour.WHITE));
+        assertEquals("white", PieceColour.WHITE.toString());
     }
 
     @Test
     void blackString(){
-        assertEquals("black", PieceColour.getStringFromColour(PieceColour.BLACK));
+        assertEquals("black", PieceColour.BLACK.toString());
     }
 
     @Test
     void blankString(){
-        assertEquals("blank", PieceColour.getStringFromColour(PieceColour.BLANK));
+        assertEquals("blank", PieceColour.BLANK.toString());
     }
 }

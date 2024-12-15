@@ -131,8 +131,8 @@ class ChessboardBuilder {
         if(section.contains("-"))
             return;
         Coordinate location = Coordinate.createCoordinateFromString(section);
-        PieceColour enPassantColour = PieceColour.getOtherColour(board.getCurrentTurn());
-        int direction = PieceColour.getDirectionFromColour(enPassantColour);
+        PieceColour enPassantColour = board.getCurrentTurn().invert();
+        int direction = enPassantColour.direction();
         board.setEnPassantSquare(new Coordinate(location.x(), location.y()+direction));
     }
 

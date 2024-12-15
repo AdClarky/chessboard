@@ -18,20 +18,7 @@ public enum PieceColour {
      */
     BLANK;
 
-    /**
-     * Finds the opposite colour of a given colour. Blank returns blank.
-     * @param otherColour the colour you want the opposite of.
-     * @return the opposite colour.
-     */
-    public static PieceColour getOtherColour(@NotNull PieceColour otherColour) { // TODO: Stop using this, use other
-        return switch (otherColour) {
-            case WHITE -> BLACK;
-            case BLACK -> WHITE;
-            case BLANK -> BLANK;
-        };
-    }
-
-    public PieceColour getOppositeColour() {
+    public PieceColour invert() {
         return switch (this) {
             case WHITE -> BLACK;
             case BLACK -> WHITE;
@@ -39,20 +26,15 @@ public enum PieceColour {
         };
     }
 
-    static int getDirectionFromColour(@NotNull PieceColour colour){
-        return switch (colour){
+    public int direction(){
+        return switch (this){
             case WHITE -> 1;
-            case BLACK -> -1;
-            case BLANK -> 0;
+            case BLACK -> 0;
+            case BLANK -> -1;
         };
     }
 
-    @Contract(pure = true)
-    static @NotNull String getStringFromColour(@NotNull PieceColour colour){
-        return switch(colour){
-            case WHITE -> "white";
-            case BLACK -> "black";
-            case BLANK -> "blank";
-        };
+    public @NotNull String toString(){
+        return name().toLowerCase();
     }
 }

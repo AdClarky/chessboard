@@ -35,7 +35,7 @@ class Move {
         castlingRights = board.getCastlingRights();
 //        movesMade = board.getMoves(oldPos, newPos);
         movesMade = null;
-        enemyPossible = board.getPossible(PieceColour.getOtherColour(board.getCurrentTurn()));
+        enemyPossible = board.getPossible(board.getCurrentTurn().invert());
         makeMove();
     }
 
@@ -79,7 +79,7 @@ class Move {
         board.setEnPassantSquare(previousEnPassant);
         board.setCastlingRights(castlingRights);
         board.nextTurn();
-        board.setPossibleMoves(PieceColour.getOtherColour(board.getCurrentTurn()), enemyPossible);
+        board.setPossibleMoves(board.getCurrentTurn().invert(), enemyPossible);
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */

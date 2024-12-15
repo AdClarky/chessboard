@@ -21,7 +21,7 @@ final class ImageUtils {
         if("Blank".equals(piece))
             return null;
         String path = "/" +
-                PieceColour.getStringFromColour(colour) + "_" +
+                colour.toString() + "_" +
                  piece + ".png";
         URL imageURL = ImageUtils.class.getResource(path);
         if(imageURL == null)

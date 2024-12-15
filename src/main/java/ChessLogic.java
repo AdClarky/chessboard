@@ -1,6 +1,5 @@
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 class ChessLogic {
@@ -12,7 +11,7 @@ class ChessLogic {
 
     public void calculatePossibleMoves(){
         calculatePieces(board.getCurrentTurn());
-        calculatePieces(PieceColour.getOtherColour(board.getCurrentTurn()));
+        calculatePieces(board.getCurrentTurn().invert());
         removeMovesInCheck();
     }
 
@@ -91,7 +90,7 @@ class ChessLogic {
                 continue;
             if(board.isSquareColour(square, colour))
                 return false;
-            if(board.isSquareColour(square, PieceColour.getOtherColour(colour)))
+            if(board.isSquareColour(square, colour.invert()))
                 return canPieceSeeSquare(board.getPiece(square), square, kingPos, xDifference, yDifference);
         }
     }
@@ -110,7 +109,7 @@ class ChessLogic {
 
     public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
         Coordinate kingPos = board.getKingPos(board.getCurrentTurn());
-        PieceColour enemyColour = PieceColour.getOtherColour(kingToCheck);
+        PieceColour enemyColour = kingToCheck.invert();
         return board.isPossible(enemyColour, kingPos);
     }
 
@@ -174,7 +173,7 @@ class ChessLogic {
     }
 
     public boolean isEnemyPiece(int x, int y, PieceColour colour){
-        return board.isSquareColour(new Coordinate(x, y), PieceColour.getOtherColour(colour));
+        return board.isSquareColour(new Coordinate(x, y), colour.invert());
     }
 
     public MoveValue getMoveForOtherPiece(int x, int y, int newX, int newY){
