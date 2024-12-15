@@ -36,7 +36,7 @@ class FenGenerator {
                     fenString.append(blankSquare);
                     blankSquare = 0;
                 }
-                fenString.append(charFromPiece(piece, board.getPieceColour(pos)));
+                fenString.append(charFromPiece(piece, board.getColour(pos)));
             }
             if(blankSquare != 0)
                 fenString.append(blankSquare);
@@ -63,7 +63,7 @@ class FenGenerator {
     }
 
     private void addCurrentTurn() {
-        if(board.getCurrentTurn() == PieceColour.BLACK)
+        if(board.getTurn() == PieceColour.BLACK)
             fenString.append("b ");
         else
             fenString.append("w ");

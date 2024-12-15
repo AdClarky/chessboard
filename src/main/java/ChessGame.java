@@ -42,7 +42,7 @@ public class ChessGame {
      * @return the current turn
      */
     public PieceColour getCurrentTurn(){
-        return board.getCurrentTurn();
+        return board.getTurn();
     }
 
     /**
@@ -62,7 +62,7 @@ public class ChessGame {
         if(chessLogic.isDraw())
             notifyDraw();
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKingPos(board.getCurrentTurn()));
+            notifyCheckmate(board.getKingPos(board.getTurn()));
         }
     }
 
@@ -127,7 +127,7 @@ public class ChessGame {
         chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
         if(chessLogic.isCheckmate()) {
-            notifyCheckmate(board.getKingPos(board.getCurrentTurn()));
+            notifyCheckmate(board.getKingPos(board.getTurn()));
         }
     }
 

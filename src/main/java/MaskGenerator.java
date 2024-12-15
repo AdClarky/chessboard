@@ -27,7 +27,7 @@ public class MaskGenerator {
     }
 
     private long getPawnMask(Coordinate piecePos) {
-        PieceColour colour = board.getPieceColour(piecePos);
+        PieceColour colour = board.getColour(piecePos);
         long emptySquares = board.getEmptySquares().getBoard();
         long enemyPieces = board.getAllColourPositions(colour.invert()).getBoard();
         long pawnMask = 0L;
@@ -44,12 +44,12 @@ public class MaskGenerator {
 
     private long getKingMask(Coordinate piecePos) {
         Bitboard mask = new Bitboard(KING_ATTACKS[piecePos.getBitboardIndex()]);
-        return removeFriendlyPieces(mask, board.getPieceColour(piecePos));
+        return removeFriendlyPieces(mask, board.getColour(piecePos));
     }
 
     private long getKnightMask(Coordinate piecePos) {
         Bitboard mask = new Bitboard(KNIGHT_ATTACKS[piecePos.getBitboardIndex()]);
-        return removeFriendlyPieces(mask, board.getPieceColour(piecePos));
+        return removeFriendlyPieces(mask, board.getColour(piecePos));
     }
 
     private long removeFriendlyPieces(Bitboard mask, PieceColour colour){
@@ -98,7 +98,7 @@ public class MaskGenerator {
     // down - >> -8
     // bottom right - >> -7
     private long getMaskForLine(Coordinate piecePos, int direction) {
-        PieceColour colour = board.getPieceColour(piecePos);
+        PieceColour colour = board.getColour(piecePos);
         long enemyPieces = board.getAllColourPositions(colour.invert()).getBoard();
         long friendlyPieces = board.getAllColourPositions(colour).getBoard();
         long currentPos = piecePos.getBitboardValue();

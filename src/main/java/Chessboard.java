@@ -6,11 +6,8 @@ import java.util.List;
 
 /** A chess board that is automatically populated with blank squares. */
 class Chessboard {
-    private final PieceBoard board = new PieceBoard();
     private final PieceBoard pieceBoard = new PieceBoard();
     private final ColourBoard colourBoard = new ColourBoard();
-    private final PossibleMoves possibleMoves = new PossibleMoves();
-    private final BoardHistory history = new BoardHistory();
     private final Bitboard castlingRights = new Bitboard();
     private PieceColour currentTurn = PieceColour.WHITE;
     private Coordinate enPassantSquare;
@@ -40,23 +37,15 @@ class Chessboard {
         new ChessLogic(this).calculatePossibleMoves();
     }
 
-    /**
-     * Finds the piece at x and y. If there is no piece or the x and y are invalid it returns {@link Blank}.
-     */
     @NotNull
     public Pieces getPiece(Coordinate position) {
-        return board.get(position);
+        return pieceBoard.get(position);
     }
 
     public boolean isSquareColour(Coordinate position, PieceColour colour){
         if(position.isNotInRange())
             return false;
         return colourBoard.isPositionColour(position, colour);
-    }
-
-    @NotNull
-    public PieceColour getColourAtPosition(Coordinate kingPos) {
-        return colourBoard.getColourAtPosition(kingPos);
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
@@ -67,7 +56,7 @@ class Chessboard {
 
     public void movePiece(Coordinate oldPos, Coordinate newPos) {
         colourBoard.movePiece(oldPos, newPos);
-        board.move(oldPos, newPos);
+        pieceBoard.move(oldPos, newPos);
     }
 
     public Bitboard getAllColourPositions(PieceColour colour){
@@ -99,14 +88,6 @@ class Chessboard {
         return !castlingRights.isEmpty();
     }
 
-    public void calculateCastling(Coordinate position){
-        castlingRights.remove(position);
-    }
-
-    public long getCastlingRights(){
-        return castlingRights.getBoard();
-    }
-
     public void setCastlingRights(long rights){
         castlingRights.set(rights);
     }
@@ -127,116 +108,30 @@ class Chessboard {
         return enPassantSquare;
     }
 
-    public void makeMove(Coordinate oldPos, Coordinate newPos){
-        if (history.canRedoMove())
-            history.clearRedoMoves();
-        Move move = new Move(this, oldPos, newPos);
-        history.push(move);
-    }
-
-    public void setCurrentTurn(PieceColour newTurn) {
-        currentTurn = newTurn;
-    }
-
     void nextTurn() {
         currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
     }
 
-    public PieceColour getCurrentTurn() {
+    public PieceColour getTurn() {
         return currentTurn;
     }
 
-    public PieceColour getEnemyTurn(){
-        return currentTurn.invert();
-    }
-
     public Coordinate getKingPos(PieceColour colour) {
-        Collection<Coordinate> kingPositions = board.getKingPositions();
+        Collection<Coordinate> kingPositions = pieceBoard.getKingPositions();
         return colourBoard.getKingPosition(kingPositions, colour);
     }
 
-    @NotNull
-    public List<MoveValue> getLastMoves() {
-        return history.getLastMoves();
-    }
-
-    @Nullable
-    public Move redoMove() {
-        return history.redoMove();
-    }
-
-    public void redoAllMoves() {
-        history.redoAllMoves();
-    }
-
-    @Nullable
-    public Move undoMove() {
-        return history.undoMove();
-    }
-
-    public int getNumHalfMoves() {
-        return history.getNumHalfMoves();
-    }
-
-    public int getNumFullMoves() {
-        return history.getNumFullMoves();
-    }
-
-    public void setNumFullMoves(int numFullMoves) throws AccessedHistoryDuringGameException {
-        history.setNumFullMoves(numFullMoves);
-    }
-
-    public void setNumHalfMoves(int numHalfMoves) throws AccessedHistoryDuringGameException {
-        history.setNumHalfMoves(numHalfMoves);
-    }
-
-    public void undoMultipleMoves(int numOfMoves) {
-        history.undoMultipleMoves(numOfMoves);
-    }
-
-    public boolean canRedoMove() {
-        return history.canRedoMove();
-    }
-
-    public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves) {
-        possibleMoves.updatePossibleMoves(colour, moves);
-    }
-
-    public boolean isPossible(PieceColour colour, Coordinate position) {
-        return possibleMoves.isPossible(colour, position);
-    }
-
-    public void removePossible(PieceColour colour, Coordinate position){
-        possibleMoves.removePossible(colour, position);
-    }
-
-    public void clearPossibleMoves(PieceColour colour) {
-        possibleMoves.clearBoard(colour);
-    }
-
-    public boolean isCheckmate(PieceColour colour) {
-        return possibleMoves.isCheckmate(colour);
-    }
-
-    public long getPossible(PieceColour colour) {
-        return possibleMoves.getBoardValue(colour);
-    }
-
-    public void setPossibleMoves(PieceColour colour, long enemyPossible) {
-        possibleMoves.setPossible(colour, enemyPossible);
-    }
-
-    public PieceColour getPieceColour(Coordinate position) {
+    public PieceColour getColour(Coordinate position) {
         return colourBoard.getColourAtPosition(position);
     }
 
     public void promotion(Coordinate position) {
-        board.add(Pieces.QUEEN, position);
+        pieceBoard.add(Pieces.QUEEN, position);
         colourBoard.add(currentTurn, position);
     }
 
     public void removePiece(Coordinate position) {
-        board.remove(position);
+        pieceBoard.remove(position);
         colourBoard.remove(position);
     }
 }
