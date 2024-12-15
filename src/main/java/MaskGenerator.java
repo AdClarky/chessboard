@@ -1,7 +1,9 @@
 public class MaskGenerator {
-    private Chessboard board;
+    private final Chessboard board;
     private final static long RANK_TWO = 0xff00L;
     private final static long RANK_SEVEN = 0xff000000000000L;
+    private final static long NOT_A_FILE = 0xFEFEFEFEFEFEFEFEL;
+    private final static long NOT_H_FILE = 0x7F7F7F7F7F7F7F7FL;
     private static final long[] KNIGHT_ATTACKS = new long[64];
     private static final long[] KING_ATTACKS = new long[64];
     private static final long[] WHITE_PAWN_ATTACKS = new long[64];
@@ -56,7 +58,6 @@ public class MaskGenerator {
         return mask.getBoard();
     }
 
-
     private long getBishopMask(Coordinate piecePos) {
         return 0;
     }
@@ -69,18 +70,76 @@ public class MaskGenerator {
         return 0;
     }
 
+    // top left - << 7
+    // up - << 8
+    // top right - << 9
+    // right - << 1
+    // left - >> -1
+    // bottom left - >> -9
+    // down - >> -8
+    // bottom right - >> -7
+    private long getMaskForLine(Coordinate piecePos, int direction) {
+        PieceColour colour = board.getPieceColour(piecePos);
+        long enemyPieces = board.getAllColourPositions(colour.getOppositeColour()).getBoard();
+        long friendlyPieces = board.getAllColourPositions(colour).getBoard();
+        long currentPos = piecePos.getBitboardValue();
+        long mask = 0L;
+
+        while(currentPos != 0) {
+            switch(direction) {
+                case 7: // top left
+                    if((currentPos & NOT_A_FILE) == 0) return mask;
+                    currentPos <<= 7;
+                    break;
+                case 8: // up
+                    currentPos <<= 8;
+                    break;
+                case 9: // top right
+                    if((currentPos & NOT_H_FILE) == 0) return mask;
+                    currentPos <<= 9;
+                    break;
+                case 1: // right
+                    if((currentPos & NOT_H_FILE) == 0) return mask;
+                    currentPos <<= 1;
+                    break;
+                case -1: // left
+                    if((currentPos & NOT_A_FILE) == 0) return mask;
+                    currentPos >>= 1;
+                    break;
+                case -9: // bottom left
+                    if((currentPos & NOT_A_FILE) == 0) return mask;
+                    currentPos >>= 9;
+                    break;
+                case -8: // down
+                    currentPos >>= 8;
+                    break;
+                case -7: // bottom right
+                    if((currentPos & NOT_H_FILE) == 0) return mask;
+                    currentPos >>= 7;
+                    break;
+            }
+            if(currentPos == 0)
+                return mask;
+            if((currentPos & friendlyPieces) != 0)
+                return mask;
+            mask |= currentPos;
+            if((currentPos & enemyPieces) != 0)
+                return mask;
+        }
+
+        return mask;
+    }
+
     static {
-        long notAFile = 0xFEFEFEFEFEFEFEFEL;
-        long notHFile = 0x7F7F7F7F7F7F7F7FL;
         long notABFile = 0xFCFCFCFCFCFCFCFCL;
         long notHGFile = 0x3F3F3F3F3F3F3F3FL;
         for (int square = 0; square < 64; square++) {
             long pos = 1L << square;
 
             long knightMoves = 0L;
-            if ((pos & notHFile) != 0)
+            if ((pos & NOT_H_FILE) != 0)
                 knightMoves |= (pos << 6) | (pos >> 10);
-            if ((pos & notAFile) != 0)
+            if ((pos & NOT_A_FILE) != 0)
                 knightMoves |= (pos << 10) | (pos >> 6);
             if ((pos & notHGFile) != 0)
                 knightMoves |= (pos << 15) | (pos >> 17);
@@ -89,16 +148,15 @@ public class MaskGenerator {
             KNIGHT_ATTACKS[square] = knightMoves;
 
             long kingMoves = 0L;
-            if ((pos & notAFile) != 0)
+            if ((pos & NOT_A_FILE) != 0)
                 kingMoves |= (pos >> 1) | (pos >> 9) | (pos << 7);
-            if ((pos & notHFile) != 0)
+            if ((pos & NOT_H_FILE) != 0)
                 kingMoves |= (pos >> 7) | (pos << 1) | (pos << 9);
             kingMoves |= (pos >> 8) | (pos << 8);
             KING_ATTACKS[square] = kingMoves;
 
-            WHITE_PAWN_ATTACKS[square] = ((pos << 7) & notHFile) | ((pos << 9) & notAFile);
-            BLACK_PAWN_ATTACKS[square] = ((pos >> 9) & notHFile) | ((pos >> 7) & notAFile);
-        }
+            WHITE_PAWN_ATTACKS[square] = ((pos << 7) & NOT_H_FILE) | ((pos << 9) & NOT_A_FILE);
+            BLACK_PAWN_ATTACKS[square] = ((pos >> 9) & NOT_H_FILE) | ((pos >> 7) & NOT_A_FILE);
         }
     }
 }
