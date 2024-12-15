@@ -46,7 +46,7 @@ class ChessLogic {
         if(!isKingInCheck(board.getCurrentTurn()) && !doesMoveExposeKing(position, movePos))
             return false;
         PieceColour previousTurn = board.getCurrentTurn();
-        Move move = new Move(position, movePos, board);
+        Move move = new Move(board, position, movePos);
         Bitboard possible = calculatePieces(board.getCurrentTurn());
         move.undo();
         return isKingInCheck(previousTurn, possible);

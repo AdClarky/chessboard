@@ -127,8 +127,4 @@ class BoardHistory {
         else
             numHalfMoves--;
     }
-
-    public boolean wasMoveCapture() {
-        return lastMove.getLast().hasTaken();
-    }
 }

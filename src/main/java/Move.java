@@ -25,7 +25,7 @@ class Move {
      * Initialises move and then moves the piece to the new location.
      * Used so it can undo the first move condition on the previous piece if necessary.
      */
-    public Move(Coordinate oldPos, Coordinate newPos, Chessboard board){
+    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos){
         this.oldPos = oldPos;
         this.newPos = newPos;
         this.board = board;
@@ -33,7 +33,7 @@ class Move {
         pieceColour = board.getPieceColour(oldPos);
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
-//        movesMade = board.getMoves(oldPos, newPos);
+        movesMade = board.getMoves(oldPos, newPos);
         movesMade = null;
         enemyPossible = board.getPossible(board.getEnemyTurn());
         makeMove();

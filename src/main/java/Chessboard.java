@@ -130,7 +130,7 @@ class Chessboard {
     public void makeMove(Coordinate oldPos, Coordinate newPos){
         if (history.canRedoMove())
             history.clearRedoMoves();
-        Move move = new Move(oldPos, newPos, this);
+        Move move = new Move(this, oldPos, newPos);
         history.push(move);
     }
 
@@ -196,10 +196,6 @@ class Chessboard {
 
     public boolean canRedoMove() {
         return history.canRedoMove();
-    }
-
-    public boolean wasMoveCapture() {
-        return history.wasMoveCapture();
     }
 
     public void updatePossibleMoves(PieceColour colour, Collection<Coordinate> moves) {
