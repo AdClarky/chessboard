@@ -70,7 +70,7 @@ class Chessboard {
         board.move(oldPos, newPos);
     }
 
-    public Collection<Coordinate> getAllColourPositions(PieceColour colour){
+    public Bitboard getAllColourPositions(PieceColour colour){
         return colourBoard.getBoard(colour);
     }
 
