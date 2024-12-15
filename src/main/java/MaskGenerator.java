@@ -29,7 +29,7 @@ public class MaskGenerator {
     private long getPawnMask(Coordinate piecePos) {
         PieceColour colour = board.getPieceColour(piecePos);
         long emptySquares = board.getEmptySquares().getBoard();
-        long enemyPieces = board.getAllColourPositions(colour.getOppositeColour()).getBoard();
+        long enemyPieces = board.getAllColourPositions(colour.invert()).getBoard();
         long pawnMask = 0L;
         long pos = piecePos.getBitboardValue();
         if (colour == PieceColour.BLACK) {
@@ -99,7 +99,7 @@ public class MaskGenerator {
     // bottom right - >> -7
     private long getMaskForLine(Coordinate piecePos, int direction) {
         PieceColour colour = board.getPieceColour(piecePos);
-        long enemyPieces = board.getAllColourPositions(colour.getOppositeColour()).getBoard();
+        long enemyPieces = board.getAllColourPositions(colour.invert()).getBoard();
         long friendlyPieces = board.getAllColourPositions(colour).getBoard();
         long currentPos = piecePos.getBitboardValue();
         long mask = 0L;
