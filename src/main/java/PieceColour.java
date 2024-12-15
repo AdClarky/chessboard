@@ -23,8 +23,16 @@ public enum PieceColour {
      * @param otherColour the colour you want the opposite of.
      * @return the opposite colour.
      */
-    public static PieceColour getOtherColour(@NotNull PieceColour otherColour) {
+    public static PieceColour getOtherColour(@NotNull PieceColour otherColour) { // TODO: Stop using this, use other
         return switch (otherColour) {
+            case WHITE -> BLACK;
+            case BLACK -> WHITE;
+            case BLANK -> BLANK;
+        };
+    }
+
+    public PieceColour getOppositeColour() {
+        return switch (this) {
             case WHITE -> BLACK;
             case BLACK -> WHITE;
             case BLANK -> BLANK;
