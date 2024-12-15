@@ -74,6 +74,10 @@ class Chessboard {
         return colourBoard.getBoard(colour);
     }
 
+    public Bitboard getEmptySquares(){
+        return colourBoard.getEmptySquares();
+    }
+
     public void movePiece(@NotNull MoveValue move) {
         movePiece(move.oldPos(), move.newPos());
     }

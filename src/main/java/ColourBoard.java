@@ -42,6 +42,11 @@ public class ColourBoard {
         return blackPieces;
     }
 
+    public Bitboard getEmptySquares(){
+        long empty = ~(whitePieces.getBoard() & blackPieces.getBoard());
+        return new Bitboard(empty);
+    }
+
     @NotNull
     public PieceColour getColourAtPosition(Coordinate kingPos) {
         if(whitePieces.contains(kingPos))
