@@ -83,4 +83,25 @@ class CoordinateTest {
         assertEquals(0x100000000000000L, a8.getBitboardValue());
         assertEquals(0x8000000000000000L, h8.getBitboardValue());
     }
+
+    @Test
+    void rangeTest(){
+        Coordinate a1 = new Coordinate(0, 0);
+        Coordinate a8 = new Coordinate(0, 7);
+        Coordinate h1 = new Coordinate(7, 0);
+        Coordinate h8 = new Coordinate(7, 7);
+        Coordinate outOfRange1 = new Coordinate(-1 , 0);
+        Coordinate outOfRange2 = new Coordinate(8 , 0);
+        Coordinate outOfRange3 = new Coordinate(0 , -1);
+        Coordinate outOfRange4 = new Coordinate(0 , 8);
+
+        assertTrue(outOfRange1.isNotInRange());
+        assertTrue(outOfRange2.isNotInRange());
+        assertTrue(outOfRange3.isNotInRange());
+        assertTrue(outOfRange4.isNotInRange());
+        assertFalse(a1.isNotInRange());
+        assertFalse(a8.isNotInRange());
+        assertFalse(h1.isNotInRange());
+        assertFalse(h8.isNotInRange());
+    }
 }
