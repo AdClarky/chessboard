@@ -12,8 +12,7 @@ import java.util.List;
  * @author Toby
  */
 public class ChessInterface {
-    private final Chessboard board;
-    private final ChessLogic chessLogic;
+    private final ChessGame game;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
 
@@ -21,8 +20,7 @@ public class ChessInterface {
      * Creates a {@code ChessGame} with the pieces in the default position.
      */
     public ChessInterface(){
-        board = new ChessboardBuilder().defaultSetup();
-        chessLogic = new ChessLogic(board);
+        game = new ChessGame();
         fenGenerator = new FenGenerator(board);
     }
 
@@ -32,8 +30,7 @@ public class ChessInterface {
      * @throws InvalidFenStringException when the give FEN string is invalid
      */
     public ChessInterface(String fenString) throws InvalidFenStringException {
-        board = new ChessboardBuilder().fromFen(fenString);
-        chessLogic = new ChessLogic(board);
+        game = new ChessGame(fenString);
         fenGenerator = new FenGenerator(board);
     }
 
@@ -54,14 +51,11 @@ public class ChessInterface {
      * @throws InvalidMoveException when the move given is not a valid move.
      */
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(ChessLogic.isValidMove(getPiece(oldPos), newPos))
-            throw new InvalidMoveException(oldPos, newPos);
-        board.makeMove(oldPos, newPos);
-        chessLogic.calculatePossibleMoves();
+        game.makeMove(oldPos, newPos);
         notifyMoveMade(oldPos, newPos);
-        if(chessLogic.isDraw())
+        if(game.isDraw())
             notifyDraw();
-        if(chessLogic.isCheckmate()) {
+        if(game.isCheckmate()) {
             notifyCheckmate(board.getKingPos(board.getTurn()));
         }
     }
@@ -74,15 +68,6 @@ public class ChessInterface {
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = ChessUtils.chessToMove(board, chessMove);
         makeMove(move.oldPos(), move.newPos());
-    }
-
-    /**
-     * After {@link BoardListener#moveMade(Coordinate, Coordinate)} or
-     * {@link BoardListener#boardChanged(Coordinate, Coordinate)},
-     * this returns the individual moves performed on the board.
-     * @return a list of individual moves taken to reach the new board state. */
-    public List<MoveValue> getLastMoveMade(){
-        return board.getLastMoves();
     }
 
     /**
@@ -121,12 +106,10 @@ public class ChessInterface {
      * Moves forward one move. Does nothing if there are no more moves to be made.
     */
     public void redoMove(){
-        Move move = board.redoMove();
-        if(move == null)
+        if(!game.redoMove())
             return;
-        chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
-        if(chessLogic.isCheckmate()) {
+        if(game.isCheckmate()) {
             notifyCheckmate(board.getKingPos(board.getTurn()));
         }
     }
@@ -135,10 +118,8 @@ public class ChessInterface {
      * Moves backwards one move. Does nothing if there are no more moves to be made.
     */
     public void undoMove(){
-        Move move = board.undoMove();
-        if(move == null)
+        if(!game.undoMove())
             return;
-        chessLogic.calculatePossibleMoves();
         notifyBoardChanged(move);
     }
 
@@ -203,13 +184,5 @@ public class ChessInterface {
      */
     public String getFenString() {
         return fenGenerator.getFenString();
-    }
-
-    public boolean isInCheck(){
-        return chessLogic.isKingInCheck(getCurrentTurn());
-    }
-
-    public Coordinate getEnPassantSquare() {
-        return board.getEnPassantSquare();
     }
 }
