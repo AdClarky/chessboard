@@ -19,6 +19,18 @@ public class ChessGame {
         logic.calculatePossibleMoves();
     }
 
+    public PieceColour getColour(Coordinate position){
+        return board.getColour(position);
+    }
+
+    public Pieces getPiece(Coordinate position){
+        return board.getPiece(position);
+    }
+
+    public PieceColour getTurn(){
+        return board.getTurn();
+    }
+
     public MoveValue redoMove() {
         Move move = history.redoMove();
         logic.calculatePossibleMoves();
@@ -37,5 +49,21 @@ public class ChessGame {
 
     public boolean canUndoMove(){
         return history.canUndoMove();
+    }
+
+    public int getNumHalfMoves(){
+        return history.getNumHalfMoves();
+    }
+
+    public int getNumFullMoves(){
+        return history.getNumFullMoves();
+    }
+
+    public long getCastlingRights(){
+        return board.getCastlingRights();
+    }
+
+    public Coordinate getEnPassantSquare() {
+        return board.getEnPassantSquare();
     }
 }

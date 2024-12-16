@@ -180,16 +180,4 @@ class ChessLogic {
     public boolean isValidMove(Coordinate oldPos, Coordinate newPos){
         return possibleMoves.isPossible(oldPos, newPos);
     }
-
-    public boolean canAnythingCastle() {
-        return board.canAnythingCastle();
-    }
-
-    public boolean canKingCastle(PieceColour colour) {
-        return board.canKingCastle(colour);
-    }
-
-    public boolean canCastle(Coordinate position) {
-        return board.canCastle(position);
-    }
 }

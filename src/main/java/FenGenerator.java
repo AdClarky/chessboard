@@ -3,10 +3,10 @@ import org.jetbrains.annotations.NotNull;
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called
  * at any point and the fen string will be calculated. */
 class FenGenerator {
-    private final Chessboard board;
+    private final ChessGame board;
     private final StringBuilder fenString = new StringBuilder();
 
-    public FenGenerator(Chessboard board) {
+    public FenGenerator(ChessGame board) {
         this.board = board;
     }
 
@@ -27,7 +27,7 @@ class FenGenerator {
         for(int y = 7; y >= 0; y--) {
             for(int x = 7; x >= 0; x--) {
                 Coordinate pos = new Coordinate(x, y);
-                if(board.isSquareBlank(pos)) {
+                if(board.getPiece(pos) == Pieces.BLANK) {
                     blankSquare++;
                     continue;
                 }
@@ -70,21 +70,22 @@ class FenGenerator {
     }
 
     private void addCastlingRights() {
-        if(!board.canAnythingCastle()){
+        Bitboard castlingRights = new Bitboard(board.getCastlingRights());
+        if(castlingRights.isEmpty()){
             fenString.append("- ");
             return;
         }
-        if(board.canKingCastle(PieceColour.WHITE))
-            addColourCastleRight(0);
-        if(board.canKingCastle(PieceColour.BLACK))
-            addColourCastleRight(7);
+        if(castlingRights.contains(new Coordinate(3, 0)))
+            addColourCastleRight(0, castlingRights);
+        if(castlingRights.contains(new Coordinate(3, 7)))
+            addColourCastleRight(7, castlingRights);
         fenString.append(" ");
     }
 
-    private void addColourCastleRight(int backRow){
-        if(board.canCastle(new Coordinate(0, backRow)))
+    private void addColourCastleRight(int backRow, Bitboard castlingRights){
+        if(castlingRights.contains(new Coordinate(0, backRow)))
             fenString.append(backRow == 0 ? 'K' : 'k');
-        if(board.canCastle(new Coordinate(7, backRow)))
+        if(castlingRights.contains(new Coordinate(7, backRow)))
             fenString.append(backRow == 0 ? 'Q' : 'q');
     }
 

@@ -75,17 +75,8 @@ class Chessboard {
         castlingRights.remove(position);
     }
 
-    public boolean canCastle(Coordinate position){
-        return castlingRights.contains(position);
-    }
-
-    public boolean canKingCastle(PieceColour colour){
-        int backRow = colour == PieceColour.WHITE ? 0 : 7;
-        return canCastle(new Coordinate(3, backRow));
-    }
-
-    public boolean canAnythingCastle(){
-        return !castlingRights.isEmpty();
+    public long getCastlingRights() {
+        return castlingRights.getBoard();
     }
 
     public void setCastlingRights(long rights){
