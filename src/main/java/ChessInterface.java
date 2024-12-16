@@ -21,7 +21,7 @@ public class ChessInterface {
      */
     public ChessInterface(){
         game = new ChessGame();
-        fenGenerator = new FenGenerator(board);
+        fenGenerator = new FenGenerator(game);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ChessInterface {
      */
     public ChessInterface(String fenString) throws InvalidFenStringException {
         game = new ChessGame(fenString);
-        fenGenerator = new FenGenerator(board);
+        fenGenerator = new FenGenerator(game);
     }
 
     /**
