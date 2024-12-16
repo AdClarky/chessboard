@@ -39,6 +39,14 @@ public class ChessGame {
         return board.getPiece(position);
     }
 
+    public Coordinate getKing(PieceColour colour){
+        return board.getKingPos(colour);
+    }
+
+    public Coordinate getKing(){
+        return board.getKingPos(board.getTurn());
+    }
+
     public PieceColour getTurn(){
         return board.getTurn();
     }

@@ -7,8 +7,6 @@ import java.util.List;
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
  * Add a {@link BoardListener} to be notified of events. At the end of a move boardChanged is called.
- * After a move has been made, {@link ChessInterface#getLastMoveMade()} to find the individual moves made - e.g. in castling
- * what moves were made.
  * @author Toby
  */
 public class ChessInterface {
@@ -56,7 +54,7 @@ public class ChessInterface {
         if(game.isDraw())
             notifyDraw();
         if(game.isCheckmate()) {
-            notifyCheckmate(board.getKingPos(board.getTurn()));
+            notifyCheckmate(game.getKing());
         }
     }
 
@@ -96,8 +94,8 @@ public class ChessInterface {
     }
 
     private void notifyDraw(){
-        Coordinate whitePos = board.getKingPos(PieceColour.WHITE);
-        Coordinate blackPos = board.getKingPos(PieceColour.BLACK);
+        Coordinate whitePos = game.getKing(PieceColour.WHITE);
+        Coordinate blackPos = game.getKing(PieceColour.BLACK);
         for(BoardListener listener : boardListeners)
             listener.draw(whitePos, blackPos);
     }
@@ -111,7 +109,7 @@ public class ChessInterface {
         MoveValue move = game.redoMove();
         notifyBoardChanged(move);
         if(game.isCheckmate()) {
-            notifyCheckmate(board.getKingPos(board.getTurn()));
+            notifyCheckmate(game.getKing());
         }
     }
 
@@ -141,27 +139,9 @@ public class ChessInterface {
      * @see ChessInterface#redoMove()
      */
     public void redoAllMoves(){
-        while(board.canRedoMove()){
+        while(game.canRedoMove()){
             redoMove();
         }
-    }
-
-    /**
-     * Creates a collection of a specific colour of pieces and returns it.
-     * @param colour the coloured pieces desired.
-     * @return a collection of colour pieces
-     */
-    public Collection<Coordinate> getColourPieces(PieceColour colour){
-        return board.getAllColourPositions(colour);
-    }
-
-    /**
-     * Gets the piece located at x and y.
-     *
-     * @param pos@return Piece in that position
-     */
-    public Pieces getPiece(Coordinate pos){
-        return board.getPiece(pos);
     }
 
     /**
@@ -177,7 +157,7 @@ public class ChessInterface {
      * @return true if the current position is a draw
      */
     public boolean isDraw(){
-        return chessLogic.isDraw();
+        return game.isDraw();
     }
 
     /**

@@ -34,7 +34,6 @@ class Chessboard {
             colourBoard.add(piece);
             pieceBoard.add(piece);
         }
-        new ChessLogic(this).calculatePossibleMoves();
     }
 
     @NotNull
