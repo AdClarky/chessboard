@@ -1,32 +1,41 @@
 public class ChessGame {
     private final Chessboard board;
-    private final ChessLogic chessLogic;
+    private final ChessLogic logic;
+    private final BoardHistory history;
 
     ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
-        chessLogic = new ChessLogic(board);
+        logic = new ChessLogic(board);
+        history = new BoardHistory();
     }
-
-
 
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(ChessLogic.isValidMove(getPiece(oldPos), newPos))
+        if(logic.isValidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
-        board.makeMove(oldPos, newPos);
-        chessLogic.calculatePossibleMoves();
+        if(history.canRedoMove())
+            history.clearRedoMoves();
+        Move move = new Move(board, oldPos, newPos);
+        history.push(move);
+        logic.calculatePossibleMoves();
     }
 
-    public boolean redoMove() {
-        Move move = board.redoMove();
-        if(move == null)
-            return;
-        chessLogic.calculatePossibleMoves();
+    public MoveValue redoMove() {
+        Move move = history.redoMove();
+        logic.calculatePossibleMoves();
+        return new MoveValue(move.getOldPos(), move.getNewPos());
     }
 
-    public boolean undoMove() {
-        Move move = board.undoMove();
-        if(move == null)
-            return;
-        chessLogic.calculatePossibleMoves();
+    public boolean canRedoMove(){
+        return history.canRedoMove();
+    }
+
+    public MoveValue undoMove() {
+        Move move = history.undoMove();
+        logic.calculatePossibleMoves();
+        return new MoveValue(move.getOldPos(), move.getNewPos());
+    }
+
+    public boolean canUndoMove(){
+        return history.canUndoMove();
     }
 }

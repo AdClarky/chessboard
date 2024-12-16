@@ -84,9 +84,9 @@ public class ChessInterface {
         }
     }
 
-    private void notifyBoardChanged(@NotNull Move move){
+    private void notifyBoardChanged(@NotNull MoveValue move){
         for(BoardListener listener : boardListeners){
-            listener.boardChanged(move.getOldPos(), move.getNewPos());
+            listener.boardChanged(move.oldPos(), move.newPos());
         }
     }
 
@@ -106,8 +106,9 @@ public class ChessInterface {
      * Moves forward one move. Does nothing if there are no more moves to be made.
     */
     public void redoMove(){
-        if(!game.redoMove())
+        if(!game.canRedoMove())
             return;
+        MoveValue move = game.redoMove();
         notifyBoardChanged(move);
         if(game.isCheckmate()) {
             notifyCheckmate(board.getKingPos(board.getTurn()));
@@ -118,8 +119,9 @@ public class ChessInterface {
      * Moves backwards one move. Does nothing if there are no more moves to be made.
     */
     public void undoMove(){
-        if(!game.undoMove())
+        if(!game.canUndoMove())
             return;
+        MoveValue move = game.undoMove();
         notifyBoardChanged(move);
     }
 

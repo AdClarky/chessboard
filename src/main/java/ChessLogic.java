@@ -177,9 +177,8 @@ class ChessLogic {
         return new MoveValue(new Coordinate(x, y), new Coordinate(newX, newY));
     }
 
-    public static boolean isValidMove(@NotNull Pieces piece, Coordinate newPos){
-//        return !piece.getPossibleMoves().contains(newPos);
-        return false;
+    public boolean isValidMove(Coordinate oldPos, Coordinate newPos){
+        return possibleMoves.isPossible(oldPos, newPos);
     }
 
     public boolean canAnythingCastle() {
