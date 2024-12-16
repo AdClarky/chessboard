@@ -13,6 +13,8 @@ class ChessboardBuilder {
     private final List<PieceValue> whitePieces = new ArrayList<>(16);
     private final List<PieceValue> blackPieces = new ArrayList<>(16);
     private int squaresProcessed = 7;
+    private int numHalfMoves;
+    private int numFullMoves;
 
     ChessboardBuilder() {
     }
@@ -138,11 +140,19 @@ class ChessboardBuilder {
     }
 
     private void setHalfMoves(String section) throws AccessedHistoryDuringGameException {
-        board.setNumHalfMoves(Integer.parseInt(section));
+        numHalfMoves = Integer.parseInt(section);
+    }
+
+    public int getNumHalfMoves(){
+        return numHalfMoves;
     }
 
     private void setFullMoves(String section) throws AccessedHistoryDuringGameException {
-        board.setNumFullMoves(Integer.parseInt(section));
+        numFullMoves = Integer.parseInt(section);
+    }
+
+    public int getNumFullMoves(){
+        return numFullMoves;
     }
 
     private static PieceColour getColourFromCharacter(char c){
