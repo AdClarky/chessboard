@@ -39,7 +39,7 @@ public class ChessInterface {
      * @return the current turn
      */
     public PieceColour getCurrentTurn(){
-        return board.getTurn();
+        return game.getTurn();
     }
 
     /**
@@ -66,7 +66,7 @@ public class ChessInterface {
      * @throws InvalidMoveException when the move given is not a valid move
      */
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
-        MoveValue move = ChessUtils.chessToMove(board, chessMove);
+        MoveValue move = game.chessToMove(chessMove);
         makeMove(move.oldPos(), move.newPos());
     }
 
