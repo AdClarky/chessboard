@@ -16,12 +16,7 @@ class BoardHistory {
     BoardHistory() {
 
     }
-
-    public @Nullable Piece getLastPieceMoved(){
-//        return lastMove.isEmpty() ? null : lastMove.getFirst().getPiece();
-        return null;
-    }
-
+    
     public @NotNull List<MoveValue> getLastMoves(){
         if(lastMove.isEmpty())
             return new ArrayList<>(0);
