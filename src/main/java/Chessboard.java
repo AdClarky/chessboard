@@ -124,4 +124,9 @@ class Chessboard {
         pieceBoard.remove(position);
         colourBoard.remove(position);
     }
+
+    public void addPiece(Pieces piece, Coordinate position, PieceColour colour){
+        pieceBoard.add(piece, position);
+        colourBoard.add(colour, position);
+    }
 }

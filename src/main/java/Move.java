@@ -19,6 +19,7 @@ class Move {
     private final long castlingRights;
     private boolean undone = false;
     private Pieces pieceTaken = null;
+    private PieceColour pieceTakenColour = null;
 
     /**
      * Initialises move and then moves the piece to the new location.
@@ -73,13 +74,14 @@ class Move {
         if(move.isPieceInSamePosition()) // promotion
             board.promotion(move.newPos());
         pieceTaken = board.getPiece(move.newPos());
+        pieceTakenColour = board.getColour(move.newPos());
         movesToUndo.add(new MoveValue(move.newPos(), move.newPos()));
     }
 
     public void undo(){
         undone = true;
         for(MoveValue move : movesToUndo.reversed()){
-            addOrRemovePiece(Pieces.QUEEN, move); // TODO: Fix
+            addOrRemovePiece(pieceTaken, move); // TODO: Fix
             board.movePiece(move);
         }
         board.setEnPassantSquare(previousEnPassant);
@@ -94,8 +96,8 @@ class Move {
         // a piece moving to the same spot only occurs as the last move when it's a promotion
         if(move == movesToUndo.getLast())
             board.removePiece(move.newPos());
-        else;
-//            board.addPiece(piece, move.newPos());
+        else
+            board.addPiece(piece, move.newPos(), pieceTakenColour);
     }
 
     public Coordinate getOldPos() {
