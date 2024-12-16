@@ -6,19 +6,19 @@ import java.util.Collection;
 
 public class ChessGame {
     private final Chessboard board;
-    private final ChessLogic logic;
     private final BoardHistory history;
+    private final ChessLogic logic;
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
-        logic = new ChessLogic(board);
         history = new BoardHistory();
+        logic = new ChessLogic(board, history);
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
-        logic = new ChessLogic(board);
         history = new BoardHistory();
+        logic = new ChessLogic(board, history);
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {

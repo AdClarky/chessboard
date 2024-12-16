@@ -22,7 +22,7 @@ public class PossibleMoves{
         return possibleMovesBoard.get(currentPos).contains(move);
     }
 
-    public boolean isCheckmate(){
+    public boolean isEmpty(){
         for(Bitboard moves : possibleMovesBoard.values()){
             if(!moves.isEmpty())
                 return false;
