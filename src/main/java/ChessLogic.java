@@ -1,5 +1,3 @@
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collection;
 
 class ChessLogic {
@@ -7,9 +5,11 @@ class ChessLogic {
     private MaskGenerator maskGenerator;
     private Bitboard enemyPossible;
     private PossibleMoves possibleMoves = new PossibleMoves();
+    private BoardHistory history;
 
-    public ChessLogic(Chessboard board) {
+    public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
+        this.history = history;
         maskGenerator = new MaskGenerator(board);
     }
 
@@ -43,7 +43,7 @@ class ChessLogic {
     }
 
     private boolean isMoveUnsafe(Coordinate position, Coordinate movePos){
-        if(!isKingInCheck(board.getTurn()) && !doesMoveExposeKing(position, movePos))
+        if(!isKingInCheck() && !doesMoveExposeKing(position, movePos))
             return false;
         PieceColour previousTurn = board.getTurn();
         Move move = new Move(board, position, movePos);
@@ -104,24 +104,19 @@ class ChessLogic {
         ;
     }
 
-    public boolean isKingInCheck(@NotNull PieceColour kingToCheck){
+    public boolean isKingInCheck(){
         Coordinate kingPos = board.getKingPos(board.getTurn());
-        PieceColour enemyColour = kingToCheck.invert();
-        return board.isPossible(enemyColour, kingPos);
+        return enemyPossible.contains(kingPos);
     }
 
     public boolean isKingInCheck(PieceColour colour, Bitboard possible){
         return possible.contains(board.getKingPos(colour));
     }
 
-    public Coordinate getEnPassantSquare(){
-        return board.getEnPassantSquare();
-    }
-
     public boolean isCheckmate(){
-        if(!isKingInCheck(board.getTurn()))
+        if(!isKingInCheck())
             return false;
-        return board.isCheckmate(board.getTurn());
+        return possibleMoves.isEmpty();
     }
 
     public boolean isDraw(){
@@ -130,35 +125,29 @@ class ChessLogic {
                 isRepetition();
     }
 
-    private boolean isStalemate(){
-        if(isKingInCheck(board.getTurn()))
+    public boolean isStalemate(){
+        if(isKingInCheck())
             return false;
-        return board.isCheckmate(board.getTurn());
+        return possibleMoves.isEmpty();
     }
 
     private boolean isRepetition(){
-        if(board.getNumFullMoves() < 4)
+        if(history.getNumFullMoves() < 4)
             return false;
         int boardState = board.hashCode();
-        long possibleMovesWhite = board.getPossible(PieceColour.WHITE);
-        long possibleMovesBlack = board.getPossible(PieceColour.BLACK);
         for(int i = 0; i < 2; i++){
-            board.undoMultipleMoves(4);
+            history.undoMultipleMoves(4);
             if(boardState != board.hashCode()) {
-                board.redoAllMoves();
-                board.setPossibleMoves(PieceColour.WHITE, possibleMovesWhite);
-                board.setPossibleMoves(PieceColour.BLACK, possibleMovesBlack);
+                history.redoAllMoves();
                 return false;
             }
         }
-        board.redoAllMoves();
-        board.setPossibleMoves(PieceColour.WHITE, possibleMovesWhite);
-        board.setPossibleMoves(PieceColour.BLACK, possibleMovesBlack);
+        history.redoAllMoves();
         return true;
     }
 
     private boolean isDraw50Move(){
-        return board.getNumHalfMoves() >= 50;
+        return history.getNumHalfMoves() >= 50;
     }
 
     public boolean isSquareBlank(int x, int y){

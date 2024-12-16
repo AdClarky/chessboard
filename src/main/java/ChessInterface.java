@@ -169,7 +169,7 @@ public class ChessInterface {
      * @return true if the current position is checkmate
      */
     public boolean isCheckmate(){
-        return chessLogic.isCheckmate();
+        return game.isCheckmate();
     }
 
     /**
