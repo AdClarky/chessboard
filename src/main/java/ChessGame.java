@@ -13,16 +13,18 @@ public class ChessGame {
         board = new ChessboardBuilder().defaultSetup();
         history = new BoardHistory();
         logic = new ChessLogic(board, history);
+        logic.calculatePossibleMoves();
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
         history = new BoardHistory();
         logic = new ChessLogic(board, history);
+        logic.calculatePossibleMoves();
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(logic.isValidMove(oldPos, newPos))
+        if(!logic.isValidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
         if(history.canRedoMove())
             history.clearRedoMoves();
@@ -116,7 +118,7 @@ public class ChessGame {
                 continue;
             possiblePieces.add(piecePos);
         }
-        possiblePieces.removeIf(piece -> logic.isValidMove(piece, newCoordinate));
+        possiblePieces.removeIf(piece -> !logic.isValidMove(piece, newCoordinate));
         if(possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())
