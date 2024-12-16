@@ -13,10 +13,15 @@ class BoardHistory {
     private int numHalfMoves = 0;
     private int numFullMoves = 1;
 
-    BoardHistory() {
+    public BoardHistory() {
 
     }
-    
+
+    public BoardHistory(int numHalfMoves, int numFullMoves) {
+        this.numHalfMoves = numHalfMoves;
+        this.numFullMoves = numFullMoves;
+    }
+
     public @NotNull List<MoveValue> getLastMoves(){
         if(lastMove.isEmpty())
             return new ArrayList<>(0);
@@ -73,18 +78,6 @@ class BoardHistory {
         return numHalfMoves;
     }
     public int getNumFullMoves(){return numFullMoves;}
-
-    public void setNumFullMoves(int numFullMoves) throws AccessedHistoryDuringGameException {
-        if(!redoMoves.isEmpty() || !moves.isEmpty())
-            throw new AccessedHistoryDuringGameException();
-        this.numFullMoves = numFullMoves;
-    }
-
-    public void setNumHalfMoves(int numHalfMoves) throws AccessedHistoryDuringGameException {
-        if(!redoMoves.isEmpty() || !moves.isEmpty())
-            throw new AccessedHistoryDuringGameException();
-        this.numHalfMoves = numHalfMoves;
-    }
 
     public void clearRedoMoves() {
         countHalfMoves();

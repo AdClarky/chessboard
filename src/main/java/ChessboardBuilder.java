@@ -32,16 +32,12 @@ class ChessboardBuilder {
 
     private Chessboard getBoardFromFen(@NotNull String fenString) {
         String[] sections = fenString.split(" ");
-        try {
-            setTurnToMove(sections[1]);
-            setHalfMoves(sections[4]);
-            setFullMoves(sections[5]);
-            setCastlingRights(sections[2]);
-            populateBoardFromFenString(sections[0]);
-            setEnPassant(sections[3]);
-        } catch (AccessedHistoryDuringGameException e) {
-            throw new RuntimeException(e);
-        }
+        setTurnToMove(sections[1]);
+        setHalfMoves(sections[4]);
+        setFullMoves(sections[5]);
+        setCastlingRights(sections[2]);
+        populateBoardFromFenString(sections[0]);
+        setEnPassant(sections[3]);
         return board;
     }
 
@@ -139,7 +135,7 @@ class ChessboardBuilder {
         board.setEnPassantSquare(new Coordinate(location.x(), location.y()+direction));
     }
 
-    private void setHalfMoves(String section) throws AccessedHistoryDuringGameException {
+    private void setHalfMoves(String section) {
         numHalfMoves = Integer.parseInt(section);
     }
 
@@ -147,7 +143,7 @@ class ChessboardBuilder {
         return numHalfMoves;
     }
 
-    private void setFullMoves(String section) throws AccessedHistoryDuringGameException {
+    private void setFullMoves(String section) {
         numFullMoves = Integer.parseInt(section);
     }
 
