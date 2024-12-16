@@ -11,27 +11,27 @@ import java.util.concurrent.TimeUnit;
 */
 public class Autoplay {
     private final Collection<String> moves = new ArrayList<>(30);
-    private final ChessGame chessGame;
+    private final ChessInterface chessInterface;
 
     /**
      * Constructs an {@code Autoplay} object and parses a PGN file for chess moves.
-     * @param chessGame the game where the moves will be played.
+     * @param chessInterface the game where the moves will be played.
      * @param path the path of the PGN file.
      * @throws IOException if there is an error while accessing the file.
      */
-    public Autoplay(@NotNull ChessGame chessGame, Path path) throws IOException {
-        this.chessGame = chessGame;
+    public Autoplay(@NotNull ChessInterface chessInterface, Path path) throws IOException {
+        this.chessInterface = chessInterface;
         moves.addAll(new PGNParser(path).getMoves());
     }
 
     /**
      * Constructs an {@code Autoplay} object and takes a collection
      * of chess moves as the move that will be made.
-     * @param chessGame the game where the moves will be played.
+     * @param chessInterface the game where the moves will be played.
      * @param moves the collection of moves where each string is one move.
      */
-    public Autoplay(@NotNull ChessGame chessGame, Collection<String> moves){
-        this.chessGame = chessGame;
+    public Autoplay(@NotNull ChessInterface chessInterface, Collection<String> moves){
+        this.chessInterface = chessInterface;
         this.moves.addAll(moves);
     }
 
@@ -43,7 +43,7 @@ public class Autoplay {
      */
     public void play(int delay) throws InterruptedException, InvalidMoveException {
         for(String move : moves){
-            chessGame.makeMove(move);
+            chessInterface.makeMove(move);
             TimeUnit.MILLISECONDS.sleep(delay);
 
         }

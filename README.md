@@ -1,13 +1,13 @@
 # Chess
 A Chess game implemented in Java.
 ## Instructions for use
-### ChessGame.java
+### ChessInterface.java
 #### Initialisation
 The primary interface for the game. When creating an instance, you can create a default chess board by leaving the 
 constructor blank or by inputting a FEN string for a preset position.
 
 #### Making a move
-To make a move, you can call ChessGame.makeMove(). This validates a move is a valid chess move then moves the piece if
+To make a move, you can call ChessInterface.makeMove(). This validates a move is a valid chess move then moves the piece if
 it is. If you input an invalid chess move, an error will be thrown.
 
 Each piece can calculate what moves are possible. This can help prevent inputting an invalid move. Use getPossibleMoves

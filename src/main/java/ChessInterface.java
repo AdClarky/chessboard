@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
  * Add a {@link BoardListener} to be notified of events. At the end of a move boardChanged is called.
- * After a move has been made, {@link ChessGame#getLastMoveMade()} to find the individual moves made - e.g. in castling
+ * After a move has been made, {@link ChessInterface#getLastMoveMade()} to find the individual moves made - e.g. in castling
  * what moves were made.
  * @author Toby
  */
-public class ChessGame {
+public class ChessInterface {
     private final Chessboard board;
     private final ChessLogic chessLogic;
     private final FenGenerator fenGenerator;
@@ -20,7 +20,7 @@ public class ChessGame {
     /**
      * Creates a {@code ChessGame} with the pieces in the default position.
      */
-    public ChessGame(){
+    public ChessInterface(){
         board = new ChessboardBuilder().defaultSetup();
         chessLogic = new ChessLogic(board);
         fenGenerator = new FenGenerator(board);
@@ -31,7 +31,7 @@ public class ChessGame {
      * @param fenString a FEN string which details a board position
      * @throws InvalidFenStringException when the give FEN string is invalid
      */
-    public ChessGame(String fenString) throws InvalidFenStringException {
+    public ChessInterface(String fenString) throws InvalidFenStringException {
         board = new ChessboardBuilder().fromFen(fenString);
         chessLogic = new ChessLogic(board);
         fenGenerator = new FenGenerator(board);
@@ -67,7 +67,7 @@ public class ChessGame {
     }
 
     /**
-     * {@link ChessGame#makeMove(Coordinate, Coordinate)}
+     * {@link ChessInterface#makeMove(Coordinate, Coordinate)}
      * @param chessMove a chess move in algabraic notation
      * @throws InvalidMoveException when the move given is not a valid move
      */
@@ -145,7 +145,7 @@ public class ChessGame {
     /**
      * Undoes the given number of moves. Can be greater than the number of moves made.
      * @param numOfMoves the number of moves to undo.
-     * @see ChessGame#undoMove()
+     * @see ChessInterface#undoMove()
      */
     public void undoMultipleMoves(int numOfMoves){
         for(int i = 0; i < numOfMoves; i++){
@@ -155,7 +155,7 @@ public class ChessGame {
 
     /**
      * Sets the board back to the most recent position. Does nothing if there are no moves to redo.
-     * @see ChessGame#redoMove()
+     * @see ChessInterface#redoMove()
      */
     public void redoAllMoves(){
         while(board.canRedoMove()){
