@@ -72,6 +72,8 @@ class BoardHistory {
 
     public boolean canRedoMove() {return !redoMoves.isEmpty();}
 
+    public boolean canUndoMove() {return !redoMoves.isEmpty();}
+
     public int getNumHalfMoves(){
         return numHalfMoves;
     }
