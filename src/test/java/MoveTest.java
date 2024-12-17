@@ -173,7 +173,7 @@ class MoveTest {
 
     @Test
     void basicPromotion(){
-        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
         Move pawnPromotion = new Move(board, d7, d8);
         assertEquals(Pieces.BLANK, board.getPiece(d7));
         assertEquals(Pieces.QUEEN, board.getPiece(d8));
