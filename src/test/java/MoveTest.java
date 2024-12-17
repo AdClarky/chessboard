@@ -61,7 +61,7 @@ class MoveTest {
     void takingMove(){
         Move pawnE4 = new Move(board, e2, e4);
         Move pawnD5 = new Move(board, d7, d5);
-        new Move(board, e4, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
         assertEquals(Pieces.BLANK, board.getPiece(e4));
         assertEquals(Pieces.PAWN, board.getPiece(d5));
         assertEquals(PieceColour.WHITE, board.getColour(d5));
@@ -76,8 +76,8 @@ class MoveTest {
         Move pawnD5 = new Move(board, d7, d5);
         Move pawnXD5 = new Move(board, e4, d5);
         pawnXD5.undo();
-        assertEquals(Pieces.PAWN, board.getPiece(d4));
-        assertEquals(PieceColour.WHITE, board.getColour(d4));
+        assertEquals(Pieces.PAWN, board.getPiece(e4));
+        assertEquals(PieceColour.WHITE, board.getColour(e4));
         assertEquals(Pieces.PAWN, board.getPiece(d5));
         assertEquals(PieceColour.BLACK, board.getColour(d5));
 
@@ -173,8 +173,8 @@ class MoveTest {
 
     @Test
     void basicPromotion(){
-        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, d8);
         assertEquals(Pieces.BLANK, board.getPiece(d7));
         assertEquals(Pieces.QUEEN, board.getPiece(d8));
         assertEquals(PieceColour.WHITE, board.getColour(d8));
@@ -186,7 +186,7 @@ class MoveTest {
     @Test
     void basicPromotionUndo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        Move pawnPromotion = new Move(board, d7, d8);
         pawnPromotion.undo();
         assertEquals(Pieces.PAWN, board.getPiece(d7));
         assertEquals(PieceColour.WHITE, board.getColour(d7));
@@ -199,7 +199,7 @@ class MoveTest {
     @Test
     void basicPromotionRedo(){
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        Move pawnPromotion = new Move(board, d7, d8);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
         assertEquals(Pieces.BLANK, board.getPiece(d7));
