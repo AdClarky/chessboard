@@ -10,7 +10,7 @@ public record Coordinate(int x, int y) {
     @Override
     public @NotNull String toString() {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "Invalid";
-        return Character.toString('h' - x) + (y+1);
+        return Character.toString('a' + x) + (y+1);
     }
 
     public boolean isNotInRange(){
