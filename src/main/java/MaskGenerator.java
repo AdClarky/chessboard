@@ -35,7 +35,7 @@ public class MaskGenerator {
         if (colour == PieceColour.BLACK) {
             pawnMask = ((pos >> 8) & emptySquares) | ((((pos & RANK_SEVEN) >> 16) & emptySquares) & (emptySquares >> 8));
             pawnMask |= BLACK_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
-        }else if (colour == PieceColour.WHITE) {
+        }else {
             pawnMask = ((pos << 8) & emptySquares) | ((((pos & RANK_TWO) << 16) & emptySquares) & (emptySquares << 8));
             pawnMask |= WHITE_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
         }

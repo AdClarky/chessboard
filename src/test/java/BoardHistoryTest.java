@@ -73,7 +73,7 @@ class BoardHistoryTest {
 
     @Test
     void fullMovesAfterBlackMove(){
-        ChessGame game = new ChessGame();
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1"));
         assertDoesNotThrow(()->game.makeMove(new Coordinate(0, 6), new Coordinate(0, 5)));
         assertEquals(2, game.getNumFullMoves());
     }

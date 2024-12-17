@@ -19,7 +19,7 @@ public class ChessGame {
     public ChessGame(String fenString) throws InvalidFenStringException {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
-        history = new BoardHistory(builder.getNumFullMoves(), builder.getNumHalfMoves());
+        history = new BoardHistory(builder.getNumHalfMoves(), builder.getNumFullMoves());
         logic = new ChessLogic(board, history);
         logic.calculatePossibleMoves();
     }
