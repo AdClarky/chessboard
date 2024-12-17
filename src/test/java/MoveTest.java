@@ -2,578 +2,368 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.SequencedCollection;
-
 class MoveTest {
-//    private Chessboard board = new ChessboardBuilder().defaultSetup();
-//
-//    @AfterEach
-//    void setUp() {
-//        board = new ChessboardBuilder().defaultSetup();
-//    }
-//
-//    @Test
-//    void basicMove(){
-//        Coordinate e4 = new Coordinate(3,  3);
-//        new Move(board.getPiece(3, 1), e4, board);
-//        assertInstanceOf(Blank.class, board.getPiece(3, 1));
-//        assertEquals(3, board.getPiece(3, 1).getX());
-//        assertEquals(1, board.getPiece(3, 1).getY());
-//        assertInstanceOf(Pawn.class, board.getPiece(e4));
-//        assertEquals(3, board.getPiece(e4).getX());
-//        assertEquals(3, board.getPiece(e4).getY());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//        assertEquals(PieceColour.BLACK, board.getCurrentTurn());
-//    }
-//
-//    @Test
-//    void basicMoveUndo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Move move = new Move(board.getPiece(3, 1), e4, board);
-//        move.undo();
-//        assertInstanceOf(Blank.class, board.getPiece(e4));
-//        assertEquals(3, board.getPiece(e4).getX());
-//        assertEquals(3, board.getPiece(e4).getY());
-//        assertInstanceOf(Pawn.class, board.getPiece(3, 1));
-//        assertEquals(3, board.getPiece(3, 1).getX());
-//        assertEquals(1, board.getPiece(3, 1).getY());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//        assertEquals(PieceColour.WHITE, board.getCurrentTurn());
-//    }
-//
-//    @Test
-//    void basicMoveRedo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Move move = new Move(board.getPiece(3, 1), e4, board);
-//        move.undo();
-//        move.makeMove();
-//        assertInstanceOf(Blank.class, board.getPiece(3, 1));
-//        assertEquals(3, board.getPiece(3, 1).getX());
-//        assertEquals(1, board.getPiece(3, 1).getY());
-//        assertInstanceOf(Pawn.class, board.getPiece(e4));
-//        assertEquals(3, board.getPiece(e4).getX());
-//        assertEquals(3, board.getPiece(e4).getY());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//        assertEquals(PieceColour.BLACK, board.getCurrentTurn());
-//    }
-//
-//    @Test
-//    void takingMove(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        new Move(board.getPiece(e4), d5, board);
-//        assertInstanceOf(Blank.class, board.getPiece(e4));
-//        assertEquals(3, board.getPiece(e4).getX());
-//        assertEquals(3, board.getPiece(e4).getY());
-//        assertInstanceOf(Pawn.class, board.getPiece(d5));
-//        assertEquals(4, board.getPiece(d5).getX());
-//        assertEquals(4, board.getPiece(d5).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(d5).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(15, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void takingMoveUndo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        Move pawnXD5 = new Move(board.getPiece(e4), d5, board);
-//        pawnXD5.undo();
-//        int x = 3, y = 3;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 4; y = 4;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void takingMoveUndoRedoRepeated(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        Move pawnXD5 = new Move(board.getPiece(e4), d5, board);
-//        pawnXD5.undo();
-//        pawnD5.undo();
-//        pawnD5.makeMove();
-//        pawnD5.undo();
-//        pawnD5.makeMove();
-//        pawnXD5.makeMove();
-//        pawnXD5.undo();
-//        pawnXD5.makeMove();
-//        pawnXD5.undo();
-//        pawnD5.undo();
-//        int x = 3, y = 1;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 3;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 4; y = 4;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 6;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//
-//    @Test
-//    void takingMoveDoubleUndo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        Move pawnXD5 = new Move(board.getPiece(e4), d5, board);
-//        pawnXD5.undo();
-//        pawnD5.undo();
-//        int x = 3, y = 1;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 3;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 4; y = 4;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 6;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(16, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void takingMoveDoubleRedo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        Move pawnXD5 = new Move(board.getPiece(e4), d5, board);
-//        pawnXD5.undo();
-//        pawnD5.undo();
-//        pawnD5.makeMove();
-//        pawnXD5.makeMove();
-//        int x = 3, y = 1;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 3;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 4; y = 4;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        y = 6;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(15, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void takingMoveRedo(){
-//        Coordinate e4 = new Coordinate(3, 3);
-//        Coordinate d5 = new Coordinate(4, 4);
-//        Move pawnE4 = new Move(board.getPiece(3, 1), e4, board);
-//        Move pawnD5 = new Move(board.getPiece(4, 6), d5, board);
-//        Move pawnXD5 = new Move(board.getPiece(e4), d5, board);
-//        pawnXD5.undo();
-//        pawnXD5.makeMove();
-//        int x = 3, y = 3;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        x = 4; y = 4;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(16, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(15, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void basicPromotion(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        new Move(board.getPiece(4, 6), new Coordinate(4, 7), board);
-//        int x = 4, y = 6;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        y = 7;
-//        assertInstanceOf(Queen.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void basicPromotionUndo(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        Move pawnPromotion = new Move(board.getPiece(4, 6), new Coordinate(4, 7), board);
-//        pawnPromotion.undo();
-//        int x = 4, y = 6;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        y = 7;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void basicPromotionRedo(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        Move pawnPromotion = new Move(board.getPiece(4, 6), new Coordinate(4, 7), board);
-//        pawnPromotion.undo();
-//        pawnPromotion.makeMove();
-//        int x = 4, y = 6;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        y = 7;
-//        assertInstanceOf(Queen.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void promotionTaking(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        new Move(board.getPiece(4, 6), new Coordinate(5, 7), board);
-//        int x = 4, y = 6;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        x = 5; y = 7;
-//        assertInstanceOf(Queen.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void promotionTakingUndo(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        Move pawnPromotion = new Move(board.getPiece(4, 6), new Coordinate(5, 7), board);
-//        pawnPromotion.undo();
-//        int x = 4, y = 6;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        x = 5; y = 7;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(2, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void promotionTakingRedo(){
-//        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-//        Move pawnPromotion = new Move(board.getPiece(4, 6), new Coordinate(5, 7), board);
-//        pawnPromotion.undo();
-//        pawnPromotion.makeMove();
-//        int x = 4, y = 6;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        x = 5; y = 7;
-//        assertInstanceOf(Queen.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void castling(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        Collection<Piece> blackPieces = new ArrayList<>(1);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Rook(new Coordinate(0, 0), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(0, 7), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        new Move(board.getPiece(3, 0), new Coordinate(1, 0), board);
-//        int x = 0, y = 0;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 1;
-//        assertInstanceOf(King.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Rook.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 3;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void castlingUndo(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        Collection<Piece> blackPieces = new ArrayList<>(1);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Rook(new Coordinate(0, 0), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(0, 7), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        Move shortCastle = new Move(board.getPiece(3, 0), new Coordinate(1, 0), board);
-//        shortCastle.undo();
-//        int x = 0, y = 0;
-//        assertInstanceOf(Rook.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 1;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 3;
-//        assertInstanceOf(King.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void castlingRedo(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        Collection<Piece> blackPieces = new ArrayList<>(1);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Rook(new Coordinate(0, 0), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(0, 7), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        Move shortCastle = new Move(board.getPiece(3, 0), new Coordinate(1, 0), board);
-//        shortCastle.undo();
-//        shortCastle.makeMove();
-//        int x = 0, y = 0;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 1;
-//        assertInstanceOf(King.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Rook.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 3;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void enPassant(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Pawn(new Coordinate(3, 4), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(3, 7), PieceColour.BLACK));
-//        blackPieces.add(new Pawn(new Coordinate(2, 4), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        new Move(board.getPiece(3, 4), new Coordinate(2, 5), board);
-//        int x = 3, y = 4;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 5;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void enPassantUndo(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Pawn(new Coordinate(3, 4), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(3, 7), PieceColour.BLACK));
-//        blackPieces.add(new Pawn(new Coordinate(2, 4), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        Move enPassant = new Move(board.getPiece(3, 4), new Coordinate(2, 5), board);
-//        enPassant.undo();
-//        int x = 3, y = 4;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLACK, board.getPiece(x, y).getColour());
-//        y = 5;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(2, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void enPassantRedo(){
-//        Collection<Piece> whitePieces = new ArrayList<>(2);
-//        SequencedCollection<Piece> blackPieces = new ArrayList<>(2);
-//        board = new Chessboard();
-//        whitePieces.add(new King(new Coordinate(3, 0), PieceColour.WHITE));
-//        whitePieces.add(new Pawn(new Coordinate(3, 4), PieceColour.WHITE));
-//        blackPieces.add(new King(new Coordinate(3, 7), PieceColour.BLACK));
-//        blackPieces.add(new Pawn(new Coordinate(2, 4), PieceColour.BLACK));
-//        board.populateBoard(whitePieces, blackPieces);
-//        Move enPassant = new Move(board.getPiece(3, 4), new Coordinate(2, 5), board);
-//        enPassant.undo();
-//        enPassant.makeMove();
-//        int x = 3, y = 4;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        x = 2;
-//        assertInstanceOf(Blank.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.BLANK, board.getPiece(x, y).getColour());
-//        y = 5;
-//        assertInstanceOf(Pawn.class, board.getPiece(x, y));
-//        assertEquals(x, board.getPiece(x, y).getX());
-//        assertEquals(y, board.getPiece(x, y).getY());
-//        assertEquals(PieceColour.WHITE, board.getPiece(x, y).getColour());
-//
-//        assertEquals(2, board.getAllColourPieces(PieceColour.WHITE).size());
-//        assertEquals(1, board.getAllColourPieces(PieceColour.BLACK).size());
-//    }
-//
-//    @Test
-//    void doesCastlingGoBackAfterUndo() {
-//        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
-//        assertDoesNotThrow(()->game.makeMove("Kd1"));
-//        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
-//        game.undoMove();
-//        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1", game.getFenString());
-//    }
-//
-//    @Test
-//    void doesMovingChangeCastlingRights() {
-//        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
-//        assertDoesNotThrow(()->game.makeMove("Kd1"));
-//        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
-//    }
+    private Chessboard board = new ChessboardBuilder().defaultSetup();
+    Coordinate a1 = new Coordinate(0, 0);
+    Coordinate c1 = new Coordinate(2, 0);
+    Coordinate c8 = new Coordinate(2, 7);
+    Coordinate d1 = new Coordinate(3, 0);
+    Coordinate d4 = new Coordinate(3, 3);
+    Coordinate d5 = new Coordinate(3, 4);
+    Coordinate d7 = new Coordinate(3, 6);
+    Coordinate d8 = new Coordinate(3, 7);
+    Coordinate e1 = new Coordinate(4, 0);
+    Coordinate e2 = new Coordinate(4,  1);
+    Coordinate e4 = new Coordinate(4,  3);
+    Coordinate e5 = new Coordinate(4, 4);
+    Coordinate e6 = new Coordinate(4,  5);
+
+    @AfterEach
+    void setUp() {
+        board = new ChessboardBuilder().defaultSetup();
+    }
+
+    @Test
+    void basicMove(){
+        new Move(board, e2, e4);
+        assertEquals(Pieces.BLANK, board.getPiece(e2));
+        assertEquals(Pieces.PAWN, board.getPiece(e4));
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+        assertEquals(PieceColour.BLACK, board.getTurn());
+    }
+
+    @Test
+    void basicMoveUndo(){
+        Move move = new Move(board, e2, e4);
+        move.undo();
+        assertEquals(Pieces.BLANK, board.getPiece(e4));
+        assertEquals(Pieces.PAWN, board.getPiece(e2));
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+        assertEquals(PieceColour.WHITE, board.getTurn());
+    }
+
+    @Test
+    void basicMoveRedo(){
+        Move move = new Move(board, e2, e4);
+        move.undo();
+        move.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(e2));
+        assertEquals(Pieces.PAWN, board.getPiece(e4));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+        assertEquals(PieceColour.BLACK, board.getTurn());
+    }
+
+    @Test
+    void takingMove(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        new Move(board, e4, d5);
+        assertEquals(Pieces.BLANK, board.getPiece(e4));
+        assertEquals(Pieces.PAWN, board.getPiece(d5));
+        assertEquals(PieceColour.WHITE, board.getColour(d5));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(15, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void takingMoveUndo(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
+        pawnXD5.undo();
+        assertEquals(Pieces.PAWN, board.getPiece(d4));
+        assertEquals(PieceColour.WHITE, board.getColour(d4));
+        assertEquals(Pieces.PAWN, board.getPiece(d5));
+        assertEquals(PieceColour.BLACK, board.getColour(d5));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void takingMoveUndoRedoRepeated(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
+        pawnXD5.undo();
+        pawnD5.undo();
+        pawnD5.makeMove();
+        pawnD5.undo();
+        pawnD5.makeMove();
+        pawnXD5.makeMove();
+        pawnXD5.undo();
+        pawnXD5.makeMove();
+        pawnXD5.undo();
+        pawnD5.undo();
+        assertEquals(Pieces.BLANK, board.getPiece(e2));
+        assertEquals(PieceColour.BLANK, board.getColour(e2));
+        assertEquals(Pieces.PAWN, board.getPiece(e4));
+        assertEquals(PieceColour.WHITE, board.getColour(e4));
+        assertEquals(Pieces.BLANK, board.getPiece(d5));
+        assertEquals(PieceColour.BLANK, board.getColour(d5));
+        assertEquals(Pieces.PAWN, board.getPiece(d7));
+        assertEquals(PieceColour.BLACK, board.getColour(d7));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+
+    @Test
+    void takingMoveDoubleUndo(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
+        pawnXD5.undo();
+        pawnD5.undo();
+        assertEquals(Pieces.BLANK, board.getPiece(e2));
+        assertEquals(PieceColour.BLANK, board.getColour(e2));
+        assertEquals(Pieces.PAWN, board.getPiece(e4));
+        assertEquals(PieceColour.WHITE, board.getColour(e4));
+        assertEquals(Pieces.BLANK, board.getPiece(d5));
+        assertEquals(PieceColour.BLANK, board.getColour(d5));
+        assertEquals(Pieces.PAWN, board.getPiece(d7));
+        assertEquals(PieceColour.BLACK, board.getColour(d7));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(16, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void takingMoveDoubleRedo(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
+        pawnXD5.undo();
+        pawnD5.undo();
+        pawnD5.makeMove();
+        pawnXD5.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(e2));
+        assertEquals(PieceColour.BLANK, board.getColour(e2));
+        assertEquals(Pieces.BLANK, board.getPiece(e4));
+        assertEquals(PieceColour.BLANK, board.getColour(e4));
+        assertEquals(Pieces.PAWN, board.getPiece(d5));
+        assertEquals(PieceColour.WHITE, board.getColour(d5));
+        assertEquals(Pieces.BLANK, board.getPiece(d7));
+        assertEquals(PieceColour.BLANK, board.getColour(d7));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(15, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void takingMoveRedo(){
+        Move pawnE4 = new Move(board, e2, e4);
+        Move pawnD5 = new Move(board, d7, d5);
+        Move pawnXD5 = new Move(board, e4, d5);
+        pawnXD5.undo();
+        pawnXD5.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(e4));
+        assertEquals(Pieces.PAWN, board.getPiece(d5));
+        assertEquals(PieceColour.WHITE, board.getColour(d5));
+
+        assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(15, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void basicPromotion(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        assertEquals(Pieces.BLANK, board.getPiece(d7));
+        assertEquals(Pieces.QUEEN, board.getPiece(d8));
+        assertEquals(PieceColour.WHITE, board.getColour(d8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void basicPromotionUndo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        pawnPromotion.undo();
+        assertEquals(Pieces.PAWN, board.getPiece(d7));
+        assertEquals(PieceColour.WHITE, board.getColour(d7));
+        assertEquals(Pieces.BLANK, board.getPiece(d8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void basicPromotionRedo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, new Coordinate(4, 7));
+        pawnPromotion.undo();
+        pawnPromotion.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(d7));
+        assertEquals(Pieces.QUEEN, board.getPiece(d8));
+        assertEquals(PieceColour.WHITE, board.getColour(d8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void promotionTaking(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        new Move(board, d7, c8);
+        assertEquals(Pieces.BLANK, board.getPiece(d7));
+        assertEquals(Pieces.QUEEN, board.getPiece(c8));
+        assertEquals(PieceColour.WHITE, board.getColour(c8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void promotionTakingUndo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, c8);
+        pawnPromotion.undo();
+        assertEquals(Pieces.PAWN, board.getPiece(d7));
+        assertEquals(Pieces.PAWN, board.getPiece(c8));
+        assertEquals(PieceColour.BLACK, board.getColour(c8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(2, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void promotionTakingRedo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
+        Move pawnPromotion = new Move(board, d7, c8);
+        pawnPromotion.undo();
+        pawnPromotion.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(d7));
+        assertEquals(Pieces.QUEEN, board.getPiece(c8));
+        assertEquals(PieceColour.WHITE, board.getColour(c8));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void castling(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/R3K3 w Q - 0 1"));
+        new Move(board, e1, c1);
+        assertEquals(Pieces.BLANK, board.getPiece(a1));
+        assertEquals(PieceColour.BLANK, board.getColour(a1));
+        assertEquals(Pieces.KING, board.getPiece(c1));
+        assertEquals(PieceColour.WHITE, board.getColour(c1));
+        assertEquals(Pieces.ROOK, board.getPiece(d1));
+        assertEquals(PieceColour.WHITE, board.getColour(d1));
+        assertEquals(Pieces.BLANK, board.getPiece(e1));
+        assertEquals(PieceColour.BLANK, board.getColour(e1));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void castlingUndo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/R3K3 w Q - 0 1"));
+        Move shortCastle = new Move(board, e1, c1);
+        shortCastle.undo();
+        assertEquals(Pieces.ROOK, board.getPiece(a1));
+        assertEquals(PieceColour.WHITE, board.getColour(a1));
+        assertEquals(Pieces.BLANK, board.getPiece(c1));
+        assertEquals(PieceColour.BLANK, board.getColour(c1));
+        assertEquals(Pieces.BLANK, board.getPiece(d1));
+        assertEquals(PieceColour.BLANK, board.getColour(d1));
+        assertEquals(Pieces.KING, board.getPiece(e1));
+        assertEquals(PieceColour.WHITE, board.getColour(e1));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void castlingRedo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/R3K3 w Q - 0 1"));
+        Move shortCastle = new Move(board, e1, c1);
+        shortCastle.undo();
+        shortCastle.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(a1));
+        assertEquals(PieceColour.BLANK, board.getColour(a1));
+        assertEquals(Pieces.KING, board.getPiece(c1));
+        assertEquals(PieceColour.WHITE, board.getColour(c1));
+        assertEquals(Pieces.ROOK, board.getPiece(d1));
+        assertEquals(PieceColour.WHITE, board.getColour(d1));
+        assertEquals(Pieces.BLANK, board.getPiece(e1));
+        assertEquals(PieceColour.BLANK, board.getColour(e1));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void enPassant(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/3Pp3/8/8/8/4K3 w - e6 0 2"));
+        new Move(board, d5, e6);
+        assertEquals(Pieces.BLANK, board.getPiece(d5));
+        assertEquals(PieceColour.BLANK, board.getColour(d5));
+        assertEquals(Pieces.BLANK, board.getPiece(e5));
+        assertEquals(PieceColour.BLANK, board.getColour(e5));
+        assertEquals(Pieces.PAWN, board.getPiece(e6));
+        assertEquals(PieceColour.WHITE, board.getColour(e6));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void enPassantUndo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/3Pp3/8/8/8/4K3 w - e6 0 2"));
+        Move enPassant = new Move(board, d5, e6);
+        enPassant.undo();
+        assertEquals(Pieces.PAWN, board.getPiece(d5));
+        assertEquals(PieceColour.WHITE, board.getColour(d5));
+        assertEquals(Pieces.PAWN, board.getPiece(e5));
+        assertEquals(PieceColour.BLACK, board.getColour(e5));
+        assertEquals(Pieces.BLANK, board.getPiece(e6));
+        assertEquals(PieceColour.BLANK, board.getColour(e6));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(2, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void enPassantRedo(){
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/3Pp3/8/8/8/4K3 w - e6 0 2"));
+        Move enPassant = new Move(board, d5, e6);
+        enPassant.undo();
+        enPassant.makeMove();
+        assertEquals(Pieces.BLANK, board.getPiece(d5));
+        assertEquals(PieceColour.BLANK, board.getColour(d5));
+        assertEquals(Pieces.BLANK, board.getPiece(e5));
+        assertEquals(PieceColour.BLANK, board.getColour(e5));
+        assertEquals(Pieces.PAWN, board.getPiece(e6));
+        assertEquals(PieceColour.WHITE, board.getColour(e6));
+
+        assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
+        assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
+    }
+
+    @Test
+    void doesCastlingGoBackAfterUndo() {
+        ChessInterface game = assertDoesNotThrow(()->new ChessInterface("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        assertDoesNotThrow(()->game.makeMove("Kd1"));
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
+        game.undoMove();
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1", game.getFenString());
+    }
+
+    @Test
+    void doesMovingChangeCastlingRights() {
+        ChessInterface game = assertDoesNotThrow(()->new ChessInterface("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        assertDoesNotThrow(()->game.makeMove("Kd1"));
+        assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
+    }
 }
