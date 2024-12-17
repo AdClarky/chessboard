@@ -12,7 +12,7 @@ class ChessboardBuilder {
     private final Chessboard board = new Chessboard();
     private final List<PieceValue> whitePieces = new ArrayList<>(16);
     private final List<PieceValue> blackPieces = new ArrayList<>(16);
-    private int squaresProcessed = 7;
+    private int squaresProcessed = 0;
     private int numHalfMoves;
     private int numFullMoves;
 
@@ -47,14 +47,14 @@ class ChessboardBuilder {
             for(char character : sections[row].toCharArray()){
                 processCharacter(character, 7 - row);
             }
-            squaresProcessed = 7;
+            squaresProcessed = 0;
         }
         board.populateBoard(whitePieces, blackPieces);
     }
 
     private void processCharacter(char character, int row){
         if(Character.isDigit(character)){
-            squaresProcessed -= Character.getNumericValue(character);
+            squaresProcessed += Character.getNumericValue(character);
             return;
         }
         PieceColour colour = getColourFromCharacter(character);
@@ -80,7 +80,7 @@ class ChessboardBuilder {
                 pieces.add(new PieceValue(position, Pieces.PAWN, colour));
                 break;
         }
-        squaresProcessed--;
+        squaresProcessed++;
     }
 
     private void setTurnToMove(@NotNull CharSequence turnSection){
