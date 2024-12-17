@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
@@ -63,7 +64,7 @@ public class PieceBoard {
         }
     }
 
-    public Pieces remove(Coordinate position){
+    public @Nullable Pieces remove(Coordinate position){
         if(pawns.remove(position))
             return Pieces.PAWN;
         if(knights.remove(position))
@@ -76,7 +77,7 @@ public class PieceBoard {
             return Pieces.QUEEN;
         if(kings.remove(position))
             return Pieces.KING;
-        throw new NoSuchElementException();
+        return null;
     }
 
     @NotNull
@@ -100,6 +101,8 @@ public class PieceBoard {
 
     public void move(Coordinate from, Coordinate to){
         Pieces piece = remove(from);
+        if(piece == null)
+            return;
         add(piece, to);
     }
 

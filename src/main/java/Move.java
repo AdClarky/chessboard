@@ -71,9 +71,10 @@ class Move {
     }
 
     private void takePiece(@NotNull MoveValue move){
+        if(pieceTaken == null)
+            pieceTaken = board.getPiece(move.newPos());
         if(move.isPieceInSamePosition()) // promotion
             board.promotion(move.newPos());
-        pieceTaken = board.getPiece(move.newPos());
         pieceTakenColour = board.getColour(move.newPos());
         movesToUndo.add(new MoveValue(move.newPos(), move.newPos()));
     }
