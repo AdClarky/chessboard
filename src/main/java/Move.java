@@ -41,7 +41,7 @@ class Move {
         if(piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2)
             ; // castling
         else if(piece == Pieces.PAWN){
-            if(oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
+            if(board.isSquareBlank(newPos) && oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
                 ; // en passant
             else if(newPos.y() == 7 || newPos.y() == 0)
                 return List.of(new MoveValue(oldPos, newPos), new MoveValue(newPos, newPos));
