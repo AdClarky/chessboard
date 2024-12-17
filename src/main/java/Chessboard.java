@@ -116,8 +116,8 @@ class Chessboard {
     }
 
     public void promotion(Coordinate position) {
+        pieceBoard.remove(position);
         pieceBoard.add(Pieces.QUEEN, position);
-        colourBoard.add(currentTurn, position);
     }
 
     public void removePiece(Coordinate position) {

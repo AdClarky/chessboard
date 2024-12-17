@@ -44,7 +44,7 @@ class Move {
             if(oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
                 ; // en passant
             else if(newPos.y() == 7 || newPos.y() == 0)
-                ; // promotion
+                return List.of(new MoveValue(oldPos, newPos), new MoveValue(newPos, newPos));
         }
         return List.of(new MoveValue(oldPos, newPos));
     }
