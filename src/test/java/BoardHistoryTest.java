@@ -44,7 +44,7 @@ class BoardHistoryTest {
     @Test
     void halfMovesAfterKnightMove(){
         ChessGame game = new ChessGame();
-        assertDoesNotThrow(()->game.makeMove(new Coordinate(1, 0), new Coordinate(0, 3)));
+        assertDoesNotThrow(()->game.makeMove(new Coordinate(1, 0), new Coordinate(0, 2)));
         assertEquals(1, game.getNumHalfMoves());
     }
 
