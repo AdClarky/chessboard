@@ -20,6 +20,8 @@ public class PossibleMoves{
 
     public boolean isPossible(Coordinate currentPos, Coordinate move){
         Bitboard board = possibleMovesBoard.get(currentPos);
+        if(board == null)
+            return false;
         return possibleMovesBoard.get(currentPos).contains(move);
     }
 
