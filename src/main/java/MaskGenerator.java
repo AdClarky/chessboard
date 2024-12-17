@@ -156,14 +156,14 @@ public class MaskGenerator {
             long pos = 1L << square;
 
             long knightMoves = 0L;
-            if ((pos & NOT_H_FILE) != 0)
-                knightMoves |= (pos << 6) | (pos >> 10);
-            if ((pos & NOT_A_FILE) != 0)
-                knightMoves |= (pos << 10) | (pos >> 6);
             if ((pos & notHGFile) != 0)
-                knightMoves |= (pos << 15) | (pos >> 17);
+                knightMoves |= (pos >> 6) | (pos << 10);
             if ((pos & notABFile) != 0)
-                knightMoves |= (pos << 17) | (pos >> 15);
+                knightMoves |= (pos >> 10) | (pos << 6);
+            if ((pos & NOT_H_FILE) != 0)
+                knightMoves |= (pos >> 15) | (pos << 17);
+            if ((pos & NOT_A_FILE) != 0)
+                knightMoves |= (pos >> 17) | (pos << 15);
             KNIGHT_ATTACKS[square] = knightMoves;
 
             long kingMoves = 0L;
