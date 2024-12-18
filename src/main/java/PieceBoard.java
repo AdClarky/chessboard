@@ -103,6 +103,7 @@ public class PieceBoard {
         Pieces piece = remove(from);
         if(piece == null)
             return;
+        remove(to);
         add(piece, to);
     }
 
