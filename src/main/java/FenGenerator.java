@@ -25,7 +25,7 @@ class FenGenerator {
     private void addBoardPosition() {
         int blankSquare = 0;
         for(int y = 7; y >= 0; y--) {
-            for(int x = 7; x >= 0; x--) {
+            for(int x = 0; x < 8; x++) {
                 Coordinate pos = new Coordinate(x, y);
                 if(board.getPiece(pos) == Pieces.BLANK) {
                     blankSquare++;
@@ -75,9 +75,9 @@ class FenGenerator {
             fenString.append("- ");
             return;
         }
-        if(castlingRights.contains(new Coordinate(3, 0)))
+        if(castlingRights.contains(new Coordinate(4, 0)))
             addColourCastleRight(0, castlingRights);
-        if(castlingRights.contains(new Coordinate(3, 7)))
+        if(castlingRights.contains(new Coordinate(4, 7)))
             addColourCastleRight(7, castlingRights);
         fenString.append(" ");
     }

@@ -17,9 +17,9 @@ class Chessboard {
      * Initialises the board with all squares blank.
      */
     public Chessboard() {
-        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(3, 0),
+        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(4, 0),
                 new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
-                new Coordinate(3, 7)));
+                new Coordinate(4, 7)));
     }
 
     /**
