@@ -40,7 +40,7 @@ class ChessLogic {
     private void removeMovesInCheck(Coordinate pos, Bitboard possible){
         possible.removeIf(move -> isMoveUnsafe(pos, move));
         if(board.getPiece(pos) == Pieces.KING)
-            removeCastlingThroughCheck();
+            removeCastlingThroughCheck(possible, pos);
     }
 
     private boolean isMoveUnsafe(Coordinate position, Coordinate movePos){
@@ -101,8 +101,13 @@ class ChessLogic {
         }
     }
 
-    private void removeCastlingThroughCheck(){
-        ;
+    private void removeCastlingThroughCheck(Bitboard possible, Coordinate position){
+        Coordinate left = new Coordinate(position.x()-1, position.y());
+        Coordinate right = new Coordinate(position.x()+1, position.y());
+        if(!possible.contains(left))
+            possible.remove(new Coordinate(position.x()-2, position.y()));
+        if(!possible.contains(right))
+            possible.remove(new Coordinate(position.x()-2, position.y()));
     }
 
     public boolean isKingInCheck(){
