@@ -4,6 +4,8 @@ public class MaskGenerator {
     private final static long RANK_SEVEN = 0xff000000000000L;
     private final static long NOT_A_FILE = 0xFEFEFEFEFEFEFEFEL;
     private final static long NOT_H_FILE = 0x7F7F7F7F7F7F7F7FL;
+    private final static long KING_LONG_CASTLING = 0xe0000000000000eL;
+    private final static long KING_SHORT_CASTLING = 0x6000000000000060L;
     private static final long[] KNIGHT_ATTACKS = new long[64];
     private static final long[] KING_ATTACKS = new long[64];
     private static final long[] WHITE_PAWN_ATTACKS = new long[64];
@@ -44,6 +46,18 @@ public class MaskGenerator {
 
     private long getKingMask(Coordinate piecePos) {
         Bitboard mask = new Bitboard(KING_ATTACKS[piecePos.getBitboardIndex()]);
+        Bitboard castlingRights = new Bitboard(board.getCastlingRights());
+        if(castlingRights.contains(piecePos)){
+            long friendlyPieces = board.getAllColourPositions(board.getColour(piecePos)).getBoard();
+            if(castlingRights.contains(new Coordinate(0, piecePos.x())) &&
+                (friendlyPieces & KING_LONG_CASTLING) == 0){
+                mask.add(new Coordinate(2, piecePos.y()));
+            }
+            if(castlingRights.contains(new Coordinate(7, piecePos.x())) &&
+                (friendlyPieces & KING_SHORT_CASTLING) == 0){
+                mask.add(new Coordinate(6, piecePos.y()));
+            }
+        }
         return removeFriendlyPieces(mask, board.getColour(piecePos));
     }
 
