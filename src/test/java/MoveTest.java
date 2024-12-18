@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 class MoveTest {
     private Chessboard board = new ChessboardBuilder().defaultSetup();
     Coordinate a1 = new Coordinate(0, 0);
+    Coordinate b8 = new Coordinate(1, 7);
     Coordinate c1 = new Coordinate(2, 0);
-    Coordinate c8 = new Coordinate(2, 7);
+    Coordinate c7 = new Coordinate(2, 6);
     Coordinate d1 = new Coordinate(3, 0);
-    Coordinate d4 = new Coordinate(3, 3);
     Coordinate d5 = new Coordinate(3, 4);
     Coordinate d7 = new Coordinate(3, 6);
     Coordinate d8 = new Coordinate(3, 7);
@@ -212,11 +212,11 @@ class MoveTest {
 
     @Test
     void promotionTaking(){
-        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        new Move(board, d7, c8);
-        assertEquals(Pieces.BLANK, board.getPiece(d7));
-        assertEquals(Pieces.QUEEN, board.getPiece(c8));
-        assertEquals(PieceColour.WHITE, board.getColour(c8));
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("1n2k3/2P5/8/8/8/8/8/4K3 w - - 0 1"));
+        new Move(board, c7, b8);
+        assertEquals(Pieces.BLANK, board.getPiece(c7));
+        assertEquals(Pieces.QUEEN, board.getPiece(b8));
+        assertEquals(PieceColour.WHITE, board.getColour(b8));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -224,12 +224,12 @@ class MoveTest {
 
     @Test
     void promotionTakingUndo(){
-        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(board, d7, c8);
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("1n2k3/2P5/8/8/8/8/8/4K3 w - - 0 1"));
+        Move pawnPromotion = new Move(board, c7, b8);
         pawnPromotion.undo();
-        assertEquals(Pieces.PAWN, board.getPiece(d7));
-        assertEquals(Pieces.PAWN, board.getPiece(c8));
-        assertEquals(PieceColour.BLACK, board.getColour(c8));
+        assertEquals(Pieces.PAWN, board.getPiece(c7));
+        assertEquals(Pieces.KNIGHT, board.getPiece(b8));
+        assertEquals(PieceColour.BLACK, board.getColour(b8));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(2, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -237,13 +237,13 @@ class MoveTest {
 
     @Test
     void promotionTakingRedo(){
-        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("2p4k/3P4/8/8/8/8/8/7K w - - 0 1"));
-        Move pawnPromotion = new Move(board, d7, c8);
+        board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("1n2k3/2P5/8/8/8/8/8/4K3 w - - 0 1"));
+        Move pawnPromotion = new Move(board, c7, b8);
         pawnPromotion.undo();
         pawnPromotion.makeMove();
-        assertEquals(Pieces.BLANK, board.getPiece(d7));
-        assertEquals(Pieces.QUEEN, board.getPiece(c8));
-        assertEquals(PieceColour.WHITE, board.getColour(c8));
+        assertEquals(Pieces.BLANK, board.getPiece(c7));
+        assertEquals(Pieces.QUEEN, board.getPiece(b8));
+        assertEquals(PieceColour.WHITE, board.getColour(b8));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
