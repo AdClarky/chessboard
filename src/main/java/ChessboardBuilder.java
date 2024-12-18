@@ -124,7 +124,7 @@ class ChessboardBuilder {
 
     private void setOtherRookMoved(char rookWithRights){
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
-        int x = Character.toLowerCase(rookWithRights) == 'k' ? 7 : 0;
+        int x = Character.toLowerCase(rookWithRights) == 'k' ? 0 : 7;
         board.removeCastlingRight(new Coordinate(x, y));
     }
 
