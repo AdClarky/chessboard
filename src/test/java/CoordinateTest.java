@@ -4,18 +4,18 @@ import org.junit.jupiter.api.Test;
 class CoordinateTest {
     @Test
     void cornersTest(){
-        assertEquals("a1", new Coordinate(7, 0).toString());
-        assertEquals("a8", new Coordinate(7, 7).toString());
-        assertEquals("h1", new Coordinate(0, 0).toString());
-        assertEquals("h8", new Coordinate(0, 7).toString());
+        assertEquals("h1", new Coordinate(7, 0).toString());
+        assertEquals("h8", new Coordinate(7, 7).toString());
+        assertEquals("a1", new Coordinate(0, 0).toString());
+        assertEquals("a8", new Coordinate(0, 7).toString());
     }
 
     @Test
     void middleTest(){
-        assertEquals("b3", new Coordinate(6, 2).toString());
-        assertEquals("d2", new Coordinate(4, 1).toString());
-        assertEquals("f5", new Coordinate(2, 4).toString());
-        assertEquals("e4", new Coordinate(3, 3).toString());
+        assertEquals("g3", new Coordinate(6, 2).toString());
+        assertEquals("e2", new Coordinate(4, 1).toString());
+        assertEquals("c5", new Coordinate(2, 4).toString());
+        assertEquals("d4", new Coordinate(3, 3).toString());
     }
 
     @Test
@@ -28,17 +28,17 @@ class CoordinateTest {
 
     @Test
     void pawnMove(){
-        assertEquals(new Coordinate(0, 1), Coordinate.createCoordinateFromString("h2"));
+        assertEquals(new Coordinate(0, 1), Coordinate.createCoordinateFromString("a2"));
     }
 
     @Test
     void pawnTaking() {
-        assertEquals(new Coordinate(4, 3), Coordinate.createCoordinateFromString("cxd4"));
+        assertEquals(new Coordinate(4, 3), Coordinate.createCoordinateFromString("dxe4"));
     }
 
     @Test
     void pawnPromotion(){
-        assertEquals(new Coordinate(7, 7), Coordinate.createCoordinateFromString("a8=Q+"));
+        assertEquals(new Coordinate(7, 7), Coordinate.createCoordinateFromString("h8=Q+"));
     }
 
     @Test
@@ -53,17 +53,17 @@ class CoordinateTest {
 
     @Test
     void checkMove() {
-        assertEquals(new Coordinate(6, 6), Coordinate.createCoordinateFromString("Qb7+"));
+        assertEquals(new Coordinate(6, 6), Coordinate.createCoordinateFromString("Qg7+"));
     }
 
     @Test
     void mateMove() {
-        assertEquals(new Coordinate(1, 6), Coordinate.createCoordinateFromString("Qg7#"));
+        assertEquals(new Coordinate(1, 6), Coordinate.createCoordinateFromString("Qb7#"));
     }
 
     @Test
     void pieceMove() {
-        assertEquals(new Coordinate(0, 7), Coordinate.createCoordinateFromString("Kh8"));
+        assertEquals(new Coordinate(0, 7), Coordinate.createCoordinateFromString("Ka8"));
     }
 
     @Test
