@@ -59,7 +59,7 @@ class BoardHistoryTest {
     void halfMovesAfterKnightTakesKnight(){
         assertDoesNotThrow(()->{
             ChessGame game = new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/RNBQKB1R w KQkq - 0 1");
-            game.makeMove(new Coordinate(1, 2), new Coordinate(2, 4));
+            game.makeMove(new Coordinate(6, 2), new Coordinate(5, 4));
             assertEquals(0, game.getNumHalfMoves());
         });
     }
