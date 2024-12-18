@@ -107,7 +107,7 @@ class ChessLogic {
         if(!possible.contains(left))
             possible.remove(new Coordinate(position.x()-2, position.y()));
         if(!possible.contains(right))
-            possible.remove(new Coordinate(position.x()-2, position.y()));
+            possible.remove(new Coordinate(position.x()+2, position.y()));
     }
 
     public boolean isKingInCheck(){
