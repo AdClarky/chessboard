@@ -29,8 +29,8 @@ public enum PieceColour {
     public int direction(){
         return switch (this){
             case WHITE -> 1;
-            case BLACK -> 0;
-            case BLANK -> -1;
+            case BLACK -> -1;
+            case BLANK -> 0;
         };
     }
 
