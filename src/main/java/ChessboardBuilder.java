@@ -20,6 +20,8 @@ class ChessboardBuilder {
     }
 
     public @NotNull Chessboard defaultSetup() {
+        if(!board.getAllColourPositions(PieceColour.WHITE).isEmpty() || !board.getAllColourPositions(PieceColour.BLACK).isEmpty())
+            throw new RuntimeException("Board edited during runtime");
         getBoardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
