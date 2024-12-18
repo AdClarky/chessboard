@@ -38,8 +38,15 @@ class Move {
     }
 
     private List<MoveValue> getMoves(){
-        if(piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2)
-            ; // castling
+        if(piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2) {
+            int rookSquare = 0;
+            int newRookSquare = 3;
+            if(newPos.x() == 6) {
+                rookSquare = 7;
+                newRookSquare = 5;
+            }
+            return List.of(new MoveValue(oldPos, newPos), new MoveValue(new Coordinate(rookSquare, oldPos.y()), new Coordinate(newRookSquare, oldPos.y())));
+        }
         else if(piece == Pieces.PAWN){
             if(board.isSquareBlank(newPos) && oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
                 ; // en passant
