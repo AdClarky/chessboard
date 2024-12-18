@@ -49,7 +49,7 @@ class Move {
         }
         else if(piece == Pieces.PAWN){
             if(board.isSquareBlank(newPos) && oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
-                ; // en passant
+                return List.of(new MoveValue(new Coordinate(newPos.x(), oldPos.y()), newPos), new MoveValue(oldPos, newPos));
             else if(newPos.y() == 7 || newPos.y() == 0)
                 return List.of(new MoveValue(oldPos, newPos), new MoveValue(newPos, newPos));
         }
