@@ -83,9 +83,9 @@ class FenGenerator {
     }
 
     private void addColourCastleRight(int backRow, Bitboard castlingRights){
-        if(castlingRights.contains(new Coordinate(0, backRow)))
-            fenString.append(backRow == 0 ? 'K' : 'k');
         if(castlingRights.contains(new Coordinate(7, backRow)))
+            fenString.append(backRow == 0 ? 'K' : 'k');
+        if(castlingRights.contains(new Coordinate(0, backRow)))
             fenString.append(backRow == 0 ? 'Q' : 'q');
     }
 
