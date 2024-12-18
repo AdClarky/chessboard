@@ -71,10 +71,12 @@ class Move {
     }
 
     private void takePiece(@NotNull MoveValue move){
+        if(move.isPieceInSamePosition()) {// promotion
+            board.promotion(move.newPos());
+            return;
+        }
         if(pieceTaken == null)
             pieceTaken = board.getPiece(move.newPos());
-        if(move.isPieceInSamePosition()) // promotion
-            board.promotion(move.newPos());
         pieceTakenColour = board.getColour(move.newPos());
         movesToUndo.add(new MoveValue(move.newPos(), move.newPos()));
     }
@@ -95,8 +97,10 @@ class Move {
         if(!move.isPieceInSamePosition())
             return;
         // a piece moving to the same spot only occurs as the last move when it's a promotion
-        if(move == movesToUndo.getLast())
+        if(move == movesToUndo.getLast()) {
             board.removePiece(move.newPos());
+            board.addPiece(Pieces.PAWN, move.newPos(), pieceColour);
+        }
         else
             board.addPiece(piece, move.newPos(), pieceTakenColour);
     }
