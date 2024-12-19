@@ -15,9 +15,6 @@ public class Hasher {
     private static final long[] castlingKeys = new long[16];
     private static final long[] enPassantKeys = new long[8];
     private final Chessboard board;
-    private long castlingRights;
-    private Coordinate enPassantSquare;
-    private long hash;
 
     public Hasher(Chessboard board){
         this.board = board;
@@ -56,7 +53,8 @@ public class Hasher {
 //
 //    }
 
-    private long getHash(){
+    public long getHash(){
+        long hash = 0L;
         Iterable<Coordinate> squares = new Bitboard(~board.getEmptySquares().getBoard());
         for(Coordinate square : squares){
             int pieceIndex = getPieceIndex(board.getPiece(square), board.getColour(square));
@@ -67,10 +65,9 @@ public class Hasher {
             hash ^= sideToMoveKey;
         }
 
-        castlingRights = board.getCastlingRights();
-        hash ^= castlingKeys[getCastlingIndex()];
+        hash ^= castlingKeys[getCastlingIndex(board.getCastlingRights())];
 
-        enPassantSquare = board.getEnPassantSquare();
+        Coordinate enPassantSquare = board.getEnPassantSquare();
         if(enPassantSquare != null){
             int enPassantIndex = enPassantSquare.y();
             hash ^= enPassantKeys[enPassantIndex];
@@ -86,7 +83,7 @@ public class Hasher {
         return pieceIndex;
     }
 
-    private int getCastlingIndex(){
+    private int getCastlingIndex(long castlingRights){
         long whiteKing = 0x10L;
         long blackKing = 0x1000000000000000L;
         long whiteQueenRook = 0x1L;
@@ -112,9 +109,9 @@ public class Hasher {
 
     static {
         Random random = new Random(123456);
-        for (int piece = 0; piece < 12; piece++) {
-            for (int square = 0; square < 64; square++) {
-                pieceKeys[piece][square] = random.nextLong();
+        for (int square = 0; square < 64; square++) {
+            for (int piece = 0; piece < 12; piece++) {
+                pieceKeys[square][piece] = random.nextLong();
             }
         }
         sideToMoveKey = random.nextLong();
