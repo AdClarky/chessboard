@@ -6,10 +6,12 @@ class ChessLogic {
     private Bitboard enemyPossible;
     private PossibleMoves possibleMoves = new PossibleMoves();
     private BoardHistory history;
+    private Hasher hasher;
 
     public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
         this.history = history;
+        hasher = new Hasher(board);
         maskGenerator = new MaskGenerator(board);
     }
 
@@ -140,10 +142,10 @@ class ChessLogic {
     private boolean isRepetition(){
         if(history.getNumFullMoves() < 4)
             return false;
-        int boardState = board.hashCode();
+        long boardState = hasher.getHash();
         for(int i = 0; i < 2; i++){
             history.undoMultipleMoves(4);
-            if(boardState != board.hashCode()) {
+            if(boardState != hasher.getHash()) {
                 history.redoAllMoves();
                 return false;
             }
