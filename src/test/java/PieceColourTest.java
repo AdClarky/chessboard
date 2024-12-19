@@ -13,11 +13,6 @@ class PieceColourTest {
     }
 
     @Test
-    void blankOtherColour(){
-        assertEquals(PieceColour.BLANK, PieceColour.BLANK.invert());
-    }
-
-    @Test
     void whiteDirection(){
         assertEquals(1, PieceColour.WHITE.direction());
     }
@@ -28,11 +23,6 @@ class PieceColourTest {
     }
 
     @Test
-    void blankDirection(){
-        assertEquals(0, PieceColour.BLANK.direction());
-    }
-
-    @Test
     void whiteString(){
         assertEquals("white", PieceColour.WHITE.toString());
     }
@@ -40,10 +30,5 @@ class PieceColourTest {
     @Test
     void blackString(){
         assertEquals("black", PieceColour.BLACK.toString());
-    }
-
-    @Test
-    void blankString(){
-        assertEquals("blank", PieceColour.BLANK.toString());
     }
 }
