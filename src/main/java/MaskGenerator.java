@@ -49,11 +49,11 @@ public class MaskGenerator {
         Bitboard castlingRights = new Bitboard(board.getCastlingRights());
         if(castlingRights.contains(piecePos)){
             long friendlyPieces = board.getAllColourPositions(board.getColour(piecePos)).getBoard();
-            if(castlingRights.contains(new Coordinate(piecePos.x(), 0)) &&
+            if(castlingRights.contains(new Coordinate(0, piecePos.y())) &&
                 (friendlyPieces & KING_LONG_CASTLING) == 0){
                 mask.add(new Coordinate(2, piecePos.y()));
             }
-            if(castlingRights.contains(new Coordinate(piecePos.x(), 7)) &&
+            if(castlingRights.contains(new Coordinate(7, piecePos.y())) &&
                 (friendlyPieces & KING_SHORT_CASTLING) == 0){
                 mask.add(new Coordinate(6, piecePos.y()));
             }
