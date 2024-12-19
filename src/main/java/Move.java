@@ -124,6 +124,14 @@ class Move {
         return piece == Pieces.PAWN;
     }
 
+    public Pieces getPiece(){
+        return piece;
+    }
+
+    public PieceColour getColour(){
+        return pieceColour;
+    }
+
     public boolean isPieceColourBlack(){
         return pieceColour == PieceColour.BLACK;
     }
