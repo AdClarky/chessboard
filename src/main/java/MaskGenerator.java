@@ -35,7 +35,7 @@ public class MaskGenerator {
         long pawnMask = 0L;
         long pos = piecePos.getBitboardValue();
         if (colour == PieceColour.BLACK) {
-            pawnMask = ((pos >> 8) & emptySquares) | ((((pos & RANK_SEVEN) >> 16) & emptySquares) & (emptySquares >> 8));
+            pawnMask = ((pos >>> 8) & emptySquares) | ((((pos & RANK_SEVEN) >>> 16) & emptySquares) & (emptySquares >>> 8));
             pawnMask |= BLACK_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
         }else {
             pawnMask = ((pos << 8) & emptySquares) | ((((pos & RANK_TWO) << 16) & emptySquares) & (emptySquares << 8));
@@ -137,18 +137,18 @@ public class MaskGenerator {
                     break;
                 case -1: // left
                     if((currentPos & NOT_A_FILE) == 0) return mask;
-                    currentPos >>= 1;
+                    currentPos >>>= 1;
                     break;
                 case -9: // bottom left
                     if((currentPos & NOT_A_FILE) == 0) return mask;
-                    currentPos >>= 9;
+                    currentPos >>>= 9;
                     break;
                 case -8: // down
-                    currentPos >>= 8;
+                    currentPos >>>= 8;
                     break;
                 case -7: // bottom right
                     if((currentPos & NOT_H_FILE) == 0) return mask;
-                    currentPos >>= 7;
+                    currentPos >>>= 7;
                     break;
             }
             if(currentPos == 0)
@@ -171,25 +171,25 @@ public class MaskGenerator {
 
             long knightMoves = 0L;
             if ((pos & notHGFile) != 0)
-                knightMoves |= (pos >> 6) | (pos << 10);
+                knightMoves |= (pos >>> 6) | (pos << 10);
             if ((pos & notABFile) != 0)
-                knightMoves |= (pos >> 10) | (pos << 6);
+                knightMoves |= (pos >>> 10) | (pos << 6);
             if ((pos & NOT_H_FILE) != 0)
-                knightMoves |= (pos >> 15) | (pos << 17);
+                knightMoves |= (pos >>> 15) | (pos << 17);
             if ((pos & NOT_A_FILE) != 0)
-                knightMoves |= (pos >> 17) | (pos << 15);
+                knightMoves |= (pos >>> 17) | (pos << 15);
             KNIGHT_ATTACKS[square] = knightMoves;
 
             long kingMoves = 0L;
             if ((pos & NOT_A_FILE) != 0)
-                kingMoves |= (pos >> 1) | (pos >> 9) | (pos << 7);
+                kingMoves |= (pos >>> 1) | (pos >>> 9) | (pos << 7);
             if ((pos & NOT_H_FILE) != 0)
-                kingMoves |= (pos >> 7) | (pos << 1) | (pos << 9);
-            kingMoves |= (pos >> 8) | (pos << 8);
+                kingMoves |= (pos >>> 7) | (pos << 1) | (pos << 9);
+            kingMoves |= (pos >>> 8) | (pos << 8);
             KING_ATTACKS[square] = kingMoves;
 
             WHITE_PAWN_ATTACKS[square] = ((pos << 7) & NOT_H_FILE) | ((pos << 9) & NOT_A_FILE);
-            BLACK_PAWN_ATTACKS[square] = ((pos >> 9) & NOT_H_FILE) | ((pos >> 7) & NOT_A_FILE);
+            BLACK_PAWN_ATTACKS[square] = ((pos >>> 9) & NOT_H_FILE) | ((pos >>> 7) & NOT_A_FILE);
         }
     }
 }

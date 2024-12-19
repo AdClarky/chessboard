@@ -15,6 +15,7 @@ class ChessLogic {
 
     public void calculatePossibleMoves(){
         enemyPossible = calculatePieces(board.getTurn().invert());
+        possibleMoves = new PossibleMoves();
         calculateFriendlyPieces();
         enemyPossible = calculatePieces(board.getTurn().invert());
     }
