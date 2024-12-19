@@ -12,17 +12,12 @@ public enum PieceColour {
     /**
      * A Black Chess piece.
      */
-    BLACK,
-    /**
-     * A Blank square, a piece should never have this value.
-     */
-    BLANK;
+    BLACK;
 
     public PieceColour invert() {
         return switch (this) {
             case WHITE -> BLACK;
             case BLACK -> WHITE;
-            case BLANK -> BLANK;
         };
     }
 
@@ -30,7 +25,6 @@ public enum PieceColour {
         return switch (this){
             case WHITE -> 1;
             case BLACK -> -1;
-            case BLANK -> 0;
         };
     }
 
