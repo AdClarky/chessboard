@@ -44,7 +44,7 @@ public class ColourBoard {
     }
 
     public Bitboard getEmptySquares(){
-        long empty = ~(whitePieces.getBoard() & blackPieces.getBoard());
+        long empty = ~(whitePieces.getBoard() | blackPieces.getBoard());
         return new Bitboard(empty);
     }
 
