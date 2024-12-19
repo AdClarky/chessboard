@@ -126,6 +126,8 @@ class Chessboard {
     }
 
     public void addPiece(Pieces piece, Coordinate position, PieceColour colour){
+        if(piece == Pieces.BLANK)
+            throw new IllegalArgumentException("Added piece cannot be blank");
         pieceBoard.add(piece, position);
         colourBoard.add(colour, position);
     }

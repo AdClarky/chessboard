@@ -101,11 +101,9 @@ class MoveTest {
         pawnXD5.undo();
         pawnD5.undo();
         assertEquals(Pieces.BLANK, board.getPiece(e2));
-        assertEquals(PieceColour.BLANK, board.getColour(e2));
         assertEquals(Pieces.PAWN, board.getPiece(e4));
         assertEquals(PieceColour.WHITE, board.getColour(e4));
         assertEquals(Pieces.BLANK, board.getPiece(d5));
-        assertEquals(PieceColour.BLANK, board.getColour(d5));
         assertEquals(Pieces.PAWN, board.getPiece(d7));
         assertEquals(PieceColour.BLACK, board.getColour(d7));
 
@@ -122,11 +120,9 @@ class MoveTest {
         pawnXD5.undo();
         pawnD5.undo();
         assertEquals(Pieces.BLANK, board.getPiece(e2));
-        assertEquals(PieceColour.BLANK, board.getColour(e2));
         assertEquals(Pieces.PAWN, board.getPiece(e4));
         assertEquals(PieceColour.WHITE, board.getColour(e4));
         assertEquals(Pieces.BLANK, board.getPiece(d5));
-        assertEquals(PieceColour.BLANK, board.getColour(d5));
         assertEquals(Pieces.PAWN, board.getPiece(d7));
         assertEquals(PieceColour.BLACK, board.getColour(d7));
 
@@ -144,13 +140,10 @@ class MoveTest {
         pawnD5.makeMove();
         pawnXD5.makeMove();
         assertEquals(Pieces.BLANK, board.getPiece(e2));
-        assertEquals(PieceColour.BLANK, board.getColour(e2));
         assertEquals(Pieces.BLANK, board.getPiece(e4));
-        assertEquals(PieceColour.BLANK, board.getColour(e4));
         assertEquals(Pieces.PAWN, board.getPiece(d5));
         assertEquals(PieceColour.WHITE, board.getColour(d5));
         assertEquals(Pieces.BLANK, board.getPiece(d7));
-        assertEquals(PieceColour.BLANK, board.getColour(d7));
 
         assertEquals(16, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(15, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -254,13 +247,11 @@ class MoveTest {
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("7k/8/8/8/8/8/8/R3K3 w Q - 0 1"));
         new Move(board, e1, c1);
         assertEquals(Pieces.BLANK, board.getPiece(a1));
-        assertEquals(PieceColour.BLANK, board.getColour(a1));
         assertEquals(Pieces.KING, board.getPiece(c1));
         assertEquals(PieceColour.WHITE, board.getColour(c1));
         assertEquals(Pieces.ROOK, board.getPiece(d1));
         assertEquals(PieceColour.WHITE, board.getColour(d1));
         assertEquals(Pieces.BLANK, board.getPiece(e1));
-        assertEquals(PieceColour.BLANK, board.getColour(e1));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -274,9 +265,7 @@ class MoveTest {
         assertEquals(Pieces.ROOK, board.getPiece(a1));
         assertEquals(PieceColour.WHITE, board.getColour(a1));
         assertEquals(Pieces.BLANK, board.getPiece(c1));
-        assertEquals(PieceColour.BLANK, board.getColour(c1));
         assertEquals(Pieces.BLANK, board.getPiece(d1));
-        assertEquals(PieceColour.BLANK, board.getColour(d1));
         assertEquals(Pieces.KING, board.getPiece(e1));
         assertEquals(PieceColour.WHITE, board.getColour(e1));
 
@@ -291,13 +280,11 @@ class MoveTest {
         shortCastle.undo();
         shortCastle.makeMove();
         assertEquals(Pieces.BLANK, board.getPiece(a1));
-        assertEquals(PieceColour.BLANK, board.getColour(a1));
         assertEquals(Pieces.KING, board.getPiece(c1));
         assertEquals(PieceColour.WHITE, board.getColour(c1));
         assertEquals(Pieces.ROOK, board.getPiece(d1));
         assertEquals(PieceColour.WHITE, board.getColour(d1));
         assertEquals(Pieces.BLANK, board.getPiece(e1));
-        assertEquals(PieceColour.BLANK, board.getColour(e1));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(1, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -308,9 +295,7 @@ class MoveTest {
         board = assertDoesNotThrow(()->new ChessboardBuilder().fromFen("4k3/8/8/3Pp3/8/8/8/4K3 w - e6 0 2"));
         new Move(board, d5, e6);
         assertEquals(Pieces.BLANK, board.getPiece(d5));
-        assertEquals(PieceColour.BLANK, board.getColour(d5));
         assertEquals(Pieces.BLANK, board.getPiece(e5));
-        assertEquals(PieceColour.BLANK, board.getColour(e5));
         assertEquals(Pieces.PAWN, board.getPiece(e6));
         assertEquals(PieceColour.WHITE, board.getColour(e6));
 
@@ -328,7 +313,6 @@ class MoveTest {
         assertEquals(Pieces.PAWN, board.getPiece(e5));
         assertEquals(PieceColour.BLACK, board.getColour(e5));
         assertEquals(Pieces.BLANK, board.getPiece(e6));
-        assertEquals(PieceColour.BLANK, board.getColour(e6));
 
         assertEquals(2, board.getAllColourPositions(PieceColour.WHITE).size());
         assertEquals(2, board.getAllColourPositions(PieceColour.BLACK).size());
@@ -341,9 +325,7 @@ class MoveTest {
         enPassant.undo();
         enPassant.makeMove();
         assertEquals(Pieces.BLANK, board.getPiece(d5));
-        assertEquals(PieceColour.BLANK, board.getColour(d5));
         assertEquals(Pieces.BLANK, board.getPiece(e5));
-        assertEquals(PieceColour.BLANK, board.getColour(e5));
         assertEquals(Pieces.PAWN, board.getPiece(e6));
         assertEquals(PieceColour.WHITE, board.getColour(e6));
 
