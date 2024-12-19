@@ -101,10 +101,10 @@ public class ChessGame {
 
     public MoveValue chessToMove(String move) throws InvalidMoveException {
         if("O-O".equals(move)) {
-            return getCastlingMove(board.getTurn(), 1);
+            return getCastlingMove(board.getTurn(), 6);
         }
         if("O-O-O".equals(move)) {
-            return getCastlingMove(board.getTurn(), 5);
+            return getCastlingMove(board.getTurn(), 2);
         }
         Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
         char pieceLetter;
@@ -130,9 +130,9 @@ public class ChessGame {
 
     private static MoveValue getCastlingMove(PieceColour colour, int newX){
         if(colour == PieceColour.BLACK){
-            return new MoveValue(new Coordinate(3,7),new Coordinate(newX,7));
+            return new MoveValue(new Coordinate(4,7),new Coordinate(newX,7));
         }else{
-            return new MoveValue(new Coordinate(3, 0), new Coordinate(newX, 0));
+            return new MoveValue(new Coordinate(4, 0), new Coordinate(newX, 0));
         }
     }
 
