@@ -130,7 +130,7 @@ public class Bitboard implements Collection<Coordinate> {
             throw new ClassCastException();
         if(coordinate.isNotInRange())
             return false;
-        return ((board >> shift(coordinate)) & 1) == 1;
+        return ((board >>> shift(coordinate)) & 1) == 1;
     }
 
     public void set(long possibleMoves) {
@@ -159,7 +159,7 @@ public class Bitboard implements Collection<Coordinate> {
             }
             do{
                 current--;
-            } while(((board >> current) & 1) == 0);
+            } while(((board >>> current) & 1) == 0);
             numFound++;
             previous = current;
             return new Coordinate(getX(current), getY(current));
@@ -195,7 +195,7 @@ public class Bitboard implements Collection<Coordinate> {
         Object[] array = new Object[size()];
         int i = 0;
         for(int bit = 63; bit >= 0; bit--){
-            if(((board >> bit) & 1) == 0)
+            if(((board >>> bit) & 1) == 0)
                 continue;
             array[i++] = new Coordinate(getX(bit), getY(bit));
         }
