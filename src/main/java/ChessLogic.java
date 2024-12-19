@@ -74,8 +74,6 @@ class ChessLogic {
         if(xDifference == 0 && yDifference == 0)
             return true;
         PieceColour colour = board.getColour(kingPos);
-        if(colour == PieceColour.BLANK)
-            throw new RuntimeException();
         for(int x = kingPos.x()+xDifference, y = kingPos.y()+yDifference; ; x+=xDifference, y+=yDifference) {
             Coordinate square = new Coordinate(x, y);
             if(square.isNotInRange())

@@ -36,7 +36,7 @@ class Chessboard {
         }
     }
 
-    @NotNull
+    @Nullable
     public Pieces getPiece(Coordinate position) {
         return pieceBoard.get(position);
     }

@@ -80,7 +80,7 @@ public class PieceBoard {
         return null;
     }
 
-    @NotNull
+    @Nullable
     public Pieces get(Coordinate position){
         if(position.isNotInRange())
             return null;

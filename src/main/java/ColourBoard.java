@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -47,13 +48,13 @@ public class ColourBoard {
         return new Bitboard(empty);
     }
 
-    @NotNull
+    @Nullable
     public PieceColour getColourAtPosition(Coordinate kingPos) {
         if(whitePieces.contains(kingPos))
             return PieceColour.WHITE;
         if(blackPieces.contains(kingPos))
             return PieceColour.BLACK;
-        return PieceColour.BLANK;
+        return null;
     }
 
     public void add(PieceColour colour, Coordinate position) {
