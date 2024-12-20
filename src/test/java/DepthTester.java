@@ -1,11 +1,12 @@
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class DepthTester {
     private final ChessGame game;
+    private final int topDepth;
 
-    public DepthTester(ChessGame game) {
+    public DepthTester(ChessGame game, int topDepth) {
         this.game = game;
+        this.topDepth = topDepth;
     }
 
     public int testDepth(int currentDepth) throws InvalidMoveException {
@@ -20,6 +21,7 @@ public class DepthTester {
             for(Coordinate newMove : positionCoordinates){
                 game.makeMove(piece, newMove);
                 int currentPos = testDepth(currentDepth - 1);
+                if(currentDepth == topDepth) System.out.println(new String("" + piece + newMove + ": " + currentPos));
                 positions += currentPos;
                 game.undoMove();
             }
