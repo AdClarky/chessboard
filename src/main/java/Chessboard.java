@@ -80,7 +80,7 @@ class Chessboard {
 
     public void removeAllCastling(PieceColour colour){
         int backRow = colour == PieceColour.WHITE ? 0 : 7;
-        Collection<Coordinate> positions = List.of(new Coordinate(0, backRow), new Coordinate(3, backRow),
+        Collection<Coordinate> positions = List.of(new Coordinate(0, backRow), new Coordinate(4, backRow),
                 new Coordinate(7, backRow));
         castlingRights.removeAll(positions);
     }
