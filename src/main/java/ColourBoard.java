@@ -49,10 +49,10 @@ public class ColourBoard {
     }
 
     @Nullable
-    public PieceColour getColourAtPosition(Coordinate kingPos) {
-        if(whitePieces.contains(kingPos))
+    public PieceColour getColourAtPosition(Coordinate position) {
+        if(whitePieces.contains(position))
             return PieceColour.WHITE;
-        if(blackPieces.contains(kingPos))
+        if(blackPieces.contains(position))
             return PieceColour.BLACK;
         return null;
     }
@@ -66,8 +66,8 @@ public class ColourBoard {
         blackPieces.remove(position);
     }
 
-    public Coordinate getKingPosition(Bitboard kingPositions, PieceColour colour) {
-        kingPositions.retainAll(getBoard(colour));
-        return Coordinate.fromBitboard(kingPositions.getBoard());
+    public Coordinate getKingPosition(long kingPositions, PieceColour colour) {
+        kingPositions &= getBoard(colour).getBoard();
+        return Coordinate.fromBitboard(kingPositions);
     }
 }

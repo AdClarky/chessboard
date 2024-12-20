@@ -48,6 +48,7 @@ class ChessLogic {
     }
 
     private boolean isMoveUnsafe(Coordinate position, Coordinate movePos){
+        // TODO: if the king is in check, only compute moves that block
         if(!isKingInCheck() && !doesMoveExposeKing(position, movePos))
             return false;
         PieceColour previousTurn = board.getTurn();
@@ -59,6 +60,8 @@ class ChessLogic {
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
+        if(board.getPiece(position) != Pieces.KING && !enemyPossible.contains(position))
+            return false;
         Coordinate kingPos = board.getKingPos(board.getTurn());
         if(position.x() == kingPos.x() && movePosition.x() != position.x()) {
             return canEnemyPieceSeeKing(kingPos, position);
