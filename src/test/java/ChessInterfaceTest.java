@@ -145,4 +145,13 @@ class ChessInterfaceTest {
     void noPieceMove(){
         assertThrows(InvalidMoveException.class, () -> game.makeMove(new Coordinate(4, 4), new Coordinate(4, 3)));
     }
+
+    @Test
+    void enPassantTest(){
+        assertDoesNotThrow(()->game.makeMove("h4"));
+        assertDoesNotThrow(()->game.makeMove("a6"));
+        assertDoesNotThrow(()->game.makeMove("h5"));
+        assertDoesNotThrow(()->game.makeMove("g5"));
+        assertDoesNotThrow(()->game.makeMove("hxg6"));
+    }
 }
