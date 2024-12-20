@@ -4,8 +4,10 @@ public class MaskGenerator {
     private final static long RANK_SEVEN = 0xff000000000000L;
     private final static long NOT_A_FILE = 0xFEFEFEFEFEFEFEFEL;
     private final static long NOT_H_FILE = 0x7F7F7F7F7F7F7F7FL;
-    private final static long KING_LONG_CASTLING = 0xe0000000000000eL;
-    private final static long KING_SHORT_CASTLING = 0x6000000000000060L;
+    private final static long KING_LONG_CASTLING_WHITE = 0x00000000000000eL;
+    private final static long KING_SHORT_CASTLING_WHITE = 0x0000000000000060L;
+    private final static long KING_LONG_CASTLING_BLACK = 0xe00000000000000L;
+    private final static long KING_SHORT_CASTLING_BLACK = 0x6000000000000000L;
     private static final long[] KNIGHT_ATTACKS = new long[64];
     private static final long[] KING_ATTACKS = new long[64];
     private static final long[] WHITE_PAWN_ATTACKS = new long[64];
@@ -54,13 +56,15 @@ public class MaskGenerator {
         Bitboard mask = new Bitboard(KING_ATTACKS[piecePos.getBitboardIndex()]);
         Bitboard castlingRights = new Bitboard(board.getCastlingRights());
         if(castlingRights.contains(piecePos)){
-            long friendlyPieces = board.getAllColourPositions(board.getColour(piecePos)).getBoard();
+            long blankPieces = board.getEmptySquares().getBoard();
             if(castlingRights.contains(new Coordinate(0, piecePos.y())) &&
-                (friendlyPieces & KING_LONG_CASTLING) == 0){
+                ((piecePos.y() == 7 && (blankPieces & KING_LONG_CASTLING_BLACK) == KING_LONG_CASTLING_BLACK) ||
+                        (piecePos.y() == 0 && (blankPieces & KING_LONG_CASTLING_WHITE) == KING_LONG_CASTLING_WHITE))){
                 mask.add(new Coordinate(2, piecePos.y()));
             }
             if(castlingRights.contains(new Coordinate(7, piecePos.y())) &&
-                (friendlyPieces & KING_SHORT_CASTLING) == 0){
+                    ((piecePos.y() == 7 && (blankPieces & KING_SHORT_CASTLING_BLACK) == KING_SHORT_CASTLING_BLACK) ||
+                            (piecePos.y() == 0 && (blankPieces & KING_SHORT_CASTLING_WHITE) == KING_SHORT_CASTLING_WHITE))){
                 mask.add(new Coordinate(6, piecePos.y()));
             }
         }
