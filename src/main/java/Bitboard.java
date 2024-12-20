@@ -162,7 +162,7 @@ public class Bitboard implements Collection<Coordinate> {
             } while(((board >>> current) & 1) == 0);
             numFound++;
             previous = current;
-            return new Coordinate(getX(current), getY(current));
+            return Coordinate.fromBitboardIndex(current);
         }
 
         @Override

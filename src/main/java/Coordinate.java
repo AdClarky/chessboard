@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
  * @param y y coordinate
  */
 public record Coordinate(int x, int y) {
+    private static final Coordinate[] COORDINATES = new Coordinate[64];
+
     @Override
     public @NotNull String toString() {
         if(x < 0 || y < 0 || x > 7 || y > 7) return "Invalid";
@@ -40,10 +42,12 @@ public record Coordinate(int x, int y) {
 
     @Contract("_ -> new")
     static @NotNull Coordinate fromBitboard(long bitboard){
-        int index = Long.numberOfTrailingZeros(bitboard);
-        int x = index % 8;
-        int y = index / 8;
-        return new Coordinate(x, y);
+        return COORDINATES[Long.numberOfTrailingZeros(bitboard)];
+    }
+
+    @Contract("_ -> new")
+    static @NotNull Coordinate fromBitboardIndex(int index){
+        return COORDINATES[index];
     }
 
     public int getBitboardIndex(){
@@ -52,5 +56,11 @@ public record Coordinate(int x, int y) {
 
     public long getBitboardValue(){
         return 1L << getBitboardIndex();
+    }
+
+    static {
+        for(int i = 0; i < 64; i++){
+            COORDINATES[i] = new Coordinate(i % 8, i / 8);
+        }
     }
 }
