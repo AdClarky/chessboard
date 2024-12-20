@@ -28,7 +28,7 @@ public class ChessGame {
             throw new InvalidMoveException(oldPos, newPos);
         if(history.canRedoMove())
             history.clearRedoMoves();
-        Move move = new Move(board, oldPos, newPos);
+        Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves());
         history.push(move);
         logic.calculatePossibleMoves();
     }
@@ -65,7 +65,12 @@ public class ChessGame {
 
     public MoveValue undoMove() {
         Move move = history.undoMove();
-        logic.calculatePossibleMoves();
+        PossibleMoves possibleMoves = move.getPossibleMoves();
+        if(possibleMoves == null)
+            logic.calculatePossibleMoves();
+        else {
+            logic.setPossibleMoves(possibleMoves);
+        }
         return new MoveValue(move.getOldPos(), move.getNewPos());
     }
 
