@@ -185,4 +185,17 @@ class ChessLogic {
     public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
         return possibleMoves.getPossibleMove(piece);
     }
+
+    public PossibleMoves getPossibleMoves() {
+        return possibleMoves;
+    }
+
+    public void setPossibleMoves(PossibleMoves possibleMoves) {
+        this.possibleMoves = possibleMoves;
+        enemyPossible = calculatePieces(board.getTurn().invert());
+    }
+
+    public void updatePossibleMoves(Coordinate oldPos, Coordinate newPos) {
+
+    }
 }

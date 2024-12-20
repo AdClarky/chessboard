@@ -1,4 +1,5 @@
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ class Move {
     private final List<MoveValue> movesMade;
     private final Coordinate previousEnPassant;
     private final long castlingRights;
+    private PossibleMoves possibleMoves = null;
     private boolean undone = false;
     private Pieces pieceTaken = null;
     private PieceColour pieceTakenColour = null;
@@ -35,6 +37,11 @@ class Move {
         castlingRights = board.getCastlingRights();
         movesMade = getMoves();
         makeMove();
+    }
+
+    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves){
+        this(board, oldPos, newPos);
+        this.possibleMoves = possibleMoves;
     }
 
     private List<MoveValue> getMoves(){
@@ -97,6 +104,11 @@ class Move {
         board.setEnPassantSquare(previousEnPassant);
         board.setCastlingRights(castlingRights);
         board.nextTurn();
+    }
+
+    @Nullable
+    public PossibleMoves getPossibleMoves(){
+        return possibleMoves;
     }
 
     /** Checks if a piece was taken or if it was a promotion and restores it. */
