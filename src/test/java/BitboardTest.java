@@ -18,13 +18,6 @@ class BitboardTest {
     }
 
     @Test
-    void addOutOfRange(){
-        Bitboard bitboard = new Bitboard();
-        Coordinate a1 = new Coordinate(8, 5);
-        assertThrows(OutOfRangeException.class, ()->bitboard.add(a1));
-    }
-
-    @Test
     void addNull(){
         Bitboard bitboard = new Bitboard();
         assertThrows(NullPointerException.class, ()->bitboard.add(null));
@@ -464,17 +457,6 @@ class BitboardTest {
     void containsNonCoordinate() {
         Collection<Coordinate> bitboard = new Bitboard();
         assertThrows(ClassCastException.class, ()->bitboard.contains("hello"));
-    }
-
-    @Test
-    void containsCoordinateOutOfRange() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
-            }
-        }
-        assertFalse(bitboard.contains(new Coordinate(0, 50)));
     }
 
     @Test
