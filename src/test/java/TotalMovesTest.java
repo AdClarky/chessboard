@@ -36,10 +36,10 @@ class TotalMovesTest {
         assertEquals(4_865_609, assertDoesNotThrow(()->tester.testDepth(5)));
     }
 
-    @Disabled
+    @Test
     void depth6(){
         ChessGame board = new ChessGame();
         DepthTester tester = new DepthTester(board);
-        assertEquals(119_060_324, assertDoesNotThrow(()->tester.testDepth(5)));
+        assertEquals(119_060_324, assertDoesNotThrow(()->tester.testDepth(6)));
     }
 }
