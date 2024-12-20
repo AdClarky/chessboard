@@ -105,7 +105,7 @@ public class PieceBoard {
         add(piece, to);
     }
 
-    public Bitboard getKingPositions(){
-        return new Bitboard(kings.getBoard());
+    public long getKingPositions(){
+        return kings.getBoard();
     }
 }

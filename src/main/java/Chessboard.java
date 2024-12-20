@@ -103,7 +103,7 @@ class Chessboard {
     }
 
     public Coordinate getKingPos(PieceColour colour) {
-        Bitboard kingPositions = pieceBoard.getKingPositions();
+        long kingPositions = pieceBoard.getKingPositions();
         return colourBoard.getKingPosition(kingPositions, colour);
     }
 
