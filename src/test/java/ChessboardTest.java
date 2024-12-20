@@ -79,31 +79,11 @@ class ChessboardTest {
     }
 
     @Test
-    void areOutOfBoundarySquareNotBlank(){
-        Chessboard board = new Chessboard();
-        assertFalse(board.isSquareBlank(new Coordinate(-1, 0)));
-        assertFalse(board.isSquareBlank(new Coordinate(8, 0)));
-        assertFalse(board.isSquareBlank(new Coordinate(0, -1)));
-        assertFalse(board.isSquareBlank(new Coordinate(0, 8)));
-    }
-
-
-    @Test
     void areEdgeSquaresPieces(){
         Chessboard board = new ChessboardBuilder().defaultSetup();
         assertEquals(Pieces.ROOK, board.getPiece(new Coordinate(0, 0)));
         assertEquals(Pieces.ROOK, board.getPiece(new Coordinate(7, 0)));
         assertEquals(Pieces.ROOK, board.getPiece(new Coordinate(7, 7)));
         assertEquals(Pieces.ROOK, board.getPiece(new Coordinate(0, 7)));
-    }
-
-
-    @Test
-    void areOutOfBoundsSquareNull(){
-        Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertNull(board.getPiece(new Coordinate(-1, 0)));
-        assertNull(board.getPiece(new Coordinate(8, 0)));
-        assertNull(board.getPiece(new Coordinate(0, -1)));
-        assertNull(board.getPiece(new Coordinate(0, 8)));
     }
 }
