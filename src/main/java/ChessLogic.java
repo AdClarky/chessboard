@@ -17,18 +17,19 @@ class ChessLogic {
 
     public void calculatePossibleMoves(){
         enemyPossible = calculatePieces(board.getTurn().invert());
+        long temp = enemyPossible.getBoard();
         possibleMoves = new PossibleMoves();
         calculateFriendlyPieces();
-        enemyPossible = calculatePieces(board.getTurn().invert());
+        enemyPossible = new Bitboard(temp);
     }
 
     private Bitboard calculatePieces(PieceColour colour){
         Collection<Coordinate> pieces = board.getAllColourPositions(colour);
-        Bitboard possible = new Bitboard();
+        long possible = 0;
         for(Coordinate piecePos : pieces) {
-            possible.addAll(new Bitboard(maskGenerator.getMaskForPiece(piecePos)));
+            possible |= maskGenerator.getMaskForPiece(piecePos);
         }
-        return possible;
+        return new Bitboard(possible);
     }
 
     private void calculateFriendlyPieces(){

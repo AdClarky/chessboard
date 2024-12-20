@@ -91,7 +91,7 @@ class Move {
     public void undo(){
         undone = true;
         for(MoveValue move : movesToUndo.reversed()){
-            addOrRemovePiece(pieceTaken, move); // TODO: Fix
+            addOrRemovePiece(pieceTaken, move);
             board.movePiece(move);
         }
         board.setEnPassantSquare(previousEnPassant);
