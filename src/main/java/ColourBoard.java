@@ -66,8 +66,8 @@ public class ColourBoard {
         blackPieces.remove(position);
     }
 
-    public Coordinate getKingPosition(Collection<Coordinate> kingPositions, PieceColour colour) {
+    public Coordinate getKingPosition(Bitboard kingPositions, PieceColour colour) {
         kingPositions.retainAll(getBoard(colour));
-        return kingPositions.iterator().next();
+        return Coordinate.fromBitboard(kingPositions.getBoard());
     }
 }
