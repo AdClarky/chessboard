@@ -34,13 +34,19 @@ public class MaskGenerator {
         long enemyPieces = board.getAllColourPositions(colour.invert()).getBoard();
         long pawnMask = 0L;
         long pos = piecePos.getBitboardValue();
+        Coordinate enPassant = board.getEnPassantSquare();
         if (colour == PieceColour.BLACK) {
             pawnMask = ((pos >>> 8) & emptySquares) | ((((pos & RANK_SEVEN) >>> 16) & emptySquares) & (emptySquares >>> 8));
             pawnMask |= BLACK_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
+            if(enPassant != null && piecePos.y() == enPassant.y() && Math.abs(enPassant.x() - piecePos.x()) == 1)
+                pawnMask |= enPassant.getBitboardValue() >> 8;
         }else {
             pawnMask = ((pos << 8) & emptySquares) | ((((pos & RANK_TWO) << 16) & emptySquares) & (emptySquares << 8));
             pawnMask |= WHITE_PAWN_ATTACKS[piecePos.getBitboardIndex()] & enemyPieces;
+            if(enPassant != null && piecePos.y() == enPassant.y() && Math.abs(enPassant.x() - piecePos.x()) == 1)
+                pawnMask |= enPassant.getBitboardValue() << 8;
         }
+
         return pawnMask;
     }
 
