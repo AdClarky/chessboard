@@ -148,4 +148,12 @@ public class ChessGame {
             }
         }
     }
+
+    public Collection<Coordinate> getAllColourPieces(PieceColour turn) {
+        return board.getAllColourPositions(turn);
+    }
+
+    public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
+        return logic.getPossibleMoves(piece);
+    }
 }

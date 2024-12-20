@@ -177,4 +177,8 @@ class ChessLogic {
     public boolean isValidMove(Coordinate oldPos, Coordinate newPos){
         return possibleMoves.isPossible(oldPos, newPos);
     }
+
+    public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
+        return possibleMoves.getPossibleMove(piece);
+    }
 }
