@@ -131,7 +131,7 @@ class ChessboardBuilder {
     private void setEnPassant(@NotNull String section){
         if(section.contains("-"))
             return;
-        Coordinate location = Coordinate.createCoordinateFromString(section);
+        Coordinate location = Coordinate.fromString(section);
         PieceColour enPassantColour = board.getTurn().invert();
         int direction = enPassantColour.direction();
         board.setEnPassantSquare(new Coordinate(location.x(), location.y()+direction));
