@@ -1,5 +1,4 @@
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -106,7 +105,7 @@ public class ChessGame {
         if("O-O-O".equals(move)) {
             return getCastlingMove(board.getTurn(), 2);
         }
-        Coordinate newCoordinate = Coordinate.createCoordinateFromString(move);
+        Coordinate newCoordinate = Coordinate.fromString(move);
         char pieceLetter;
         if(Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = '\u0000';
@@ -140,10 +139,10 @@ public class ChessGame {
         int length = move.length();
         for(int i = 0; i < length - 2; i++){
             if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x'){ // x value given
-                Coordinate correctX = Coordinate.createCoordinateFromString(move.charAt(i) + "0");
+                Coordinate correctX = Coordinate.fromString(move.charAt(i) + "0");
                 possiblePieces.removeIf(piece -> piece.x() != correctX.x());
             }else if(Character.isDigit(move.charAt(i))){ // y value given
-                Coordinate correctY = Coordinate.createCoordinateFromString("a" + move.charAt(i));
+                Coordinate correctY = Coordinate.fromString("a" + move.charAt(i));
                 possiblePieces.removeIf(piece -> piece.y() != correctY.y());
             }
         }

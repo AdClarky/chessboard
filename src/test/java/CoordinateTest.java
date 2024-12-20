@@ -28,42 +28,42 @@ class CoordinateTest {
 
     @Test
     void pawnMove(){
-        assertEquals(new Coordinate(0, 1), Coordinate.createCoordinateFromString("a2"));
+        assertEquals(new Coordinate(0, 1), Coordinate.fromString("a2"));
     }
 
     @Test
     void pawnTaking() {
-        assertEquals(new Coordinate(4, 3), Coordinate.createCoordinateFromString("dxe4"));
+        assertEquals(new Coordinate(4, 3), Coordinate.fromString("dxe4"));
     }
 
     @Test
     void pawnPromotion(){
-        assertEquals(new Coordinate(7, 7), Coordinate.createCoordinateFromString("h8=Q+"));
+        assertEquals(new Coordinate(7, 7), Coordinate.fromString("h8=Q+"));
     }
 
     @Test
     void shortCastle(){
-        assertThrows(IllegalArgumentException.class, () -> Coordinate.createCoordinateFromString("O-O"));
+        assertThrows(IllegalArgumentException.class, () -> Coordinate.fromString("O-O"));
     }
 
     @Test
     void longCastle() {
-        assertThrows(IllegalArgumentException.class, () -> Coordinate.createCoordinateFromString("O-O-O"));
+        assertThrows(IllegalArgumentException.class, () -> Coordinate.fromString("O-O-O"));
     }
 
     @Test
     void checkMove() {
-        assertEquals(new Coordinate(6, 6), Coordinate.createCoordinateFromString("Qg7+"));
+        assertEquals(new Coordinate(6, 6), Coordinate.fromString("Qg7+"));
     }
 
     @Test
     void mateMove() {
-        assertEquals(new Coordinate(1, 6), Coordinate.createCoordinateFromString("Qb7#"));
+        assertEquals(new Coordinate(1, 6), Coordinate.fromString("Qb7#"));
     }
 
     @Test
     void pieceMove() {
-        assertEquals(new Coordinate(0, 7), Coordinate.createCoordinateFromString("Ka8"));
+        assertEquals(new Coordinate(0, 7), Coordinate.fromString("Ka8"));
     }
 
     @Test
@@ -103,5 +103,13 @@ class CoordinateTest {
         assertFalse(a8.isNotInRange());
         assertFalse(h1.isNotInRange());
         assertFalse(h8.isNotInRange());
+    }
+
+    @Test
+    void fromBitboardEdge(){
+        assertEquals(new Coordinate(0, 0), Coordinate.fromBitboard(1));
+        assertEquals(new Coordinate(7, 0), Coordinate.fromBitboard(0x80));
+        assertEquals(new Coordinate(0, 7), Coordinate.fromBitboard(0x100000000000000L));
+        assertEquals(new Coordinate(7, 7), Coordinate.fromBitboard(0x8000000000000000L));
     }
 }
