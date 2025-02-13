@@ -1,3 +1,11 @@
+package window;
+
+import chessboard.ChessInterface;
+import common.BoardListener;
+import common.Coordinate;
+import common.PieceColour;
+import common.PieceValue;
+import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,20 +31,16 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private static final int WINDOW_HEIGHT = 800;
     private final Square[][] squares = new Square[8][8];
     private Square squareSelected;
-    private final ChessGame chessGame;
+    private final ChessInterface board;
     private final PieceColour turn;
     private PieceColour currentTurn;
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
     private Square checkmated;
 
-    public GameWindow(ChessGame chessGame, PieceColour colour){
+    public GameWindow(ChessInterface board, PieceColour colour){
         super();
-        this.chessGame = chessGame;
-        this.turn = colour;
-        if(colour == PieceColour.BLANK)
-            currentTurn = PieceColour.WHITE;
-        else
-            currentTurn = colour;
+        this.board = board;
+        turn = colour;
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,8 +49,6 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         Color currentColour = LIGHT_SQUARE;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
-                Piece piece = chessGame.getPiece(x, y);
-                squares[y][x] = new Square(piece, currentColour, x, y);
                 squares[y][x].addMouseListener(this);
                 squares[y][x].addKeyListener(this);
                 add(squares[y][x]);
@@ -57,6 +59,10 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         setVisible(true);
     }
 
+    public Square getSquare(Coordinate position){
+        return squares[position.y()][position.x()];
+    }
+
     /**
      * Run when a square is clicked.
      * Window tracks which square is currently highlighted.
@@ -64,21 +70,20 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * @param square the square which has been clicked
      */
     private void squareClicked(@NotNull Square square){
-        chessGame.redoAllMoves();
-        if((squareSelected == null && square.isBlank()) || chessGame.getCurrentTurn() != currentTurn)
+        board.redoAllMoves();
+        if((squareSelected == null && square.isBlank()) || board.getCurrentTurn() != currentTurn)
             return;
-        Piece piece = square.getCurrentPiece();
-        if(square.isBlank() || piece.getColour() != chessGame.getCurrentTurn()){ // if clicked a blank or enemy square
-            Piece pieceSelected = squareSelected.getCurrentPiece();
+        PieceColour clickedColour = board.getColour(square.getPosition());
+        if(square.isBlank() || clickedColour != board.getCurrentTurn()){ // if clicked a blank or enemy square
             try {
-                chessGame.makeMove(pieceSelected.getX(), pieceSelected.getY(), square.getBoardX(), square.getBoardY());
+                board.makeMove(squareSelected.getPosition(), square.getPosition());
             } catch (InvalidMoveException e) {
                 System.err.println(e.getMessage());
             }
             unselectSquare();
         } else { // if the player's piece
             unselectSquare();
-            showPossibleMoves(piece);
+            showPossibleMoves(square.getPosition());
             squareSelected = square;
             squareSelected.selected();
         }
@@ -98,11 +103,11 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
 
     /**
      * Unhighlights the previously highlighted squares then highlights the new possible squares.
-     * @param piece the piece whose possible moves will be calculated
+     * @param square the square of the piece whose possible moves will be calculated
      */
-    private void showPossibleMoves(@NotNull Piece piece) {
+    private void showPossibleMoves(@NotNull Coordinate square) {
         unhighlightPossibleMoves();
-        possibleMoves = piece.getPossibleMoves();
+        possibleMoves = board.getPossibleMoves(square);
         for(Coordinate move : possibleMoves){
             squares[move.y()][move.x()].showPossibleMove();
         }
@@ -115,44 +120,32 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         possibleMoves.clear();
     }
 
-    @Override
-    public void boardChanged(int oldX, int oldY, int newX, int newY) {
-        for(MoveValue move : chessGame.getLastMoveMade()) {
-            Square oldSquare = findPiece(move.piece());
-            Piece oldSquarePiece = chessGame.getPiece(oldSquare.getBoardX(), oldSquare.getBoardY());
-            oldSquare.setCurrentPiece(oldSquarePiece);
-            Piece newSquarePiece = chessGame.getPiece(move.newX(), move.newY());
-            squares[move.newY()][move.newX()].setCurrentPiece(newSquarePiece);
+    public void updateBoard(){
+        String fenString = board.getFenString();
+        for(PieceValue piece : new FenIter(fenString)){
+            getSquare(piece.position()).setCurrentPiece(piece);
         }
     }
 
-    @Nullable
-    private Square findPiece(Piece piece){
-        for(Square[] row : squares){
-            for(Square square : row){
-                if(square.getCurrentPiece().equals(piece)){
-                    return square;
-                }
-            }
-        }
-        return null;
+    @Override
+    public void boardChanged(Coordinate oldPos, Coordinate newPos) {
+        updateBoard();
     }
 
     @Override
-    public void moveMade(int i, int i1, int i2, int i3) {
-        boardChanged(0, 0, 0, 0);
-        if(turn == PieceColour.BLANK)
-            currentTurn = chessGame.getCurrentTurn();
+    public void moveMade(Coordinate oldPos, Coordinate newPos) {
+        updateBoard();
+        currentTurn = board.getCurrentTurn();
     }
 
     @Override
-    public void checkmate(int x, int y) {
-        checkmated = squares[y][x];
-        squares[y][x].showPossibleMove();
+    public void checkmate(Coordinate kingPos) {
+        checkmated = squares[kingPos.y()][kingPos.x()];
+        squares[kingPos.y()][kingPos.x()].showPossibleMove();
     }
 
     @Override
-    public void draw(int i, int i1, int i2, int i3) {
+    public void draw(Coordinate white, Coordinate black) {
 
     }
 
@@ -183,13 +176,13 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
-            chessGame.undoMove();
+            board.undoMove();
             if(checkmated != null) {
                 checkmated.unhighlight();
                 checkmated = null;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-            chessGame.redoMove();
+            board.redoMove();
         }
     }
 
