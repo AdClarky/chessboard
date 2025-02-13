@@ -12,7 +12,7 @@ public record PieceValue(Coordinate position, Pieces pieceType, PieceColour colo
         }else{
             colour = PieceColour.WHITE;
         }
-        Pieces type = Pieces.valueOf("" + Character.toUpperCase(piece));
+        Pieces type = Pieces.fromCharacter(Character.toUpperCase(piece));
 
         return new PieceValue(position, type, colour);
     }
