@@ -14,14 +14,19 @@ public class FenIter implements Iterable<PieceValue> {
     public FenIter(String fen){
         int x = 0, y = 7;
         for (char c : fen.toCharArray()) {
+            if(c == '/')
+                continue;
+            if(c == ' ')
+                break;
             if(Character.isDigit(c)){
                 for(int i=0; i<c-'0'; i++){
                     x++;
                 }
             } else {
                 pieces.add(PieceValue.of(new Coordinate(x, y), c));
+                x++;
             }
-            if(x == 7){
+            if(x == 8){
                 x = 0;
                 y--;
             }
