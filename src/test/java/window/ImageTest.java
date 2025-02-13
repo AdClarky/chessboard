@@ -1,6 +1,8 @@
 package window;
 
 import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -9,46 +11,39 @@ import javax.swing.ImageIcon;
 class ImageTest {
     @Test
     void blankImage(){
-        ImageIcon icon = ImageUtils.getPieceImage("Blank", PieceColour.WHITE);
+        ImageIcon icon = ImageUtils.getPieceImage(new PieceValue(null, null, null));
         assertNull(icon);
     }
 
     @Test
-    void randomString(){
-        assertThrows(IllegalArgumentException.class, ()->{
-            ImageIcon icon = ImageUtils.getPieceImage("asdjkasjkdl", PieceColour.WHITE);
-        });
-    }
-
-    @Test
     void correctWhitePiece(){
-        ImageIcon icon = ImageUtils.getPieceImage("pawn", PieceColour.WHITE);
+        ImageIcon icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.PAWN, PieceColour.WHITE));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("bishop", PieceColour.WHITE);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.BISHOP, PieceColour.WHITE));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("knight", PieceColour.WHITE);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.KNIGHT, PieceColour.WHITE));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("rook", PieceColour.WHITE);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.ROOK, PieceColour.WHITE));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("king", PieceColour.WHITE);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.KING, PieceColour.WHITE));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("queen", PieceColour.WHITE);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.QUEEN, PieceColour.WHITE));
         assertNotNull(icon);
     }
 
     @Test
     void correctBlackPiece(){
-        ImageIcon icon = ImageUtils.getPieceImage("pawn", PieceColour.BLACK);
+        ImageIcon icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.PAWN, PieceColour.BLACK));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("bishop", PieceColour.BLACK);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.BISHOP, PieceColour.BLACK));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("knight", PieceColour.BLACK);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.KNIGHT, PieceColour.BLACK));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("rook", PieceColour.BLACK);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.ROOK, PieceColour.BLACK));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("king", PieceColour.BLACK);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.KING, PieceColour.BLACK));
         assertNotNull(icon);
-        icon = ImageUtils.getPieceImage("queen", PieceColour.BLACK);
+        icon = ImageUtils.getPieceImage(new PieceValue(null, Pieces.QUEEN, PieceColour.BLACK));
         assertNotNull(icon);
     }
 }
