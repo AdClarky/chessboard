@@ -46,6 +46,6 @@ final class ImageUtils {
         if(piece.colour() == null)
             return null;
 
-        return IMAGE_MAP.get(piece.colour().toString() + piece.pieceType());
+        return IMAGE_MAP.get(piece.colour() + piece.pieceType().toString().toLowerCase());
     }
 }
