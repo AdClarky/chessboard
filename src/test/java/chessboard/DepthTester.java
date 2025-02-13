@@ -1,5 +1,8 @@
 package chessboard;
 
+import common.Coordinate;
+import exception.InvalidMoveException;
+
 import java.util.Collection;
 
 public class DepthTester {

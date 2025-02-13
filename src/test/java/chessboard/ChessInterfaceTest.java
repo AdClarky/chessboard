@@ -1,5 +1,8 @@
 package chessboard;
 
+import common.BoardListener;
+import common.Coordinate;
+import exception.InvalidMoveException;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

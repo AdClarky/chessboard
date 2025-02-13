@@ -1,5 +1,10 @@
 package chessboard;
 
+import common.Coordinate;
+import common.MoveValue;
+import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -29,7 +29,7 @@ public record Coordinate(int x, int y) {
      * @throws IllegalArgumentException when a castling move is input
      */
     @Contract("_ -> new")
-    static @NotNull Coordinate fromString(@NotNull String move) throws IllegalArgumentException {
+    public static @NotNull Coordinate fromString(@NotNull String move) throws IllegalArgumentException {
         if(move.contains("O-"))
             throw new IllegalArgumentException("Invalid move - cannot create coordinate from castle");
         int length = move.length();
@@ -43,12 +43,12 @@ public record Coordinate(int x, int y) {
     }
 
     @Contract("_ -> new")
-    static @NotNull Coordinate fromBitboard(long bitboard){
+    public static @NotNull Coordinate fromBitboard(long bitboard){
         return COORDINATES[Long.numberOfTrailingZeros(bitboard)];
     }
 
     @Contract("_ -> new")
-    static @NotNull Coordinate fromBitboardIndex(int index){
+    public static @NotNull Coordinate fromBitboardIndex(int index){
         return COORDINATES[index];
     }
 

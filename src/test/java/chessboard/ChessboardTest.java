@@ -1,5 +1,9 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 

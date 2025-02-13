@@ -1,5 +1,7 @@
 package chessboard;
 
+import common.PGNParser;
+import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

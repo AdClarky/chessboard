@@ -1,5 +1,6 @@
 package chessboard;
 
+import common.Coordinate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.VisibleForTesting;
 

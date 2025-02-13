@@ -1,5 +1,6 @@
 package chessboard;
 
+import common.MoveValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

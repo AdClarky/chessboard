@@ -1,3 +1,7 @@
+import chessboard.ChessGame;
+import common.BoardListener;
+import exception.InvalidMoveException;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

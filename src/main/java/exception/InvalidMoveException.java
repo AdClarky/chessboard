@@ -1,5 +1,7 @@
 package exception;
 
+import common.Coordinate;
+
 /**
  * Indicates a move is not a valid move given the current board state.
  */

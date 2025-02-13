@@ -1,5 +1,9 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.Pieces;
+import exception.InvalidFenStringException;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 

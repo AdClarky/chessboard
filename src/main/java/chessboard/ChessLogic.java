@@ -1,5 +1,11 @@
 package chessboard;
 
+import common.Coordinate;
+import common.MoveValue;
+import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
+
 import java.util.Collection;
 
 class ChessLogic {

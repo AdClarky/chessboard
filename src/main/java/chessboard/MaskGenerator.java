@@ -1,5 +1,9 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.Pieces;
+
 public class MaskGenerator {
     private final Chessboard board;
     private final static long RANK_TWO = 0xff00L;

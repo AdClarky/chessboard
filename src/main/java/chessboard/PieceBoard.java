@@ -1,5 +1,8 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceValue;
+import common.Pieces;
 import org.jetbrains.annotations.Nullable;
 
 public class PieceBoard {

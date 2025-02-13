@@ -1,5 +1,9 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.Pieces;
+
 import java.util.Random;
 
 public class Hasher {
