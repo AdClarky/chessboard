@@ -174,4 +174,12 @@ public class ChessInterface {
     public String getFenString() {
         return fenGenerator.getFenString();
     }
+
+    public PieceColour getColour(Coordinate position) {
+        return game.getColour(position);
+    }
+
+    public Collection<Coordinate> getPossibleMoves(Coordinate position) {
+        return game.getPossibleMoves(position);
+    }
 }
