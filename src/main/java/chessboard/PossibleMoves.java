@@ -1,5 +1,7 @@
 package chessboard;
 
+import common.Coordinate;
+
 import java.util.HashMap;
 import java.util.Map;
 

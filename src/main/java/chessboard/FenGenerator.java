@@ -1,5 +1,8 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.Pieces;
 import org.jetbrains.annotations.NotNull;
 
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called

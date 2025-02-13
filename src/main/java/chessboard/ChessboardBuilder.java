@@ -1,5 +1,10 @@
 package chessboard;
 
+import common.Coordinate;
+import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
+import exception.InvalidFenStringException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
