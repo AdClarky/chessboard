@@ -1,5 +1,8 @@
 package common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Pieces {
     ROOK('R'),
     KNIGHT('N'),
@@ -10,6 +13,13 @@ public enum Pieces {
     BLANK('Z');
 
     private final char character;
+    private static final Map<Character, Pieces> LOOKUP_MAP = new HashMap<>();
+
+    static {
+        for (Pieces piece : Pieces.values()) {
+            LOOKUP_MAP.put(piece.character, piece);
+        }
+    }
 
     Pieces(char character) {
         this.character = character;
@@ -29,5 +39,9 @@ public enum Pieces {
 
     public char toCharacter(){
         return character;
+    }
+
+    public static Pieces fromCharacter(char character){
+        return LOOKUP_MAP.get(character);
     }
 }
