@@ -16,9 +16,12 @@ public enum Pieces {
     private static final Map<Character, Pieces> LOOKUP_MAP = new HashMap<>();
 
     static {
-        for (Pieces piece : Pieces.values()) {
-            LOOKUP_MAP.put(piece.character, piece);
-        }
+        LOOKUP_MAP.put('R', ROOK);
+        LOOKUP_MAP.put('N', KNIGHT);
+        LOOKUP_MAP.put('B', BISHOP);
+        LOOKUP_MAP.put('P', PAWN);
+        LOOKUP_MAP.put('Q', QUEEN);
+        LOOKUP_MAP.put('K', KING);
     }
 
     Pieces(char character) {
