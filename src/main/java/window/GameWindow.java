@@ -5,6 +5,7 @@ import common.BoardListener;
 import common.Coordinate;
 import common.PieceColour;
 import common.PieceValue;
+import common.Pieces;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,6 +50,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         Color currentColour = LIGHT_SQUARE;
         for(int y = 0; y < 8; y++){
             for(int x = 0; x < 8; x++){
+                squares[y][x] = new Square(new PieceValue(new Coordinate(x, y), Pieces.BLANK, null), currentColour);
                 squares[y][x].addMouseListener(this);
                 squares[y][x].addKeyListener(this);
                 add(squares[y][x]);
@@ -56,6 +58,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
             }
             currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
         }
+        updateBoard();
         setVisible(true);
     }
 
