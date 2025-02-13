@@ -1,4 +1,10 @@
-import org.jetbrains.annotations.NotNull;
+package window;
+
+import common.Coordinate;
+import common.PieceColour;
+import common.PieceValue;
+import common.Pieces;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JButton;
 import java.awt.Color;
@@ -9,40 +15,50 @@ import java.awt.Color;
 public class Square extends JButton {
     private static final Color SELECTED = new Color(245, 246, 130);
     private static final Color POSSIBLE_MOVE = new Color(200, 50, 50);
-    private final Color colour;
-    private Piece currentPiece;
-    private final int boardX;
-    private final int boardY;
+    private final Color bgColour;
+    private Pieces piece;
+    private Coordinate position;
+    private PieceColour colour;
 
     /**
      * Initialises the square either with a piece or with no piece (blank).
-     * @param currentPiece the piece which is currently on the square
-     * @param colour background colour of the square
-     * @param boardX the x which the square represents on the board
-     * @param boardY the y which the square represents on the board
+     * @param piece the piece which is currently on the square
+     * @param bgColour background colour of the square
      */
-    public Square(Piece currentPiece, Color colour, int boardX, int boardY) {
+    public Square(PieceValue piece, Color bgColour) {
         super();
-        this.boardX = boardX;
-        this.boardY = boardY;
-        this.currentPiece = currentPiece;
-        this.colour = colour;
-        setBackground(colour);
-        setCurrentPiece(currentPiece);
+        position = piece.position();
+        this.piece = piece.pieceType();
+        colour = piece.colour();
+        this.bgColour = bgColour;
+        setBackground(bgColour);
+        setCurrentPiece(piece);
     }
 
-    @NotNull
-    public Piece getCurrentPiece() {return currentPiece;}
-
-    public void setCurrentPiece(Piece currentPiece) {
-        this.currentPiece = currentPiece;
-        setIcon(currentPiece.getPieceIcon());
+    @Nullable
+    public Pieces getPiece() {
+        return piece;
     }
 
-    public boolean isBlank(){return currentPiece instanceof Blank;}
+    @Nullable
+    public PieceColour getColour() {
+        return colour;
+    }
 
-    public int getBoardX() {return boardX;}
-    public int getBoardY() {return boardY;}
+
+    public void setCurrentPiece(PieceValue currentPiece) {
+        piece = currentPiece.pieceType();
+        colour = currentPiece.colour();
+        setIcon(ImageUtils.getPieceImage(currentPiece));
+    }
+
+    public boolean isBlank(){
+        return colour == null;
+    }
+
+    public Coordinate getPosition() {
+        return position;
+    }
 
     /**
      * If the square has been selected
@@ -55,7 +71,7 @@ public class Square extends JButton {
      * Sets the background to the default colour
      */
     public void unhighlight(){
-        setBackground(colour);
+        setBackground(bgColour);
     }
 
     /**
