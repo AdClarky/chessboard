@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class FenIter implements Iterable<PieceValue> {
+public class FenParser implements Iterable<PieceValue> {
     private final List<PieceValue> pieces = new ArrayList<>(64);
 
-    public FenIter(String fen){
+    public FenParser(String fen){
         int x = 0, y = 7;
         for (char c : fen.toCharArray()) {
             if(c == '/')
@@ -31,6 +31,10 @@ public class FenIter implements Iterable<PieceValue> {
                 y--;
             }
         }
+    }
+
+    public List<PieceValue> getPieces(){
+        return pieces;
     }
 
     @NotNull
