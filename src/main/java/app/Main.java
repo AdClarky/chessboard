@@ -1,3 +1,5 @@
+package app;
+
 import chessboard.ChessInterface;
 import common.BoardListener;
 import common.PieceColour;
@@ -9,10 +11,7 @@ import java.io.IOException;
 /**
  * Used to run the program. Creates a window in a new thread.
  */
-public final class Main {
-    public Main() {
-    }
-
+public class Main {
     /**
      * Runs the program opening a game window.
      * @param args none taken.
