@@ -128,6 +128,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         for(PieceValue piece : new FenIter(fenString)){
             getSquare(piece.position()).setCurrentPiece(piece);
         }
+        char colour = fenString.charAt(fenString.indexOf(' ')+1);
+        currentTurn = colour == 'b' ? PieceColour.BLACK : PieceColour.WHITE;
     }
 
     @Override
