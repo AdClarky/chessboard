@@ -1,21 +1,17 @@
-package window;
-
-import chessboard.ChessGame;
 import chessboard.ChessInterface;
 import common.BoardListener;
 import common.PieceColour;
 import exception.InvalidMoveException;
+import window.GameWindow;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Used to run the program. Creates a window in a new thread.
  */
-public final class Driver {
-    private Driver(){}
+public final class Main {
+    public Main() {
+    }
 
     /**
      * Runs the program opening a game window.
