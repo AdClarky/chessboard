@@ -31,6 +31,12 @@ public class ChessGame {
         logic.calculatePossibleMoves();
     }
 
+    ChessGame(Chessboard board, ChessLogic logic) {
+        this.board = board;
+        history = new BoardHistory();
+        this.logic = logic;
+    }
+
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
         if(!logic.isValidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
@@ -167,5 +173,11 @@ public class ChessGame {
 
     public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
         return logic.getPossibleMoves(piece);
+    }
+
+    public ChessGame copy(){
+        Chessboard boardCopy = board.copy();
+        ChessLogic logicCopy = logic.copy();
+        return new ChessGame(boardCopy, logicCopy);
     }
 }
