@@ -16,4 +16,8 @@ public record PieceValue(Coordinate position, Pieces pieceType, PieceColour colo
 
         return new PieceValue(position, type, colour);
     }
+
+    public static @NotNull PieceValue blank(){
+        return new PieceValue(null, Pieces.BLANK, null);
+    }
 }
