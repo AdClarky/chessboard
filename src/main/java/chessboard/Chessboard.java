@@ -13,9 +13,9 @@ import java.util.List;
 
 /** A chess board that is automatically populated with blank squares. */
 class Chessboard {
-    private final PieceBoard pieceBoard = new PieceBoard();
-    private final ColourBoard colourBoard = new ColourBoard();
-    private final Bitboard castlingRights = new Bitboard();
+    private PieceBoard pieceBoard = new PieceBoard();
+    private ColourBoard colourBoard = new ColourBoard();
+    private Bitboard castlingRights = new Bitboard();
     private PieceColour currentTurn = PieceColour.WHITE;
     private Coordinate enPassantSquare;
 
@@ -27,6 +27,14 @@ class Chessboard {
         castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(4, 0),
                 new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
                 new Coordinate(4, 7)));
+    }
+
+    private Chessboard (PieceBoard pieceBoard, ColourBoard colourBoard, Bitboard castlingRights, PieceColour currentTurn, Coordinate enPassantSquare) {
+        this.pieceBoard = pieceBoard;
+        this.colourBoard = colourBoard;
+        this.castlingRights = castlingRights;
+        this.currentTurn = currentTurn;
+        this.enPassantSquare = enPassantSquare;
     }
 
     /**
@@ -133,5 +141,12 @@ class Chessboard {
             throw new IllegalArgumentException("Added piece cannot be blank");
         pieceBoard.add(piece, position);
         colourBoard.add(colour, position);
+    }
+
+    Chessboard copy() {
+        PieceBoard pieceBoardCopy = pieceBoard.copy();
+        ColourBoard colourBoardCopy = colourBoard.copy();
+        Bitboard castlingRightsCopy = new Bitboard(castlingRights.getBoard());
+        return new Chessboard(pieceBoardCopy, colourBoardCopy, castlingRightsCopy, currentTurn, enPassantSquare);
     }
 }
