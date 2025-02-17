@@ -13,9 +13,9 @@ import java.util.List;
 
 /** A chess board that is automatically populated with blank squares. */
 class Chessboard {
-    private PieceBoard pieceBoard = new PieceBoard();
-    private ColourBoard colourBoard = new ColourBoard();
-    private Bitboard castlingRights = new Bitboard();
+    private final PieceBoard pieceBoard;
+    private final ColourBoard colourBoard;
+    private final Bitboard castlingRights;
     private PieceColour currentTurn = PieceColour.WHITE;
     private Coordinate enPassantSquare;
 
@@ -24,6 +24,9 @@ class Chessboard {
      * Initialises the board with all squares blank.
      */
     public Chessboard() {
+        pieceBoard = new PieceBoard();
+        colourBoard = new ColourBoard();
+        castlingRights = new Bitboard();
         castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(4, 0),
                 new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
                 new Coordinate(4, 7)));
