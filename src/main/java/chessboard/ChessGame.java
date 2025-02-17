@@ -31,7 +31,7 @@ public class ChessGame {
         logic.calculatePossibleMoves();
     }
 
-    ChessGame(Chessboard board, ChessLogic logic) {
+    private ChessGame(Chessboard board, ChessLogic logic) {
         this.board = board;
         history = new BoardHistory();
         this.logic = logic;
@@ -175,7 +175,7 @@ public class ChessGame {
         return logic.getPossibleMoves(piece);
     }
 
-    public ChessGame copy(){
+    ChessGame copy(){
         Chessboard boardCopy = board.copy();
         ChessLogic logicCopy = logic.copy();
         return new ChessGame(boardCopy, logicCopy);
