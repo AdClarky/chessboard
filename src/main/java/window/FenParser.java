@@ -1,17 +1,32 @@
 package window;
 
 import common.Coordinate;
+import common.PieceColour;
 import common.PieceValue;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class FenParser implements Iterable<PieceValue> {
+public class FenParser {
+    private final String fen;
+    private PieceColour colour;
     private final List<PieceValue> pieces = new ArrayList<>(64);
 
     public FenParser(String fen){
+        this.fen = fen;
+        parsePieces();
+        parseColour();
+    }
+
+    public List<PieceValue> getPieces(){
+        return pieces;
+    }
+
+    public PieceColour getColour(){
+        return colour;
+    }
+
+    private void parsePieces(){
         int x = 0, y = 7;
         for (char c : fen.toCharArray()) {
             if(c == '/')
@@ -33,13 +48,8 @@ public class FenParser implements Iterable<PieceValue> {
         }
     }
 
-    public List<PieceValue> getPieces(){
-        return pieces;
-    }
-
-    @NotNull
-    @Override
-    public Iterator<PieceValue> iterator() {
-        return pieces.iterator();
+    private void parseColour(){
+        char colour_char = fen.charAt(fen.indexOf(' ')+1);
+        colour = colour_char == 'b' ? PieceColour.BLACK : PieceColour.WHITE;
     }
 }
