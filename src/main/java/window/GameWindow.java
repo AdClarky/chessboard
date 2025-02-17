@@ -8,7 +8,6 @@ import common.PieceValue;
 import common.Pieces;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -35,6 +34,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private final ChessInterface board;
     private final PieceColour turn;
     private PieceColour currentTurn;
+    private Collection<PieceValue> pieces = new ArrayList<>();
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
     private Square checkmated;
 
@@ -125,11 +125,28 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
 
     public void updateBoard(){
         String fenString = board.getFenString();
-        for(PieceValue piece : new FenIter(fenString)){
+        FenParser fen = new FenParser(fenString);
+        Collection<PieceValue> newPieces = fen.getPieces();
+        removeMovedPieces(newPieces);
+        updateMovedPieces(newPieces);
+        pieces = newPieces;
+        currentTurn = board.getCurrentTurn();
+    }
+
+    private void removeMovedPieces(Collection<PieceValue> newPieces){
+        Collection<PieceValue> movedPieces = new ArrayList<>(pieces);
+        movedPieces.removeAll(newPieces);
+        for(PieceValue piece : movedPieces){
+            getSquare(piece.position()).setCurrentPiece(PieceValue.blank());
+        }
+    }
+
+    private void updateMovedPieces(Collection<PieceValue> newPieces){
+        Collection<PieceValue> movedPieces = new ArrayList<>(newPieces);
+        movedPieces.removeAll(pieces);
+        for(PieceValue piece : movedPieces){
             getSquare(piece.position()).setCurrentPiece(piece);
         }
-        char colour = fenString.charAt(fenString.indexOf(' ')+1);
-        currentTurn = colour == 'b' ? PieceColour.BLACK : PieceColour.WHITE;
     }
 
     @Override
