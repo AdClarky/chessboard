@@ -6,10 +6,18 @@ import common.PieceValue;
 import org.jetbrains.annotations.Nullable;
 
 public class ColourBoard {
-    Bitboard whitePieces = new Bitboard();
-    Bitboard blackPieces = new Bitboard();
+    private final Bitboard whitePieces;
+    private final Bitboard blackPieces;
 
-    public ColourBoard(){}
+    public ColourBoard(){
+        whitePieces = new Bitboard();
+        blackPieces = new Bitboard();
+    }
+
+    private ColourBoard(Bitboard whitePieces, Bitboard blackPieces){
+        this.whitePieces = whitePieces;
+        this.blackPieces = blackPieces;
+    }
 
     public void add(PieceValue piece){
         if(piece.colour() == PieceColour.WHITE)
@@ -71,5 +79,9 @@ public class ColourBoard {
     public Coordinate getKingPosition(long kingPositions, PieceColour colour) {
         kingPositions &= getBoard(colour).getBoard();
         return Coordinate.fromBitboard(kingPositions);
+    }
+
+    ColourBoard copy() {
+        return new ColourBoard(new Bitboard(whitePieces.getBoard()), new Bitboard(blackPieces.getBoard()));
     }
 }
