@@ -6,14 +6,30 @@ import common.Pieces;
 import org.jetbrains.annotations.Nullable;
 
 public class PieceBoard {
-    private final Bitboard pawns = new Bitboard();
-    private final Bitboard knights = new Bitboard();
-    private final Bitboard rooks = new Bitboard();
-    private final Bitboard bishops = new Bitboard();
-    private final Bitboard queens = new Bitboard();
-    private final Bitboard kings = new Bitboard();
+    private final Bitboard pawns;
+    private final Bitboard knights;
+    private final Bitboard rooks;
+    private final Bitboard bishops;
+    private final Bitboard queens;
+    private final Bitboard kings;
 
-    public PieceBoard(){}
+    public PieceBoard(){
+        pawns = new Bitboard();
+        knights = new Bitboard();
+        rooks = new Bitboard();
+        bishops = new Bitboard();
+        queens = new Bitboard();
+        kings = new Bitboard();
+    }
+
+    private PieceBoard(Bitboard pawns, Bitboard knights, Bitboard rooks, Bitboard bishops, Bitboard queens, Bitboard kings){
+        this.pawns = pawns;
+        this.knights = knights;
+        this.rooks = rooks;
+        this.bishops = bishops;
+        this.queens = queens;
+        this.kings = kings;
+    }
 
     public void add(PieceValue piece){
         add(piece.pieceType(), piece.position());
@@ -108,5 +124,15 @@ public class PieceBoard {
 
     public long getKingPositions(){
         return kings.getBoard();
+    }
+
+    PieceBoard copy() {
+        Bitboard pawnsCopy = new Bitboard(pawns.getBoard());
+        Bitboard knightsCopy = new Bitboard(knights.getBoard());
+        Bitboard rooksCopy = new Bitboard(rooks.getBoard());
+        Bitboard bishopsCopy = new Bitboard(bishops.getBoard());
+        Bitboard queensCopy = new Bitboard(queens.getBoard());
+        Bitboard kingsCopy = new Bitboard(kings.getBoard());
+        return new PieceBoard(pawns, knights, rooks, bishops, queens, kings);
     }
 }
