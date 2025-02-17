@@ -10,17 +10,27 @@ import java.util.Collection;
 
 class ChessLogic {
     private final Chessboard board;
-    private MaskGenerator maskGenerator;
+    private final MaskGenerator maskGenerator;
     private Bitboard enemyPossible;
-    private PossibleMoves possibleMoves = new PossibleMoves();
+    private PossibleMoves possibleMoves;
     private BoardHistory history;
     private Hasher hasher;
 
     public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
+        maskGenerator = new MaskGenerator(board);
+        possibleMoves = new PossibleMoves();
         this.history = history;
         hasher = new Hasher(board);
+    }
+
+    private ChessLogic(Chessboard board, Bitboard enemyPossible, PossibleMoves possibleMoves, BoardHistory history) {
+        this.board = board;
         maskGenerator = new MaskGenerator(board);
+        this.enemyPossible = enemyPossible;
+        this.possibleMoves = possibleMoves;
+        this.history = history;
+        hasher = new Hasher(board);
     }
 
     public void calculatePossibleMoves(){
@@ -205,5 +215,12 @@ class ChessLogic {
 
     public void updatePossibleMoves(Coordinate oldPos, Coordinate newPos) {
 
+    }
+
+    ChessLogic copy(Chessboard board) {
+        Bitboard enemyPossibleCopy = new Bitboard(enemyPossible.getBoard());
+        PossibleMoves possibleMovesCopy = possibleMoves.copy();
+        BoardHistory boardHistoryCopy = history.copy();
+        return new ChessLogic(board, enemyPossibleCopy, possibleMovesCopy, boardHistoryCopy);
     }
 }
