@@ -18,7 +18,9 @@ public class Main {
      */
     public static void main(String[] args) throws IOException, InterruptedException, InvalidMoveException {
         ChessInterface chessGame = new ChessInterface();
-        BoardListener gameWindow = new GameWindow(chessGame, PieceColour.WHITE);
-        chessGame.addBoardListener(gameWindow);
+        BoardListener whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
+        BoardListener blackWindow = new GameWindow(chessGame, PieceColour.BLACK);
+        chessGame.addBoardListener(whiteWindow);
+        chessGame.addBoardListener(blackWindow);
     }
 }
