@@ -10,17 +10,27 @@ import java.util.Deque;
 import java.util.List;
 
 class BoardHistory {
-    private final ArrayDeque<Move> moves = new ArrayDeque<>(40);
-    private final ArrayDeque<Move> redoMoves = new ArrayDeque<>(40);
+    private final ArrayDeque<Move> moves;
+    private final ArrayDeque<Move> redoMoves;
     private Deque<Move> lastMove = moves;
     private int numHalfMoves = 0;
     private int numFullMoves = 1;
 
     public BoardHistory() {
-
+        moves = new ArrayDeque<>(40);
+        redoMoves = new ArrayDeque<>(40);
     }
 
     public BoardHistory(int numHalfMoves, int numFullMoves) {
+        this();
+        this.numHalfMoves = numHalfMoves;
+        this.numFullMoves = numFullMoves;
+    }
+
+    private BoardHistory(ArrayDeque<Move> moves, ArrayDeque<Move> redoMoves, Deque<Move> lastMove, int numHalfMoves, int numFullMoves) {
+        this.moves = moves;
+        this.redoMoves = redoMoves;
+        this.lastMove = lastMove;
         this.numHalfMoves = numHalfMoves;
         this.numFullMoves = numFullMoves;
     }
@@ -126,5 +136,12 @@ class BoardHistory {
             countHalfMoves();
         else
             numHalfMoves--;
+    }
+
+    BoardHistory copy() {
+        ArrayDeque<Move> movesCopy = new ArrayDeque<>(moves);
+        ArrayDeque<Move> redoMovesCopy = new ArrayDeque<>(redoMoves);
+        ArrayDeque<Move> lastMoveCopy = new ArrayDeque<>(lastMove);
+        return new BoardHistory(movesCopy, redoMovesCopy, lastMoveCopy, numHalfMoves, numFullMoves);
     }
 }
