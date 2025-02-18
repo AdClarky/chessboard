@@ -10,6 +10,7 @@ import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
@@ -31,6 +32,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private static final int WINDOW_HEIGHT = 800;
     private final Square[][] squares = new Square[8][8];
     private Square squareSelected;
+    private Coordinate moveTo;
+    private Coordinate moveFrom;
     private final ChessInterface board;
     private final PieceColour turn;
     private Collection<PieceValue> pieces = new ArrayList<>();
@@ -78,6 +81,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         PieceColour clickedColour = board.getColour(square.getPosition());
         if(square.isBlank() || clickedColour != board.getCurrentTurn()){ // if clicked a blank or enemy square
             try {
+                moveFrom = squareSelected.getPosition();
+                moveTo = square.getPosition();
                 board.makeMove(squareSelected.getPosition(), square.getPosition());
             } catch (InvalidMoveException e) {
                 System.err.println(e.getMessage());
@@ -166,6 +171,18 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     @Override
     public void draw(Coordinate white, Coordinate black) {
 
+    }
+
+    @Override
+    public void promotion(){
+        if(turn != board.getCurrentTurn())
+            return;
+        PromotionWindow promotionWindow = new PromotionWindow(this, turn);
+        try {
+            board.makeMove(moveFrom, moveTo, promotionWindow.getSelectedPiece());
+        } catch (InvalidMoveException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
