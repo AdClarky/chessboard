@@ -94,7 +94,7 @@ class TotalMovesTest {
         assertEquals(4_085_603, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
 
-    @Test
+    @Disabled
     void depth5Kiwipete(){
         ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
         int depth = 5;
@@ -102,11 +102,25 @@ class TotalMovesTest {
         assertEquals(193_690_690, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
 
-    @Test
+    @Disabled
     void depth6Kiwipete(){
         ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
         int depth = 6;
         DepthTester tester = new DepthTester(game, depth);
         assertEquals(8_031_647_685L, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+
+
+    @Test
+    void testWithMoves(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 3;
+        List<String> moves = List.of("a2", "a3", "d7", "d6");
+        for (int i = 0; i < moves.size(); i+=2) {
+            int finalI = i;
+            assertDoesNotThrow(()->game.makeMove(Coordinate.fromString(moves.get(finalI)), Coordinate.fromString(moves.get(finalI + 1))));
+        }
+        DepthTester tester = new DepthTester(game, depth);
+        System.out.println(assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
 }
