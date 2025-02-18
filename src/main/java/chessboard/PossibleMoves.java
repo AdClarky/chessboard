@@ -6,9 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PossibleMoves{
-    private final Map<Coordinate, Bitboard> possibleMovesBoard = new HashMap<>(16);
+    private final Map<Coordinate, Bitboard> possibleMovesBoard;
 
-    public PossibleMoves(){}
+    public PossibleMoves(){
+        possibleMovesBoard = new HashMap<>(16);
+    }
+
+    private PossibleMoves(Map<Coordinate, Bitboard> possibleMovesBoard){
+        this.possibleMovesBoard = possibleMovesBoard;
+    }
 
     public void addMoves(Coordinate position, Bitboard map){
         possibleMovesBoard.put(position, map);
@@ -35,5 +41,9 @@ public class PossibleMoves{
                 return false;
         }
         return true;
+    }
+
+    public PossibleMoves copy() {
+        return new PossibleMoves(new HashMap<>(possibleMovesBoard));
     }
 }
