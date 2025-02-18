@@ -88,7 +88,7 @@ class ChessLogic {
             return canEnemyPieceSeeKing(kingPos, position);
         }
         else if((Math.abs(position.x() - kingPos.x()) == Math.abs(position.y() - kingPos.y())) &&
-                (Math.abs(movePosition.x() - kingPos.x()) != Math.abs(movePosition.y() - kingPos.y()))) {
+                ((position.x() - kingPos.x()) * (movePosition.y() - kingPos.y()) - (position.y() - kingPos.y()) * (movePosition.x() - kingPos.x())) != 0) {
             return canEnemyPieceSeeKing(kingPos, position);
         }
         return false;
