@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Moves and stores all necessary pieces to make a chess move.
@@ -103,7 +105,9 @@ class Move {
 
     public void undo(){
         undone = true;
-        for(MoveValue move : movesToUndo.reversed()){
+        ListIterator<MoveValue> iter = movesToUndo.listIterator(movesToUndo.size());
+        while(iter.hasPrevious()){
+            MoveValue move = iter.previous();
             addOrRemovePiece(pieceTaken, move);
             board.movePiece(move);
         }
@@ -122,7 +126,7 @@ class Move {
         if(!move.isPieceInSamePosition())
             return;
         // a piece moving to the same spot only occurs as the last move when it's a promotion
-        if(move == movesToUndo.getLast()) {
+        if(move == movesToUndo.get(movesToUndo.size()-1)) {
             board.removePiece(move.newPos());
             board.addPiece(Pieces.PAWN, move.newPos(), pieceColour);
         }

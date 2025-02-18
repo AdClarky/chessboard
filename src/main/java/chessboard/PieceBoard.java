@@ -37,22 +37,22 @@ public class PieceBoard {
 
     public void add(Pieces piece, Coordinate position){
         switch(piece) {
-            case Pieces.PAWN:
+            case PAWN:
                 pawns.add(position);
                 break;
-            case Pieces.KNIGHT:
+            case KNIGHT:
                 knights.add(position);
                 break;
-            case Pieces.ROOK:
+            case ROOK:
                 rooks.add(position);
                 break;
-            case Pieces.BISHOP:
+            case BISHOP:
                 bishops.add(position);
                 break;
-            case Pieces.QUEEN:
+            case QUEEN:
                 queens.add(position);
                 break;
-            case Pieces.KING:
+            case KING:
                 kings.add(position);
                 break;
         }
@@ -60,22 +60,22 @@ public class PieceBoard {
 
     public void remove(Pieces piece, Coordinate position){
         switch(piece) {
-            case Pieces.PAWN:
+            case PAWN:
                 pawns.remove(position);
                 break;
-            case Pieces.KNIGHT:
+            case KNIGHT:
                 knights.remove(position);
                 break;
-            case Pieces.ROOK:
+            case ROOK:
                 rooks.remove(position);
                 break;
-            case Pieces.BISHOP:
+            case BISHOP:
                 bishops.remove(position);
                 break;
-            case Pieces.QUEEN:
+            case QUEEN:
                 queens.remove(position);
                 break;
-            case Pieces.KING:
+            case KING:
                 kings.remove(position);
                 break;
         }

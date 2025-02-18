@@ -80,7 +80,7 @@ class ChessboardBuilder {
                 pieces.add(new PieceValue(position, Pieces.BISHOP, colour));
                 break;
             case 'k':
-                pieces.addFirst(new PieceValue(position, Pieces.KING, colour));
+                pieces.add(0, new PieceValue(position, Pieces.KING, colour));
                 break;
             case 'q':
                 pieces.add(new PieceValue(position, Pieces.QUEEN, colour));

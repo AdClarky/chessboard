@@ -26,13 +26,13 @@ public class MaskGenerator {
     public long getMaskForPiece(Coordinate piecePos){
         Pieces piece = board.getPiece(piecePos);
         return switch (piece) {
-            case Pieces.PAWN -> getPawnMask(piecePos);
-            case Pieces.BISHOP -> getBishopMask(piecePos);
-            case Pieces.ROOK -> getRookMask(piecePos);
-            case Pieces.QUEEN -> getQueenMask(piecePos);
-            case Pieces.KNIGHT -> getKnightMask(piecePos);
-            case Pieces.KING -> getKingMask(piecePos);
-            case Pieces.BLANK -> 0;
+            case PAWN -> getPawnMask(piecePos);
+            case BISHOP -> getBishopMask(piecePos);
+            case ROOK -> getRookMask(piecePos);
+            case QUEEN -> getQueenMask(piecePos);
+            case KNIGHT -> getKnightMask(piecePos);
+            case KING -> getKingMask(piecePos);
+            case BLANK -> 0;
         };
     }
 
