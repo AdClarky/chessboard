@@ -135,7 +135,7 @@ class Chessboard {
         if(promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
             throw new RuntimeException("Invalid promotion piece");
         pieceBoard.remove(position);
-        pieceBoard.add(Pieces.QUEEN, position);
+        pieceBoard.add(promotionPiece, position);
     }
 
     public void removePiece(Coordinate position) {
