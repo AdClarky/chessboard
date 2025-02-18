@@ -54,13 +54,13 @@ class FenGenerator {
 
     private static char charFromPiece(@NotNull Pieces piece, PieceColour colour) {
         char character = switch (piece) {
-            case Pieces.PAWN -> 'P';
-            case Pieces.KNIGHT -> 'N';
-            case Pieces.BISHOP -> 'B';
-            case Pieces.ROOK -> 'R';
-            case Pieces.QUEEN -> 'Q';
-            case Pieces.KING -> 'K';
-            case Pieces.BLANK -> 'Z';
+            case PAWN -> 'P';
+            case KNIGHT -> 'N';
+            case BISHOP -> 'B';
+            case ROOK -> 'R';
+            case QUEEN -> 'Q';
+            case KING -> 'K';
+            case BLANK -> 'Z';
         };
         if(colour == PieceColour.BLACK)
             character = Character.toLowerCase(character);

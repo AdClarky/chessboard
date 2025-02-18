@@ -142,7 +142,7 @@ public class ChessGame {
             disambiguatePiece(possiblePieces, move);
         if(possiblePieces.isEmpty())
             throw new InvalidMoveException(move);
-        Coordinate piece = possiblePieces.getFirst();
+        Coordinate piece = possiblePieces.get(0);
         return new MoveValue(piece, newCoordinate);
     }
 
