@@ -25,17 +25,21 @@ class Move {
     private final List<MoveValue> movesMade;
     private final Coordinate previousEnPassant;
     private final long castlingRights;
-    private Pieces promotionPiece = Pieces.QUEEN;
-    private PossibleMoves possibleMoves = null;
+    private final Pieces promotionPiece;
+    private PossibleMoves possibleMoves;
     private boolean undone = false;
     private Pieces pieceTaken = null;
     private PieceColour pieceTakenColour = null;
 
-    /**
-     * Initialises move and then moves the piece to the new location.
-     * Used so it can undo the first move condition on the previous piece if necessary.
-     */
     public Move(Chessboard board, Coordinate oldPos, Coordinate newPos){
+        this(board, oldPos, newPos, null);
+    }
+
+    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves){
+        this(board, oldPos, newPos, possibleMoves, Pieces.QUEEN);
+    }
+
+    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece){
         this.oldPos = oldPos;
         this.newPos = newPos;
         this.board = board;
@@ -44,16 +48,9 @@ class Move {
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
         movesMade = getMoves();
-    }
-
-    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves){
-        this(board, oldPos, newPos);
         this.possibleMoves = possibleMoves;
-    }
-
-    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece){
-        this(board, oldPos, newPos, possibleMoves);
-        this.promotionPiece = Pieces.QUEEN;
+        this.promotionPiece = promotionPiece;
+        makeMove();
     }
 
     private List<MoveValue> getMoves(){
