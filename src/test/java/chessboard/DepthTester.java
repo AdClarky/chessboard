@@ -35,4 +35,24 @@ public class DepthTester {
         return positions;
     }
     // new String("" + originalPos + position + ": " + currentPos)
+
+
+    public static int testDepthCopying(int currentDepth, ChessGame game) throws InvalidMoveException {
+        int positions = 0;
+        Collection<Coordinate> pieces = game.getAllColourPieces(game.getTurn());
+        for(Coordinate piece : pieces){
+            Collection<Coordinate> positionCoordinates = game.getPossibleMoves(piece);
+            if(currentDepth == 1) {
+                positions += positionCoordinates.size();
+                continue;
+            }
+            for(Coordinate newMove : positionCoordinates){
+                ChessGame copy = game.copy();
+                copy.makeMove(piece, newMove);
+                int currentPos = testDepthCopying(currentDepth - 1, copy);
+                positions += currentPos;
+            }
+        }
+        return positions;
+    }
 }
