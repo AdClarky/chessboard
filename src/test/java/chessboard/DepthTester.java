@@ -21,11 +21,11 @@ public class DepthTester {
         System.out.println("Testing depth " + topDepth);
     }
 
-    public int testDepthCopying(ChessGame chessGame, int currentDepth) {
+    public long testDepthCopying(ChessGame chessGame, int currentDepth) {
         return pool.invoke(new DepthTask(chessGame, currentDepth, topDepth));
     }
 
-    private static class DepthTask extends RecursiveTask<Integer> {
+    private static class DepthTask extends RecursiveTask<Long> {
         private final ChessGame chessGame;
         private final int currentDepth;
         private final int topDepth;
@@ -37,8 +37,8 @@ public class DepthTester {
         }
 
         @Override
-        protected Integer compute() {
-            int positions = 0;
+        protected Long compute() {
+            long positions = 0;
             Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getTurn());
             List<DepthTask> tasks = new ArrayList<>();
             for (Coordinate piece : pieces) {

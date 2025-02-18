@@ -53,4 +53,12 @@ class TotalMovesTest {
         DepthTester tester = new DepthTester(game, depth);
         assertEquals(119_060_324, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
+
+    @Test
+    void depth7(){
+        ChessGame game = new ChessGame();
+        int depth = 7;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(3_195_901_860L, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
 }
