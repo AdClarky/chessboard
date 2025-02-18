@@ -37,4 +37,6 @@ public interface BoardListener {
      * Works like {@link BoardListener#moveMade(Coordinate, Coordinate)}
      */
     void boardChanged(Coordinate oldPos, Coordinate newPos);
+
+    void promotion();
 }
