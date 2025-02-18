@@ -19,6 +19,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.ListIterator;
 
 /**
  * Window which links with chessboard package to display a chess board.
@@ -55,10 +57,22 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
                 squares[y][x] = new Square(new PieceValue(new Coordinate(x, y), Pieces.BLANK, null), currentColour);
                 squares[y][x].addMouseListener(this);
                 squares[y][x].addKeyListener(this);
-                add(squares[y][x]);
                 currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
             }
             currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
+        }
+        if(turn == PieceColour.WHITE){
+            for(int i = squares.length - 1; i >= 0; i--){
+                for(Square square : squares[i]){
+                    add(square);
+                }
+            }
+        }else{
+            for(Square[] row : squares){
+                for(Square square : row){
+                    add(square);
+                }
+            }
         }
         updateBoard();
         setVisible(true);
