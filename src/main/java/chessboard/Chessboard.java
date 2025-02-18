@@ -131,9 +131,9 @@ class Chessboard {
         return colourBoard.getColourAtPosition(position);
     }
 
-    public void promotion(Coordinate position, Pieces promotionPiece) throws InvalidMoveException {
+    public void promotion(Coordinate position, Pieces promotionPiece) {
         if(promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
-            throw new InvalidMoveException("Invalid promotion piece");
+            throw new RuntimeException("Invalid promotion piece");
         pieceBoard.remove(position);
         pieceBoard.add(Pieces.QUEEN, position);
     }
