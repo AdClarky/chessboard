@@ -177,7 +177,7 @@ public class ChessGame {
 
     ChessGame copy(){
         Chessboard boardCopy = board.copy();
-        ChessLogic logicCopy = logic.copy();
+        ChessLogic logicCopy = logic.copy(boardCopy);
         return new ChessGame(boardCopy, logicCopy);
     }
 }
