@@ -12,13 +12,14 @@ import java.util.List;
 class BoardHistory {
     private final ArrayDeque<Move> moves;
     private final ArrayDeque<Move> redoMoves;
-    private Deque<Move> lastMove = moves;
+    private Deque<Move> lastMove;
     private int numHalfMoves = 0;
     private int numFullMoves = 1;
 
     public BoardHistory() {
         moves = new ArrayDeque<>(40);
         redoMoves = new ArrayDeque<>(40);
+        lastMove = moves;
     }
 
     public BoardHistory(int numHalfMoves, int numFullMoves) {
@@ -30,7 +31,7 @@ class BoardHistory {
     private BoardHistory(ArrayDeque<Move> moves, ArrayDeque<Move> redoMoves, Deque<Move> lastMove, int numHalfMoves, int numFullMoves) {
         this.moves = moves;
         this.redoMoves = redoMoves;
-        this.lastMove = lastMove;
+        this.lastMove = moves;
         this.numHalfMoves = numHalfMoves;
         this.numFullMoves = numFullMoves;
     }

@@ -43,7 +43,7 @@ public class PossibleMoves{
         return true;
     }
 
-    public PossibleMoves copy() {
+    PossibleMoves copy() {
         return new PossibleMoves(new HashMap<>(possibleMovesBoard));
     }
 }
