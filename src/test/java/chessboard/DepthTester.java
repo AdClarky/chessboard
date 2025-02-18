@@ -47,6 +47,7 @@ public class DepthTester {
                 Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
                 if (currentDepth == 1) {
                     positions += positionCoordinates.size();
+                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
                     continue;
                 }
                 for (Coordinate newMove : positionCoordinates) {
