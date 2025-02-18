@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -26,6 +25,7 @@ class Move {
     private final List<MoveValue> movesMade;
     private final Coordinate previousEnPassant;
     private final long castlingRights;
+    private Pieces promotionPiece = Pieces.QUEEN;
     private PossibleMoves possibleMoves = null;
     private boolean undone = false;
     private Pieces pieceTaken = null;
@@ -44,12 +44,16 @@ class Move {
         previousEnPassant = board.getEnPassantSquare();
         castlingRights = board.getCastlingRights();
         movesMade = getMoves();
-        makeMove();
     }
 
     public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves){
         this(board, oldPos, newPos);
         this.possibleMoves = possibleMoves;
+    }
+
+    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece){
+        this(board, oldPos, newPos, possibleMoves);
+        this.promotionPiece = Pieces.QUEEN;
     }
 
     private List<MoveValue> getMoves(){
@@ -95,7 +99,7 @@ class Move {
 
     private void takePiece(@NotNull MoveValue move){
         if(move.isPieceInSamePosition()) {// promotion
-            board.promotion(move.newPos());
+            board.promotion(move.newPos(), promotionPiece);
             return;
         }
         if(pieceTaken == null)
