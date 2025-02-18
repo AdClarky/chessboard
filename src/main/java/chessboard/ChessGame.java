@@ -56,7 +56,7 @@ public class ChessGame {
             return false;
         if(board.getPiece(oldPos) != Pieces.PAWN)
             return false;
-        if((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(newPos) == PieceColour.WHITE))
+        if((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(oldPos) == PieceColour.WHITE))
             return true;
         return false;
     }
