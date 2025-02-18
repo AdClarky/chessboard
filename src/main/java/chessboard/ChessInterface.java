@@ -4,6 +4,7 @@ import common.BoardListener;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
+import common.Pieces;
 import exception.InvalidFenStringException;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +48,16 @@ public class ChessInterface {
         return game.getTurn();
     }
 
+    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionValue) throws InvalidMoveException {
+        game.makeMove(oldPos, newPos, promotionValue);
+        notifyMoveMade(oldPos, newPos);
+        if(game.isDraw())
+            notifyDraw();
+        if(game.isCheckmate()) {
+            notifyCheckmate(game.getKing());
+        }
+    }
+
     /**
      * Moves a piece to a new location while validating it is a valid move.
      * Assumes the provided old coordinates are valid coordinates for a piece.
@@ -56,15 +67,11 @@ public class ChessInterface {
      * @throws InvalidMoveException when the move given is not a valid move.
      */
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(game.isMovePromotion(oldPos, newPos))
-            System.out.println("Promotion please");
-        game.makeMove(oldPos, newPos);
-        notifyMoveMade(oldPos, newPos);
-        if(game.isDraw())
-            notifyDraw();
-        if(game.isCheckmate()) {
-            notifyCheckmate(game.getKing());
+        if(game.isMovePromotion(oldPos, newPos)) {
+            notifyPromotion();
+            return;
         }
+        makeMove(oldPos, newPos, Pieces.QUEEN);
     }
 
     /**
@@ -107,6 +114,12 @@ public class ChessInterface {
         Coordinate blackPos = game.getKing(PieceColour.BLACK);
         for(BoardListener listener : boardListeners)
             listener.draw(whitePos, blackPos);
+    }
+
+    private void notifyPromotion(){
+        for(BoardListener listener : boardListeners){
+            listener.promotion();
+        }
     }
 
     /**
