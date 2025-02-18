@@ -154,4 +154,10 @@ class ChessboardBuilderTest {
         String fenString = "ajskd ajksd asljkd ajks asjdk alsjkd";
         assertThrows(InvalidFenStringException.class, ()-> new ChessboardBuilder().fromFen(fenString));
     }
+
+    @Test
+    void kiwipeteTest(){
+        String fenString = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+        assertDoesNotThrow(()->new ChessboardBuilder().fromFen(fenString));
+    }
 }

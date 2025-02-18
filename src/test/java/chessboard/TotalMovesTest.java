@@ -54,11 +54,59 @@ class TotalMovesTest {
         assertEquals(119_060_324, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
 
-    @Test
+    @Disabled
     void depth7(){
         ChessGame game = new ChessGame();
         int depth = 7;
         DepthTester tester = new DepthTester(game, depth);
         assertEquals(3_195_901_860L, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+
+
+
+    @Test
+    void depth1Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 1;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(48, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+    @Test
+    void depth2Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 2;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(2039, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+    @Test
+    void depth3Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 3;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(97_862, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+
+    @Test
+    void depth4Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 4;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(4_085_603, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+
+    @Test
+    void depth5Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 5;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(193_690_690, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
+    }
+
+    @Test
+    void depth6Kiwipete(){
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1"));
+        int depth = 6;
+        DepthTester tester = new DepthTester(game, depth);
+        assertEquals(8_031_647_685L, assertDoesNotThrow(()->tester.testDepthCopying(game, depth)));
     }
 }
