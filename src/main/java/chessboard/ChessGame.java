@@ -47,6 +47,25 @@ public class ChessGame {
         logic.calculatePossibleMoves();
     }
 
+    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
+        if(!logic.isValidMove(oldPos, newPos))
+            throw new InvalidMoveException(oldPos, newPos);
+        if(history.canRedoMove())
+            history.clearRedoMoves();
+        Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves(), promotionPiece);
+        history.push(move);
+        logic.calculatePossibleMoves();
+    }
+
+    public boolean isMovePromotion(Coordinate oldPos, Coordinate newPos) {
+        if(!logic.isValidMove(oldPos, newPos))
+            return false;
+        if(board.getPiece(oldPos) != Pieces.PAWN)
+            return false;
+        if((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(newPos) == PieceColour.WHITE))
+            return true;
+    }
+
     public PieceColour getColour(Coordinate position){
         return board.getColour(position);
     }
