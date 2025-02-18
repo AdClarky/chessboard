@@ -128,7 +128,7 @@ class ChessLogic {
     private void removeCastlingThroughCheck(Bitboard possible, Coordinate position){
         Coordinate left = new Coordinate(position.x()-1, position.y());
         Coordinate right = new Coordinate(position.x()+1, position.y());
-        if(possible.contains(position)){
+        if(isKingInCheck()){
             possible.remove(new Coordinate(position.x()-2, position.y()));
             possible.remove(new Coordinate(position.x()+2, position.y()));
         }
