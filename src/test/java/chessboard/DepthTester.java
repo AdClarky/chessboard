@@ -5,6 +5,7 @@ import exception.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -41,6 +42,7 @@ public class DepthTester {
             long positions = 0;
             Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getTurn());
             List<DepthTask> tasks = new ArrayList<>();
+            List<String> moves = new ArrayList<>();
             for (Coordinate piece : pieces) {
                 Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
                 if (currentDepth == 1) {
@@ -57,10 +59,16 @@ public class DepthTester {
                     DepthTask task = new DepthTask(copy, currentDepth - 1, topDepth);
                     task.fork();
                     tasks.add(task);
+                    if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
                 }
             }
             for (DepthTask task : tasks) {
                 positions += task.join();
+            }
+            if(topDepth == currentDepth){
+                for(int i = 0; i < moves.size(); i++){
+                    System.out.println(moves.get(i) + tasks.get(i).join());
+                }
             }
             return positions;
         }
