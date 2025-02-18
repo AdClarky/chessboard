@@ -133,6 +133,6 @@ public class PieceBoard {
         Bitboard bishopsCopy = new Bitboard(bishops.getBoard());
         Bitboard queensCopy = new Bitboard(queens.getBoard());
         Bitboard kingsCopy = new Bitboard(kings.getBoard());
-        return new PieceBoard(pawns, knights, rooks, bishops, queens, kings);
+        return new PieceBoard(pawnsCopy, knightsCopy, rooksCopy, bishopsCopy, queensCopy, kingsCopy);
     }
 }
