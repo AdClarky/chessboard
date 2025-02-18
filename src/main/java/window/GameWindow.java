@@ -69,8 +69,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
             }
         }else{
             for(Square[] row : squares){
-                for(Square square : row){
-                    add(square);
+                for(int i = row.length - 1; i >= 0; i--){
+                    add(row[i]);
                 }
             }
         }
