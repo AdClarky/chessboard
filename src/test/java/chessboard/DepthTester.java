@@ -1,11 +1,11 @@
 package chessboard;
 
 import common.Coordinate;
+import common.Pieces;
 import exception.InvalidMoveException;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
@@ -27,6 +27,7 @@ public class DepthTester {
     }
 
     private static class DepthTask extends RecursiveTask<Long> {
+        private static final Pieces[] PROMOTION_PIECES = {Pieces.QUEEN, Pieces.ROOK, Pieces.KNIGHT, Pieces.BISHOP};
         private final ChessGame chessGame;
         private final int currentDepth;
         private final int topDepth;
@@ -47,20 +48,34 @@ public class DepthTester {
                 Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
                 if (currentDepth == 1) {
                     positions += positionCoordinates.size();
+                    for(Coordinate move : positionCoordinates) {
+                        if(chessGame.isMovePromotion(piece, move)){
+                            positions += 3;
+                            if(topDepth == 1) {
+                                for(Pieces promoPiece : PROMOTION_PIECES) {
+                                    System.out.println("" + piece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
+                                }
+                                positionCoordinates.remove(move);
+                            }
+                        }
+                    }
                     if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
                     continue;
                 }
                 for (Coordinate newMove : positionCoordinates) {
-                    ChessGame copy = chessGame.copy();
-                    try {
-                        copy.makeMove(piece, newMove);
-                    } catch (InvalidMoveException e) {
-                        throw new RuntimeException(e);
+                    if(chessGame.isMovePromotion(piece, newMove)){
+                        for(Pieces currentPiece : PROMOTION_PIECES) {
+                            DepthTask task = testNewDepth(piece, newMove, currentPiece);
+                            task.fork();
+                            tasks.add(task);
+                            if(topDepth == currentDepth) moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
+                        }
+                    }else{
+                        DepthTask task = testNewDepth(piece, newMove, Pieces.BLANK);
+                        task.fork();
+                        tasks.add(task);
+                        if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
                     }
-                    DepthTask task = new DepthTask(copy, currentDepth - 1, topDepth);
-                    task.fork();
-                    tasks.add(task);
-                    if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
                 }
             }
             for (DepthTask task : tasks) {
@@ -72,6 +87,16 @@ public class DepthTester {
                 }
             }
             return positions;
+        }
+
+        private DepthTask testNewDepth(Coordinate piece, Coordinate newMove, Pieces promotionPiece){
+            ChessGame copy = chessGame.copy();
+            try {
+                copy.makeMove(piece, newMove, promotionPiece);
+            } catch (InvalidMoveException e) {
+                throw new RuntimeException(e);
+            }
+            return new DepthTask(copy, currentDepth - 1, topDepth);
         }
     }
 }
