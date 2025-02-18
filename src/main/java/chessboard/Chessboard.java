@@ -5,9 +5,11 @@ import common.MoveValue;
 import common.PieceColour;
 import common.PieceValue;
 import common.Pieces;
+import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.management.QueryEval;
 import java.util.Collection;
 import java.util.List;
 
@@ -129,7 +131,9 @@ class Chessboard {
         return colourBoard.getColourAtPosition(position);
     }
 
-    public void promotion(Coordinate position) {
+    public void promotion(Coordinate position, Pieces promotionPiece) throws InvalidMoveException {
+        if(promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
+            throw new InvalidMoveException("Invalid promotion piece");
         pieceBoard.remove(position);
         pieceBoard.add(Pieces.QUEEN, position);
     }
