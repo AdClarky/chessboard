@@ -37,19 +37,20 @@ public class DepthTester {
     // new String("" + originalPos + position + ": " + currentPos)
 
 
-    public static int testDepthCopying(int currentDepth, ChessGame game) throws InvalidMoveException {
+    public int testDepthCopying(ChessGame chessGame, int currentDepth) throws InvalidMoveException {
         int positions = 0;
-        Collection<Coordinate> pieces = game.getAllColourPieces(game.getTurn());
+        Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getTurn());
         for(Coordinate piece : pieces){
-            Collection<Coordinate> positionCoordinates = game.getPossibleMoves(piece);
+            Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
             if(currentDepth == 1) {
                 positions += positionCoordinates.size();
                 continue;
             }
             for(Coordinate newMove : positionCoordinates){
-                ChessGame copy = game.copy();
+                ChessGame copy = chessGame.copy();
                 copy.makeMove(piece, newMove);
-                int currentPos = testDepthCopying(currentDepth - 1, copy);
+                int currentPos = testDepthCopying(copy, currentDepth - 1);
+                if(currentDepth == topDepth) System.out.println(new String("" + piece + newMove + ": " + currentPos));
                 positions += currentPos;
             }
         }
