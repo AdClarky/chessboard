@@ -56,6 +56,8 @@ public class ChessInterface {
      * @throws InvalidMoveException when the move given is not a valid move.
      */
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
+        if(game.isMovePromotion(oldPos, newPos))
+            System.out.println("Promotion please");
         game.makeMove(oldPos, newPos);
         notifyMoveMade(oldPos, newPos);
         if(game.isDraw())

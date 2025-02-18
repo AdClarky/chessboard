@@ -38,13 +38,7 @@ public class ChessGame {
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(!logic.isValidMove(oldPos, newPos))
-            throw new InvalidMoveException(oldPos, newPos);
-        if(history.canRedoMove())
-            history.clearRedoMoves();
-        Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves());
-        history.push(move);
-        logic.calculatePossibleMoves();
+        makeMove(oldPos, newPos, Pieces.QUEEN);
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
@@ -64,6 +58,7 @@ public class ChessGame {
             return false;
         if((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(newPos) == PieceColour.WHITE))
             return true;
+        return false;
     }
 
     public PieceColour getColour(Coordinate position){
