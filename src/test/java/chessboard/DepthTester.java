@@ -51,15 +51,15 @@ public class DepthTester {
                     for(Coordinate move : positionCoordinates) {
                         if(chessGame.isMovePromotion(piece, move)){
                             positions += 3;
-                            if(topDepth == 1) {
-                                for(Pieces promoPiece : PROMOTION_PIECES) {
-                                    System.out.println("" + piece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
-                                }
-                                positionCoordinates.remove(move);
-                            }
+//                            if(topDepth == 1) {
+//                                for(Pieces promoPiece : PROMOTION_PIECES) {
+//                                    System.out.println("" + piece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
+//                                }
+//                                positionCoordinates.remove(move);
+//                            }
                         }
                     }
-                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
+//                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
                     continue;
                 }
                 for (Coordinate newMove : positionCoordinates) {
@@ -81,11 +81,11 @@ public class DepthTester {
             for (DepthTask task : tasks) {
                 positions += task.join();
             }
-            if(topDepth == currentDepth){
-                for(int i = 0; i < moves.size(); i++){
-                    System.out.println(moves.get(i) + tasks.get(i).join());
-                }
-            }
+//            if(topDepth == currentDepth){
+//                for(int i = 0; i < moves.size(); i++){
+//                    System.out.println(moves.get(i) + tasks.get(i).join());
+//                }
+//            }
             return positions;
         }
 
