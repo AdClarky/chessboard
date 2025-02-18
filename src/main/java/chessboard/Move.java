@@ -83,6 +83,7 @@ class Move {
         else
             board.setEnPassantSquare(null);
         board.removeCastlingRight(oldPos);
+        board.removeCastlingRight(newPos);
         for(MoveValue move : movesMade){
             if(!board.isSquareBlank(move.newPos()))
                 takePiece(move);
