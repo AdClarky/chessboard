@@ -189,6 +189,10 @@ public class ChessGame {
         return logic.getPossibleMoves(piece);
     }
 
+    public long getHash(){
+        return new Hasher(board).getHash();
+    }
+
     ChessGame copy(){
         Chessboard boardCopy = board.copy();
         ChessLogic logicCopy = logic.copy(boardCopy);

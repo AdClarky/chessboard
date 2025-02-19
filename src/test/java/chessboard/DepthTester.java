@@ -15,6 +15,7 @@ public class DepthTester {
     private final ChessGame game;
     private final int topDepth;
     private final ForkJoinPool pool = new ForkJoinPool();
+    private final HashCache cache = new HashCache();
 
     public DepthTester(ChessGame game, int topDepth) {
         this.game = game;
@@ -23,7 +24,7 @@ public class DepthTester {
     }
 
     public long testDepthCopying(ChessGame chessGame, int currentDepth) {
-        return pool.invoke(new DepthTask(chessGame, currentDepth, topDepth));
+        return pool.invoke(new DepthTask(chessGame, currentDepth, topDepth, cache));
     }
 
     private static class DepthTask extends RecursiveTask<Long> {
@@ -31,16 +32,21 @@ public class DepthTester {
         private final ChessGame chessGame;
         private final int currentDepth;
         private final int topDepth;
+        private final HashCache cache;
 
-        public DepthTask(ChessGame chessGame, int currentDepth, int topDepth) {
+        public DepthTask(ChessGame chessGame, int currentDepth, int topDepth, HashCache cache) {
             this.chessGame = chessGame;
             this.currentDepth = currentDepth;
             this.topDepth = topDepth;
+            this.cache = cache;
         }
 
         @Override
         protected Long compute() {
-            long positions = 0;
+            long hash = chessGame.getHash();
+            long positions = cache.lookup(hash, currentDepth);
+            if(positions != -1)
+                return positions;
             Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getTurn());
             List<DepthTask> tasks = new ArrayList<>();
             List<String> moves = new ArrayList<>();
@@ -65,13 +71,13 @@ public class DepthTester {
                 for (Coordinate newMove : positionCoordinates) {
                     if(chessGame.isMovePromotion(piece, newMove)){
                         for(Pieces currentPiece : PROMOTION_PIECES) {
-                            DepthTask task = testNewDepth(piece, newMove, currentPiece);
+                            DepthTask task = testNewDepth(piece, newMove, currentPiece, cache);
                             task.fork();
                             tasks.add(task);
                             if(topDepth == currentDepth) moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
                         }
                     }else{
-                        DepthTask task = testNewDepth(piece, newMove, Pieces.BLANK);
+                        DepthTask task = testNewDepth(piece, newMove, Pieces.BLANK, cache);
                         task.fork();
                         tasks.add(task);
                         if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
@@ -81,6 +87,7 @@ public class DepthTester {
             for (DepthTask task : tasks) {
                 positions += task.join();
             }
+            cache.put(hash, currentDepth, positions);
 //            if(topDepth == currentDepth){
 //                for(int i = 0; i < moves.size(); i++){
 //                    System.out.println(moves.get(i) + tasks.get(i).join());
@@ -89,14 +96,14 @@ public class DepthTester {
             return positions;
         }
 
-        private DepthTask testNewDepth(Coordinate piece, Coordinate newMove, Pieces promotionPiece){
+        private DepthTask testNewDepth(Coordinate piece, Coordinate newMove, Pieces promotionPiece, HashCache cache){
             ChessGame copy = chessGame.copy();
             try {
                 copy.makeMove(piece, newMove, promotionPiece);
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             }
-            return new DepthTask(copy, currentDepth - 1, topDepth);
+            return new DepthTask(copy, currentDepth - 1, topDepth, cache);
         }
     }
 }
