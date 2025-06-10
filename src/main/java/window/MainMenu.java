@@ -1,5 +1,9 @@
 package window;
 
+import chessboard.ChessInterface;
+import common.BoardListener;
+import common.PieceColour;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,17 +29,17 @@ public class MainMenu extends JFrame {
         Dimension buttonSize = new Dimension(300, 70);
 
         JButton btnComputer = createStyledButton("Against Computer", buttonFont, buttonSize);
-        btnComputer.addActionListener(e -> JOptionPane.showMessageDialog(null, "Starting game against Computer!"));
+        btnComputer.addActionListener(e -> startVsComputer());
         gbc.gridy = 0;
         mainMenuPanel.add(btnComputer, gbc);
 
         JButton btnLocalVs = createStyledButton("Local Vs", buttonFont, buttonSize);
-        btnLocalVs.addActionListener(e -> JOptionPane.showMessageDialog(null, "Starting Local Two-Player game!"));
+        btnLocalVs.addActionListener(e -> startVsLocal());
         gbc.gridy = 1;
         mainMenuPanel.add(btnLocalVs, gbc);
 
         JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
-        btnOnlineVs.addActionListener(e -> JOptionPane.showMessageDialog(null, "Connecting to Online Multiplayer!"));
+        btnOnlineVs.addActionListener(e -> startVsOnline());
         gbc.gridy = 2;
         mainMenuPanel.add(btnOnlineVs, gbc);
 
@@ -78,7 +82,21 @@ public class MainMenu extends JFrame {
         return button;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainMenu::new);
+    private void startVsComputer(){
+
+    }
+
+    private void startVsLocal(){
+        ChessInterface chessGame = new ChessInterface();
+        GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
+        GameWindow blackWindow = new GameWindow(chessGame, PieceColour.BLACK);
+        chessGame.addBoardListener(whiteWindow);
+        chessGame.addBoardListener(blackWindow);
+
+        blackWindow.setLocation(whiteWindow.getSize().width, 0);
+    }
+
+    private void startVsOnline(){
+
     }
 }
