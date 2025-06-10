@@ -41,11 +41,11 @@ public class DepthTester {
         @Override
         protected Long compute() {
             long positions = 0;
-            Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getCurrentTurn());
+            Bitboard pieces = chessGame.getAllColourPieces(chessGame.getCurrentTurn());
             List<DepthTask> tasks = new ArrayList<>();
             List<String> moves = new ArrayList<>();
             for (Coordinate piece : pieces) {
-                Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
+                Bitboard positionCoordinates = chessGame.getPossibleMoves(piece);
                 if (currentDepth == 1) {
                     positions += positionCoordinates.size();
                     for(Coordinate move : positionCoordinates) {

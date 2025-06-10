@@ -229,11 +229,12 @@ public class ChessGame implements Chess, Undoable {
         }
     }
 
-    public Collection<Coordinate> getAllColourPieces(PieceColour turn) {
+    @Override
+    public Bitboard getAllColourPieces(PieceColour turn) {
         return board.getAllColourPositions(turn);
     }
 
-    public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
+    public Bitboard getPossibleMoves(Coordinate piece) {
         return logic.getPossibleMoves(piece);
     }
 

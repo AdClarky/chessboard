@@ -1,5 +1,6 @@
 package ai;
 
+import chessboard.Bitboard;
 import chessboard.Chess;
 import common.Coordinate;
 import common.MoveValue;
@@ -21,7 +22,7 @@ public class RandomMoves implements MoveChooser {
     private List<MoveValue> getPossibleMoves(Chess chessboard) {
         List<MoveValue> moves = new ArrayList<>();
 
-        Collection<Coordinate> pieces = chessboard.getAllColourPieces(chessboard.getCurrentTurn());
+        Bitboard pieces = chessboard.getAllColourPieces(chessboard.getCurrentTurn());
         for(Coordinate piece : pieces) {
             for(Coordinate move : chessboard.getPossibleMoves(piece)) {
                 moves.add(new MoveValue(piece, move));

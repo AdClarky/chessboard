@@ -5,15 +5,15 @@ import common.MoveValue;
 import common.PieceColour;
 import common.PieceValue;
 import common.Pieces;
-import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.management.QueryEval;
 import java.util.Collection;
 import java.util.List;
 
-/** A chess board that is automatically populated with blank squares. */
+/**
+ * A chess board that is automatically populated with blank squares.
+ */
 class Chessboard {
     private final PieceBoard pieceBoard;
     private final ColourBoard colourBoard;
@@ -29,9 +29,12 @@ class Chessboard {
         pieceBoard = new PieceBoard();
         colourBoard = new ColourBoard();
         castlingRights = new Bitboard();
-        castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(4, 0),
-                new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
-                new Coordinate(4, 7)));
+        castlingRights.add(new Coordinate(0, 0));
+        castlingRights.add(new Coordinate(4, 0));
+        castlingRights.add(new Coordinate(0, 7));
+        castlingRights.add(new Coordinate(7, 7));
+        castlingRights.add(new Coordinate(7, 0));
+        castlingRights.add(new Coordinate(4, 7));
         currentTurn = PieceColour.WHITE;
         enPassantSquare = null;
     }
@@ -63,7 +66,7 @@ class Chessboard {
         return pieceBoard.get(position);
     }
 
-    public boolean isSquareColour(Coordinate position, PieceColour colour){
+    public boolean isSquareColour(Coordinate position, PieceColour colour) {
         return colourBoard.isPositionColour(position, colour);
     }
 
@@ -76,11 +79,11 @@ class Chessboard {
         pieceBoard.move(oldPos, newPos);
     }
 
-    public Bitboard getAllColourPositions(PieceColour colour){
+    public Bitboard getAllColourPositions(PieceColour colour) {
         return colourBoard.getBoard(colour);
     }
 
-    public Bitboard getEmptySquares(){
+    public Bitboard getEmptySquares() {
         return colourBoard.getEmptySquares();
     }
 
@@ -88,7 +91,7 @@ class Chessboard {
         movePiece(move.oldPos(), move.newPos());
     }
 
-    public void removeCastlingRight(Coordinate position){
+    public void removeCastlingRight(Coordinate position) {
         castlingRights.remove(position);
     }
 
@@ -96,24 +99,24 @@ class Chessboard {
         return castlingRights.getBoard();
     }
 
-    public void setCastlingRights(long rights){
+    public void setCastlingRights(long rights) {
         castlingRights.set(rights);
     }
 
-    public void removeAllCastling(PieceColour colour){
+    public void removeAllCastling(PieceColour colour) {
         int backRow = colour == PieceColour.WHITE ? 0 : 7;
-        Collection<Coordinate> positions = List.of(new Coordinate(0, backRow), new Coordinate(4, backRow),
-                new Coordinate(7, backRow));
-        castlingRights.removeAll(positions);
-    }
-
-    public void setEnPassantSquare(@Nullable Coordinate position) {
-        enPassantSquare = position;
+        castlingRights.remove(new Coordinate(0, backRow));
+        castlingRights.remove(new Coordinate(7, backRow));
+        castlingRights.remove(new Coordinate(4, backRow));
     }
 
     @Nullable
     public Coordinate getEnPassantSquare() {
         return enPassantSquare;
+    }
+
+    public void setEnPassantSquare(@Nullable Coordinate position) {
+        enPassantSquare = position;
     }
 
     void nextTurn() {
@@ -134,7 +137,7 @@ class Chessboard {
     }
 
     public void promotion(Coordinate position, Pieces promotionPiece) {
-        if(promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
+        if (promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
             throw new RuntimeException("Invalid promotion piece");
         pieceBoard.remove(position);
         pieceBoard.add(promotionPiece, position);
@@ -145,8 +148,8 @@ class Chessboard {
         colourBoard.remove(position);
     }
 
-    public void addPiece(Pieces piece, Coordinate position, PieceColour colour){
-        if(piece == Pieces.BLANK)
+    public void addPiece(Pieces piece, Coordinate position, PieceColour colour) {
+        if (piece == Pieces.BLANK)
             throw new IllegalArgumentException("Added piece cannot be blank");
         pieceBoard.add(piece, position);
         colourBoard.add(colour, position);

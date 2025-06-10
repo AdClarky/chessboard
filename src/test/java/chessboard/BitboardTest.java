@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -30,311 +27,37 @@ class BitboardTest {
 
     @Test
     void removeNull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         assertThrows(NullPointerException.class, ()->bitboard.remove(null));
     }
 
     @Test
     void removeEmpty(){
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         assertFalse(bitboard.remove(new Coordinate(0, 0)));
     }
 
     @Test
-    void removeNonCoordinate(){
-        Bitboard bitboard = new Bitboard();
-        assertThrows(ClassCastException.class, ()->bitboard.remove("hello"));
-    }
-
-    @Test
     void removeDoesNotContain(){
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         assertFalse(bitboard.remove(new Coordinate(0, 1)));
     }
 
     @Test
     void removeCoordinate(){
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         assertTrue(bitboard.remove(new Coordinate(0, 0)));
     }
 
     @Test
-    void containsAllSameBitboard(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        assertTrue(bitboard.containsAll(bitboard));
-    }
-
-    @Test
-    void containsAllDifferentBitboardDifferentValues(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(1, 0));
-        bitboard2.add(new Coordinate(1, 1));
-        assertFalse(bitboard.containsAll(bitboard2));
-    }
-
-    @Test
-    void containsAllDifferentBitboardSameValues(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        assertTrue(bitboard.containsAll(bitboard2));
-    }
-
-    @Test
-    void containsAllMainHasMoreThanOther(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        assertTrue(bitboard.containsAll(bitboard2));
-    }
-
-    @Test
-    void containsAllButNullObj(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(0, 0));
-        list.add(null);
-        assertThrows(NullPointerException.class, ()->bitboard.containsAll(list));
-    }
-
-    @Test
-    void containsAllButEmptyObj(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(0);
-        assertTrue(bitboard.containsAll(list));
-    }
-
-    @Test
-    void containsAllValid(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(0, 0));
-        list.add(new Coordinate(0, 1));
-        list.add(new Coordinate(1, 1));
-        assertTrue(bitboard.containsAll(list));
-    }
-
-    @Test
-    void containsAllCoordinateFalse(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(0, 0));
-        list.add(new Coordinate(0, 1));
-        list.add(new Coordinate(0, 6));
-        assertFalse(bitboard.containsAll(list));
-    }
-
-    @Test
-    void addAllBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(0, 1));
-        assertTrue(bitboard2.addAll(bitboard));
-        assertEquals(bitboard, bitboard2);
-    }
-
-    @Test
-    void addAllSameBitboardFalse(){
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(0, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        bitboard2.add(new Coordinate(0, 1));
-        assertFalse(bitboard2.addAll(bitboard));
-        assertEquals(bitboard, bitboard2);
-    }
-
-    @Test
-    void addAllNullInCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(0, 0));
-        list.add(null);
-        assertThrows(NullPointerException.class, ()->bitboard.addAll(list));
-    }
-
-    @Test
-    void addAllAlreadyInCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(0, 0));
-        assertFalse(bitboard.addAll(list));
-    }
-
-    @Test
-    void addAllEmptyCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        assertFalse(bitboard.addAll(list));
-    }
-
-    @Test
-    void addAllNormal() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> list = new ArrayList<>(2);
-        list.add(new Coordinate(7,7));
-        list.add(new Coordinate(6,7));
-        list.add(new Coordinate(5,7));
-        assertTrue(bitboard.addAll(list));
-        assertEquals(6, bitboard.size());
-    }
-
-    @Test
-    void removeAllSameBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        bitboard2.add(new Coordinate(1, 1));
-        assertTrue(bitboard.removeAll(bitboard2));
-        assertTrue(bitboard.isEmpty());
-    }
-
-    @Test
-    void removeAllNothingInCommonBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(2, 0));
-        bitboard2.add(new Coordinate(2, 1));
-        bitboard2.add(new Coordinate(3, 1));
-        assertFalse(bitboard.removeAll(bitboard2));
-        assertFalse(bitboard.isEmpty());
-    }
-
-    @Test
-    void removeAllSomeInCommonBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(2, 1));
-        bitboard2.add(new Coordinate(3, 1));
-        assertTrue(bitboard.removeAll(bitboard2));
-        assertFalse(bitboard.isEmpty());
-    }
-
-    @Test
-    void removeAllEmptyCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(1);
-        assertFalse(bitboard.removeAll(bitboard2));
-    }
-
-    @Test
-    void removeAllNullInCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(1);
-        bitboard2.add(null);
-        assertThrows(NullPointerException.class, ()->bitboard.removeAll(bitboard2));
-    }
-
-    @Test
-    void removeAllSameCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        bitboard2.add(new Coordinate(1, 1));
-        assertTrue(bitboard.removeAll(bitboard2));
-        assertTrue(bitboard.isEmpty());
-    }
-
-    @Test
-    void removeAllSomeInCommon() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        assertTrue(bitboard.removeAll(bitboard2));
-        assertFalse(bitboard.isEmpty());
-    }
-
-    @Test
-    void retainAllSameBitboard() {
+    void retainAllCompletelyDifferentBitboard() {
         Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.add(new Coordinate(0, 1));
         bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        bitboard2.add(new Coordinate(1, 1));
-        long bitboardBoard = bitboard.getBoard();
-        assertFalse(bitboard.retainAll(bitboard2));
-        assertFalse(bitboard.isEmpty());
-        assertEquals(bitboardBoard, bitboard.getBoard());
-    }
-
-    @Test
-    void retainAllCompletelyDifferentBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
+        Bitboard bitboard2 = new Bitboard();
         bitboard2.add(new Coordinate(2, 0));
         bitboard2.add(new Coordinate(2, 1));
         bitboard2.add(new Coordinate(2, 1));
@@ -344,11 +67,11 @@ class BitboardTest {
 
     @Test
     void retainAllSimilarBitboard() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.add(new Coordinate(0, 1));
         bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
+        Bitboard bitboard2 = new Bitboard();
         bitboard2.add(new Coordinate(0, 0));
         bitboard2.add(new Coordinate(2, 1));
         bitboard2.add(new Coordinate(2, 1));
@@ -357,57 +80,8 @@ class BitboardTest {
     }
 
     @Test
-    void retainAllCollectionHasNull() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(2, 1));
-        bitboard2.add(null);
-        assertThrows(NullPointerException.class, ()->bitboard.retainAll(bitboard2));
-    }
-
-    @Test
-    void retainAllCollectionIsEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        assertTrue(bitboard.retainAll(bitboard2));
-        assertTrue(bitboard.isEmpty());
-    }
-
-    @Test
-    void retainAllSameCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(0, 1));
-        bitboard2.add(new Coordinate(1, 1));
-        assertFalse(bitboard.retainAll(bitboard2));
-    }
-
-    @Test
-    void retainAllSimilarCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(1, 1));
-        bitboard.add(new Coordinate(2, 1));
-        Collection<Coordinate> bitboard2 = new ArrayList<>(3);
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(1, 1));
-        assertTrue(bitboard.retainAll(bitboard2));
-    }
-
-    @Test
     void clearWhenEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.clear();
         assertTrue(bitboard.isEmpty());
@@ -415,7 +89,7 @@ class BitboardTest {
 
     @Test
     void clearWhenFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 bitboard.add(new Coordinate(x, y));
@@ -427,11 +101,11 @@ class BitboardTest {
 
     @Test
     void sameBitboardEquality() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.add(new Coordinate(1, 1));
         bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
+        Bitboard bitboard2 = new Bitboard();
         bitboard2.add(new Coordinate(0, 0));
         bitboard2.add(new Coordinate(1, 1));
         bitboard2.add(new Coordinate(1, 1));
@@ -440,11 +114,11 @@ class BitboardTest {
 
     @Test
     void differentBitboardEquality() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         bitboard.add(new Coordinate(1, 1));
         bitboard.add(new Coordinate(1, 1));
-        Collection<Coordinate> bitboard2 = new Bitboard();
+        Bitboard bitboard2 = new Bitboard();
         bitboard2.add(new Coordinate(1, 0));
         bitboard2.add(new Coordinate(1, 1));
         bitboard2.add(new Coordinate(1, 1));
@@ -453,40 +127,34 @@ class BitboardTest {
 
     @Test
     void containsNull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         assertThrows(NullPointerException.class, ()->bitboard.contains(null));
     }
 
     @Test
-    void containsNonCoordinate() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        assertThrows(ClassCastException.class, ()->bitboard.contains("hello"));
-    }
-
-    @Test
     void containsButNotInCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 1));
         assertFalse(bitboard.contains(new Coordinate(0,0)));
     }
 
     @Test
     void containsInCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         assertTrue(bitboard.contains(new Coordinate(0,0)));
     }
 
     @Test
     void containsOutOfRange() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         assertFalse(bitboard.contains(new Coordinate(0,10)));
     }
 
     @Test
     void iteratorEmptyCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
         assertFalse(iterator.hasNext());
         assertThrows(NoSuchElementException.class, iterator::next);
@@ -494,74 +162,71 @@ class BitboardTest {
 
     @Test
     void iteratorFullCollection() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 bitboard.add(new Coordinate(x, y));
             }
         }
-        Collection<Coordinate> list = new HashSet<>(64);
+        Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
         while(iterator.hasNext()){
             list.add(iterator.next());
         }
         assertEquals(64, list.size());
-        assertTrue(bitboard.containsAll(list));
-        assertTrue(list.containsAll(bitboard));
+        assertEquals(bitboard, list);
     }
 
     @Test
     void iteratorOnlyOneElement() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
-        Collection<Coordinate> list = new HashSet<>(64);
+        Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
         while(iterator.hasNext()){
             list.add(iterator.next());
         }
         assertEquals(1, list.size());
-        assertTrue(bitboard.containsAll(list));
-        assertTrue(list.containsAll(bitboard));
+        assertEquals(bitboard, list);
     }
 
     @Test
     void iteratorNextWhenNoElements() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        Collection<Coordinate> list = new HashSet<>(64);
+        Bitboard bitboard = new Bitboard();
+        Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
         while(iterator.hasNext()){
             list.add(iterator.next());
         }
         assertEquals(0, list.size());
-        assertTrue(bitboard.containsAll(list));
-        assertTrue(list.containsAll(bitboard));
+        assertEquals(bitboard, list);
     }
 
     @Test
     void iteratorNextWhenEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
         Iterator<Coordinate> iterator = bitboard.iterator();
         Assertions.assertEquals(new Coordinate(0, 0), iterator.next());
-        assertThrows(NoSuchElementException.class, ()->iterator.next());
+        assertThrows(NoSuchElementException.class, iterator::next);
     }
 
     @Test
     void iteratorHasNextEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
         assertFalse(iterator.hasNext());
     }
 
     @Test
     void sizeOnEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         assertEquals(0, bitboard.size());
     }
 
     @Test
     void sizeOnFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 bitboard.add(new Coordinate(x, y));
@@ -572,7 +237,7 @@ class BitboardTest {
 
     @Test
     void sizeOnPartiallyFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 if(y % 2 == 0)
@@ -584,7 +249,7 @@ class BitboardTest {
 
     @Test
     void isEmptyOnFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 bitboard.add(new Coordinate(x, y));
@@ -595,13 +260,13 @@ class BitboardTest {
 
     @Test
     void isEmptyOnEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         assertTrue(bitboard.isEmpty());
     }
 
     @Test
     void isEmptyOnPartiallyFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
+        Bitboard bitboard = new Bitboard();
         for(int x = 0; x < 8; x++) {
             for(int y = 0; y < 8; y++) {
                 if(y % 2 == 0)
@@ -609,33 +274,6 @@ class BitboardTest {
             }
         }
         assertFalse(bitboard.isEmpty());
-    }
-
-    @Test
-    void toArrayEmpty() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        Object[] array = bitboard.toArray();
-        assertEquals(0, array.length);
-    }
-
-    @Test
-    void toArrayFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
-            }
-        }
-        Object[] array = bitboard.toArray();
-        assertEquals(64, array.length);
-    }
-
-    @Test
-    void toArrayPartiallyFull() {
-        Collection<Coordinate> bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(1, 1));
-        bitboard.add(new Coordinate(1, 1));
     }
 
     @Test

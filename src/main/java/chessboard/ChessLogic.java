@@ -42,7 +42,7 @@ class ChessLogic {
     }
 
     private Bitboard calculatePieces(PieceColour colour){
-        Collection<Coordinate> pieces = board.getAllColourPositions(colour);
+        Bitboard pieces = board.getAllColourPositions(colour);
         long possible = 0;
         for(Coordinate piecePos : pieces) {
             possible |= maskGenerator.getMaskForPiece(piecePos);
@@ -51,7 +51,7 @@ class ChessLogic {
     }
 
     private void calculateFriendlyPieces(){
-        Collection<Coordinate> pieces = board.getAllColourPositions(board.getTurn());
+        Bitboard pieces = board.getAllColourPositions(board.getTurn());
         for(Coordinate piecePos : pieces){
             Bitboard possible = new Bitboard(maskGenerator.getMaskForPiece(piecePos));
             removeMovesInCheck(piecePos, possible);
@@ -60,7 +60,7 @@ class ChessLogic {
     }
 
     private void removeMovesInCheck(Coordinate pos, Bitboard possible){
-        possible.removeIf(move -> isMoveUnsafe(pos, move));
+//        possible.removeIf(move -> isMoveUnsafe(pos, move));
         if(board.getPiece(pos) == Pieces.KING)
             removeCastlingThroughCheck(possible, pos);
     }
@@ -204,7 +204,7 @@ class ChessLogic {
         return possibleMoves.isPossible(oldPos, newPos);
     }
 
-    public Collection<Coordinate> getPossibleMoves(Coordinate piece) {
+    public Bitboard getPossibleMoves(Coordinate piece) {
         return possibleMoves.getPossibleMove(piece);
     }
 

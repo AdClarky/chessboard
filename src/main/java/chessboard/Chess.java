@@ -106,7 +106,7 @@ public interface Chess {
      * @param position the square to check
      * @return a collection of possible moves
      */
-    Collection<Coordinate> getPossibleMoves(Coordinate position);
+    Bitboard getPossibleMoves(Coordinate position);
 
     /**
      * Gets all the pieces on the board for a specific colour.
@@ -114,5 +114,5 @@ public interface Chess {
      * @param colour the coloured pieces you want
      * @return a collection of the coordinates of the pieces.
      */
-    Collection<Coordinate> getAllColourPieces(PieceColour colour);
+    Bitboard getAllColourPieces(PieceColour colour);
 }

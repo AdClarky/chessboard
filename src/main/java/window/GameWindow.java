@@ -1,5 +1,6 @@
 package window;
 
+import chessboard.Bitboard;
 import chessboard.Chess;
 import chessboard.ChessGame;
 import chessboard.Undoable;
@@ -39,7 +40,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private final Undoable undoable;
     private final PieceColour turn;
     private Collection<PieceValue> pieces = new ArrayList<>();
-    private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
+    private Bitboard possibleMoves;
     private Square checkmated;
 
     public GameWindow(ChessGame board, PieceColour colour){
