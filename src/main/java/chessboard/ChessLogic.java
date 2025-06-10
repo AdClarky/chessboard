@@ -11,6 +11,7 @@ class ChessLogic {
     public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
         possibleMoves = new PossibleMoves(board);
+        possibleMoves.calculatePossibleMoves();
         this.history = history;
         hasher = new Hasher(board);
     }
@@ -69,5 +70,9 @@ class ChessLogic {
 
     public Bitboard getPossibleMoves(Coordinate piece) {
         return possibleMoves.get(piece);
+    }
+
+    public boolean isKingInCheck(){
+        return possibleMoves.isKingInCheck();
     }
 }

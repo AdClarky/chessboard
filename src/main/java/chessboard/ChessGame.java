@@ -13,15 +13,14 @@ import java.util.Collection;
 
 public class ChessGame implements Chess, Undoable {
     private final BoardHistory history;
-    private final ChessLogic logic;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
+    private ChessLogic logic;
     private Chessboard board;
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
         history = new BoardHistory();
         logic = new ChessLogic(board, history);
-        logic.calculatePossibleMoves();
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
@@ -29,13 +28,6 @@ public class ChessGame implements Chess, Undoable {
         board = builder.fromFen(fenString);
         history = new BoardHistory(builder.getNumHalfMoves(), builder.getNumFullMoves());
         logic = new ChessLogic(board, history);
-        logic.calculatePossibleMoves();
-    }
-
-    private ChessGame(Chessboard board, ChessLogic logic) {
-        this.board = board;
-        history = new BoardHistory();
-        this.logic = logic;
     }
 
     private static MoveValue getCastlingMove(PieceColour colour, int newX) {
@@ -95,7 +87,8 @@ public class ChessGame implements Chess, Undoable {
             history.clearRedoMoves();
         Move move = new Move(board, oldPos, newPos, promotionPiece);
         history.push(move);
-        logic.calculatePossibleMoves();
+        board = move.getNewBoard();
+        logic = new ChessLogic(board, history);
         notifyMoveMade(oldPos, newPos);
         if (isDraw())
             notifyDraw();
@@ -131,10 +124,11 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void redoMove() {
-        if (!history.canRedoMove())
-            return;
         Move move = history.redoMove();
-        logic.calculatePossibleMoves();
+        if(move == null)
+            return;
+        board = move.getNewBoard();
+        logic = new ChessLogic(board, history);
         notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
         if (isCheckmate())
             notifyCheckmate(getKing());
@@ -145,15 +139,11 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void undoMove() {
-        if (!history.canUndoMove())
-            return;
         Move move = history.undoMove();
-        PossibleMoves possibleMoves = move.getPossibleMoves();
-        if (possibleMoves == null)
-            logic.calculatePossibleMoves();
-        else {
-            logic.setPossibleMoves(possibleMoves);
-        }
+        if (move == null)
+            return;
+        board = move.getNewBoard();
+        logic = new ChessLogic(board, history);
         notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
     }
 
@@ -169,10 +159,6 @@ public class ChessGame implements Chess, Undoable {
         while (canRedoMove()) {
             redoMove();
         }
-    }
-
-    public boolean canUndoMove() {
-        return history.canUndoMove();
     }
 
     public int getNumHalfMoves() {

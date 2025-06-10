@@ -90,13 +90,12 @@ public class DepthTester {
         }
 
         private DepthTask testNewDepth(Coordinate piece, Coordinate newMove, Pieces promotionPiece){
-            ChessGame copy = chessGame.copy();
             try {
-                copy.makeMove(piece, newMove, promotionPiece);
+                chessGame.makeMove(piece, newMove, promotionPiece);
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             }
-            return new DepthTask(copy, currentDepth - 1, topDepth);
+            return new DepthTask(chessGame, currentDepth - 1, topDepth);
         }
     }
 }

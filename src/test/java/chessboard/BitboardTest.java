@@ -14,7 +14,7 @@ class BitboardTest {
     void addBasic(){
         Bitboard bitboard = new Bitboard();
         Coordinate a1 = new Coordinate(0, 0);
-        assertTrue(bitboard.add(a1));
+        assertNotEquals(bitboard, bitboard.add(a1));
         assertEquals(1, bitboard.getBoard());
     }
 
