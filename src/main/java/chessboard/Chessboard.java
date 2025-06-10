@@ -3,62 +3,35 @@ package chessboard;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
-import common.PieceValue;
 import common.Pieces;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
  * A chess board that is automatically populated with blank squares.
  */
-class Chessboard {
-    private final PieceBoard pieceBoard;
-    private final ColourBoard colourBoard;
-    private final Bitboard castlingRights;
-    private PieceColour currentTurn;
-    private Coordinate enPassantSquare;
+record Chessboard(
+        PieceBoard pieceBoard,
+        ColourBoard colourBoard,
+        Bitboard castlingRights,
+        PieceColour currentTurn,
+        Coordinate enPassantSquare) {
 
 
     /**
      * Initialises the board with all squares blank.
      */
     public Chessboard() {
-        pieceBoard = new PieceBoard();
-        colourBoard = new ColourBoard();
-        castlingRights = new Bitboard();
-        castlingRights.add(new Coordinate(0, 0));
-        castlingRights.add(new Coordinate(4, 0));
-        castlingRights.add(new Coordinate(0, 7));
-        castlingRights.add(new Coordinate(7, 7));
-        castlingRights.add(new Coordinate(7, 0));
-        castlingRights.add(new Coordinate(4, 7));
-        currentTurn = PieceColour.WHITE;
-        enPassantSquare = null;
-    }
-
-    private Chessboard (PieceBoard pieceBoard, ColourBoard colourBoard, Bitboard castlingRights, PieceColour currentTurn, Coordinate enPassantSquare) {
-        this.pieceBoard = pieceBoard;
-        this.colourBoard = colourBoard;
-        this.castlingRights = castlingRights;
-        this.currentTurn = currentTurn;
-        this.enPassantSquare = enPassantSquare;
-    }
-
-    /**
-     * Adds all the pieces in the collections to the board based on the pieces x and y values
-     */
-    void populateBoard(Iterable<PieceValue> whitePieces, Iterable<PieceValue> blackPieces) {
-        for (PieceValue piece : blackPieces) {
-            colourBoard.add(piece);
-            pieceBoard.add(piece);
-        }
-        for (PieceValue piece : whitePieces) {
-            colourBoard.add(piece);
-            pieceBoard.add(piece);
-        }
+        this(new PieceBoard(),
+                new ColourBoard(),
+                new Bitboard().add(new Coordinate(0, 0))
+                .add(new Coordinate(4, 0))
+                .add(new Coordinate(0, 7))
+                .add(new Coordinate(7, 7))
+                .add(new Coordinate(7, 0))
+                .add(new Coordinate(4, 7)),
+                PieceColour.WHITE,
+                null);
     }
 
     @Nullable
@@ -74,9 +47,16 @@ class Chessboard {
         return colourBoard.isSquareBlank(coordinate);
     }
 
-    public void movePiece(Coordinate oldPos, Coordinate newPos) {
-        colourBoard.movePiece(oldPos, newPos);
-        pieceBoard.move(oldPos, newPos);
+    public Chessboard movePiece(Coordinate oldPos, Coordinate newPos) {
+        return new Chessboard(pieceBoard.move(oldPos, newPos),
+                colourBoard.move(oldPos, newPos),
+                castlingRights,
+                currentTurn,
+                enPassantSquare);
+    }
+
+    public Chessboard movePiece(@NotNull MoveValue move) {
+        return movePiece(move.oldPos(), move.newPos());
     }
 
     public Bitboard getAllColourPositions(PieceColour colour) {
@@ -87,27 +67,35 @@ class Chessboard {
         return colourBoard.getEmptySquares();
     }
 
-    public void movePiece(@NotNull MoveValue move) {
-        movePiece(move.oldPos(), move.newPos());
-    }
-
-    public void removeCastlingRight(Coordinate position) {
-        castlingRights.remove(position);
+    public Chessboard removeCastlingRight(Coordinate position) {
+        return new Chessboard(pieceBoard,
+                colourBoard,
+                castlingRights.remove(position),
+                currentTurn,
+                enPassantSquare);
     }
 
     public long getCastlingRights() {
         return castlingRights.getBoard();
     }
 
-    public void setCastlingRights(long rights) {
-        castlingRights.set(rights);
+    public Chessboard setCastlingRights(long rights) {
+        return new Chessboard(pieceBoard,
+                colourBoard,
+                new Bitboard(rights),
+                currentTurn,
+                enPassantSquare);
     }
 
-    public void removeAllCastling(PieceColour colour) {
+    public Chessboard removeAllCastling(PieceColour colour) {
         int backRow = colour == PieceColour.WHITE ? 0 : 7;
-        castlingRights.remove(new Coordinate(0, backRow));
-        castlingRights.remove(new Coordinate(7, backRow));
-        castlingRights.remove(new Coordinate(4, backRow));
+        return new Chessboard(pieceBoard,
+                colourBoard,
+                castlingRights.remove(new Coordinate(0, backRow))
+                        .remove(new Coordinate(7, backRow))
+                        .remove(new Coordinate(4, backRow)),
+                currentTurn,
+                enPassantSquare);
     }
 
     @Nullable
@@ -115,12 +103,20 @@ class Chessboard {
         return enPassantSquare;
     }
 
-    public void setEnPassantSquare(@Nullable Coordinate position) {
-        enPassantSquare = position;
+    public Chessboard setEnPassantSquare(@Nullable Coordinate position) {
+        return new Chessboard(pieceBoard,
+                colourBoard,
+                castlingRights,
+                currentTurn,
+                position);
     }
 
-    void nextTurn() {
-        currentTurn = currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE;
+    Chessboard nextTurn() {
+        return new Chessboard(pieceBoard,
+                colourBoard,
+                castlingRights,
+                currentTurn == PieceColour.WHITE ? PieceColour.BLACK : PieceColour.WHITE,
+                enPassantSquare);
     }
 
     public PieceColour getTurn() {
@@ -136,29 +132,31 @@ class Chessboard {
         return colourBoard.getColourAtPosition(position);
     }
 
-    public void promotion(Coordinate position, Pieces promotionPiece) {
+    public Chessboard promotion(Coordinate position, Pieces promotionPiece) {
         if (promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
             throw new RuntimeException("Invalid promotion piece");
-        pieceBoard.remove(position);
-        pieceBoard.add(promotionPiece, position);
+        return new Chessboard(pieceBoard.remove(position).add(promotionPiece, position),
+                colourBoard,
+                castlingRights,
+                currentTurn,
+                null);
     }
 
-    public void removePiece(Coordinate position) {
-        pieceBoard.remove(position);
-        colourBoard.remove(position);
+    public Chessboard removePiece(Coordinate position) {
+        return new Chessboard(pieceBoard.remove(position),
+                colourBoard.remove(position),
+                castlingRights,
+                currentTurn,
+                enPassantSquare);
     }
 
-    public void addPiece(Pieces piece, Coordinate position, PieceColour colour) {
+    public Chessboard addPiece(Pieces piece, Coordinate position, PieceColour colour) {
         if (piece == Pieces.BLANK)
             throw new IllegalArgumentException("Added piece cannot be blank");
-        pieceBoard.add(piece, position);
-        colourBoard.add(colour, position);
-    }
-
-    Chessboard copy() {
-        PieceBoard pieceBoardCopy = pieceBoard.copy();
-        ColourBoard colourBoardCopy = colourBoard.copy();
-        Bitboard castlingRightsCopy = new Bitboard(castlingRights.getBoard());
-        return new Chessboard(pieceBoardCopy, colourBoardCopy, castlingRightsCopy, currentTurn, enPassantSquare);
+        return new Chessboard(pieceBoard.add(piece, position),
+                colourBoard.add(colour, position),
+                castlingRights,
+                currentTurn,
+                enPassantSquare);
     }
 }

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  */
 class ChessboardBuilder {
     private final static Pattern REGEX = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
-    private final Chessboard board = new Chessboard();
+    private Chessboard board = new Chessboard();
     private final List<PieceValue> whitePieces = new ArrayList<>(16);
     private final List<PieceValue> blackPieces = new ArrayList<>(16);
     private int squaresProcessed = 0;
@@ -58,7 +58,13 @@ class ChessboardBuilder {
             }
             squaresProcessed = 0;
         }
-        board.populateBoard(whitePieces, blackPieces);
+
+        for (PieceValue piece : blackPieces) {
+            board = board.addPiece(piece.pieceType(), piece.position(), piece.colour());
+        }
+        for (PieceValue piece : whitePieces) {
+            board = board.addPiece(piece.pieceType(), piece.position(), piece.colour());
+        }
     }
 
     private void processCharacter(char character, int row){

@@ -18,7 +18,7 @@ public record ColourBoard (Bitboard whitePieces, Bitboard blackPieces) {
         return this;
     }
 
-    public ColourBoard movePiece(Coordinate oldPosition, Coordinate newPosition){
+    public ColourBoard move(Coordinate oldPosition, Coordinate newPosition){
         PieceColour colour = getColourAtPosition(oldPosition);
         if (colour == PieceColour.WHITE)
             return new ColourBoard(whitePieces.remove(oldPosition).add(newPosition), blackPieces.remove(newPosition));
