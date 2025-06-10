@@ -142,7 +142,7 @@ public class ChessGame implements Chess, Undoable {
         Move move = history.undoMove();
         if (move == null)
             return;
-        board = move.getNewBoard();
+        board = move.getOldBoard();
         logic = new ChessLogic(board, history);
         notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
     }
