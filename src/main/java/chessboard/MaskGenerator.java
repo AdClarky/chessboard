@@ -66,12 +66,12 @@ public class MaskGenerator {
             if(castlingRights.contains(new Coordinate(0, piecePos.y())) &&
                 ((piecePos.y() == 7 && (blankPieces & KING_LONG_CASTLING_BLACK) == KING_LONG_CASTLING_BLACK) ||
                         (piecePos.y() == 0 && (blankPieces & KING_LONG_CASTLING_WHITE) == KING_LONG_CASTLING_WHITE))){
-                mask.add(new Coordinate(2, piecePos.y()));
+                mask = mask.add(new Coordinate(2, piecePos.y()));
             }
             if(castlingRights.contains(new Coordinate(7, piecePos.y())) &&
                     ((piecePos.y() == 7 && (blankPieces & KING_SHORT_CASTLING_BLACK) == KING_SHORT_CASTLING_BLACK) ||
                             (piecePos.y() == 0 && (blankPieces & KING_SHORT_CASTLING_WHITE) == KING_SHORT_CASTLING_WHITE))){
-                mask.add(new Coordinate(6, piecePos.y()));
+                mask = mask.add(new Coordinate(6, piecePos.y()));
             }
         }
         return removeFriendlyPieces(mask, board.getColour(piecePos));
@@ -84,7 +84,7 @@ public class MaskGenerator {
 
     private long removeFriendlyPieces(Bitboard mask, PieceColour colour){
         Bitboard friendlyPieces = board.getAllColourPositions(colour);
-        mask.removeAll(friendlyPieces);
+        mask = mask.removeAll(friendlyPieces);
         return mask.getBoard();
     }
 
