@@ -1,7 +1,7 @@
 package window;
 
+import ai.MoveChooser;
 import ai.RandomMoves;
-import ai.Robot;
 import chessboard.ChessInterface;
 import common.PieceColour;
 
@@ -86,9 +86,10 @@ public class MainMenu extends JFrame {
         ChessInterface chessGame = new ChessInterface();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
-        Robot blackRobot = new Robot(chessGame, PieceColour.BLACK, new RandomMoves());
-        chessGame.addBoardListener(blackRobot);
+        MoveChooser whiteChooser = new RandomMoves();
+        MoveChooser blackChooser = new RandomMoves();
 
+        new GameWorker(chessGame, whiteChooser, blackChooser, whiteWindow).execute();
     }
 
     private void startVsLocal(){
