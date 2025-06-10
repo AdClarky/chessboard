@@ -4,6 +4,7 @@ import common.BoardListener;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
+import common.PieceValue;
 import common.Pieces;
 import exception.InvalidFenStringException;
 import exception.InvalidMoveException;
@@ -15,9 +16,10 @@ import java.util.Collection;
 /**
  * A chess game api. The board can be built using a FEN string or just in the default position.
  * Add a {@link BoardListener} to be notified of events. At the end of a move boardChanged is called.
+ *
  * @author Toby
  */
-public class ChessInterface {
+public class ChessInterface implements Chess {
     private final ChessGame game;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
@@ -25,13 +27,14 @@ public class ChessInterface {
     /**
      * Creates a {@code ChessGame} with the pieces in the default position.
      */
-    public ChessInterface(){
+    public ChessInterface() {
         game = new ChessGame();
         fenGenerator = new FenGenerator(game);
     }
 
     /**
      * Creates a {@code ChessGame} with the setup based on a FEN String.
+     *
      * @param fenString a FEN string which details a board position
      * @throws InvalidFenStringException when the give FEN string is invalid
      */
@@ -40,45 +43,36 @@ public class ChessInterface {
         fenGenerator = new FenGenerator(game);
     }
 
-    /**
-     * The current turn of the board, i.e. black or white.
-     * @return the current turn
-     */
-    public PieceColour getCurrentTurn(){
+    @Override
+    public PieceColour getCurrentTurn() {
         return game.getTurn();
     }
 
-    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionValue) throws InvalidMoveException {
-        game.makeMove(oldPos, newPos, promotionValue);
+    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
+        game.makeMove(oldPos, newPos, promotionPiece);
         notifyMoveMade(oldPos, newPos);
-        if(game.isDraw())
+        if (game.isDraw())
             notifyDraw();
-        if(game.isCheckmate()) {
+        if (game.isCheckmate()) {
             notifyCheckmate(game.getKing());
         }
     }
 
-    /**
-     * Moves a piece to a new location while validating it is a valid move.
-     * Assumes the provided old coordinates are valid coordinates for a piece.
-     * If any moves have been undone, it sets the board back to the current position.
-     * After a move has been made, it notifies all listeners then moves on to the next turn.
-     * Checks for checkmate and draws.
-     * @throws InvalidMoveException when the move given is not a valid move.
-     */
+    @Override
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
         if(game.isMovePromotion(oldPos, newPos)) {
             notifyPromotion();
             return;
         }
-        makeMove(oldPos, newPos, Pieces.QUEEN);
+        makeMove(oldPos, newPos, null);
     }
 
-    /**
-     * {@link ChessInterface#makeMove(Coordinate, Coordinate)}
-     * @param chessMove a chess move in algabraic notation
-     * @throws InvalidMoveException when the move given is not a valid move
-     */
+    @Override
+    public void makeMove(MoveValue moveValue) throws InvalidMoveException {
+        makeMove(moveValue.oldPos(), moveValue.newPos());
+    }
+
+    @Override
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = game.chessToMove(chessMove);
         makeMove(move.oldPos(), move.newPos());
@@ -86,60 +80,61 @@ public class ChessInterface {
 
     /**
      * Adds the given BoardListener to receive events from this board.
+     *
      * @param listener the board listener
      */
-    public void addBoardListener(BoardListener listener){
+    public void addBoardListener(BoardListener listener) {
         boardListeners.add(listener);
     }
 
-    private void notifyMoveMade(Coordinate oldPos, Coordinate newPos){
-        for(BoardListener listener : boardListeners){
+    private void notifyMoveMade(Coordinate oldPos, Coordinate newPos) {
+        for (BoardListener listener : boardListeners) {
             listener.moveMade(oldPos, newPos);
         }
     }
 
-    private void notifyBoardChanged(@NotNull MoveValue move){
-        for(BoardListener listener : boardListeners){
+    private void notifyBoardChanged(@NotNull MoveValue move) {
+        for (BoardListener listener : boardListeners) {
             listener.boardChanged(move.oldPos(), move.newPos());
         }
     }
 
-    private void notifyCheckmate(Coordinate kingPos){
-        for(BoardListener listener : boardListeners)
+    private void notifyCheckmate(Coordinate kingPos) {
+        for (BoardListener listener : boardListeners)
             listener.checkmate(kingPos);
     }
 
-    private void notifyDraw(){
+    private void notifyDraw() {
         Coordinate whitePos = game.getKing(PieceColour.WHITE);
         Coordinate blackPos = game.getKing(PieceColour.BLACK);
-        for(BoardListener listener : boardListeners)
+        for (BoardListener listener : boardListeners)
             listener.draw(whitePos, blackPos);
     }
 
-    private void notifyPromotion(){
-        for(BoardListener listener : boardListeners){
+    private void notifyPromotion() {
+        for (BoardListener listener : boardListeners) {
             listener.promotion();
         }
     }
 
     /**
      * Moves forward one move. Does nothing if there are no more moves to be made.
-    */
-    public void redoMove(){
-        if(!game.canRedoMove())
+     */
+    public void redoMove() {
+        if (!game.canRedoMove())
             return;
         MoveValue move = game.redoMove();
         notifyBoardChanged(move);
-        if(game.isCheckmate()) {
+        if (game.isCheckmate()) {
             notifyCheckmate(game.getKing());
         }
     }
 
     /**
      * Moves backwards one move. Does nothing if there are no more moves to be made.
-    */
-    public void undoMove(){
-        if(!game.canUndoMove())
+     */
+    public void undoMove() {
+        if (!game.canUndoMove())
             return;
         MoveValue move = game.undoMove();
         notifyBoardChanged(move);
@@ -147,57 +142,53 @@ public class ChessInterface {
 
     /**
      * Undoes the given number of moves. Can be greater than the number of moves made.
+     *
      * @param numOfMoves the number of moves to undo.
      * @see ChessInterface#undoMove()
      */
-    public void undoMultipleMoves(int numOfMoves){
-        for(int i = 0; i < numOfMoves; i++){
+    public void undoMultipleMoves(int numOfMoves) {
+        for (int i = 0; i < numOfMoves; i++) {
             undoMove();
         }
     }
 
     /**
      * Sets the board back to the most recent position. Does nothing if there are no moves to redo.
+     *
      * @see ChessInterface#redoMove()
      */
-    public void redoAllMoves(){
-        while(game.canRedoMove()){
+    public void redoAllMoves() {
+        while (game.canRedoMove()) {
             redoMove();
         }
     }
 
-    /**
-     * Calculates if the current position is checkmate.
-     * @return true if the current position is checkmate
-     */
-    public boolean isCheckmate(){
+    @Override
+    public boolean isCheckmate() {
         return game.isCheckmate();
     }
 
-    /**
-     * Calculates if the current position is a draw.
-     * @return true if the current position is a draw
-     */
-    public boolean isDraw(){
+    @Override
+    public boolean isDraw() {
         return game.isDraw();
     }
 
-    /**
-     * Calculates a FEN string based on the current position
-     * @return a FEN string
-     */
+    @Override
     public String getFenString() {
         return fenGenerator.getFenString();
     }
 
+    @Override
     public PieceColour getColour(Coordinate position) {
         return game.getColour(position);
     }
 
+    @Override
     public Collection<Coordinate> getPossibleMoves(Coordinate position) {
         return game.getPossibleMoves(position);
     }
 
+    @Override
     public Collection<Coordinate> getAllColourPieces(PieceColour turn) {
         return game.getAllColourPieces(turn);
     }
