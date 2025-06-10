@@ -42,8 +42,4 @@ public class PossibleMoves{
         }
         return true;
     }
-
-    PossibleMoves copy() {
-        return new PossibleMoves(new HashMap<>(possibleMovesBoard));
-    }
 }

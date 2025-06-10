@@ -68,7 +68,7 @@ class Move {
      * Moves the relevant pieces with no validation.
      * Saves the moves made so they can be undone.
      */
-    public Chessboard makeMove() {
+    private Chessboard makeMove() {
         Chessboard newBoard = oldBoard;
         if (piece == Pieces.PAWN && Math.abs(newPos.y() - oldPos.y()) == 2)
             newBoard = newBoard.setEnPassantSquare(newPos);

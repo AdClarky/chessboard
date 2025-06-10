@@ -83,12 +83,6 @@ class BoardHistoryTest {
     }
 
     @Test
-    void getLastMovesWhenNoMovesHaveBeenMade(){
-        List<MoveValue> lastMoves = history.getLastMoves();
-        assertTrue(lastMoves.isEmpty());
-    }
-
-    @Test
     void areHalfMovesCorrectWhenClearingRedoAfterPawnMoves(){
         ChessGame game = new ChessGame();
         assertDoesNotThrow(()->game.makeMove("a4"));

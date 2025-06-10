@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ChessGame implements Chess, Undoable {
-    private final Chessboard board;
     private final BoardHistory history;
     private final ChessLogic logic;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
+    private Chessboard board;
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
@@ -38,8 +38,29 @@ public class ChessGame implements Chess, Undoable {
         this.logic = logic;
     }
 
+    private static MoveValue getCastlingMove(PieceColour colour, int newX) {
+        if (colour == PieceColour.BLACK) {
+            return new MoveValue(new Coordinate(4, 7), new Coordinate(newX, 7));
+        } else {
+            return new MoveValue(new Coordinate(4, 0), new Coordinate(newX, 0));
+        }
+    }
+
+    private static void disambiguatePiece(Collection<Coordinate> possiblePieces, @NotNull CharSequence move) {
+        int length = move.length();
+        for (int i = 0; i < length - 2; i++) {
+            if (Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x') { // x value given
+                Coordinate correctX = Coordinate.fromString(move.charAt(i) + "0");
+                possiblePieces.removeIf(piece -> piece.x() != correctX.x());
+            } else if (Character.isDigit(move.charAt(i))) { // y value given
+                Coordinate correctY = Coordinate.fromString("a" + move.charAt(i));
+                possiblePieces.removeIf(piece -> piece.y() != correctY.y());
+            }
+        }
+    }
+
     @Override
-    public PieceColour getCurrentTurn(){
+    public PieceColour getCurrentTurn() {
         return board.getTurn();
     }
 
@@ -68,9 +89,9 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
-        if(!logic.isValidMove(oldPos, newPos))
+        if (!logic.isValidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
-        if(history.canRedoMove())
+        if (history.canRedoMove())
             history.clearRedoMoves();
         Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves(), promotionPiece);
         history.push(move);
@@ -84,51 +105,51 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public boolean isMovePromotion(Coordinate oldPos, Coordinate newPos) {
-        if(!logic.isValidMove(oldPos, newPos))
+        if (!logic.isValidMove(oldPos, newPos))
             return false;
-        if(board.getPiece(oldPos) != Pieces.PAWN)
+        if (board.getPiece(oldPos) != Pieces.PAWN)
             return false;
-        if((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(oldPos) == PieceColour.WHITE))
+        if ((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(oldPos) == PieceColour.WHITE))
             return true;
         return false;
     }
 
-    public PieceColour getColour(Coordinate position){
+    public PieceColour getColour(Coordinate position) {
         return board.getColour(position);
     }
 
-    public Pieces getPiece(Coordinate position){
+    public Pieces getPiece(Coordinate position) {
         return board.getPiece(position);
     }
 
-    public Coordinate getKing(PieceColour colour){
+    public Coordinate getKing(PieceColour colour) {
         return board.getKingPos(colour);
     }
 
-    public Coordinate getKing(){
+    public Coordinate getKing() {
         return board.getKingPos(board.getTurn());
     }
 
     public void redoMove() {
-        if(!history.canRedoMove())
+        if (!history.canRedoMove())
             return;
         Move move = history.redoMove();
         logic.calculatePossibleMoves();
         notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
-        if(isCheckmate())
+        if (isCheckmate())
             notifyCheckmate(getKing());
     }
 
-    public boolean canRedoMove(){
+    public boolean canRedoMove() {
         return history.canRedoMove();
     }
 
     public void undoMove() {
-        if(!history.canUndoMove())
+        if (!history.canUndoMove())
             return;
         Move move = history.undoMove();
         PossibleMoves possibleMoves = move.getPossibleMoves();
-        if(possibleMoves == null)
+        if (possibleMoves == null)
             logic.calculatePossibleMoves();
         else {
             logic.setPossibleMoves(possibleMoves);
@@ -150,19 +171,19 @@ public class ChessGame implements Chess, Undoable {
         }
     }
 
-    public boolean canUndoMove(){
+    public boolean canUndoMove() {
         return history.canUndoMove();
     }
 
-    public int getNumHalfMoves(){
+    public int getNumHalfMoves() {
         return history.getNumHalfMoves();
     }
 
-    public int getNumFullMoves(){
+    public int getNumFullMoves() {
         return history.getNumFullMoves();
     }
 
-    public long getCastlingRights(){
+    public long getCastlingRights() {
         return board.getCastlingRights();
     }
 
@@ -178,55 +199,33 @@ public class ChessGame implements Chess, Undoable {
         return logic.isCheckmate();
     }
 
-
     public MoveValue chessToMove(String move) throws InvalidMoveException {
-        if("O-O".equals(move)) {
+        if ("O-O".equals(move)) {
             return getCastlingMove(board.getTurn(), 6);
         }
-        if("O-O-O".equals(move)) {
+        if ("O-O-O".equals(move)) {
             return getCastlingMove(board.getTurn(), 2);
         }
         Coordinate newCoordinate = Coordinate.fromString(move);
         char pieceLetter;
-        if(Character.isLowerCase(move.charAt(0))) // if a pawn
+        if (Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = '\u0000';
         else // any other piece
             pieceLetter = move.charAt(0);
         ArrayList<Coordinate> possiblePieces = new ArrayList<>(2);
-        for(Coordinate piecePos : board.getAllColourPositions(board.getTurn())){
+        for (Coordinate piecePos : board.getAllColourPositions(board.getTurn())) {
             Pieces piece = board.getPiece(piecePos);
-            if(piece.toCharacter() != pieceLetter) // if its not type of piece that moved
+            if (piece.toCharacter() != pieceLetter) // if its not type of piece that moved
                 continue;
             possiblePieces.add(piecePos);
         }
         possiblePieces.removeIf(piece -> !logic.isValidMove(piece, newCoordinate));
-        if(possiblePieces.size() > 1)
+        if (possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
-        if(possiblePieces.isEmpty())
+        if (possiblePieces.isEmpty())
             throw new InvalidMoveException(move);
         Coordinate piece = possiblePieces.get(0);
         return new MoveValue(piece, newCoordinate);
-    }
-
-    private static MoveValue getCastlingMove(PieceColour colour, int newX){
-        if(colour == PieceColour.BLACK){
-            return new MoveValue(new Coordinate(4,7),new Coordinate(newX,7));
-        }else{
-            return new MoveValue(new Coordinate(4, 0), new Coordinate(newX, 0));
-        }
-    }
-
-    private static void disambiguatePiece(Collection<Coordinate> possiblePieces, @NotNull CharSequence move){
-        int length = move.length();
-        for(int i = 0; i < length - 2; i++){
-            if(Character.isLowerCase(move.charAt(i)) && move.charAt(i) != 'x'){ // x value given
-                Coordinate correctX = Coordinate.fromString(move.charAt(i) + "0");
-                possiblePieces.removeIf(piece -> piece.x() != correctX.x());
-            }else if(Character.isDigit(move.charAt(i))){ // y value given
-                Coordinate correctY = Coordinate.fromString("a" + move.charAt(i));
-                possiblePieces.removeIf(piece -> piece.y() != correctY.y());
-            }
-        }
     }
 
     @Override
@@ -236,12 +235,6 @@ public class ChessGame implements Chess, Undoable {
 
     public Bitboard getPossibleMoves(Coordinate piece) {
         return logic.getPossibleMoves(piece);
-    }
-
-    ChessGame copy(){
-        Chessboard boardCopy = board.copy();
-        ChessLogic logicCopy = logic.copy(boardCopy);
-        return new ChessGame(boardCopy, logicCopy);
     }
 
     public void addBoardListener(BoardListener listener) {

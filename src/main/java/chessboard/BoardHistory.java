@@ -130,11 +130,4 @@ class BoardHistory {
         else
             numHalfMoves--;
     }
-
-    BoardHistory copy() {
-        ArrayDeque<Move> movesCopy = new ArrayDeque<>(moves);
-        ArrayDeque<Move> redoMovesCopy = new ArrayDeque<>(redoMoves);
-        ArrayDeque<Move> lastMoveCopy = new ArrayDeque<>(lastMove);
-        return new BoardHistory(movesCopy, redoMovesCopy, lastMoveCopy, numHalfMoves, numFullMoves);
-    }
 }
