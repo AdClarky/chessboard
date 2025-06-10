@@ -39,12 +39,12 @@ class ChessInterfaceTest {
         public void promotion() {}
     }
     private Listener listener;
-    private ChessInterface game;
+    private ChessGame game;
 
     @BeforeEach
     void setUp() {
         listener = new Listener();
-        game = new ChessInterface();
+        game = new ChessGame();
         game.addBoardListener(listener);
     }
 

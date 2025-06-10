@@ -340,7 +340,7 @@ class MoveTest {
 
     @Test
     void doesCastlingGoBackAfterUndo() {
-        ChessInterface game = assertDoesNotThrow(()->new ChessInterface("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
         assertDoesNotThrow(()->game.makeMove("Kd1"));
         assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
         game.undoMove();
@@ -349,7 +349,7 @@ class MoveTest {
 
     @Test
     void doesMovingChangeCastlingRights() {
-        ChessInterface game = assertDoesNotThrow(()->new ChessInterface("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R3KB1R w Qkq - 0 1"));
         assertDoesNotThrow(()->game.makeMove("Kd1"));
         assertEquals("rnbqkb1r/pppppppp/8/5n2/8/6N1/PPPPPPPP/R2K1B1R b kq - 1 1", game.getFenString());
     }

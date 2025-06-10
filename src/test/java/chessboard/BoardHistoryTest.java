@@ -90,7 +90,7 @@ class BoardHistoryTest {
 
     @Test
     void areHalfMovesCorrectWhenClearingRedoAfterPawnMoves(){
-        ChessInterface game = new ChessInterface();
+        ChessGame game = new ChessGame();
         assertDoesNotThrow(()->game.makeMove("a4"));
         assertDoesNotThrow(()->game.makeMove("a5"));
         assertDoesNotThrow(()->game.makeMove("b4"));
@@ -104,7 +104,7 @@ class BoardHistoryTest {
 
     @Test
     void areFullMovesCorrectWhenClearingRedoBlackSecond(){
-        ChessInterface game = new ChessInterface();
+        ChessGame game = new ChessGame();
         assertDoesNotThrow(()->{
             game.makeMove("e4");
             game.makeMove("e5");
@@ -116,7 +116,7 @@ class BoardHistoryTest {
 
     @Test
     void areFullMovesCorrectWhenClearingRedoBlackStarts(){
-        ChessInterface game = assertDoesNotThrow(()->new ChessInterface("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"));
+        ChessGame game = assertDoesNotThrow(()->new ChessGame("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"));
         assertDoesNotThrow(()->{
            game.makeMove("e5");
            game.undoMove();
@@ -127,7 +127,7 @@ class BoardHistoryTest {
 
     @Test
     void doesTheGameGoBackToDefaultPosAfterClearing(){
-        ChessInterface game = new ChessInterface();
+        ChessGame game = new ChessGame();
         Collection<String> moves = Arrays.asList("e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5");
         assertDoesNotThrow(()->new Autoplay(game, moves).play());
         game.undoMove();

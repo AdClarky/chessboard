@@ -1,7 +1,7 @@
 package window;
 
 import ai.MoveChooser;
-import chessboard.ChessInterface;
+import chessboard.Chess;
 import common.MoveValue;
 import common.PieceColour;
 
@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 
 public class GameWorker extends SwingWorker<Void, String> {
 
-        private final ChessInterface chessGame;
+        private final Chess chessGame;
         private final MoveChooser whiteChooser;
         private final MoveChooser blackChooser;
 
-        public GameWorker(ChessInterface chessGame, MoveChooser whiteChooser, MoveChooser blackChooser, GameWindow gameWindow) {
+        public GameWorker(Chess chessGame, MoveChooser whiteChooser, MoveChooser blackChooser, GameWindow gameWindow) {
             this.chessGame = chessGame;
             this.whiteChooser = whiteChooser;
             this.blackChooser = blackChooser;
