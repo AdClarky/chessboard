@@ -1,72 +1,64 @@
 package chessboard;
 
 import common.Coordinate;
-import common.Pieces;
-import common.PieceColour;
 import common.MoveValue;
+import common.PieceColour;
+import common.Pieces;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Moves and stores all necessary pieces to make a chess move.
  * Allows the move to be undone and redone as many times as you would like.
- * There is no move validation, it will always make the move. */
+ * There is no move validation, it will always make the move.
+ */
 class Move {
-    private final Chessboard board;
+    private final Chessboard oldBoard;
+    private final Chessboard newBoard;
     private final Coordinate oldPos;
     private final Coordinate newPos;
     private final Pieces piece;
     private final PieceColour pieceColour;
-    private final List<MoveValue> movesToUndo = new ArrayList<>(3);
     private final List<MoveValue> movesMade;
-    private final Coordinate previousEnPassant;
-    private final long castlingRights;
     private final Pieces promotionPiece;
     private PossibleMoves possibleMoves;
-    private boolean undone = false;
     private Pieces pieceTaken = null;
-    private PieceColour pieceTakenColour = null;
 
-    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos){
-        this(board, oldPos, newPos, null);
+    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos) {
+        this(oldBoard, oldPos, newPos, null);
     }
 
-    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves){
-        this(board, oldPos, newPos, possibleMoves, Pieces.QUEEN);
+    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves) {
+        this(oldBoard, oldPos, newPos, possibleMoves, Pieces.QUEEN);
     }
 
-    public Move(Chessboard board, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece){
+    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece) {
         this.oldPos = oldPos;
         this.newPos = newPos;
-        this.board = board;
-        piece = board.getPiece(oldPos);
-        pieceColour = board.getColour(oldPos);
-        previousEnPassant = board.getEnPassantSquare();
-        castlingRights = board.getCastlingRights();
+        this.oldBoard = oldBoard;
+        piece = oldBoard.getPiece(oldPos);
+        pieceColour = oldBoard.getColour(oldPos);
         movesMade = getMoves();
         this.possibleMoves = possibleMoves;
         this.promotionPiece = promotionPiece;
-        makeMove();
+        newBoard = makeMove();
     }
 
-    private List<MoveValue> getMoves(){
-        if(piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2) {
+    private List<MoveValue> getMoves() {
+        if (piece == Pieces.KING && Math.abs(oldPos.x() - newPos.x()) == 2) {
             int rookSquare = 0;
             int newRookSquare = 3;
-            if(newPos.x() == 6) {
+            if (newPos.x() == 6) {
                 rookSquare = 7;
                 newRookSquare = 5;
             }
             return List.of(new MoveValue(oldPos, newPos), new MoveValue(new Coordinate(rookSquare, oldPos.y()), new Coordinate(newRookSquare, oldPos.y())));
-        }
-        else if(piece == Pieces.PAWN){
-            if(board.isSquareBlank(newPos) && oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
+        } else if (piece == Pieces.PAWN) {
+            if (oldBoard.isSquareBlank(newPos) && oldPos.x() != newPos.x() && oldPos.y() != newPos.y())
                 return List.of(new MoveValue(new Coordinate(newPos.x(), oldPos.y()), newPos), new MoveValue(oldPos, newPos));
-            else if(newPos.y() == 7 || newPos.y() == 0)
+            else if (newPos.y() == 7 || newPos.y() == 0)
                 return List.of(new MoveValue(oldPos, newPos), new MoveValue(newPos, newPos));
         }
         return List.of(new MoveValue(oldPos, newPos));
@@ -76,65 +68,37 @@ class Move {
      * Moves the relevant pieces with no validation.
      * Saves the moves made so they can be undone.
      */
-    public void makeMove(){
-        undone = false;
-        movesToUndo.clear();
-        if(piece == Pieces.PAWN && Math.abs(newPos.y() - oldPos.y()) == 2)
-            board.setEnPassantSquare(newPos);
+    public Chessboard makeMove() {
+        Chessboard newBoard = oldBoard;
+        if (piece == Pieces.PAWN && Math.abs(newPos.y() - oldPos.y()) == 2)
+            newBoard = newBoard.setEnPassantSquare(newPos);
         else
-            board.setEnPassantSquare(null);
-        board.removeCastlingRight(oldPos);
-        board.removeCastlingRight(newPos);
-        for(MoveValue move : movesMade){
-            if(!board.isSquareBlank(move.newPos()))
-                takePiece(move);
-            movesToUndo.add(new MoveValue(move.newPos(), move.oldPos()));
-            board.movePiece(move);
+            newBoard = newBoard.setEnPassantSquare(null);
+        newBoard = newBoard.removeCastlingRight(oldPos);
+        newBoard = newBoard.removeCastlingRight(newPos);
+        for (MoveValue move : movesMade) {
+            if (!newBoard.isSquareBlank(move.newPos()))
+                newBoard = takePiece(newBoard, move);
+            newBoard = newBoard.movePiece(move);
         }
-        board.nextTurn();
+        newBoard = newBoard.nextTurn();
+        return newBoard;
     }
 
-    private void takePiece(@NotNull MoveValue move){
-        if(move.isPieceInSamePosition()) {// promotion
-            board.promotion(move.newPos(), promotionPiece);
-            return;
+    private Chessboard takePiece(Chessboard newBoard, @NotNull MoveValue move) {
+        if (move.isPieceInSamePosition()) {// promotion
+            return newBoard.promotion(move.newPos(), promotionPiece);
         }
-        if(pieceTaken == null)
-            pieceTaken = board.getPiece(move.newPos());
-        pieceTakenColour = board.getColour(move.newPos());
-        movesToUndo.add(new MoveValue(move.newPos(), move.newPos()));
-    }
-
-    public void undo(){
-        undone = true;
-        ListIterator<MoveValue> iter = movesToUndo.listIterator(movesToUndo.size());
-        while(iter.hasPrevious()){
-            MoveValue move = iter.previous();
-            addOrRemovePiece(pieceTaken, move);
-            board.movePiece(move);
-        }
-        board.setEnPassantSquare(previousEnPassant);
-        board.setCastlingRights(castlingRights);
-        board.nextTurn();
+        if (pieceTaken == null)
+            pieceTaken = newBoard.getPiece(move.newPos());
+        return newBoard;
     }
 
     @Nullable
-    public PossibleMoves getPossibleMoves(){
+    public PossibleMoves getPossibleMoves() {
         return possibleMoves;
     }
 
-    /** Checks if a piece was taken or if it was a promotion and restores it. */
-    private void addOrRemovePiece(Pieces piece, MoveValue move){
-        if(!move.isPieceInSamePosition())
-            return;
-        // a piece moving to the same spot only occurs as the last move when it's a promotion
-        if(move == movesToUndo.get(movesToUndo.size()-1)) {
-            board.removePiece(move.newPos());
-            board.addPiece(Pieces.PAWN, move.newPos(), pieceColour);
-        }
-        else
-            board.addPiece(piece, move.newPos(), pieceTakenColour);
-    }
 
     public Coordinate getOldPos() {
         return oldPos;
@@ -144,27 +108,31 @@ class Move {
         return newPos;
     }
 
-    public boolean isPieceAPawn(){
+    public boolean isPieceAPawn() {
         return piece == Pieces.PAWN;
     }
 
-    public Pieces getPiece(){
+    public Pieces getPiece() {
         return piece;
     }
 
-    public PieceColour getColour(){
+    public PieceColour getColour() {
         return pieceColour;
     }
 
-    public boolean isPieceColourBlack(){
+    public boolean isPieceColourBlack() {
         return pieceColour == PieceColour.BLACK;
-    }
-
-    public List<MoveValue> getMovesToUndo() {
-        return undone ? movesToUndo : movesMade;
     }
 
     public boolean hasTaken() {
         return pieceTaken != null;
+    }
+
+    public Chessboard getOldBoard() {
+        return oldBoard;
+    }
+
+    public Chessboard getNewBoard() {
+        return newBoard;
     }
 }
