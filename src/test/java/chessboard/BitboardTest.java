@@ -34,41 +34,21 @@ class BitboardTest {
     @Test
     void removeEmpty(){
         Bitboard bitboard = new Bitboard();
-        assertFalse(bitboard.remove(new Coordinate(0, 0)));
+        assertEquals(bitboard, bitboard.remove(new Coordinate(0, 0)));
     }
 
     @Test
     void removeDoesNotContain(){
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        assertFalse(bitboard.remove(new Coordinate(0, 1)));
+        Bitboard added = bitboard.add(new Coordinate(0, 0));
+        assertEquals(added, added.remove(new Coordinate(0, 1)));
     }
 
     @Test
     void removeCoordinate(){
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        assertTrue(bitboard.remove(new Coordinate(0, 0)));
-    }
-
-    @Test
-    void clearWhenEmpty() {
-        Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.clear();
-        assertTrue(bitboard.isEmpty());
-    }
-
-    @Test
-    void clearWhenFull() {
-        Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
-            }
-        }
-        bitboard.clear();
-        assertTrue(bitboard.isEmpty());
+        Bitboard added = bitboard.add(new Coordinate(0, 0));
+        assertNotEquals(bitboard, added.remove(new Coordinate(0, 0)));
     }
 
     @Test
@@ -301,58 +281,56 @@ class BitboardTest {
     @Test
     void addBitXPositionTest() {
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
+        bitboard = bitboard.add(new Coordinate(0, 0));
         assertEquals(1, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(1, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(1, 0));
         assertEquals(2, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(2, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(2, 0));
         assertEquals(4, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(3, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(3, 0));
         assertEquals(8, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(4, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(4, 0));
         assertEquals(16, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(5, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(5, 0));
         assertEquals(32, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(6, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(6, 0));
         assertEquals(64, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(7, 0));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(7, 0));
         assertEquals(128, bitboard.getBoard());
-        bitboard.clear();
     }
 
     @Test
     void addBitYPositionTest() {
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
+        bitboard = bitboard.add(new Coordinate(0, 0));
         assertEquals(1, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 1));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 1));
         assertEquals(256, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 2));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 2));
         assertEquals(65536, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 3));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 3));
         assertEquals(16777216, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 4));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 4));
         assertEquals(4_294_967_296L, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 5));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 5));
         assertEquals(1099511627776L, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 6));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 6));
         assertEquals(281474976710656L, bitboard.getBoard());
-        bitboard.clear();
-        bitboard.add(new Coordinate(0, 7));
+        bitboard = new Bitboard();
+        bitboard = bitboard.add(new Coordinate(0, 7));
             assertEquals(72057594037927936L, bitboard.getBoard());
-        bitboard.clear();
     }
 }
