@@ -197,4 +197,9 @@ public class ChessInterface {
     public Collection<Coordinate> getPossibleMoves(Coordinate position) {
         return game.getPossibleMoves(position);
     }
+
+    public Collection<Coordinate> getAllColourPieces(PieceColour turn) {
+        return game.getAllColourPieces(turn);
+    }
+
 }
