@@ -97,10 +97,6 @@ class Move {
         return newPos;
     }
 
-    public boolean isPieceAPawn() {
-        return piece == Pieces.PAWN;
-    }
-
     public Pieces getPiece() {
         return piece;
     }
@@ -123,5 +119,9 @@ class Move {
 
     public Chessboard getNewBoard() {
         return newBoard;
+    }
+
+    public boolean isHalfMove(){
+        return hasTaken() || piece == Pieces.PAWN;
     }
 }

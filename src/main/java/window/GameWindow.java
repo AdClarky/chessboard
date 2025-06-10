@@ -171,7 +171,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     }
 
     @Override
-    public void boardChanged(Coordinate oldPos, Coordinate newPos) {
+    public void boardChanged() {
         updateBoard();
     }
 

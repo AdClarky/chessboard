@@ -38,7 +38,7 @@ public interface BoardListener {
      * Called when the board has changed, i.e. undo or redo.
      * Works like {@link BoardListener#moveMade(Coordinate, Coordinate)}
      */
-    void boardChanged(Coordinate oldPos, Coordinate newPos);
+    void boardChanged();
 
     void promotion();
 }
