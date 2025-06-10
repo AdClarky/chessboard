@@ -72,7 +72,7 @@ public class Hasher {
 
         Coordinate enPassantSquare = board.getEnPassantSquare();
         if (enPassantSquare != null) {
-            int enPassantIndex = enPassantSquare.y();
+            int enPassantIndex = enPassantSquare.x();
             hash ^= enPassantKeys[enPassantIndex];
         }
 
@@ -108,10 +108,10 @@ public class Hasher {
         hash ^= sideToMoveKey;
         Coordinate prevEnPassant = move.getOldBoard().getEnPassantSquare();
         if (prevEnPassant != null)
-            hash ^= enPassantKeys[prevEnPassant.getBitboardIndex()];
+            hash ^= enPassantKeys[prevEnPassant.x()];
         Coordinate enPassantSquare = move.getNewBoard().getEnPassantSquare();
         if (enPassantSquare != null)
-            hash ^= enPassantKeys[enPassantSquare.getBitboardIndex()];
+            hash ^= enPassantKeys[enPassantSquare.x()];
 
         int pieceIndex = getPieceIndex(move.getPiece(), move.getColour());
         hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
@@ -124,7 +124,6 @@ public class Hasher {
                 hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
             }
         }
-        hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
         Pieces newPiece = move.getNewBoard().getPiece(move.getNewPos());
         if(newPiece != null) {
             pieceIndex = getPieceIndex(newPiece, move.getColour());
