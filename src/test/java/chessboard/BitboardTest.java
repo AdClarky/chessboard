@@ -52,34 +52,6 @@ class BitboardTest {
     }
 
     @Test
-    void retainAllCompletelyDifferentBitboard() {
-        Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Bitboard bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(2, 0));
-        bitboard2.add(new Coordinate(2, 1));
-        bitboard2.add(new Coordinate(2, 1));
-        assertTrue(bitboard.retainAll(bitboard2));
-        assertTrue(bitboard.isEmpty());
-    }
-
-    @Test
-    void retainAllSimilarBitboard() {
-        Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(0, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Bitboard bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(0, 0));
-        bitboard2.add(new Coordinate(2, 1));
-        bitboard2.add(new Coordinate(2, 1));
-        assertTrue(bitboard.retainAll(bitboard2));
-        assertFalse(bitboard.isEmpty());
-    }
-
-    @Test
     void clearWhenEmpty() {
         Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));

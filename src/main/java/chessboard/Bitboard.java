@@ -8,10 +8,10 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class Bitboard implements Iterable<Coordinate> {
-    private long board = 0;
+    private final long board;
 
     public Bitboard() {
-
+        board = 0;
     }
 
     public Bitboard(long board) {
@@ -22,38 +22,27 @@ public class Bitboard implements Iterable<Coordinate> {
         return coordinate.x() + (coordinate.y() << 3);
     }
 
-    public boolean add(Coordinate position) {
+    public Bitboard add(Coordinate position) {
         if (position == null)
             throw new NullPointerException();
         if (contains(position))
-            return false;
-        board |= 1L << shift(position);
-        return true;
+            return this;
+        long newBoard = board | 1L << shift(position);
+        return new Bitboard(newBoard);
     }
 
-    public boolean remove(Coordinate coordinate) {
+    public Bitboard remove(Coordinate coordinate) {
         if (coordinate == null)
             throw new NullPointerException();
         if (!contains(coordinate))
-            return false;
-        board &= ~(1L << shift(coordinate));
-        return true;
+            return this;
+        long newBoard = board & ~(1L << shift(coordinate));
+        return new Bitboard(newBoard);
     }
 
-    public boolean removeAll(Bitboard bitboard) {
-        long tempBoard = board;
-        board &= ~bitboard.getBoard();
-        return tempBoard != board;
-    }
-
-    public boolean retainAll(Bitboard bitboard) {
-        long tempBoard = board;
-        board = bitboard.getBoard() & board;
-        return tempBoard != board;
-    }
-
-    public void clear() {
-        board = 0;
+    public Bitboard removeAll(Bitboard bitboard) {
+        long newBoard = board & ~bitboard.getBoard();
+        return new Bitboard(newBoard);
     }
 
     public boolean equals(Object obj) {
@@ -68,10 +57,6 @@ public class Bitboard implements Iterable<Coordinate> {
 
     public boolean contains(Coordinate coordinate) {
         return ((board >>> shift(coordinate)) & 1) == 1;
-    }
-
-    public void set(long possibleMoves) {
-        board = possibleMoves;
     }
 
     @NotNull
@@ -123,11 +108,7 @@ public class Bitboard implements Iterable<Coordinate> {
 
         @Override
         public void remove() {
-            if (lastReturned == -1) {
-                throw new IllegalStateException();
-            }
-            Bitboard.this.board &= ~(1L << lastReturned);
-            lastReturned = -1;
+            throw new UnsupportedOperationException("Bitboard is immutable");
         }
     }
 }
