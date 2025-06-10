@@ -1,6 +1,8 @@
 package window;
 
+import chessboard.Chess;
 import chessboard.ChessInterface;
+import chessboard.Undoable;
 import common.BoardListener;
 import common.Coordinate;
 import common.PieceColour;
@@ -33,7 +35,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private Square squareSelected;
     private Coordinate moveTo;
     private Coordinate moveFrom;
-    private final ChessInterface board;
+    private final Chess board;
+    private final Undoable undoable;
     private final PieceColour turn;
     private Collection<PieceValue> pieces = new ArrayList<>();
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
@@ -42,6 +45,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     public GameWindow(ChessInterface board, PieceColour colour){
         super();
         this.board = board;
+        this.undoable = board;
         turn = colour;
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
@@ -86,7 +90,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * @param square the square which has been clicked
      */
     private void squareClicked(@NotNull Square square){
-        board.redoAllMoves();
+        undoable.redoAllMoves();
         if((squareSelected == null && square.isBlank()) || turn  != board.getCurrentTurn())
             return;
         PieceColour clickedColour = board.getColour(square.getPosition());
@@ -223,13 +227,13 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_LEFT){
-            board.undoMove();
+            undoable.undoMove();
             if(checkmated != null) {
                 checkmated.unhighlight();
                 checkmated = null;
             }
         }else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-            board.redoMove();
+            undoable.redoMove();
         }
     }
 
