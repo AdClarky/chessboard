@@ -89,11 +89,11 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
-        if (!logic.isValidMove(oldPos, newPos))
+        if (logic.isInvalidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
         if (history.canRedoMove())
             history.clearRedoMoves();
-        Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves(), promotionPiece);
+        Move move = new Move(board, oldPos, newPos, promotionPiece);
         history.push(move);
         logic.calculatePossibleMoves();
         notifyMoveMade(oldPos, newPos);
@@ -105,7 +105,7 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public boolean isMovePromotion(Coordinate oldPos, Coordinate newPos) {
-        if (!logic.isValidMove(oldPos, newPos))
+        if (logic.isInvalidMove(oldPos, newPos))
             return false;
         if (board.getPiece(oldPos) != Pieces.PAWN)
             return false;
@@ -219,7 +219,7 @@ public class ChessGame implements Chess, Undoable {
                 continue;
             possiblePieces.add(piecePos);
         }
-        possiblePieces.removeIf(piece -> !logic.isValidMove(piece, newCoordinate));
+        possiblePieces.removeIf(piece -> logic.isInvalidMove(piece, newCoordinate));
         if (possiblePieces.size() > 1)
             disambiguatePiece(possiblePieces, move);
         if (possiblePieces.isEmpty())

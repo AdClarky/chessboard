@@ -23,25 +23,19 @@ class Move {
     private final PieceColour pieceColour;
     private final List<MoveValue> movesMade;
     private final Pieces promotionPiece;
-    private PossibleMoves possibleMoves;
     private Pieces pieceTaken = null;
 
     public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos) {
         this(oldBoard, oldPos, newPos, null);
     }
 
-    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves) {
-        this(oldBoard, oldPos, newPos, possibleMoves, Pieces.QUEEN);
-    }
-
-    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, PossibleMoves possibleMoves, Pieces promotionPiece) {
+    public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) {
         this.oldPos = oldPos;
         this.newPos = newPos;
         this.oldBoard = oldBoard;
         piece = oldBoard.getPiece(oldPos);
         pieceColour = oldBoard.getColour(oldPos);
         movesMade = getMoves();
-        this.possibleMoves = possibleMoves;
         this.promotionPiece = promotionPiece;
         newBoard = makeMove();
     }
@@ -92,11 +86,6 @@ class Move {
         if (pieceTaken == null)
             pieceTaken = newBoard.getPiece(move.newPos());
         return newBoard;
-    }
-
-    @Nullable
-    public PossibleMoves getPossibleMoves() {
-        return possibleMoves;
     }
 
 
