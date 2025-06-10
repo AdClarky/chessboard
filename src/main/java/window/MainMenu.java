@@ -1,14 +1,14 @@
 package window;
 
+import ai.RandomMoves;
+import ai.Robot;
 import chessboard.ChessInterface;
-import common.BoardListener;
 import common.PieceColour;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainMenu extends JFrame {
-
     public MainMenu() {
         setTitle("Chess Game - Main Menu");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -83,14 +83,19 @@ public class MainMenu extends JFrame {
     }
 
     private void startVsComputer(){
+        ChessInterface chessGame = new ChessInterface();
+        GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
+        chessGame.addBoardListener(whiteWindow);
+        Robot blackRobot = new Robot(chessGame, PieceColour.BLACK, new RandomMoves());
+        chessGame.addBoardListener(blackRobot);
 
     }
 
     private void startVsLocal(){
         ChessInterface chessGame = new ChessInterface();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
-        GameWindow blackWindow = new GameWindow(chessGame, PieceColour.BLACK);
         chessGame.addBoardListener(whiteWindow);
+        GameWindow blackWindow = new GameWindow(chessGame, PieceColour.BLACK);
         chessGame.addBoardListener(blackWindow);
 
         blackWindow.setLocation(whiteWindow.getSize().width, 0);
