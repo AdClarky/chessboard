@@ -1,10 +1,10 @@
 package window;
 
 import chessboard.Bitboard;
+import chessboard.BoardListener;
 import chessboard.Chess;
 import chessboard.ChessGame;
 import chessboard.Undoable;
-import chessboard.BoardListener;
 import common.Coordinate;
 import common.PieceColour;
 import common.PieceValue;
@@ -33,29 +33,29 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 800;
     private final Square[][] squares = new Square[8][8];
-    private Square squareSelected;
-    private Coordinate moveTo;
-    private Coordinate moveFrom;
     private final Chess board;
     private final Undoable undoable;
     private final PieceColour turn;
+    private Square squareSelected;
+    private Coordinate moveTo;
+    private Coordinate moveFrom;
     private Collection<PieceValue> pieces = new ArrayList<>();
     private Bitboard possibleMoves;
     private Square checkmated;
 
-    public GameWindow(ChessGame board, PieceColour colour){
+    public GameWindow(ChessGame board, PieceColour colour) {
         super();
         this.board = board;
         this.undoable = board;
         turn = colour;
-        setLayout(new GridLayout(8,8));
+        setLayout(new GridLayout(8, 8));
         setTitle("Chess");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Color currentColour = LIGHT_SQUARE;
-        for(int y = 0; y < 8; y++){
-            for(int x = 0; x < 8; x++){
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
                 squares[y][x] = new Square(new PieceValue(new Coordinate(x, y), Pieces.BLANK, null), currentColour);
                 squares[y][x].addMouseListener(this);
                 squares[y][x].addKeyListener(this);
@@ -63,15 +63,15 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
             }
             currentColour = (currentColour == LIGHT_SQUARE) ? DARK_SQUARE : LIGHT_SQUARE;
         }
-        if(turn == PieceColour.WHITE){
-            for(int i = squares.length - 1; i >= 0; i--){
-                for(Square square : squares[i]){
+        if (turn == PieceColour.WHITE) {
+            for (int i = squares.length - 1; i >= 0; i--) {
+                for (Square square : squares[i]) {
                     add(square);
                 }
             }
-        }else{
-            for(Square[] row : squares){
-                for(int i = row.length - 1; i >= 0; i--){
+        } else {
+            for (Square[] row : squares) {
+                for (int i = row.length - 1; i >= 0; i--) {
                     add(row[i]);
                 }
             }
@@ -80,7 +80,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         setVisible(true);
     }
 
-    public Square getSquare(Coordinate position){
+    public Square getSquare(Coordinate position) {
         return squares[position.y()][position.x()];
     }
 
@@ -88,14 +88,15 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * Run when a square is clicked.
      * Window tracks which square is currently highlighted.
      * Logic is handled here for clicking e.g. clicked on an enemy square etc
+     *
      * @param square the square which has been clicked
      */
-    private void squareClicked(@NotNull Square square){
+    private void squareClicked(@NotNull Square square) {
         undoable.redoAllMoves();
-        if((squareSelected == null && square.isBlank()) || turn  != board.getCurrentTurn())
+        if ((squareSelected == null && square.isBlank()) || turn != board.getCurrentTurn())
             return;
         PieceColour clickedColour = board.getColour(square.getPosition());
-        if(square.isBlank() || clickedColour != board.getCurrentTurn()){ // if clicked a blank or enemy square
+        if (square.isBlank() || clickedColour != board.getCurrentTurn()) { // if clicked a blank or enemy square
             try {
                 moveFrom = squareSelected.getPosition();
                 moveTo = square.getPosition();
@@ -116,8 +117,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
      * Unselects the selected square tracked by {@link #squareSelected}.
      * Also, unhighlights any possible moves.
      */
-    private void unselectSquare(){
-        if(squareSelected == null)
+    private void unselectSquare() {
+        if (squareSelected == null)
             return;
         squareSelected.unhighlight();
         squareSelected = null;
@@ -126,24 +127,25 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
 
     /**
      * Unhighlights the previously highlighted squares then highlights the new possible squares.
+     *
      * @param square the square of the piece whose possible moves will be calculated
      */
     private void showPossibleMoves(@NotNull Coordinate square) {
         unhighlightPossibleMoves();
         possibleMoves = board.getPossibleMoves(square);
-        for(Coordinate move : possibleMoves){
+        for (Coordinate move : possibleMoves) {
             squares[move.y()][move.x()].showPossibleMove();
         }
     }
 
-    private void unhighlightPossibleMoves(){
+    private void unhighlightPossibleMoves() {
         for (Coordinate move : possibleMoves) { // remove old possible moves
             squares[move.y()][move.x()].unhighlight();
         }
-        possibleMoves.clear();
+        possibleMoves = new Bitboard();
     }
 
-    public void updateBoard(){
+    public void updateBoard() {
         String fenString = board.getFenString();
         FenParser fen = new FenParser(fenString);
         Collection<PieceValue> newPieces = fen.getPieces();
@@ -152,18 +154,18 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         pieces = newPieces;
     }
 
-    private void removeMovedPieces(Collection<PieceValue> newPieces){
+    private void removeMovedPieces(Collection<PieceValue> newPieces) {
         Collection<PieceValue> movedPieces = new ArrayList<>(pieces);
         movedPieces.removeAll(newPieces);
-        for(PieceValue piece : movedPieces){
+        for (PieceValue piece : movedPieces) {
             getSquare(piece.position()).setCurrentPiece(PieceValue.blank());
         }
     }
 
-    private void updateMovedPieces(Collection<PieceValue> newPieces){
+    private void updateMovedPieces(Collection<PieceValue> newPieces) {
         Collection<PieceValue> movedPieces = new ArrayList<>(newPieces);
         movedPieces.removeAll(pieces);
-        for(PieceValue piece : movedPieces){
+        for (PieceValue piece : movedPieces) {
             getSquare(piece.position()).setCurrentPiece(piece);
         }
     }
@@ -190,8 +192,8 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     }
 
     @Override
-    public void promotion(){
-        if(turn != board.getCurrentTurn())
+    public void promotion() {
+        if (turn != board.getCurrentTurn())
             return;
         PromotionWindow promotionWindow = new PromotionWindow(this, turn);
         try {
@@ -203,41 +205,48 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(!(e.getSource() instanceof Square clickedSquare))
+        if (!(e.getSource() instanceof Square clickedSquare))
             return;
         squareClicked(clickedSquare);
     }
+
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
 
     }
+
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
 
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_LEFT){
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             undoable.undoMove();
-            if(checkmated != null) {
+            if (checkmated != null) {
                 checkmated.unhighlight();
                 checkmated = null;
             }
-        }else if(e.getKeyCode() == KeyEvent.VK_RIGHT){
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             undoable.redoMove();
         }
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 }

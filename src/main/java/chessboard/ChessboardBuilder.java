@@ -16,9 +16,9 @@ import java.util.regex.Pattern;
  */
 class ChessboardBuilder {
     private final static Pattern REGEX = Pattern.compile("([prknqb|0-8]{1,8}/){7}[prknqb|0-8]{1,8} [wb] [-kq]{1,4} (-|([a-h][1-8])) (\\d+) (\\d+)", Pattern.CASE_INSENSITIVE);
-    private Chessboard board = new Chessboard();
     private final List<PieceValue> whitePieces = new ArrayList<>(16);
     private final List<PieceValue> blackPieces = new ArrayList<>(16);
+    private Chessboard board = new Chessboard();
     private int squaresProcessed = 0;
     private int numHalfMoves;
     private int numFullMoves;
@@ -26,15 +26,32 @@ class ChessboardBuilder {
     ChessboardBuilder() {
     }
 
+    private static void getUpperAndLower(@NotNull String rights, StringBuilder upper, StringBuilder lower) {
+        for (char c : rights.toCharArray()) {
+            if (Character.isUpperCase(c))
+                upper.append(c);
+            else
+                lower.append(c);
+        }
+    }
+
+    private static PieceColour getColourFromCharacter(char c) {
+        return Character.isUpperCase(c) ? PieceColour.WHITE : PieceColour.BLACK;
+    }
+
+    private static boolean doesStringMatchFen(CharSequence fenString) {
+        return REGEX.matcher(fenString).matches();
+    }
+
     public @NotNull Chessboard defaultSetup() {
-        if(!board.getAllColourPositions(PieceColour.WHITE).isEmpty() || !board.getAllColourPositions(PieceColour.BLACK).isEmpty())
+        if (!board.getAllColourPositions(PieceColour.WHITE).isEmpty() || !board.getAllColourPositions(PieceColour.BLACK).isEmpty())
             throw new RuntimeException("Board edited during runtime");
         getBoardFromFen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
         return board;
     }
 
     public @NotNull Chessboard fromFen(@NotNull String fenString) throws InvalidFenStringException {
-        if(!doesStringMatchFen(fenString))
+        if (!doesStringMatchFen(fenString))
             throw new InvalidFenStringException();
         return getBoardFromFen(fenString);
     }
@@ -52,8 +69,8 @@ class ChessboardBuilder {
 
     private void populateBoardFromFenString(@NotNull String positionSection) {
         String[] sections = positionSection.split("/");
-        for(int row = 0; row < 8; row++){
-            for(char character : sections[row].toCharArray()){
+        for (int row = 0; row < 8; row++) {
+            for (char character : sections[row].toCharArray()) {
                 processCharacter(character, 7 - row);
             }
             squaresProcessed = 0;
@@ -67,15 +84,15 @@ class ChessboardBuilder {
         }
     }
 
-    private void processCharacter(char character, int row){
-        if(Character.isDigit(character)){
+    private void processCharacter(char character, int row) {
+        if (Character.isDigit(character)) {
             squaresProcessed += Character.getNumericValue(character);
             return;
         }
         PieceColour colour = getColourFromCharacter(character);
         List<PieceValue> pieces = getPiecesFromChar(character);
         Coordinate position = new Coordinate(squaresProcessed, row);
-        switch(Character.toLowerCase(character)){
+        switch (Character.toLowerCase(character)) {
             case 'r':
                 pieces.add(new PieceValue(position, Pieces.ROOK, colour));
                 break;
@@ -98,63 +115,54 @@ class ChessboardBuilder {
         squaresProcessed++;
     }
 
-    private void setTurnToMove(@NotNull CharSequence turnSection){
+    private void setTurnToMove(@NotNull CharSequence turnSection) {
         char character = turnSection.charAt(0);
-        if(character == 'b')
-            board.nextTurn();
+        if (character == 'b')
+            board = board.nextTurn();
     }
 
-    private void setCastlingRights(@NotNull String rights){
+    private void setCastlingRights(@NotNull String rights) {
         int length = rights.length();
-        if(length == 4)
+        if (length == 4)
             return;
-        if(rights.contains("-")){
-            board.removeAllCastling(PieceColour.WHITE);
-            board.removeAllCastling(PieceColour.BLACK);
+        if (rights.contains("-")) {
+            board = board.removeAllCastling(PieceColour.WHITE);
+            board = board.removeAllCastling(PieceColour.BLACK);
             return;
         }
         StringBuilder upper = new StringBuilder();
         StringBuilder lower = new StringBuilder();
         getUpperAndLower(rights, upper, lower);
-        if(upper.isEmpty())
-            board.removeAllCastling(PieceColour.WHITE);
-        else if(upper.length() == 1)
+        if (upper.isEmpty())
+            board = board.removeAllCastling(PieceColour.WHITE);
+        else if (upper.length() == 1)
             setOtherRookMoved(upper.charAt(0));
-        if(lower.isEmpty())
-            board.removeAllCastling(PieceColour.BLACK);
-        else if(lower.length() == 1)
+        if (lower.isEmpty())
+            board = board.removeAllCastling(PieceColour.BLACK);
+        else if (lower.length() == 1)
             setOtherRookMoved(lower.charAt(0));
     }
 
-    private static void getUpperAndLower(@NotNull String rights, StringBuilder upper, StringBuilder lower) {
-        for(char c : rights.toCharArray()){
-            if(Character.isUpperCase(c))
-                upper.append(c);
-            else
-                lower.append(c);
-        }
-    }
-
-    private void setOtherRookMoved(char rookWithRights){
+    private void setOtherRookMoved(char rookWithRights) {
         int y = Character.isUpperCase(rookWithRights) ? 0 : 7;
         int x = Character.toLowerCase(rookWithRights) == 'k' ? 0 : 7;
-        board.removeCastlingRight(new Coordinate(x, y));
+        board = board.removeCastlingRight(new Coordinate(x, y));
     }
 
-    private void setEnPassant(@NotNull String section){
-        if(section.contains("-"))
+    private void setEnPassant(@NotNull String section) {
+        if (section.contains("-"))
             return;
         Coordinate location = Coordinate.fromString(section);
         PieceColour enPassantColour = board.getTurn().invert();
         int direction = enPassantColour.direction();
-        board.setEnPassantSquare(new Coordinate(location.x(), location.y()+direction));
+        board = board.setEnPassantSquare(new Coordinate(location.x(), location.y() + direction));
     }
 
     private void setHalfMoves(String section) {
         numHalfMoves = Integer.parseInt(section);
     }
 
-    public int getNumHalfMoves(){
+    public int getNumHalfMoves() {
         return numHalfMoves;
     }
 
@@ -162,19 +170,11 @@ class ChessboardBuilder {
         numFullMoves = Integer.parseInt(section);
     }
 
-    public int getNumFullMoves(){
+    public int getNumFullMoves() {
         return numFullMoves;
     }
 
-    private static PieceColour getColourFromCharacter(char c){
-        return Character.isUpperCase(c) ? PieceColour.WHITE : PieceColour.BLACK;
-    }
-
-    private List<PieceValue> getPiecesFromChar(char c){
+    private List<PieceValue> getPiecesFromChar(char c) {
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
-    }
-
-    private static boolean doesStringMatchFen(CharSequence fenString){
-        return REGEX.matcher(fenString).matches();
     }
 }
