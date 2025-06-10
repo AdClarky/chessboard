@@ -5,38 +5,26 @@ import common.PieceColour;
 import common.PieceValue;
 import org.jetbrains.annotations.Nullable;
 
-public class ColourBoard {
-    private final Bitboard whitePieces;
-    private final Bitboard blackPieces;
-
+public record ColourBoard (Bitboard whitePieces, Bitboard blackPieces) {
     public ColourBoard(){
-        whitePieces = new Bitboard();
-        blackPieces = new Bitboard();
+        this(new Bitboard(), new Bitboard());
     }
 
-    private ColourBoard(Bitboard whitePieces, Bitboard blackPieces){
-        this.whitePieces = whitePieces;
-        this.blackPieces = blackPieces;
-    }
-
-    public void add(PieceValue piece){
+    public ColourBoard add(PieceValue piece){
         if(piece.colour() == PieceColour.WHITE)
-            whitePieces.add(piece.position());
+            return new ColourBoard(whitePieces.add(piece.position()), blackPieces);
         else if(piece.colour() == PieceColour.BLACK)
-            blackPieces.add(piece.position());
+            return new ColourBoard(whitePieces, blackPieces.add(piece.position()));
+        return this;
     }
 
-    public void movePiece(Coordinate oldPosition, Coordinate newPosition){
-        boolean white = whitePieces.remove(oldPosition);
-        boolean black = blackPieces.remove(oldPosition);
-        whitePieces.remove(newPosition);
-        blackPieces.remove(newPosition);
-        if(white) {
-            whitePieces.add(newPosition);
-        }
-        else if(black) {
-            blackPieces.add(newPosition);
-        }
+    public ColourBoard movePiece(Coordinate oldPosition, Coordinate newPosition){
+        PieceColour colour = getColourAtPosition(oldPosition);
+        if (colour == PieceColour.WHITE)
+            return new ColourBoard(whitePieces.remove(oldPosition).add(newPosition), blackPieces.remove(newPosition));
+        if (colour == PieceColour.BLACK)
+            return new ColourBoard(whitePieces.remove(newPosition), blackPieces.remove(oldPosition).add(newPosition));
+        return this;
     }
 
     public boolean isSquareBlank(Coordinate coordinate) {
@@ -67,21 +55,25 @@ public class ColourBoard {
         return null;
     }
 
-    public void add(PieceColour colour, Coordinate position) {
-        getBoard(colour).add(position);
+    public ColourBoard add(PieceColour colour, Coordinate position) {
+        if(colour == PieceColour.WHITE)
+            return new ColourBoard(whitePieces.add(position), blackPieces);
+        if(colour == PieceColour.BLACK)
+            return new ColourBoard(whitePieces, blackPieces.add(position));
+        return this;
     }
 
-    public void remove(Coordinate position) {
-        whitePieces.remove(position);
-        blackPieces.remove(position);
-    }
+    public ColourBoard remove(Coordinate position) {
+    PieceColour colour = getColourAtPosition(position);
+    if (colour == PieceColour.WHITE)
+        return new ColourBoard(whitePieces.remove(position), blackPieces);
+    if (colour == PieceColour.BLACK)
+        return new ColourBoard(whitePieces, blackPieces.remove(position));
+    return this;
+}
 
     public Coordinate getKingPosition(long kingPositions, PieceColour colour) {
         kingPositions &= getBoard(colour).getBoard();
         return Coordinate.fromBitboard(kingPositions);
-    }
-
-    ColourBoard copy() {
-        return new ColourBoard(new Bitboard(whitePieces.getBoard()), new Bitboard(blackPieces.getBoard()));
     }
 }
