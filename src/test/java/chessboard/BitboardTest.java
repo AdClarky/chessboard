@@ -11,44 +11,45 @@ import java.util.NoSuchElementException;
 class BitboardTest {
 
     @Test
-    void addBasic(){
+    void addBasic() {
         Bitboard bitboard = new Bitboard();
         Coordinate a1 = new Coordinate(0, 0);
-        assertNotEquals(bitboard, bitboard.add(a1));
-        assertEquals(1, bitboard.getBoard());
+        Bitboard bitboard2 = bitboard.add(a1);
+        assertNotEquals(bitboard, bitboard2);
+        assertEquals(1, bitboard2.getBoard());
     }
 
     @Test
-    void addNull(){
+    void addNull() {
         Bitboard bitboard = new Bitboard();
-        assertThrows(NullPointerException.class, ()->bitboard.add(null));
+        assertThrows(NullPointerException.class, () -> bitboard.add(null));
     }
 
 
     @Test
     void removeNull() {
         Bitboard bitboard = new Bitboard();
-        assertThrows(NullPointerException.class, ()->bitboard.remove(null));
+        assertThrows(NullPointerException.class, () -> bitboard.remove(null));
     }
 
     @Test
-    void removeEmpty(){
+    void removeEmpty() {
         Bitboard bitboard = new Bitboard();
         assertEquals(bitboard, bitboard.remove(new Coordinate(0, 0)));
     }
 
     @Test
-    void removeDoesNotContain(){
+    void removeDoesNotContain() {
         Bitboard bitboard = new Bitboard();
         Bitboard added = bitboard.add(new Coordinate(0, 0));
         assertEquals(added, added.remove(new Coordinate(0, 1)));
     }
 
     @Test
-    void removeCoordinate(){
+    void removeCoordinate() {
         Bitboard bitboard = new Bitboard();
         Bitboard added = bitboard.add(new Coordinate(0, 0));
-        assertNotEquals(bitboard, added.remove(new Coordinate(0, 0)));
+        assertEquals(bitboard, added.remove(new Coordinate(0, 0)));
     }
 
     @Test
@@ -66,42 +67,42 @@ class BitboardTest {
 
     @Test
     void differentBitboardEquality() {
-        Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        bitboard.add(new Coordinate(1, 1));
-        bitboard.add(new Coordinate(1, 1));
-        Bitboard bitboard2 = new Bitboard();
-        bitboard2.add(new Coordinate(1, 0));
-        bitboard2.add(new Coordinate(1, 1));
-        bitboard2.add(new Coordinate(1, 1));
+        Bitboard bitboard = new Bitboard()
+                .add(new Coordinate(0, 0))
+                .add(new Coordinate(1, 1))
+                .add(new Coordinate(1, 1));
+        Bitboard bitboard2 = new Bitboard()
+                .add(new Coordinate(1, 0))
+                .add(new Coordinate(1, 1))
+                .add(new Coordinate(1, 1));
         assertNotEquals(bitboard, bitboard2);
     }
 
     @Test
     void containsNull() {
         Bitboard bitboard = new Bitboard();
-        assertThrows(NullPointerException.class, ()->bitboard.contains(null));
+        assertThrows(NullPointerException.class, () -> bitboard.contains(null));
     }
 
     @Test
     void containsButNotInCollection() {
         Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 1));
-        assertFalse(bitboard.contains(new Coordinate(0,0)));
+        assertFalse(bitboard.contains(new Coordinate(0, 0)));
     }
 
     @Test
     void containsInCollection() {
-        Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
-        assertTrue(bitboard.contains(new Coordinate(0,0)));
+        Bitboard bitboard = new Bitboard()
+                .add(new Coordinate(0, 0));
+        assertTrue(bitboard.contains(new Coordinate(0, 0)));
     }
 
     @Test
     void containsOutOfRange() {
         Bitboard bitboard = new Bitboard();
         bitboard.add(new Coordinate(0, 0));
-        assertFalse(bitboard.contains(new Coordinate(0,10)));
+        assertFalse(bitboard.contains(new Coordinate(0, 10)));
     }
 
     @Test
@@ -115,15 +116,15 @@ class BitboardTest {
     @Test
     void iteratorFullCollection() {
         Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                bitboard = bitboard.add(new Coordinate(x, y));
             }
         }
         Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
-        while(iterator.hasNext()){
-            list.add(iterator.next());
+        while (iterator.hasNext()) {
+            list = list.add(iterator.next());
         }
         assertEquals(64, list.size());
         assertEquals(bitboard, list);
@@ -132,11 +133,11 @@ class BitboardTest {
     @Test
     void iteratorOnlyOneElement() {
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
+        bitboard = bitboard.add(new Coordinate(0, 0));
         Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
-        while(iterator.hasNext()){
-            list.add(iterator.next());
+        while (iterator.hasNext()) {
+            list = list.add(iterator.next());
         }
         assertEquals(1, list.size());
         assertEquals(bitboard, list);
@@ -147,7 +148,7 @@ class BitboardTest {
         Bitboard bitboard = new Bitboard();
         Bitboard list = new Bitboard();
         Iterator<Coordinate> iterator = bitboard.iterator();
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
             list.add(iterator.next());
         }
         assertEquals(0, list.size());
@@ -157,7 +158,7 @@ class BitboardTest {
     @Test
     void iteratorNextWhenEmpty() {
         Bitboard bitboard = new Bitboard();
-        bitboard.add(new Coordinate(0, 0));
+        bitboard = bitboard.add(new Coordinate(0, 0));
         Iterator<Coordinate> iterator = bitboard.iterator();
         Assertions.assertEquals(new Coordinate(0, 0), iterator.next());
         assertThrows(NoSuchElementException.class, iterator::next);
@@ -179,9 +180,9 @@ class BitboardTest {
     @Test
     void sizeOnFull() {
         Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                bitboard = bitboard.add(new Coordinate(x, y));
             }
         }
         assertEquals(64, bitboard.size());
@@ -190,10 +191,10 @@ class BitboardTest {
     @Test
     void sizeOnPartiallyFull() {
         Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(y % 2 == 0)
-                    bitboard.add(new Coordinate(x, y));
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (y % 2 == 0)
+                    bitboard = bitboard.add(new Coordinate(x, y));
             }
         }
         assertEquals(32, bitboard.size());
@@ -202,9 +203,9 @@ class BitboardTest {
     @Test
     void isEmptyOnFull() {
         Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                bitboard.add(new Coordinate(x, y));
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                bitboard = bitboard.add(new Coordinate(x, y));
             }
         }
         assertFalse(bitboard.isEmpty());
@@ -219,10 +220,10 @@ class BitboardTest {
     @Test
     void isEmptyOnPartiallyFull() {
         Bitboard bitboard = new Bitboard();
-        for(int x = 0; x < 8; x++) {
-            for(int y = 0; y < 8; y++) {
-                if(y % 2 == 0)
-                    bitboard.add(new Coordinate(x, y));
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (y % 2 == 0)
+                    bitboard = bitboard.add(new Coordinate(x, y));
             }
         }
         assertFalse(bitboard.isEmpty());
@@ -331,6 +332,6 @@ class BitboardTest {
         assertEquals(281474976710656L, bitboard.getBoard());
         bitboard = new Bitboard();
         bitboard = bitboard.add(new Coordinate(0, 7));
-            assertEquals(72057594037927936L, bitboard.getBoard());
+        assertEquals(72057594037927936L, bitboard.getBoard());
     }
 }
