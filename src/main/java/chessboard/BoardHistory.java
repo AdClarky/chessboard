@@ -6,128 +6,102 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 class BoardHistory {
-    private final ArrayDeque<Move> moves;
-    private final ArrayDeque<Move> redoMoves;
-    private Deque<Move> lastMove;
+    private final Deque<HistoryEntry> moves;
+    private final Deque<HistoryEntry> redoMoves;
     private int numHalfMoves = 0;
     private int numFullMoves = 1;
 
-    public BoardHistory() {
+    public BoardHistory(long initialHash) {
         moves = new ArrayDeque<>(40);
         redoMoves = new ArrayDeque<>(40);
-        lastMove = moves;
+        moves.push(new HistoryEntry(initialHash, 0));
     }
 
-    public BoardHistory(int numHalfMoves, int numFullMoves) {
-        this();
+    public BoardHistory(long intialHash, int numHalfMoves, int numFullMoves) {
+        this(intialHash);
         this.numHalfMoves = numHalfMoves;
         this.numFullMoves = numFullMoves;
     }
 
-    private BoardHistory(ArrayDeque<Move> moves, ArrayDeque<Move> redoMoves, Deque<Move> lastMove, int numHalfMoves, int numFullMoves) {
-        this.moves = moves;
-        this.redoMoves = redoMoves;
-        this.lastMove = lastMove;
-        this.numHalfMoves = numHalfMoves;
-        this.numFullMoves = numFullMoves;
+    public void push(long hash, boolean isHalfMove) {
+        int nextHalfMove = isHalfMove ? getNumHalfMoves() + 1 : 0;
+        moves.push(new HistoryEntry(hash, nextHalfMove));
+        redoMoves.clear();
     }
 
-    public void push(Move move) {
-        moves.push(move);
-        countMoves(move);
-        lastMove = moves;
+    public @Nullable Long undo() {
+        if (moves.size() <= 1)
+            return null;
+        HistoryEntry entry = moves.pop();
+        redoMoves.push(entry);
+        return entry.hash();
     }
 
-    /**
-     * Returns null if there are no moves to redo.
-     */
-    public @Nullable Move redoMove() {
+    public @Nullable Long redo() {
         if (redoMoves.isEmpty())
             return null;
-        Move move = redoMoves.pop();
-        lastMove = moves;
-        moves.push(move);
-        countMoves(move);
-        return move;
+        HistoryEntry entry = redoMoves.pop();
+        moves.push(entry);
+        return entry.hash();
     }
 
     public void redoAllMoves() {
         while (!redoMoves.isEmpty()) {
-            redoMove();
+            redo();
         }
-    }
-
-    /**
-     * Returns null if there are no moves to undo.
-     */
-    public @Nullable Move undoMove() {
-        if (moves.isEmpty())
-            return null;
-        Move move = moves.pop();
-        lastMove = redoMoves;
-        redoMoves.push(move);
-        uncountMoves(move);
-        return move;
     }
 
     public void undoMultipleMoves(int numOfMoves) {
         for (int i = 0; i < numOfMoves; i++) {
-            undoMove();
+            undo();
         }
+    }
+
+    public boolean canUndoMove() {
+        return moves.size() > 1;
     }
 
     public boolean canRedoMove() {
         return !redoMoves.isEmpty();
     }
 
-    public boolean canUndoMove() {
-        return !moves.isEmpty();
-    }
-
     public int getNumHalfMoves() {
-        return numHalfMoves;
+        if (moves.isEmpty()) {
+            return 0;
+        }
+        return moves.peek().halfMoves();
     }
 
     public int getNumFullMoves() {
-        return numFullMoves;
+        int singleMove = moves.size() - 1;
+        if (singleMove < 0)
+            singleMove = 0;
+
+        return 1 + (singleMove / 2);
     }
 
-    public void clearRedoMoves() {
-        countHalfMoves();
-        lastMove = moves;
-        redoMoves.clear();
+    public long getCurrentHash(){
+        if (moves.isEmpty())
+            throw new IllegalStateException("History is empty");
+        return moves.peek().hash();
     }
 
-    private void countHalfMoves() {
-        Deque<Move> temp = new ArrayDeque<>(5);
-        numHalfMoves = 0;
-        while (!moves.isEmpty()) {
-            Move move = moves.pop();
-            temp.push(move);
-            if (move.hasTaken() || move.isPieceAPawn())
-                break;
-            numHalfMoves++;
+    public boolean isRepetition() {
+        if (moves.isEmpty()) {
+            return false;
         }
-        while (!temp.isEmpty()) {
-            moves.push(temp.pop());
+
+        long currentHash = getCurrentHash();
+        int occurences = 0;
+
+        for (HistoryEntry entry : moves) {
+            if (entry.hash() == currentHash)
+                occurences++;
         }
+
+        return occurences >= 3;
     }
 
-    private void countMoves(Move move) {
-        if (move.isPieceColourBlack())
-            numFullMoves++;
-        if (move.isPieceAPawn() || move.hasTaken())
-            numHalfMoves = 0;
-        else
-            numHalfMoves++;
-    }
-
-    private void uncountMoves(Move move) {
-        if (move.isPieceColourBlack())
-            numFullMoves--;
-        if (move.isPieceAPawn() || move.hasTaken())
-            countHalfMoves();
-        else
-            numHalfMoves--;
+    private record HistoryEntry(long hash, int halfMoves) {
     }
 }
