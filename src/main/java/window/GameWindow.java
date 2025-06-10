@@ -10,7 +10,6 @@ import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
@@ -19,8 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.ListIterator;
 
 /**
  * Window which links with chessboard package to display a chess board.
@@ -48,7 +45,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         turn = colour;
         setLayout(new GridLayout(8,8));
         setTitle("Chess");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
         Color currentColour = LIGHT_SQUARE;
