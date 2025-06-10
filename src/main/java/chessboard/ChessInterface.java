@@ -4,7 +4,6 @@ import common.BoardListener;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
-import common.PieceValue;
 import common.Pieces;
 import exception.InvalidFenStringException;
 import exception.InvalidMoveException;
@@ -19,7 +18,7 @@ import java.util.Collection;
  *
  * @author Toby
  */
-public class ChessInterface implements Chess {
+public class ChessInterface implements Chess, Undoable {
     private final ChessGame game;
     private final FenGenerator fenGenerator;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
@@ -60,7 +59,7 @@ public class ChessInterface implements Chess {
 
     @Override
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if(game.isMovePromotion(oldPos, newPos)) {
+        if (game.isMovePromotion(oldPos, newPos)) {
             notifyPromotion();
             return;
         }
@@ -117,9 +116,7 @@ public class ChessInterface implements Chess {
         }
     }
 
-    /**
-     * Moves forward one move. Does nothing if there are no more moves to be made.
-     */
+    @Override
     public void redoMove() {
         if (!game.canRedoMove())
             return;
@@ -130,9 +127,7 @@ public class ChessInterface implements Chess {
         }
     }
 
-    /**
-     * Moves backwards one move. Does nothing if there are no more moves to be made.
-     */
+    @Override
     public void undoMove() {
         if (!game.canUndoMove())
             return;
@@ -140,23 +135,14 @@ public class ChessInterface implements Chess {
         notifyBoardChanged(move);
     }
 
-    /**
-     * Undoes the given number of moves. Can be greater than the number of moves made.
-     *
-     * @param numOfMoves the number of moves to undo.
-     * @see ChessInterface#undoMove()
-     */
+    @Override
     public void undoMultipleMoves(int numOfMoves) {
         for (int i = 0; i < numOfMoves; i++) {
             undoMove();
         }
     }
 
-    /**
-     * Sets the board back to the most recent position. Does nothing if there are no moves to redo.
-     *
-     * @see ChessInterface#redoMove()
-     */
+    @Override
     public void redoAllMoves() {
         while (game.canRedoMove()) {
             redoMove();
