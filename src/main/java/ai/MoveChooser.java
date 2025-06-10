@@ -1,8 +1,8 @@
 package ai;
 
-import chessboard.ChessInterface;
+import chessboard.Chess;
 import common.MoveValue;
 
 public interface MoveChooser {
-    MoveValue chooseMove(ChessInterface chessboard);
+    MoveValue chooseMove(Chess chessboard);
 }

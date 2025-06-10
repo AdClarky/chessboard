@@ -41,7 +41,7 @@ public class DepthTester {
         @Override
         protected Long compute() {
             long positions = 0;
-            Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getTurn());
+            Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getCurrentTurn());
             List<DepthTask> tasks = new ArrayList<>();
             List<String> moves = new ArrayList<>();
             for (Coordinate piece : pieces) {
