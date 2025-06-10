@@ -1,7 +1,7 @@
 package window;
 
 import chessboard.Chess;
-import chessboard.ChessInterface;
+import chessboard.ChessGame;
 import chessboard.Undoable;
 import chessboard.BoardListener;
 import common.Coordinate;
@@ -42,7 +42,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     private Collection<Coordinate> possibleMoves = new ArrayList<>(8);
     private Square checkmated;
 
-    public GameWindow(ChessInterface board, PieceColour colour){
+    public GameWindow(ChessGame board, PieceColour colour){
         super();
         this.board = board;
         this.undoable = board;

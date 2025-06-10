@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 class GameTest {
-    private ChessInterface game;
+    private Chess game;
 
     @BeforeEach
     void setUp() {
-        game = new ChessInterface();
+        game = new ChessGame();
     }
 
     /**

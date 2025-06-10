@@ -2,7 +2,7 @@ package window;
 
 import ai.MoveChooser;
 import ai.RandomMoves;
-import chessboard.ChessInterface;
+import chessboard.ChessGame;
 import common.PieceColour;
 
 import javax.swing.*;
@@ -83,7 +83,7 @@ public class MainMenu extends JFrame {
     }
 
     private void startVsComputer(){
-        ChessInterface chessGame = new ChessInterface();
+        ChessGame chessGame = new ChessGame();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
         MoveChooser whiteChooser = new RandomMoves();
@@ -93,7 +93,7 @@ public class MainMenu extends JFrame {
     }
 
     private void startVsLocal(){
-        ChessInterface chessGame = new ChessInterface();
+        ChessGame chessGame = new ChessGame();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
         GameWindow blackWindow = new GameWindow(chessGame, PieceColour.BLACK);

@@ -24,7 +24,6 @@ import java.util.Collection;
  * <li>Determining game-ending conditions such as checkmate and draws.</li>
  * <li>Providing a FEN (Forsyth-Edwards Notation) string representation of the current board state.</li>
  * </ul>
- * </p>
  * <p>This interface acts as the central API for interacting with and controlling a chess game.</p>
  */
 public interface Chess {

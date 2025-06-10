@@ -11,7 +11,7 @@ import java.util.Collection;
 class AutoplayTest {
     @Test
     void emptyMovesInput(){
-        ChessInterface game = new ChessInterface();
+        Chess game = new ChessGame();
         Collection<String> moves = new ArrayList<>(0);
         Autoplay autoplay = new Autoplay(game, moves);
         assertTrue(autoplay.getMoves().isEmpty());
@@ -22,7 +22,7 @@ class AutoplayTest {
 
     @Test
     void twoMovesMade(){
-        ChessInterface game = new ChessInterface();
+        Chess game = new ChessGame();
         Collection<String> moves = new ArrayList<>(0);
         moves.add("e4");
         moves.add("e5");
@@ -37,7 +37,7 @@ class AutoplayTest {
 
     @Test
     void invalidMoveMade(){
-        ChessInterface game = new ChessInterface();
+        Chess game = new ChessGame();
         Collection<String> moves = new ArrayList<>(0);
         moves.add("e4");
         moves.add("e4");
@@ -50,7 +50,7 @@ class AutoplayTest {
 
     @Test
     void randomStringInput(){
-        ChessInterface game = new ChessInterface();
+        Chess game = new ChessGame();
         Collection<String> moves = new ArrayList<>(0);
         moves.add("asdkaslk");
         moves.add("123sdaxz");
