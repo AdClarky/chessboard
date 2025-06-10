@@ -5,23 +5,26 @@ import common.MoveValue;
 import common.PieceColour;
 import common.Pieces;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class ChessLogic {
     private final Chessboard board;
     private final MaskGenerator maskGenerator;
     private Bitboard enemyPossible;
-    private PossibleMoves possibleMoves;
+    private Map<Coordinate, Bitboard> possibleMoves;
     private BoardHistory history;
     private Hasher hasher;
 
     public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
         maskGenerator = new MaskGenerator(board);
-        possibleMoves = new PossibleMoves();
+        possibleMoves = new HashMap<>();
         this.history = history;
         hasher = new Hasher(board);
     }
 
-    private ChessLogic(Chessboard board, Bitboard enemyPossible, PossibleMoves possibleMoves, BoardHistory history) {
+    private ChessLogic(Chessboard board, Bitboard enemyPossible, Map<Coordinate, Bitboard> possibleMoves, BoardHistory history) {
         this.board = board;
         maskGenerator = new MaskGenerator(board);
         this.enemyPossible = enemyPossible;
@@ -33,7 +36,7 @@ class ChessLogic {
     public void calculatePossibleMoves() {
         enemyPossible = calculatePieces(board.getTurn().invert());
         long temp = enemyPossible.getBoard();
-        possibleMoves = new PossibleMoves();
+        possibleMoves = new HashMap<>();
         calculateFriendlyPieces();
         enemyPossible = new Bitboard(temp);
     }
@@ -52,7 +55,7 @@ class ChessLogic {
         for (Coordinate piecePos : pieces) {
             Bitboard possible = new Bitboard(maskGenerator.getMaskForPiece(piecePos));
             removeMovesInCheck(piecePos, possible);
-            possibleMoves.addMoves(piecePos, possible);
+            possibleMoves.put(piecePos, possible);
         }
     }
 
@@ -195,30 +198,22 @@ class ChessLogic {
     }
 
     public boolean isValidMove(Coordinate oldPos, Coordinate newPos) {
-        return possibleMoves.isPossible(oldPos, newPos);
+        Bitboard board = possibleMoves.get(oldPos);
+        if (board == null)
+            return false;
+        return board.contains(newPos);
     }
 
     public Bitboard getPossibleMoves(Coordinate piece) {
-        return possibleMoves.getPossibleMove(piece);
+        return possibleMoves.get(piece);
     }
 
-    public PossibleMoves getPossibleMoves() {
+    public Map<Coordinate, Bitboard> getPossibleMoves() {
         return possibleMoves;
     }
 
-    public void setPossibleMoves(PossibleMoves possibleMoves) {
+    public void setPossibleMoves(Map<Coordinate, Bitboard> possibleMoves) {
         this.possibleMoves = possibleMoves;
         enemyPossible = calculatePieces(board.getTurn().invert());
-    }
-
-    public void updatePossibleMoves(Coordinate oldPos, Coordinate newPos) {
-
-    }
-
-    ChessLogic copy(Chessboard board) {
-        Bitboard enemyPossibleCopy = new Bitboard(enemyPossible.getBoard());
-        PossibleMoves possibleMovesCopy = possibleMoves.copy();
-        BoardHistory boardHistoryCopy = history.copy();
-        return new ChessLogic(board, enemyPossibleCopy, possibleMovesCopy, boardHistoryCopy);
     }
 }
