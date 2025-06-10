@@ -1,4 +1,6 @@
-package common;
+package chessboard;
+
+import common.Coordinate;
 
 /**
  * The listener interface for board events (move made, checkmate, draw and board changed).

@@ -3,7 +3,7 @@ package window;
 import chessboard.Chess;
 import chessboard.ChessInterface;
 import chessboard.Undoable;
-import common.BoardListener;
+import chessboard.BoardListener;
 import common.Coordinate;
 import common.PieceColour;
 import common.PieceValue;

@@ -1,6 +1,5 @@
 package chessboard;
 
-import common.BoardListener;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
