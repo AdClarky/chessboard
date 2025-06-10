@@ -44,26 +44,7 @@ public class ChessInterface implements Chess, Undoable {
 
     @Override
     public PieceColour getCurrentTurn() {
-        return game.getTurn();
-    }
-
-    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
-        game.makeMove(oldPos, newPos, promotionPiece);
-        notifyMoveMade(oldPos, newPos);
-        if (game.isDraw())
-            notifyDraw();
-        if (game.isCheckmate()) {
-            notifyCheckmate(game.getKing());
-        }
-    }
-
-    @Override
-    public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if (game.isMovePromotion(oldPos, newPos)) {
-            notifyPromotion();
-            return;
-        }
-        makeMove(oldPos, newPos, null);
+        return game.getCurrentTurn();
     }
 
     @Override
@@ -75,6 +56,25 @@ public class ChessInterface implements Chess, Undoable {
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = game.chessToMove(chessMove);
         makeMove(move.oldPos(), move.newPos());
+    }
+
+    @Override
+    public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
+        if (game.isMovePromotion(oldPos, newPos)) {
+            notifyPromotion();
+            return;
+        }
+        makeMove(oldPos, newPos, null);
+    }
+
+    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
+        game.makeMove(oldPos, newPos, promotionPiece);
+        notifyMoveMade(oldPos, newPos);
+        if (game.isDraw())
+            notifyDraw();
+        if (game.isCheckmate()) {
+            notifyCheckmate(game.getKing());
+        }
     }
 
     /**

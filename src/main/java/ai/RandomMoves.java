@@ -1,6 +1,6 @@
 package ai;
 
-import chessboard.ChessInterface;
+import chessboard.Chess;
 import common.Coordinate;
 import common.MoveValue;
 
@@ -11,14 +11,14 @@ import java.util.Random;
 
 public class RandomMoves implements MoveChooser {
     @Override
-    public MoveValue chooseMove(ChessInterface chessboard) {
+    public MoveValue chooseMove(Chess chessboard) {
         List<MoveValue> moves = getPossibleMoves(chessboard);
 
         Random rand = new Random();
         return moves.get(rand.nextInt(moves.size()));
     }
 
-    private List<MoveValue> getPossibleMoves(ChessInterface chessboard) {
+    private List<MoveValue> getPossibleMoves(Chess chessboard) {
         List<MoveValue> moves = new ArrayList<>();
 
         Collection<Coordinate> pieces = chessboard.getAllColourPieces(chessboard.getCurrentTurn());

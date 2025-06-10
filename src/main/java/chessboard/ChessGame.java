@@ -1,5 +1,6 @@
 package chessboard;
 
+import common.BoardListener;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
@@ -11,10 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ChessGame {
+public class ChessGame implements Chess, Undoable {
     private final Chessboard board;
     private final BoardHistory history;
     private final ChessLogic logic;
+    private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
@@ -37,8 +39,33 @@ public class ChessGame {
         this.logic = logic;
     }
 
+    @Override
+    public PieceColour getCurrentTurn(){
+        return board.getTurn();
+    }
+
+    @Override
+    public void makeMove(MoveValue moveValue) throws InvalidMoveException {
+        makeMove(moveValue.oldPos(), moveValue.newPos());
+    }
+
+    @Override
+    public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
+        MoveValue move = chessToMove(chessMove);
+        makeMove(move.oldPos(), move.newPos());
+    }
+
+    @Override
+    public String getFenString() {
+        return new FenGenerator(this).getFenString();
+    }
+
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        makeMove(oldPos, newPos, Pieces.QUEEN);
+        if (isMovePromotion(oldPos, newPos)) {
+            notifyPromotion();
+            return;
+        }
+        makeMove(oldPos, newPos, null);
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
@@ -49,6 +76,12 @@ public class ChessGame {
         Move move = new Move(board, oldPos, newPos, logic.getPossibleMoves(), promotionPiece);
         history.push(move);
         logic.calculatePossibleMoves();
+        notifyMoveMade(oldPos, newPos);
+        if (isDraw())
+            notifyDraw();
+        if (isCheckmate()) {
+            notifyCheckmate(getKing());
+        }
     }
 
     public boolean isMovePromotion(Coordinate oldPos, Coordinate newPos) {
@@ -77,21 +110,23 @@ public class ChessGame {
         return board.getKingPos(board.getTurn());
     }
 
-    public PieceColour getTurn(){
-        return board.getTurn();
-    }
-
-    public MoveValue redoMove() {
+    public void redoMove() {
+        if(!history.canRedoMove())
+            return;
         Move move = history.redoMove();
         logic.calculatePossibleMoves();
-        return new MoveValue(move.getOldPos(), move.getNewPos());
+        notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
+        if(isCheckmate())
+            notifyCheckmate(getKing());
     }
 
     public boolean canRedoMove(){
         return history.canRedoMove();
     }
 
-    public MoveValue undoMove() {
+    public void undoMove() {
+        if(!history.canUndoMove())
+            return;
         Move move = history.undoMove();
         PossibleMoves possibleMoves = move.getPossibleMoves();
         if(possibleMoves == null)
@@ -99,7 +134,21 @@ public class ChessGame {
         else {
             logic.setPossibleMoves(possibleMoves);
         }
-        return new MoveValue(move.getOldPos(), move.getNewPos());
+        notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
+    }
+
+    @Override
+    public void undoMultipleMoves(int numOfMoves) {
+        for (int i = 0; i < numOfMoves; i++) {
+            undoMove();
+        }
+    }
+
+    @Override
+    public void redoAllMoves() {
+        while (canRedoMove()) {
+            redoMove();
+        }
     }
 
     public boolean canUndoMove(){
@@ -193,5 +242,39 @@ public class ChessGame {
         Chessboard boardCopy = board.copy();
         ChessLogic logicCopy = logic.copy(boardCopy);
         return new ChessGame(boardCopy, logicCopy);
+    }
+
+    public void addBoardListener(BoardListener listener) {
+        boardListeners.add(listener);
+    }
+
+    private void notifyMoveMade(Coordinate oldPos, Coordinate newPos) {
+        for (BoardListener listener : boardListeners) {
+            listener.moveMade(oldPos, newPos);
+        }
+    }
+
+    private void notifyBoardChanged(@NotNull MoveValue move) {
+        for (BoardListener listener : boardListeners) {
+            listener.boardChanged(move.oldPos(), move.newPos());
+        }
+    }
+
+    private void notifyCheckmate(Coordinate kingPos) {
+        for (BoardListener listener : boardListeners)
+            listener.checkmate(kingPos);
+    }
+
+    private void notifyDraw() {
+        Coordinate whitePos = getKing(PieceColour.WHITE);
+        Coordinate blackPos = getKing(PieceColour.BLACK);
+        for (BoardListener listener : boardListeners)
+            listener.draw(whitePos, blackPos);
+    }
+
+    private void notifyPromotion() {
+        for (BoardListener listener : boardListeners) {
+            listener.promotion();
+        }
     }
 }

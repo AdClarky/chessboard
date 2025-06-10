@@ -68,7 +68,7 @@ class FenGenerator {
     }
 
     private void addCurrentTurn() {
-        if(board.getTurn() == PieceColour.BLACK)
+        if(board.getCurrentTurn() == PieceColour.BLACK)
             fenString.append("b ");
         else
             fenString.append("w ");
