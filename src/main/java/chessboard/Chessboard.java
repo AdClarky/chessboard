@@ -18,7 +18,7 @@ class Chessboard {
     private final PieceBoard pieceBoard;
     private final ColourBoard colourBoard;
     private final Bitboard castlingRights;
-    private PieceColour currentTurn = PieceColour.WHITE;
+    private PieceColour currentTurn;
     private Coordinate enPassantSquare;
 
 
@@ -32,6 +32,8 @@ class Chessboard {
         castlingRights.addAll(List.of(new Coordinate(0, 0), new Coordinate(4, 0),
                 new Coordinate(7, 0), new Coordinate(0, 7), new Coordinate(7, 7),
                 new Coordinate(4, 7)));
+        currentTurn = PieceColour.WHITE;
+        enPassantSquare = null;
     }
 
     private Chessboard (PieceBoard pieceBoard, ColourBoard colourBoard, Bitboard castlingRights, PieceColour currentTurn, Coordinate enPassantSquare) {
