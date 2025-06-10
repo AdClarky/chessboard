@@ -14,19 +14,22 @@ import java.util.Collection;
 public class ChessGame implements Chess, Undoable {
     private final BoardHistory history;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
+    private final Hasher hasher = new Hasher();
     private ChessLogic logic;
     private Chessboard board;
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
-        history = new BoardHistory();
+        long hash = hasher.getHash(board);
+        history = new BoardHistory(hash);
         logic = new ChessLogic(board, history);
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
-        history = new BoardHistory(builder.getNumHalfMoves(), builder.getNumFullMoves());
+        long hash = hasher.getHash(board);
+        history = new BoardHistory(hash, builder.getNumHalfMoves(), builder.getNumFullMoves());
         logic = new ChessLogic(board, history);
     }
 
@@ -83,10 +86,9 @@ public class ChessGame implements Chess, Undoable {
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
         if (logic.isInvalidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
-        if (history.canRedoMove())
-            history.clearRedoMoves();
         Move move = new Move(board, oldPos, newPos, promotionPiece);
-        history.push(move);
+        long hash = hasher.updateHash(history.getCurrentHash(), move);
+        history.push(hash, move.isHalfMove());
         board = move.getNewBoard();
         logic = new ChessLogic(board, history);
         notifyMoveMade(oldPos, newPos);
@@ -124,12 +126,12 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void redoMove() {
-        Move move = history.redoMove();
-        if(move == null)
+        Long hash = history.redo();
+        if(hash == null)
             return;
-        board = move.getNewBoard();
+        board = hasher.getBoard(hash);
         logic = new ChessLogic(board, history);
-        notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
+        notifyBoardChanged();
         if (isCheckmate())
             notifyCheckmate(getKing());
     }
@@ -139,12 +141,12 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void undoMove() {
-        Move move = history.undoMove();
-        if (move == null)
+        Long hash = history.undo();
+        if (hash == null)
             return;
-        board = move.getOldBoard();
+        board = hasher.getBoard(hash);
         logic = new ChessLogic(board, history);
-        notifyBoardChanged(new MoveValue(move.getOldPos(), move.getNewPos()));
+        notifyBoardChanged();
     }
 
     @Override
@@ -233,9 +235,9 @@ public class ChessGame implements Chess, Undoable {
         }
     }
 
-    private void notifyBoardChanged(@NotNull MoveValue move) {
+    private void notifyBoardChanged() {
         for (BoardListener listener : boardListeners) {
-            listener.boardChanged(move.oldPos(), move.newPos());
+            listener.boardChanged();
         }
     }
 

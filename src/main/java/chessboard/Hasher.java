@@ -4,6 +4,8 @@ import common.Coordinate;
 import common.PieceColour;
 import common.Pieces;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Hasher {
@@ -20,98 +22,6 @@ public class Hasher {
     private static final long sideToMoveKey;
     private static final long[] castlingKeys = new long[16];
     private static final long[] enPassantKeys = new long[8];
-    private final Chessboard board;
-
-    public Hasher(Chessboard board){
-        this.board = board;
-    }
-
-//    public void updateHash(Move move){
-//        int pieceIndex = getPieceIndex(move.getPiece(), move.getColour());
-//        hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
-//
-//        if(move.isPromotion()){
-//          pieceIndex = getPieceIndex(Pieces.QUEEN, move.getColour());
-//          hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
-//        } else
-//            hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
-//
-//        if(move.hasTaken()) {
-//            pieceIndex = getPieceIndex(move.getTakenPiece(), move.getColour().invert());
-//            hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
-//        }
-//        if(move.isCastling()){
-//            // sort out rook move
-//
-//        }
-//
-//        hash ^= sideToMoveKey;
-//
-//        hash ^= castlingKeys[getCastlingIndex()];
-//        castlingRights = board.getCastlingRights();
-//        hash ^= castlingKeys[getCastlingIndex()];
-//
-//        if(enPassantSquare != null)
-//            hash ^= enPassantKeys[enPassantSquare.getBitboardIndex()];
-//        enPassantSquare = board.getEnPassantSquare();
-//        if(enPassantSquare != null)
-//            hash ^= enPassantKeys[enPassantSquare.getBitboardIndex()];
-//
-//    }
-
-    public long getHash(){
-        long hash = 0L;
-        Iterable<Coordinate> squares = new Bitboard(~board.getEmptySquares().getBoard());
-        for(Coordinate square : squares){
-            int pieceIndex = getPieceIndex(board.getPiece(square), board.getColour(square));
-            hash ^= pieceKeys[square.getBitboardIndex()][pieceIndex];
-        }
-
-        if(board.getTurn() == PieceColour.BLACK){
-            hash ^= sideToMoveKey;
-        }
-
-        hash ^= castlingKeys[getCastlingIndex(board.getCastlingRights())];
-
-        Coordinate enPassantSquare = board.getEnPassantSquare();
-        if(enPassantSquare != null){
-            int enPassantIndex = enPassantSquare.y();
-            hash ^= enPassantKeys[enPassantIndex];
-        }
-
-        return hash;
-    }
-
-    private static int getPieceIndex(Pieces piece, PieceColour colour){
-        int pieceIndex = piece.toIndex();
-        if(colour == PieceColour.BLACK)
-            pieceIndex += 6;
-        return pieceIndex;
-    }
-
-    private int getCastlingIndex(long castlingRights){
-        long whiteKing = 0x10L;
-        long blackKing = 0x1000000000000000L;
-        long whiteQueenRook = 0x1L;
-        long whiteKingRook = 0x80L;
-        long blackQueenRook = 0x100000000000000L;
-        long blackKingRook = 0x8000000000000000L;
-
-        int index = 0;
-        if((castlingRights & whiteKing) != 0){ // white castling
-            if((castlingRights & whiteQueenRook) != 0)
-                index |= 1;
-            if((castlingRights & whiteKingRook) != 0)
-                index |= 2;
-        }
-        if((castlingRights & blackKing) != 0){ // black castling
-            if((castlingRights & blackQueenRook) != 0)
-                index |= 4;
-            if((castlingRights & blackKingRook) != 0)
-                index |= 8;
-        }
-        return index;
-    }
 
     static {
         Random random = new Random(123456);
@@ -127,5 +37,105 @@ public class Hasher {
         for (int i = 0; i < 8; i++) {
             enPassantKeys[i] = random.nextLong();
         }
+    }
+
+    private final Map<Long, Chessboard> boards;
+
+    public Hasher() {
+        boards = new HashMap<>();
+    }
+
+    public Chessboard getBoard(long hash){
+        return boards.get(hash);
+    }
+
+    private static int getPieceIndex(Pieces piece, PieceColour colour) {
+        int pieceIndex = piece.toIndex();
+        if (colour == PieceColour.BLACK)
+            pieceIndex += 6;
+        return pieceIndex;
+    }
+
+    public long getHash(Chessboard board) {
+        long hash = 0L;
+        Iterable<Coordinate> squares = new Bitboard(~board.getEmptySquares().getBoard());
+        for (Coordinate square : squares) {
+            int pieceIndex = getPieceIndex(board.getPiece(square), board.getColour(square));
+            hash ^= pieceKeys[square.getBitboardIndex()][pieceIndex];
+        }
+
+        if (board.getTurn() == PieceColour.BLACK) {
+            hash ^= sideToMoveKey;
+        }
+
+        hash ^= castlingKeys[getCastlingIndex(board.getCastlingRights())];
+
+        Coordinate enPassantSquare = board.getEnPassantSquare();
+        if (enPassantSquare != null) {
+            int enPassantIndex = enPassantSquare.y();
+            hash ^= enPassantKeys[enPassantIndex];
+        }
+
+        boards.put(hash, board);
+        return hash;
+    }
+
+    private int getCastlingIndex(long castlingRights) {
+        long whiteKing = 0x10L;
+        long blackKing = 0x1000000000000000L;
+        long whiteQueenRook = 0x1L;
+        long whiteKingRook = 0x80L;
+        long blackQueenRook = 0x100000000000000L;
+        long blackKingRook = 0x8000000000000000L;
+
+        int index = 0;
+        if ((castlingRights & whiteKing) != 0) { // white castling
+            if ((castlingRights & whiteQueenRook) != 0)
+                index |= 1;
+            if ((castlingRights & whiteKingRook) != 0)
+                index |= 2;
+        }
+        if ((castlingRights & blackKing) != 0) { // black castling
+            if ((castlingRights & blackQueenRook) != 0)
+                index |= 4;
+            if ((castlingRights & blackKingRook) != 0)
+                index |= 8;
+        }
+        return index;
+    }
+
+    public long updateHash(long hash, Move move) {
+        hash ^= sideToMoveKey;
+        Coordinate prevEnPassant = move.getOldBoard().getEnPassantSquare();
+        if (prevEnPassant != null)
+            hash ^= enPassantKeys[prevEnPassant.getBitboardIndex()];
+        Coordinate enPassantSquare = move.getNewBoard().getEnPassantSquare();
+        if (enPassantSquare != null)
+            hash ^= enPassantKeys[enPassantSquare.getBitboardIndex()];
+
+        int pieceIndex = getPieceIndex(move.getPiece(), move.getColour());
+        hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
+
+
+        if (move.hasTaken()) {
+            Pieces takenPiece = move.getOldBoard().getPiece(move.getNewPos());
+            if (takenPiece != null) {
+                pieceIndex = getPieceIndex(takenPiece, move.getColour().invert());
+                hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
+            }
+        }
+        hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
+        Pieces newPiece = move.getNewBoard().getPiece(move.getNewPos());
+        if(newPiece != null) {
+            pieceIndex = getPieceIndex(newPiece, move.getColour());
+            hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
+        }
+
+
+        hash ^= castlingKeys[getCastlingIndex(move.getOldBoard().castlingRights().getBoard())];
+        hash ^= castlingKeys[getCastlingIndex(move.getNewBoard().castlingRights().getBoard())];
+
+        boards.put(hash, move.getNewBoard());
+        return hash;
     }
 }

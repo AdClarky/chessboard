@@ -6,14 +6,12 @@ class ChessLogic {
     private final Chessboard board;
     private final PossibleMoves possibleMoves;
     private BoardHistory history;
-    private Hasher hasher;
 
     public ChessLogic(Chessboard board, BoardHistory history) {
         this.board = board;
         possibleMoves = new PossibleMoves(board);
         possibleMoves.calculatePossibleMoves();
         this.history = history;
-        hasher = new Hasher(board);
     }
 
     public boolean isCheckmate() {
@@ -25,28 +23,13 @@ class ChessLogic {
     public boolean isDraw() {
         return isStalemate() ||
                 isDraw50Move() ||
-                isRepetition();
+                history.isRepetition();
     }
 
     public boolean isStalemate() {
         if (possibleMoves.isKingInCheck())
             return false;
-        return possibleMoves.hasMoves();
-    }
-
-    private boolean isRepetition() {
-        if (history.getNumFullMoves() < 4)
-            return false;
-        long boardState = hasher.getHash();
-        for (int i = 0; i < 2; i++) {
-            history.undoMultipleMoves(4);
-            if (boardState != hasher.getHash()) {
-                history.redoAllMoves();
-                return false;
-            }
-        }
-        history.redoAllMoves();
-        return true;
+        return !possibleMoves.hasMoves();
     }
 
     private boolean isDraw50Move() {
