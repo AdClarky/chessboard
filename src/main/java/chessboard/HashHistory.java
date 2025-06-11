@@ -25,6 +25,14 @@ class HashHistory {
         this.isBlackFirst = isBlackFirst;
     }
 
+    private HashHistory(Deque<HistoryEntry> moves, Deque<HistoryEntry> redoMoves, int numFullMoves, int numHalfMoves, boolean isBlackFirst) {
+        this.moves = moves;
+        this.redoMoves = redoMoves;
+        this.numFullMoves = numFullMoves;
+        this.numHalfMoves = numHalfMoves;
+        this.isBlackFirst = isBlackFirst;
+    }
+
     public void push(long hash, boolean isHalfMove) {
         int nextHalfMove = isHalfMove ? 0 : getNumHalfMoves() + 1;
         moves.push(new HistoryEntry(hash, nextHalfMove));
@@ -109,6 +117,10 @@ class HashHistory {
         }
 
         return occurences >= 3;
+    }
+
+    public HashHistory copy(){
+        return new HashHistory(new ArrayDeque<>(moves), new ArrayDeque<>(redoMoves), numFullMoves, numHalfMoves, isBlackFirst);
     }
 
     private record HistoryEntry(long hash, int halfMoves) {

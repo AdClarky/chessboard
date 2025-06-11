@@ -15,26 +15,41 @@ import java.util.Deque;
 
 public class ChessGame implements Chess, Undoable {
     private final HashHistory history;
-    private final Deque<Move> moveStack = new ArrayDeque<>();
-    private final Deque<Move> redoStack = new ArrayDeque<>();
+    private final Deque<Move> moveStack;
+    private final Deque<Move> redoStack;
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
-    private final Hasher hasher = new Hasher();
+    private final Hasher hasher;
     private ChessLogic logic;
     private Chessboard board;
 
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
+        hasher = new Hasher();
         long hash = hasher.getHash(board);
         history = new HashHistory(hash);
         logic = new ChessLogic(board, history);
+        moveStack = new ArrayDeque<>();
+        redoStack = new ArrayDeque<>();
     }
 
     public ChessGame(String fenString) throws InvalidFenStringException {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
+        hasher = new Hasher();
         long hash = hasher.getHash(board);
         history = new HashHistory(hash, builder.getNumFullMoves(), builder.getNumHalfMoves(), builder.isBlackFirst());
         logic = new ChessLogic(board, history);
+        moveStack = new ArrayDeque<>();
+        redoStack = new ArrayDeque<>();
+    }
+
+    private ChessGame(Chessboard board, Hasher hasher, HashHistory history, Deque<Move> moveStack, Deque<Move> redoStack){
+        this.board = board;
+        logic = new ChessLogic(board, history);
+        this.hasher = hasher;
+        this.history = history;
+        this.moveStack = moveStack;
+        this.redoStack = redoStack;
     }
 
     private static MoveValue getCastlingMove(PieceColour colour, int newX) {
@@ -131,7 +146,7 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void redoMove() {
-        if(redoStack.isEmpty())
+        if (redoStack.isEmpty())
             return;
         Move move = redoStack.pop();
         history.redo();
@@ -204,7 +219,7 @@ public class ChessGame implements Chess, Undoable {
             return getCastlingMove(board.getTurn(), 2);
         }
         Coordinate newCoordinate = Coordinate.fromString(move);
-        if(newCoordinate.isNotInRange())
+        if (newCoordinate.isNotInRange())
             throw new InvalidMoveException(move);
         char pieceLetter;
         if (Character.isLowerCase(move.charAt(0))) // if a pawn
@@ -270,7 +285,11 @@ public class ChessGame implements Chess, Undoable {
         }
     }
 
-    Chessboard getBoard(){
+    Chessboard getBoard() {
         return board;
+    }
+
+    public ChessGame copy() {
+        return new ChessGame(board, hasher, history.copy(), new ArrayDeque<>(moveStack), new ArrayDeque<>(redoStack));
     }
 }

@@ -5,19 +5,16 @@ import common.Pieces;
 import exception.InvalidMoveException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 
 public class DepthTester {
-    private final ChessGame game;
     private final int topDepth;
     private final ForkJoinPool pool = new ForkJoinPool();
 
-    public DepthTester(ChessGame game, int topDepth) {
-        this.game = game;
+    public DepthTester(int topDepth) {
         this.topDepth = topDepth;
         System.out.println("Testing depth " + topDepth);
     }
@@ -90,13 +87,13 @@ public class DepthTester {
         }
 
         private DepthTask testNewDepth(Coordinate piece, Coordinate newMove, Pieces promotionPiece){
+            ChessGame copy = chessGame.copy();
             try {
-                chessGame.makeMove(piece, newMove, promotionPiece);
+                copy.makeMove(piece, newMove, promotionPiece);
             } catch (InvalidMoveException e) {
                 throw new RuntimeException(e);
             }
-            return new DepthTask(chessGame, currentDepth - 1, topDepth);
+            return new DepthTask(copy, currentDepth - 1, topDepth);
         }
     }
 }
-
