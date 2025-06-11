@@ -65,13 +65,15 @@ public class DepthTester {
                             DepthTask task = testNewDepth(piece, newMove, currentPiece);
                             task.fork();
                             tasks.add(task);
-                            if(topDepth == currentDepth) moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
+                            if(topDepth == currentDepth)
+                                moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
                         }
                     }else{
                         DepthTask task = testNewDepth(piece, newMove, Pieces.BLANK);
                         task.fork();
                         tasks.add(task);
-                        if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
+                        if(topDepth == currentDepth)
+                            moves.add("" + piece + newMove + ": ");
                     }
                 }
             }

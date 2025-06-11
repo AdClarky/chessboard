@@ -34,7 +34,7 @@ record Chessboard (
                 null);
     }
 
-    @Nullable
+    @NotNull
     public Pieces getPiece(Coordinate position) {
         return pieceBoard.get(position);
     }

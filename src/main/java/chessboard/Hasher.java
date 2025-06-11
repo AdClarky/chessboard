@@ -110,10 +110,10 @@ public class Hasher {
 
         if (move.hasTaken()) {
             Pieces takenPiece = move.getOldBoard().getPiece(move.getNewPos());
-            if (takenPiece != null) {
-                pieceIndex = getPieceIndex(takenPiece, move.getColour().invert());
-                hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
-            }
+            if(takenPiece.equals(Pieces.BLANK) && prevEnPassant != null) // en passant
+                takenPiece = move.getOldBoard().getPiece(new Coordinate(prevEnPassant.x(), move.getOldPos().y()));
+            pieceIndex = getPieceIndex(takenPiece, move.getColour().invert());
+            hash ^= pieceKeys[move.getNewPos().getBitboardIndex()][pieceIndex];
         }
         Pieces newPiece = move.getNewBoard().getPiece(move.getNewPos());
         if(newPiece != null) {
