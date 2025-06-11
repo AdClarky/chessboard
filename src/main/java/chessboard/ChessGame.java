@@ -13,6 +13,7 @@ import java.util.Collection;
 
 public class ChessGame implements Chess, Undoable {
     private final BoardHistory history;
+    private final Deque<Move>
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private final Hasher hasher = new Hasher();
     private ChessLogic logic;

@@ -14,7 +14,7 @@ class BoardHistoryTest {
 
     @BeforeEach
     void setUp() {
-        history = new BoardHistory();
+        history = new BoardHistory(1);
     }
 
     @Test
@@ -24,16 +24,14 @@ class BoardHistoryTest {
 
     @Test
     void canRedoWhenNoMovesUndone() {
-        Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(() -> history.push(new Move(board, new Coordinate(3, 1), new Coordinate(4, 1))));
+        assertDoesNotThrow(() -> history.push(2, false));
         assertFalse(history.canRedoMove());
     }
 
     @Test
     void canRedoWhenMoveUndone() {
-        Chessboard board = new ChessboardBuilder().defaultSetup();
-        assertDoesNotThrow(() -> history.push(new Move(board, new Coordinate(3, 1), new Coordinate(3, 2))));
-        history.undoMove();
+        assertDoesNotThrow(() -> history.push(2, false));
+        history.undo();
         assertTrue(history.canRedoMove());
     }
 

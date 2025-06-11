@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 class ChessboardTest {
     @Test
     void doesCustomPositionWork() {
-        Chessboard board = new Chessboard();
-        board.addPiece(Pieces.KING, new Coordinate(0, 0), PieceColour.WHITE)
+        Chessboard board = new Chessboard()
+                .addPiece(Pieces.KING, new Coordinate(0, 0), PieceColour.WHITE)
                 .addPiece(Pieces.KING, new Coordinate(0, 1), PieceColour.WHITE)
                 .addPiece(Pieces.KING, new Coordinate(0, 2), PieceColour.WHITE)
                 .addPiece(Pieces.KING, new Coordinate(0, 3), PieceColour.BLACK)
@@ -45,7 +45,7 @@ class ChessboardTest {
     @Test
     void queenNextToKingInCheck() {
         Chessboard board = assertDoesNotThrow(() -> new ChessboardBuilder().fromFen("rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBqKBNR w KQkq - 0 1"));
-        ChessLogic logic = new ChessLogic(board, new BoardHistory());
+        ChessLogic logic = new ChessLogic(board, new BoardHistory(1));
         assertTrue(logic.isKingInCheck());
     }
 

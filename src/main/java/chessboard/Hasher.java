@@ -39,15 +39,7 @@ public class Hasher {
         }
     }
 
-    private final Map<Long, Chessboard> boards;
-
-    public Hasher() {
-        boards = new HashMap<>();
-    }
-
-    public Chessboard getBoard(long hash){
-        return boards.get(hash);
-    }
+    public Hasher() {}
 
     private static int getPieceIndex(Pieces piece, PieceColour colour) {
         int pieceIndex = piece.toIndex();
@@ -76,7 +68,6 @@ public class Hasher {
             hash ^= enPassantKeys[enPassantIndex];
         }
 
-        boards.put(hash, board);
         return hash;
     }
 
@@ -134,7 +125,6 @@ public class Hasher {
         hash ^= castlingKeys[getCastlingIndex(move.getOldBoard().castlingRights().getBoard())];
         hash ^= castlingKeys[getCastlingIndex(move.getNewBoard().castlingRights().getBoard())];
 
-        boards.put(hash, move.getNewBoard());
         return hash;
     }
 }

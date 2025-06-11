@@ -31,7 +31,7 @@ class ChessInterfaceTest {
         }
 
         @Override
-        public void boardChanged(Coordinate oldPos, Coordinate newPos) {
+        public void boardChanged() {
             boardChange++;
         }
 
