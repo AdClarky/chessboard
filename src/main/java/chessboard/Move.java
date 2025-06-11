@@ -26,7 +26,7 @@ class Move {
     private Pieces pieceTaken = null;
 
     public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos) {
-        this(oldBoard, oldPos, newPos, null);
+        this(oldBoard, oldPos, newPos, Pieces.QUEEN);
     }
 
     public Move(Chessboard oldBoard, Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) {

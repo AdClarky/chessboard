@@ -47,4 +47,8 @@ public enum Pieces {
     public static Pieces fromCharacter(char character){
         return LOOKUP_MAP.get(character);
     }
+
+    public boolean isPromotionPiece(){
+        return this == Pieces.QUEEN || this == Pieces.BISHOP || this == Pieces.KNIGHT || this == Pieces.ROOK;
+    }
 }

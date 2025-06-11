@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A chess board that is automatically populated with blank squares.
  */
-record Chessboard (
+record Chessboard(
         PieceBoard pieceBoard,
         ColourBoard colourBoard,
         Bitboard castlingRights,
@@ -25,11 +25,11 @@ record Chessboard (
         this(new PieceBoard(),
                 new ColourBoard(),
                 new Bitboard().add(new Coordinate(0, 0))
-                .add(new Coordinate(4, 0))
-                .add(new Coordinate(0, 7))
-                .add(new Coordinate(7, 7))
-                .add(new Coordinate(7, 0))
-                .add(new Coordinate(4, 7)),
+                        .add(new Coordinate(4, 0))
+                        .add(new Coordinate(0, 7))
+                        .add(new Coordinate(7, 7))
+                        .add(new Coordinate(7, 0))
+                        .add(new Coordinate(4, 7)),
                 PieceColour.WHITE,
                 null);
     }
@@ -133,8 +133,9 @@ record Chessboard (
     }
 
     public Chessboard promotion(Coordinate position, Pieces promotionPiece) {
-        if (promotionPiece == Pieces.PAWN || promotionPiece == Pieces.KING || promotionPiece == Pieces.BLANK)
+        if (!promotionPiece.isPromotionPiece()) {
             throw new RuntimeException("Invalid promotion piece");
+        }
         return new Chessboard(pieceBoard.remove(position).add(promotionPiece, position),
                 colourBoard,
                 castlingRights,
