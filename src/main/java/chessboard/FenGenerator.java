@@ -8,11 +8,21 @@ import org.jetbrains.annotations.NotNull;
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called
  * at any point and the fen string will be calculated. */
 class FenGenerator {
-    private final ChessGame board;
+    private final Chessboard board;
     private final StringBuilder fenString = new StringBuilder();
+    private final int numHalfMoves;
+    private final int numFullMoves;
 
-    public FenGenerator(ChessGame board) {
+    public FenGenerator(Chessboard board, int numHalfMoves, int numFullMoves){
         this.board = board;
+        this.numHalfMoves = numHalfMoves;
+        this.numFullMoves = numFullMoves;
+    }
+
+    public FenGenerator(ChessGame game){
+        this.board = game.getBoard();
+        this.numHalfMoves = game.getNumHalfMoves();
+        this.numFullMoves = game.getNumFullMoves();
     }
 
     /** Calculates and returns the fen string */
@@ -68,7 +78,7 @@ class FenGenerator {
     }
 
     private void addCurrentTurn() {
-        if(board.getCurrentTurn() == PieceColour.BLACK)
+        if(board.getTurn() == PieceColour.BLACK)
             fenString.append("b ");
         else
             fenString.append("w ");
@@ -106,11 +116,11 @@ class FenGenerator {
     }
 
     private void addHalfMoves(){
-        fenString.append(board.getNumHalfMoves()).append(' ');
+        fenString.append(numHalfMoves).append(' ');
     }
 
     private void addFullMoves(){
-        fenString.append(board.getNumFullMoves());
+        fenString.append(numFullMoves);
     }
 }
 

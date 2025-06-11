@@ -267,4 +267,8 @@ public class ChessGame implements Chess, Undoable {
             listener.promotion();
         }
     }
+
+    Chessboard getBoard(){
+        return board;
+    }
 }
