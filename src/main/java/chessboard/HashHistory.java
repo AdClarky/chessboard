@@ -8,7 +8,8 @@ import java.util.Deque;
 class HashHistory {
     private final Deque<HistoryEntry> moves;
     private final Deque<HistoryEntry> redoMoves;
-    private int numFullMoves = 0;
+    private int numFullMoves = 1;
+    private int numHalfMoves = 0;
 
     public HashHistory(long initialHash) {
         moves = new ArrayDeque<>(40);
@@ -16,9 +17,10 @@ class HashHistory {
         moves.push(new HistoryEntry(initialHash, 0));
     }
 
-    public HashHistory(long intialHash, int numFullMoves) {
+    public HashHistory(long intialHash, int numFullMoves, int numHalfMoves) {
         this(intialHash);
         this.numFullMoves = numFullMoves;
+        this.numHalfMoves = numHalfMoves;
     }
 
     public void push(long hash, boolean isHalfMove) {
@@ -64,6 +66,11 @@ class HashHistory {
     }
 
     public int getNumHalfMoves() {
+        if(numHalfMoves != 0){
+            int temp = numHalfMoves;
+            numHalfMoves = 0;
+            return temp;
+        }
         if (moves.isEmpty()) {
             return 0;
         }
@@ -75,7 +82,7 @@ class HashHistory {
         if (singleMove < 0)
             singleMove = 0;
 
-        return 1 + (singleMove / 2) + numFullMoves;
+        return 0 + (singleMove / 2) + numFullMoves;
     }
 
     public long getCurrentHash(){

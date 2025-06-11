@@ -8,12 +8,15 @@ import exception.InvalidFenStringException;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Deque;
 
 public class ChessGame implements Chess, Undoable {
     private final HashHistory history;
-    private final Deque<Move>
+    private final Deque<Move> moveStack = new ArrayDeque<>();
+    private final Deque<Move> redoStack = new ArrayDeque<>();
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private final Hasher hasher = new Hasher();
     private ChessLogic logic;
@@ -30,7 +33,7 @@ public class ChessGame implements Chess, Undoable {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
         long hash = hasher.getHash(board);
-        history = new HashHistory(hash, builder.getNumFullMoves());
+        history = new HashHistory(hash, builder.getNumFullMoves(), builder.getNumHalfMoves());
         logic = new ChessLogic(board, history);
     }
 
@@ -89,6 +92,7 @@ public class ChessGame implements Chess, Undoable {
             throw new InvalidMoveException(oldPos, newPos);
         Move move = new Move(board, oldPos, newPos, promotionPiece);
         long hash = hasher.updateHash(history.getCurrentHash(), move);
+        moveStack.push(move);
         history.push(hash, move.isHalfMove());
         board = move.getNewBoard();
         logic = new ChessLogic(board, history);
@@ -127,10 +131,12 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void redoMove() {
-        Long hash = history.redo();
-        if(hash == null)
+        Move move = redoStack.pop();
+        history.redo();
+        if(move == null)
             return;
-        board = hasher.getBoard(hash);
+        moveStack.push(move);
+        board = move.getNewBoard();
         logic = new ChessLogic(board, history);
         notifyBoardChanged();
         if (isCheckmate())
@@ -142,10 +148,12 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void undoMove() {
-        Long hash = history.undo();
-        if (hash == null)
+        Move move = moveStack.pop();
+        history.undo();
+        if (move == null)
             return;
-        board = hasher.getBoard(hash);
+        redoStack.push(move);
+        board = move.getOldBoard();
         logic = new ChessLogic(board, history);
         notifyBoardChanged();
     }
