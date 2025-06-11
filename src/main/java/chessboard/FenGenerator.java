@@ -19,6 +19,12 @@ class FenGenerator {
         this.numFullMoves = numFullMoves;
     }
 
+    public FenGenerator(Chessboard board){
+        this.board = board;
+        this.numHalfMoves = 0;
+        this.numFullMoves = 0;
+    }
+
     public FenGenerator(ChessGame game){
         this.board = game.getBoard();
         this.numHalfMoves = game.getNumHalfMoves();
@@ -86,22 +92,28 @@ class FenGenerator {
 
     private void addCastlingRights() {
         Bitboard castlingRights = new Bitboard(board.getCastlingRights());
-        if(castlingRights.isEmpty()){
-            fenString.append("- ");
-            return;
-        }
+        boolean hasRight = false;
         if(castlingRights.contains(new Coordinate(4, 0)))
-            addColourCastleRight(0, castlingRights);
+            hasRight |= addColourCastleRight(0, castlingRights);
         if(castlingRights.contains(new Coordinate(4, 7)))
-            addColourCastleRight(7, castlingRights);
+            hasRight |= addColourCastleRight(7, castlingRights);
+        if(!hasRight){
+            fenString.append("-");
+        }
         fenString.append(" ");
     }
 
-    private void addColourCastleRight(int backRow, Bitboard castlingRights){
-        if(castlingRights.contains(new Coordinate(7, backRow)))
+    private boolean addColourCastleRight(int backRow, Bitboard castlingRights){
+        boolean hasRight = false;
+        if(castlingRights.contains(new Coordinate(7, backRow))) {
+            hasRight = true;
             fenString.append(backRow == 0 ? 'K' : 'k');
-        if(castlingRights.contains(new Coordinate(0, backRow)))
+        }
+        if(castlingRights.contains(new Coordinate(0, backRow))) {
+            hasRight = true;
             fenString.append(backRow == 0 ? 'Q' : 'q');
+        }
+        return hasRight;
     }
 
     private void addEnPassant(){
