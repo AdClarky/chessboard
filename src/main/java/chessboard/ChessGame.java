@@ -204,6 +204,8 @@ public class ChessGame implements Chess, Undoable {
             return getCastlingMove(board.getTurn(), 2);
         }
         Coordinate newCoordinate = Coordinate.fromString(move);
+        if(newCoordinate.isNotInRange())
+            throw new InvalidMoveException(move);
         char pieceLetter;
         if (Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = '\u0000';
