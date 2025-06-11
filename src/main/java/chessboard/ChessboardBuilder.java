@@ -22,6 +22,7 @@ class ChessboardBuilder {
     private int squaresProcessed = 0;
     private int numHalfMoves;
     private int numFullMoves;
+    private boolean isBlackFirst = false;
 
     ChessboardBuilder() {
     }
@@ -117,8 +118,10 @@ class ChessboardBuilder {
 
     private void setTurnToMove(@NotNull CharSequence turnSection) {
         char character = turnSection.charAt(0);
-        if (character == 'b')
+        if (character == 'b') {
             board = board.nextTurn();
+            isBlackFirst = true;
+        }
     }
 
     private void setCastlingRights(@NotNull String rights) {
@@ -176,5 +179,9 @@ class ChessboardBuilder {
 
     private List<PieceValue> getPiecesFromChar(char c) {
         return Character.isUpperCase(c) ? whitePieces : blackPieces;
+    }
+
+    public boolean isBlackFirst() {
+        return isBlackFirst;
     }
 }

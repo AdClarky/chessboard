@@ -10,6 +10,7 @@ class HashHistory {
     private final Deque<HistoryEntry> redoMoves;
     private int numFullMoves = 1;
     private int numHalfMoves = 0;
+    private boolean isBlackFirst = false;
 
     public HashHistory(long initialHash) {
         moves = new ArrayDeque<>(40);
@@ -17,10 +18,11 @@ class HashHistory {
         moves.push(new HistoryEntry(initialHash, 0));
     }
 
-    public HashHistory(long intialHash, int numFullMoves, int numHalfMoves) {
+    public HashHistory(long intialHash, int numFullMoves, int numHalfMoves, boolean isBlackFirst) {
         this(intialHash);
         this.numFullMoves = numFullMoves;
         this.numHalfMoves = numHalfMoves;
+        this.isBlackFirst = isBlackFirst;
     }
 
     public void push(long hash, boolean isHalfMove) {
@@ -81,8 +83,10 @@ class HashHistory {
         int singleMove = moves.size() - 1;
         if (singleMove < 0)
             singleMove = 0;
+        if (isBlackFirst)
+            singleMove++;
 
-        return 0 + (singleMove / 2) + numFullMoves;
+        return (singleMove / 2) + numFullMoves;
     }
 
     public long getCurrentHash(){

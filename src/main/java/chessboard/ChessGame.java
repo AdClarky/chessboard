@@ -33,7 +33,7 @@ public class ChessGame implements Chess, Undoable {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
         long hash = hasher.getHash(board);
-        history = new HashHistory(hash, builder.getNumFullMoves(), builder.getNumHalfMoves());
+        history = new HashHistory(hash, builder.getNumFullMoves(), builder.getNumHalfMoves(), builder.isBlackFirst());
         logic = new ChessLogic(board, history);
     }
 

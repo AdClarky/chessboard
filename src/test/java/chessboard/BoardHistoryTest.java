@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SuppressWarnings("SpellCheckingInspection")
-class HashHistoryTest {
+class BoardHistoryTest {
     private HashHistory history;
 
     @BeforeEach
