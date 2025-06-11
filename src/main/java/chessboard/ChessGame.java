@@ -131,10 +131,10 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void redoMove() {
+        if(redoStack.isEmpty())
+            return;
         Move move = redoStack.pop();
         history.redo();
-        if(move == null)
-            return;
         moveStack.push(move);
         board = move.getNewBoard();
         logic = new ChessLogic(board, history);
@@ -148,10 +148,10 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void undoMove() {
+        if (moveStack.isEmpty())
+            return;
         Move move = moveStack.pop();
         history.undo();
-        if (move == null)
-            return;
         redoStack.push(move);
         board = move.getOldBoard();
         logic = new ChessLogic(board, history);
