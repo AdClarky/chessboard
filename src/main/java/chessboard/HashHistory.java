@@ -24,7 +24,7 @@ class HashHistory {
     }
 
     public void push(long hash, boolean isHalfMove) {
-        int nextHalfMove = isHalfMove ? getNumHalfMoves() + 1 : 0;
+        int nextHalfMove = isHalfMove ? 0 : getNumHalfMoves() + 1;
         moves.push(new HistoryEntry(hash, nextHalfMove));
         redoMoves.clear();
     }
