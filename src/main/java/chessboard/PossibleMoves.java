@@ -50,7 +50,7 @@ public class PossibleMoves {
                 newPossible = newPossible.remove(move);
         }
         if (board.getPiece(pos) == Pieces.KING)
-            newPossible = removeCastlingThroughCheck(possible, pos);
+            newPossible = removeCastlingThroughCheck(newPossible, pos);
         return newPossible;
     }
 
@@ -60,8 +60,8 @@ public class PossibleMoves {
         PieceColour currentTurn = board.getTurn();
         Move move = new Move(board, position, movePos);
         PossibleMoves possibleMoves = new PossibleMoves(move.getNewBoard());
-        Bitboard possible = possibleMoves.calculatePieces(board.getTurn());
-        return isKingInCheck(currentTurn, possible);
+        Bitboard possible = possibleMoves.calculatePieces(board.getTurn().invert());
+        return possible.contains(move.getNewBoard().getKingPos(currentTurn));
     }
 
     private boolean doesMoveExposeKing(Coordinate position, Coordinate movePosition) {
@@ -150,6 +150,10 @@ public class PossibleMoves {
     }
 
     public boolean hasMoves(){
-        return !possibleMoves.isEmpty();
+        for (Bitboard possibleMove : possibleMoves.values()) {
+            if(!possibleMove.isEmpty())
+                return true;
+        }
+        return false;
     }
 }

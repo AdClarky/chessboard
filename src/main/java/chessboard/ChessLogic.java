@@ -17,7 +17,7 @@ class ChessLogic {
     public boolean isCheckmate() {
         if (!possibleMoves.isKingInCheck())
             return false;
-        return possibleMoves.hasMoves();
+        return !possibleMoves.hasMoves();
     }
 
     public boolean isDraw() {
