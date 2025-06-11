@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ChessGame implements Chess, Undoable {
-    private final BoardHistory history;
+    private final HashHistory history;
     private final Deque<Move>
     private final Collection<BoardListener> boardListeners = new ArrayList<>(1);
     private final Hasher hasher = new Hasher();
@@ -22,7 +22,7 @@ public class ChessGame implements Chess, Undoable {
     public ChessGame() {
         board = new ChessboardBuilder().defaultSetup();
         long hash = hasher.getHash(board);
-        history = new BoardHistory(hash);
+        history = new HashHistory(hash);
         logic = new ChessLogic(board, history);
     }
 
@@ -30,7 +30,7 @@ public class ChessGame implements Chess, Undoable {
         ChessboardBuilder builder = new ChessboardBuilder();
         board = builder.fromFen(fenString);
         long hash = hasher.getHash(board);
-        history = new BoardHistory(hash, builder.getNumHalfMoves(), builder.getNumFullMoves());
+        history = new HashHistory(hash, builder.getNumFullMoves());
         logic = new ChessLogic(board, history);
     }
 

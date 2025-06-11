@@ -45,7 +45,7 @@ class ChessboardTest {
     @Test
     void queenNextToKingInCheck() {
         Chessboard board = assertDoesNotThrow(() -> new ChessboardBuilder().fromFen("rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBqKBNR w KQkq - 0 1"));
-        ChessLogic logic = new ChessLogic(board, new BoardHistory(1));
+        ChessLogic logic = new ChessLogic(board, new HashHistory(1));
         assertTrue(logic.isKingInCheck());
     }
 

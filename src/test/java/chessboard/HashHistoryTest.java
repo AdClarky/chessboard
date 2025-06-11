@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SuppressWarnings("SpellCheckingInspection")
-class BoardHistoryTest {
-    private BoardHistory history;
+class HashHistoryTest {
+    private HashHistory history;
 
     @BeforeEach
     void setUp() {
-        history = new BoardHistory(1);
+        history = new HashHistory(1);
     }
 
     @Test

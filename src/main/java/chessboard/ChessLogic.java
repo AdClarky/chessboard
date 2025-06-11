@@ -5,9 +5,9 @@ import common.Coordinate;
 class ChessLogic {
     private final Chessboard board;
     private final PossibleMoves possibleMoves;
-    private BoardHistory history;
+    private HashHistory history;
 
-    public ChessLogic(Chessboard board, BoardHistory history) {
+    public ChessLogic(Chessboard board, HashHistory history) {
         this.board = board;
         possibleMoves = new PossibleMoves(board);
         possibleMoves.calculatePossibleMoves();

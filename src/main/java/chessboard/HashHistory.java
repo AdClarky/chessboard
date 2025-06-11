@@ -5,21 +5,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-class BoardHistory {
+class HashHistory {
     private final Deque<HistoryEntry> moves;
     private final Deque<HistoryEntry> redoMoves;
-    private int numHalfMoves = 0;
-    private int numFullMoves = 1;
+    private int numFullMoves = 0;
 
-    public BoardHistory(long initialHash) {
+    public HashHistory(long initialHash) {
         moves = new ArrayDeque<>(40);
         redoMoves = new ArrayDeque<>(40);
         moves.push(new HistoryEntry(initialHash, 0));
     }
 
-    public BoardHistory(long intialHash, int numHalfMoves, int numFullMoves) {
+    public HashHistory(long intialHash, int numFullMoves) {
         this(intialHash);
-        this.numHalfMoves = numHalfMoves;
         this.numFullMoves = numFullMoves;
     }
 
@@ -77,7 +75,7 @@ class BoardHistory {
         if (singleMove < 0)
             singleMove = 0;
 
-        return 1 + (singleMove / 2);
+        return 1 + (singleMove / 2) + numFullMoves;
     }
 
     public long getCurrentHash(){
