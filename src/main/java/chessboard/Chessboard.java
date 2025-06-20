@@ -134,7 +134,7 @@ record Chessboard(
 
     public Chessboard promotion(Coordinate position, Pieces promotionPiece) {
         if (!promotionPiece.isPromotionPiece()) {
-            throw new RuntimeException("Invalid promotion piece");
+            throw new RuntimeException("Invalid promotion promotionPiece");
         }
         return new Chessboard(pieceBoard.remove(position).add(promotionPiece, position),
                 colourBoard,
@@ -153,7 +153,7 @@ record Chessboard(
 
     public Chessboard addPiece(Pieces piece, Coordinate position, PieceColour colour) {
         if (piece == Pieces.BLANK)
-            throw new IllegalArgumentException("Added piece cannot be blank");
+            throw new IllegalArgumentException("Added promotionPiece cannot be blank");
         return new Chessboard(pieceBoard.add(piece, position),
                 colourBoard.add(colour, position),
                 castlingRights,

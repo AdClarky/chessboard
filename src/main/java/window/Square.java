@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 
 /**
- * Square which displays a chess piece or blank.
+ * Square which displays a chess promotionPiece or blank.
  */
 public class Square extends JButton {
     private static final Color SELECTED = new Color(245, 246, 130);
@@ -21,8 +21,8 @@ public class Square extends JButton {
     private PieceColour colour;
 
     /**
-     * Initialises the square either with a piece or with no piece (blank).
-     * @param piece the piece which is currently on the square
+     * Initialises the square either with a promotionPiece or with no promotionPiece (blank).
+     * @param piece the promotionPiece which is currently on the square
      * @param bgColour background colour of the square
      */
     public Square(PieceValue piece, Color bgColour) {

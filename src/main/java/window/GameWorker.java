@@ -25,19 +25,19 @@ public class GameWorker extends SwingWorker<Void, String> {
             while (!chessGame.isCheckmate() && !chessGame.isDraw()) {
                 PieceColour currentTurn = chessGame.getCurrentTurn();
 
-                MoveChooser currentRobot = null;
+                MoveChooser currentChooser = null;
                 if (currentTurn == PieceColour.WHITE) {
-                    currentRobot = whiteChooser;
+                    currentChooser = whiteChooser;
                 } else if (currentTurn == PieceColour.BLACK) {
-                    currentRobot = blackChooser;
+                    currentChooser = blackChooser;
                 }
 
                 TimeUnit.MILLISECONDS.sleep(100);
 
-                MoveValue chosenMove = currentRobot.chooseMove(chessGame);
+                MoveValue chosenMove = currentChooser.chooseMove(chessGame);
 
                 if (chosenMove != null) {
-                    chessGame.makeMove(chosenMove.oldPos(), chosenMove.newPos());
+                    chessGame.makeMove(chosenMove);
                 }
             }
             return null;

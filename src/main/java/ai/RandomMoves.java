@@ -4,6 +4,7 @@ import chessboard.Bitboard;
 import chessboard.Chess;
 import common.Coordinate;
 import common.MoveValue;
+import common.Pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +17,12 @@ public class RandomMoves implements MoveChooser {
         List<MoveValue> moves = getPossibleMoves(chessboard);
 
         Random rand = new Random();
-        return moves.get(rand.nextInt(moves.size()));
+        MoveValue move = moves.get(rand.nextInt(moves.size()));
+        if(chessboard.isPromotion(move.oldPos(), move.newPos())) {
+            Pieces promotionPiece = List.of(Pieces.QUEEN, Pieces.ROOK, Pieces.BISHOP, Pieces.KNIGHT).get(rand.nextInt(4));
+            move = new MoveValue(move, promotionPiece);
+        }
+        return move;
     }
 
     private List<MoveValue> getPossibleMoves(Chess chessboard) {

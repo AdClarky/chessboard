@@ -80,32 +80,13 @@ public class ChessGame implements Chess, Undoable {
 
     @Override
     public void makeMove(MoveValue moveValue) throws InvalidMoveException {
-        makeMove(moveValue.oldPos(), moveValue.newPos());
-    }
-
-    @Override
-    public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
-        MoveValue move = chessToMove(chessMove);
-        makeMove(move.oldPos(), move.newPos());
-    }
-
-    @Override
-    public String getFenString() {
-        return new FenGenerator(this).getFenString();
-    }
-
-    public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if (isMovePromotion(oldPos, newPos)) {
-            notifyPromotion();
-            return;
-        }
-        makeMove(oldPos, newPos, null);
-    }
-
-    public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {
+        Coordinate oldPos = moveValue.oldPos();
+        Coordinate newPos = moveValue.newPos();
+        if (isPromotion(oldPos, newPos) && !moveValue.promotionPiece().isPromotionPiece())
+                throw new InvalidMoveException("Invalid promotion piece given");
         if (logic.isInvalidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
-        Move move = new Move(board, oldPos, newPos, promotionPiece);
+        Move move = new Move(board, oldPos, newPos, moveValue.promotionPiece());
         long hash = hasher.updateHash(history.getCurrentHash(), move);
         moveStack.push(move);
         history.push(hash, move.isHalfMove());
@@ -119,7 +100,17 @@ public class ChessGame implements Chess, Undoable {
         }
     }
 
-    public boolean isMovePromotion(Coordinate oldPos, Coordinate newPos) {
+    @Override
+    public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
+        makeMove(chessToMove(chessMove));
+    }
+
+    @Override
+    public String getFenString() {
+        return new FenGenerator(this).getFenString();
+    }
+
+    public boolean isPromotion(Coordinate oldPos, Coordinate newPos) {
         if (logic.isInvalidMove(oldPos, newPos))
             return false;
         if (board.getPiece(oldPos) != Pieces.PAWN)
@@ -224,12 +215,12 @@ public class ChessGame implements Chess, Undoable {
         char pieceLetter;
         if (Character.isLowerCase(move.charAt(0))) // if a pawn
             pieceLetter = '\u0000';
-        else // any other piece
+        else // any other promotionPiece
             pieceLetter = move.charAt(0);
         ArrayList<Coordinate> possiblePieces = new ArrayList<>(2);
         for (Coordinate piecePos : board.getAllColourPositions(board.getTurn())) {
             Pieces piece = board.getPiece(piecePos);
-            if (piece.toCharacter() != pieceLetter) // if its not type of piece that moved
+            if (piece.toCharacter() != pieceLetter) // if its not type of promotionPiece that moved
                 continue;
             possiblePieces.add(piecePos);
         }
@@ -277,12 +268,6 @@ public class ChessGame implements Chess, Undoable {
         Coordinate blackPos = getKing(PieceColour.BLACK);
         for (BoardListener listener : boardListeners)
             listener.draw(whitePos, blackPos);
-    }
-
-    private void notifyPromotion() {
-        for (BoardListener listener : boardListeners) {
-            listener.promotion();
-        }
     }
 
     Chessboard getBoard() {

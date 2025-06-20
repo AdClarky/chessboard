@@ -34,9 +34,6 @@ class ChessInterfaceTest {
         public void boardChanged() {
             boardChange++;
         }
-
-        @Override
-        public void promotion() {}
     }
     private Listener listener;
     private ChessGame game;

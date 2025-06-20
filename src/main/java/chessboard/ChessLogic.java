@@ -1,6 +1,7 @@
 package chessboard;
 
 import common.Coordinate;
+import common.MoveValue;
 
 class ChessLogic {
     private final Chessboard board;

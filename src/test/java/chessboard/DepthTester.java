@@ -50,13 +50,13 @@ public class DepthTester {
                             positions += 3;
 //                            if(topDepth == 1) {
 //                                for(Pieces promoPiece : PROMOTION_PIECES) {
-//                                    System.out.println("" + piece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
+//                                    System.out.println("" + promotionPiece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
 //                                }
 //                                positionCoordinates.remove(move);
 //                            }
                         }
                     }
-//                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
+//                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + promotionPiece + move + ": 1");
                     continue;
                 }
                 for (Coordinate newMove : positionCoordinates) {
