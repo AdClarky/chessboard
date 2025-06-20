@@ -14,7 +14,7 @@ public class GameWorker extends SwingWorker<Void, String> {
         private final MoveChooser whiteChooser;
         private final MoveChooser blackChooser;
 
-        public GameWorker(Chess chessGame, MoveChooser whiteChooser, MoveChooser blackChooser, GameWindow gameWindow) {
+        public GameWorker(Chess chessGame, MoveChooser whiteChooser, MoveChooser blackChooser) {
             this.chessGame = chessGame;
             this.whiteChooser = whiteChooser;
             this.blackChooser = blackChooser;

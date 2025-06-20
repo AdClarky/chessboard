@@ -95,7 +95,7 @@ public class MainMenu extends JFrame {
         MoveChooser whiteChooser = new RandomMoves();
         MoveChooser blackChooser = new RandomMoves();
 
-        new GameWorker(chessGame, whiteChooser, blackChooser, whiteWindow).execute();
+        new GameWorker(chessGame, whiteChooser, blackChooser).execute();
     }
 
     private void startVsComputer(){
@@ -109,7 +109,7 @@ public class MainMenu extends JFrame {
         chessGame.addBoardListener(whiteWindow);
         MoveChooser blackChooser = new RandomMoves();
 
-        new GameWorker(chessGame, whiteWindow, blackChooser, whiteWindow).execute();
+        new GameWorker(chessGame, whiteWindow, blackChooser).execute();
     }
 
     private void startVsLocal(){
@@ -120,6 +120,8 @@ public class MainMenu extends JFrame {
         chessGame.addBoardListener(blackWindow);
 
         blackWindow.setLocation(whiteWindow.getSize().width, 0);
+
+        new GameWorker(chessGame, whiteWindow, blackWindow).execute();
     }
 
     private void startVsOnline(){
