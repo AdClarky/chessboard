@@ -2,6 +2,7 @@ package window;
 
 import ai.MoveChooser;
 import ai.RandomMoves;
+import ai.TakingMove;
 import chessboard.ChessGame;
 import common.PieceColour;
 import exception.InvalidFenStringException;
@@ -92,7 +93,7 @@ public class MainMenu extends JFrame {
         ChessGame chessGame = new ChessGame();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
-        MoveChooser whiteChooser = new RandomMoves();
+        MoveChooser whiteChooser = new TakingMove();
         MoveChooser blackChooser = new RandomMoves();
 
         new GameWorker(chessGame, whiteChooser, blackChooser).execute();
@@ -107,7 +108,7 @@ public class MainMenu extends JFrame {
         }
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
-        MoveChooser blackChooser = new RandomMoves();
+        MoveChooser blackChooser = new TakingMove();
 
         new GameWorker(chessGame, whiteWindow, blackChooser).execute();
     }

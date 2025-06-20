@@ -87,6 +87,6 @@ public class ChessLogic {
     }
 
     public boolean isTakingMove(MoveValue moveValue) {
-        return new Move(board, moveValue.oldPos(), moveValue.newPos(), moveValue.promotionPiece()).isTaking();
+        return new Move(board, moveValue.oldPos(), moveValue.newPos(), Pieces.QUEEN).isTaking();
     }
 }
