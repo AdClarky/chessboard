@@ -97,4 +97,8 @@ public interface Chess {
     Bitboard getAllColourPieces(PieceColour colour);
 
     boolean isPromotion(Coordinate oldPos, Coordinate newPos);
+
+    ChessLogic getLogic();
+
+    Chessboard getBoard();
 }

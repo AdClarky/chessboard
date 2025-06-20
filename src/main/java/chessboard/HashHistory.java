@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-class HashHistory {
+public class HashHistory {
     private final Deque<HistoryEntry> moves;
     private final Deque<HistoryEntry> redoMoves;
     private int numFullMoves = 1;

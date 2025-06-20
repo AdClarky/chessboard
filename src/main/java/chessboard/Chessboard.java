@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A chess board that is automatically populated with blank squares.
  */
-record Chessboard(
+public record Chessboard(
         PieceBoard pieceBoard,
         ColourBoard colourBoard,
         Bitboard castlingRights,

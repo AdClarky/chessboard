@@ -270,8 +270,12 @@ public class ChessGame implements Chess, Undoable {
             listener.draw(whitePos, blackPos);
     }
 
-    Chessboard getBoard() {
+    public Chessboard getBoard() {
         return board;
+    }
+
+    public ChessLogic getLogic() {
+        return logic;
     }
 
     public ChessGame copy() {

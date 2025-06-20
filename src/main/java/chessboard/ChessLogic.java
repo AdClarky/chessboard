@@ -2,7 +2,7 @@ package chessboard;
 
 import common.Coordinate;
 
-class ChessLogic {
+public class ChessLogic {
     private final Chessboard board;
     private final PossibleMoves possibleMoves;
     private final HashHistory history;

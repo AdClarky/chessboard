@@ -2,6 +2,8 @@ package ai;
 
 import chessboard.Bitboard;
 import chessboard.Chess;
+import chessboard.ChessLogic;
+import chessboard.Chessboard;
 import common.Coordinate;
 import common.MoveValue;
 
@@ -9,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface MoveChooser {
-    MoveValue chooseMove(Chess chessboard);
+    MoveValue chooseMove(Chessboard board, ChessLogic logic);
 
 
 
-    default List<MoveValue> getPossibleMoves(Chess chessboard) {
+    default List<MoveValue> getPossibleMoves(Chessboard board, ChessLogic logic) {
         List<MoveValue> moves = new ArrayList<>();
 
-        Bitboard pieces = chessboard.getAllColourPieces(chessboard.getCurrentTurn());
+        Bitboard pieces = board.getAllColourPositions(board.getTurn());
         for(Coordinate piece : pieces) {
-            for(Coordinate move : chessboard.getPossibleMoves(piece)) {
+            for(Coordinate move : logic.getPossibleMoves(piece)) {
                 moves.add(new MoveValue(piece, move));
             }
         }

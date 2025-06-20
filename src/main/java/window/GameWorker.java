@@ -34,7 +34,7 @@ public class GameWorker extends SwingWorker<Void, String> {
 
                 TimeUnit.MILLISECONDS.sleep(100);
 
-                MoveValue chosenMove = currentChooser.chooseMove(chessGame);
+                MoveValue chosenMove = currentChooser.chooseMove(chessGame.getBoard(), chessGame.getLogic());
 
                 if (chosenMove != null) {
                     chessGame.makeMove(chosenMove);

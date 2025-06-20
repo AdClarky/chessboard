@@ -5,6 +5,8 @@ import chessboard.Bitboard;
 import chessboard.BoardListener;
 import chessboard.Chess;
 import chessboard.ChessGame;
+import chessboard.ChessLogic;
+import chessboard.Chessboard;
 import chessboard.Undoable;
 import common.Coordinate;
 import common.MoveValue;
@@ -244,7 +246,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
     }
 
     @Override
-    public MoveValue chooseMove(Chess chessboard) {
+    public MoveValue chooseMove(Chessboard chessboard, ChessLogic logic) {
         try {
             return moves.take();
         } catch (InterruptedException e) {
