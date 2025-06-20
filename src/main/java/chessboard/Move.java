@@ -5,7 +5,6 @@ import common.MoveValue;
 import common.PieceColour;
 import common.Pieces;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -109,7 +108,7 @@ class Move {
         return pieceColour == PieceColour.BLACK;
     }
 
-    public boolean hasTaken() {
+    public boolean isTaking() {
         return pieceTaken != null;
     }
 
@@ -122,6 +121,6 @@ class Move {
     }
 
     public boolean isHalfMove(){
-        return hasTaken() || piece == Pieces.PAWN;
+        return isTaking() || piece == Pieces.PAWN;
     }
 }

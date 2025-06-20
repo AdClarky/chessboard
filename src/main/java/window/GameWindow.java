@@ -104,7 +104,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
         PieceColour clickedColour = board.getColour(square.getPosition());
         if (square.isBlank() || clickedColour != board.getCurrentTurn()) { // if clicked a blank or enemy square
             move = new MoveValue(squareSelected.getPosition(), square.getPosition());
-            if(board.isPromotion(move.oldPos(), move.newPos())) {
+            if(board.getLogic().isPromotion(move)) {
                 PromotionWindow promotionWindow = new PromotionWindow(this, turn);
                 move = move.withPromotionPiece(promotionWindow.getSelectedPiece());
             }

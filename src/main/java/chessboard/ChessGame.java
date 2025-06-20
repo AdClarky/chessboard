@@ -82,7 +82,7 @@ public class ChessGame implements Chess, Undoable {
     public void makeMove(MoveValue moveValue) throws InvalidMoveException {
         Coordinate oldPos = moveValue.oldPos();
         Coordinate newPos = moveValue.newPos();
-        if (isPromotion(oldPos, newPos) && !moveValue.promotionPiece().isPromotionPiece())
+        if (logic.isPromotion(moveValue) && !moveValue.promotionPiece().isPromotionPiece())
                 throw new InvalidMoveException("Invalid promotion piece given");
         if (logic.isInvalidMove(oldPos, newPos))
             throw new InvalidMoveException(oldPos, newPos);
@@ -108,16 +108,6 @@ public class ChessGame implements Chess, Undoable {
     @Override
     public String getFenString() {
         return new FenGenerator(this).getFenString();
-    }
-
-    public boolean isPromotion(Coordinate oldPos, Coordinate newPos) {
-        if (logic.isInvalidMove(oldPos, newPos))
-            return false;
-        if (board.getPiece(oldPos) != Pieces.PAWN)
-            return false;
-        if ((oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(oldPos) == PieceColour.WHITE))
-            return true;
-        return false;
     }
 
     public PieceColour getColour(Coordinate position) {

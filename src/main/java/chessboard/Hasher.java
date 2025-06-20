@@ -4,8 +4,6 @@ import common.Coordinate;
 import common.PieceColour;
 import common.Pieces;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class Hasher {
@@ -108,7 +106,7 @@ public class Hasher {
         hash ^= pieceKeys[move.getOldPos().getBitboardIndex()][pieceIndex];
 
 
-        if (move.hasTaken()) {
+        if (move.isTaking()) {
             Pieces takenPiece = move.getOldBoard().getPiece(move.getNewPos());
             if(takenPiece.equals(Pieces.BLANK) && prevEnPassant != null) // en passant
                 takenPiece = move.getOldBoard().getPiece(new Coordinate(prevEnPassant.x(), move.getOldPos().y()));

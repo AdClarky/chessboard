@@ -1,6 +1,9 @@
 package chessboard;
 
 import common.Coordinate;
+import common.MoveValue;
+import common.PieceColour;
+import common.Pieces;
 
 public class ChessLogic {
     private final Chessboard board;
@@ -71,5 +74,19 @@ public class ChessLogic {
             return;
         possibleMoves.calculatePossibleMoves();
         possibleMovesCalculated = true;
+    }
+
+    public boolean isPromotion(MoveValue move) {
+        Coordinate oldPos = move.oldPos();
+        Coordinate newPos = move.newPos();
+        if (isInvalidMove(oldPos, newPos))
+            return false;
+        if (board.getPiece(oldPos) != Pieces.PAWN)
+            return false;
+        return (oldPos.y() == 1 && board.getColour(oldPos) == PieceColour.BLACK) || (oldPos.y() == 6 && board.getColour(oldPos) == PieceColour.WHITE);
+    }
+
+    public boolean isTakingMove(MoveValue moveValue) {
+        return new Move(board, moveValue.oldPos(), moveValue.newPos(), moveValue.promotionPiece()).isTaking();
     }
 }
