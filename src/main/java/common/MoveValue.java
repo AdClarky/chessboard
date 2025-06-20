@@ -6,13 +6,12 @@ public record MoveValue(Coordinate oldPos, Coordinate newPos, Pieces promotionPi
     public MoveValue(Coordinate oldPos, Coordinate newPos) {
         this(oldPos, newPos, null);
     }
-
-    public MoveValue(MoveValue move, Pieces selectedPiece) {
-        this(move.oldPos, move.newPos, selectedPiece);
-    }
-
     public boolean isPieceInSamePosition(){
         return oldPos.equals(newPos);
+    }
+
+    public MoveValue withPromotionPiece(Pieces promotionPiece){
+        return new MoveValue(oldPos, newPos, promotionPiece);
     }
 
     static @NotNull MoveValue createStationaryMove(Coordinate position){

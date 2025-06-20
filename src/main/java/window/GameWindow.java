@@ -104,7 +104,7 @@ public class GameWindow extends JFrame implements BoardListener, MouseListener, 
             move = new MoveValue(squareSelected.getPosition(), square.getPosition());
             if(board.isPromotion(move.oldPos(), move.newPos())) {
                 PromotionWindow promotionWindow = new PromotionWindow(this, turn);
-                move = new MoveValue(move, promotionWindow.getSelectedPiece());
+                move = move.withPromotionPiece(promotionWindow.getSelectedPiece());
             }
             moves.add(move);
             unselectSquare();

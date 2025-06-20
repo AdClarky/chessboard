@@ -16,7 +16,7 @@ public class RandomMoves implements MoveChooser {
         MoveValue move = moves.get(rand.nextInt(moves.size()));
         if(chessboard.isPromotion(move.oldPos(), move.newPos())) {
             Pieces promotionPiece = List.of(Pieces.QUEEN, Pieces.ROOK, Pieces.BISHOP, Pieces.KNIGHT).get(rand.nextInt(4));
-            move = new MoveValue(move, promotionPiece);
+            move = move.withPromotionPiece(promotionPiece);
         }
         return move;
     }
