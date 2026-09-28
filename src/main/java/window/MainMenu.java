@@ -2,8 +2,10 @@ package window;
 
 import ai.MoveChooser;
 import ai.RandomMoves;
+import ai.TakingMove;
 import chessboard.ChessGame;
 import common.PieceColour;
+import exception.InvalidFenStringException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,20 +30,25 @@ public class MainMenu extends JFrame {
         Font buttonFont = new Font("Arial", Font.BOLD, 28);
         Dimension buttonSize = new Dimension(300, 70);
 
-        JButton btnComputer = createStyledButton("Against Computer", buttonFont, buttonSize);
-        btnComputer.addActionListener(e -> startVsComputer());
+        JButton vsComputerButton = createStyledButton("Against Computer", buttonFont, buttonSize);
+        vsComputerButton.addActionListener(e -> startVsComputer());
         gbc.gridy = 0;
-        mainMenuPanel.add(btnComputer, gbc);
+        mainMenuPanel.add(vsComputerButton, gbc);
 
-        JButton btnLocalVs = createStyledButton("Local Vs", buttonFont, buttonSize);
-        btnLocalVs.addActionListener(e -> startVsLocal());
+        JButton computerVsComputerButton = createStyledButton("PC vs PC", buttonFont, buttonSize);
+        computerVsComputerButton.addActionListener(e -> startComputerVsComputer());
         gbc.gridy = 1;
-        mainMenuPanel.add(btnLocalVs, gbc);
+        mainMenuPanel.add(computerVsComputerButton, gbc);
 
-        JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
-        btnOnlineVs.addActionListener(e -> startVsOnline());
+        JButton vsLocalButton = createStyledButton("Local Vs", buttonFont, buttonSize);
+        vsLocalButton.addActionListener(e -> startVsLocal());
         gbc.gridy = 2;
-        mainMenuPanel.add(btnOnlineVs, gbc);
+        mainMenuPanel.add(vsLocalButton, gbc);
+
+        JButton vsOnlineButton = createStyledButton("Online Vs", buttonFont, buttonSize);
+        vsOnlineButton.addActionListener(e -> startVsOnline());
+        gbc.gridy = 3;
+        mainMenuPanel.add(vsOnlineButton, gbc);
 
         JButton btnQuit = createStyledButton("Quit", buttonFont, buttonSize);
         btnQuit.addActionListener(e -> {
@@ -82,14 +89,28 @@ public class MainMenu extends JFrame {
         return button;
     }
 
-    private void startVsComputer(){
+    private void startComputerVsComputer(){
         ChessGame chessGame = new ChessGame();
         GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
         chessGame.addBoardListener(whiteWindow);
-        MoveChooser whiteChooser = new RandomMoves();
+        MoveChooser whiteChooser = new TakingMove();
         MoveChooser blackChooser = new RandomMoves();
 
-        new GameWorker(chessGame, whiteChooser, blackChooser, whiteWindow).execute();
+        new GameWorker(chessGame, whiteChooser, blackChooser).execute();
+    }
+
+    private void startVsComputer(){
+        ChessGame chessGame = null;
+        try {
+            chessGame = new ChessGame("8/PPPPPPPP/8/8/k6K/8/pppppppp/8 w - - 0 1");
+        } catch (InvalidFenStringException e) {
+            throw new RuntimeException(e);
+        }
+        GameWindow whiteWindow = new GameWindow(chessGame, PieceColour.WHITE);
+        chessGame.addBoardListener(whiteWindow);
+        MoveChooser blackChooser = new TakingMove();
+
+        new GameWorker(chessGame, whiteWindow, blackChooser).execute();
     }
 
     private void startVsLocal(){
@@ -100,6 +121,8 @@ public class MainMenu extends JFrame {
         chessGame.addBoardListener(blackWindow);
 
         blackWindow.setLocation(whiteWindow.getSize().width, 0);
+
+        new GameWorker(chessGame, whiteWindow, blackWindow).execute();
     }
 
     private void startVsOnline(){

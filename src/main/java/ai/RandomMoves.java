@@ -1,33 +1,24 @@
 package ai;
 
-import chessboard.Chess;
-import common.Coordinate;
+import chessboard.ChessLogic;
+import chessboard.Chessboard;
 import common.MoveValue;
+import common.Pieces;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 public class RandomMoves implements MoveChooser {
     @Override
-    public MoveValue chooseMove(Chess chessboard) {
-        List<MoveValue> moves = getPossibleMoves(chessboard);
+    public MoveValue chooseMove(Chessboard board, ChessLogic logic) {
+        List<MoveValue> moves = getPossibleMoves(board, logic);
 
         Random rand = new Random();
-        return moves.get(rand.nextInt(moves.size()));
-    }
-
-    private List<MoveValue> getPossibleMoves(Chess chessboard) {
-        List<MoveValue> moves = new ArrayList<>();
-
-        Collection<Coordinate> pieces = chessboard.getAllColourPieces(chessboard.getCurrentTurn());
-        for(Coordinate piece : pieces) {
-            for(Coordinate move : chessboard.getPossibleMoves(piece)) {
-                moves.add(new MoveValue(piece, move));
-            }
+        MoveValue move = moves.get(rand.nextInt(moves.size()));
+        if(logic.isPromotion(move)) {
+            Pieces promotionPiece = List.of(Pieces.QUEEN, Pieces.ROOK, Pieces.BISHOP, Pieces.KNIGHT).get(rand.nextInt(4));
+            move = move.withPromotionPiece(promotionPiece);
         }
-
-        return moves;
+        return move;
     }
 }

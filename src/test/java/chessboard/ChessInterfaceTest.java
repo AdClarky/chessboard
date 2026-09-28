@@ -31,12 +31,9 @@ class ChessInterfaceTest {
         }
 
         @Override
-        public void boardChanged(Coordinate oldPos, Coordinate newPos) {
+        public void boardChanged() {
             boardChange++;
         }
-
-        @Override
-        public void promotion() {}
     }
     private Listener listener;
     private ChessGame game;

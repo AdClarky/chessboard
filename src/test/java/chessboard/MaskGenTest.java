@@ -19,11 +19,11 @@ class MaskGenTest {
         Chessboard board = new ChessboardBuilder().defaultSetup();
         MaskGenerator generator = new MaskGenerator(board);
         for(int x = 0; x < 8; x++){
-            Collection<Coordinate> whiteMask = new Bitboard(generator.getMaskForPiece(new Coordinate(x,1)));
+            Bitboard whiteMask = new Bitboard(generator.getMaskForPiece(new Coordinate(x,1)));
             assertTrue(whiteMask.contains(new Coordinate(x, 2)));
             assertTrue(whiteMask.contains(new Coordinate(x, 3)));
             assertEquals(2, whiteMask.size());
-            Collection<Coordinate> blackMask = new Bitboard(generator.getMaskForPiece(new Coordinate(x,6)));
+            Bitboard blackMask = new Bitboard(generator.getMaskForPiece(new Coordinate(x,6)));
             assertTrue(blackMask.contains(new Coordinate(x, 5)));
             assertTrue(blackMask.contains(new Coordinate(x, 4)));
             assertEquals(2, whiteMask.size());
@@ -32,11 +32,11 @@ class MaskGenTest {
                 assertEquals(0, generator.getMaskForPiece(new Coordinate(x,7)));
                 continue;
             }
-            Collection<Coordinate> whiteKnight = new Bitboard(generator.getMaskForPiece(new Coordinate(x,0)));
+            Bitboard whiteKnight = new Bitboard(generator.getMaskForPiece(new Coordinate(x,0)));
             assertTrue(whiteKnight.contains(new Coordinate(x-1, 2)));
             assertTrue(whiteKnight.contains(new Coordinate(x+1, 2)));
             assertEquals(2, whiteKnight.size());
-            Collection<Coordinate> blackKnight = new Bitboard(generator.getMaskForPiece(new Coordinate(x,7)));
+            Bitboard blackKnight = new Bitboard(generator.getMaskForPiece(new Coordinate(x,7)));
             assertTrue(blackKnight.contains(new Coordinate(x-1, 5)));
             assertTrue(blackKnight.contains(new Coordinate(x+1, 5)));
             assertEquals(2, blackKnight.size());

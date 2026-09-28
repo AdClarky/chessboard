@@ -14,7 +14,7 @@ public class GameWorker extends SwingWorker<Void, String> {
         private final MoveChooser whiteChooser;
         private final MoveChooser blackChooser;
 
-        public GameWorker(Chess chessGame, MoveChooser whiteChooser, MoveChooser blackChooser, GameWindow gameWindow) {
+        public GameWorker(Chess chessGame, MoveChooser whiteChooser, MoveChooser blackChooser) {
             this.chessGame = chessGame;
             this.whiteChooser = whiteChooser;
             this.blackChooser = blackChooser;
@@ -25,19 +25,16 @@ public class GameWorker extends SwingWorker<Void, String> {
             while (!chessGame.isCheckmate() && !chessGame.isDraw()) {
                 PieceColour currentTurn = chessGame.getCurrentTurn();
 
-                MoveChooser currentRobot = null;
-                if (currentTurn == PieceColour.WHITE) {
-                    currentRobot = whiteChooser;
-                } else if (currentTurn == PieceColour.BLACK) {
-                    currentRobot = blackChooser;
-                }
+                MoveChooser currentChooser = whiteChooser;
+                if (currentTurn == PieceColour.BLACK)
+                    currentChooser = blackChooser;
 
                 TimeUnit.MILLISECONDS.sleep(100);
 
-                MoveValue chosenMove = currentRobot.chooseMove(chessGame);
+                MoveValue chosenMove = currentChooser.chooseMove(chessGame.getBoard(), chessGame.getLogic());
 
                 if (chosenMove != null) {
-                    chessGame.makeMove(chosenMove.oldPos(), chosenMove.newPos());
+                    chessGame.makeMove(chosenMove);
                 }
             }
             return null;

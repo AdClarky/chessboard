@@ -3,11 +3,8 @@ package chessboard;
 import common.Coordinate;
 import common.MoveValue;
 import common.PieceColour;
-import common.Pieces;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
 
 /**
  * Represents the core functionality and state of a standard chess game.
@@ -49,33 +46,16 @@ public interface Chess {
     boolean isDraw();
 
     /**
-     * Used when moving and promoting.
-     * {@link Chess#makeMove(Coordinate, Coordinate)}
-     * @param oldPos current position
-     * @param newPos new position
-     * @param promotionPiece the promotion piece
-     * @throws InvalidMoveException
-     */
-    void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException;
-
-    /**
-     * Moves a piece to a new location while validating it is a valid move.
-     * Assumes the provided old coordinates are valid coordinates for a piece.
+     * Moves a promotionPiece to a new location while validating it is a valid move.
+     * Assumes the provided old coordinates are valid coordinates for a promotionPiece.
      * Checks for checkmate and draws.
      *
      * @throws InvalidMoveException when the move given is not a valid move.
      */
-    void makeMove(Coordinate oldPosition, Coordinate newPosition) throws InvalidMoveException;
-
-    /**
-     * {@link Chess#makeMove(Coordinate, Coordinate)}
-     *
-     * @param moveValue
-     */
     void makeMove(MoveValue moveValue) throws InvalidMoveException;
 
     /**
-     * {@link Chess#makeMove(Coordinate, Coordinate)}
+     * {@link Chess#makeMove(MoveValue)}
      *
      * @param move a chess move in algebraic notation
      * @throws InvalidMoveException when the move given is not a valid move
@@ -90,23 +70,23 @@ public interface Chess {
     String getFenString();
 
     /**
-     * Gets the colour of a piece on a square.
-     * Returns null if no piece is on the square.
+     * Gets the colour of a promotionPiece on a square.
+     * Returns null if no promotionPiece is on the square.
      *
      * @param position the square to check
-     * @return the colour of the piece
+     * @return the colour of the promotionPiece
      */
     @Nullable
     PieceColour getColour(Coordinate position);
 
     /**
-     * Gets the possible moves of a specific piece.
-     * Returns an empty collection if no piece is on the square and if there are no possible moves.
+     * Gets the possible moves of a specific promotionPiece.
+     * Returns an empty collection if no promotionPiece is on the square and if there are no possible moves.
      *
      * @param position the square to check
      * @return a collection of possible moves
      */
-    Collection<Coordinate> getPossibleMoves(Coordinate position);
+    Bitboard getPossibleMoves(Coordinate position);
 
     /**
      * Gets all the pieces on the board for a specific colour.
@@ -114,5 +94,9 @@ public interface Chess {
      * @param colour the coloured pieces you want
      * @return a collection of the coordinates of the pieces.
      */
-    Collection<Coordinate> getAllColourPieces(PieceColour colour);
+    Bitboard getAllColourPieces(PieceColour colour);
+
+    ChessLogic getLogic();
+
+    Chessboard getBoard();
 }

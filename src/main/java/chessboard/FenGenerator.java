@@ -8,11 +8,27 @@ import org.jetbrains.annotations.NotNull;
 /** Used for generating FenStrings from a board position. When given a board, getFenString can be called
  * at any point and the fen string will be calculated. */
 class FenGenerator {
-    private final ChessGame board;
+    private final Chessboard board;
     private final StringBuilder fenString = new StringBuilder();
+    private final int numHalfMoves;
+    private final int numFullMoves;
 
-    public FenGenerator(ChessGame board) {
+    public FenGenerator(Chessboard board, int numHalfMoves, int numFullMoves){
         this.board = board;
+        this.numHalfMoves = numHalfMoves;
+        this.numFullMoves = numFullMoves;
+    }
+
+    public FenGenerator(Chessboard board){
+        this.board = board;
+        this.numHalfMoves = 0;
+        this.numFullMoves = 0;
+    }
+
+    public FenGenerator(ChessGame game){
+        this.board = game.getBoard();
+        this.numHalfMoves = game.getNumHalfMoves();
+        this.numFullMoves = game.getNumFullMoves();
     }
 
     /** Calculates and returns the fen string */
@@ -68,7 +84,7 @@ class FenGenerator {
     }
 
     private void addCurrentTurn() {
-        if(board.getCurrentTurn() == PieceColour.BLACK)
+        if(board.getTurn() == PieceColour.BLACK)
             fenString.append("b ");
         else
             fenString.append("w ");
@@ -76,22 +92,28 @@ class FenGenerator {
 
     private void addCastlingRights() {
         Bitboard castlingRights = new Bitboard(board.getCastlingRights());
-        if(castlingRights.isEmpty()){
-            fenString.append("- ");
-            return;
-        }
+        boolean hasRight = false;
         if(castlingRights.contains(new Coordinate(4, 0)))
-            addColourCastleRight(0, castlingRights);
+            hasRight |= addColourCastleRight(0, castlingRights);
         if(castlingRights.contains(new Coordinate(4, 7)))
-            addColourCastleRight(7, castlingRights);
+            hasRight |= addColourCastleRight(7, castlingRights);
+        if(!hasRight){
+            fenString.append("-");
+        }
         fenString.append(" ");
     }
 
-    private void addColourCastleRight(int backRow, Bitboard castlingRights){
-        if(castlingRights.contains(new Coordinate(7, backRow)))
+    private boolean addColourCastleRight(int backRow, Bitboard castlingRights){
+        boolean hasRight = false;
+        if(castlingRights.contains(new Coordinate(7, backRow))) {
+            hasRight = true;
             fenString.append(backRow == 0 ? 'K' : 'k');
-        if(castlingRights.contains(new Coordinate(0, backRow)))
+        }
+        if(castlingRights.contains(new Coordinate(0, backRow))) {
+            hasRight = true;
             fenString.append(backRow == 0 ? 'Q' : 'q');
+        }
+        return hasRight;
     }
 
     private void addEnPassant(){
@@ -106,11 +128,11 @@ class FenGenerator {
     }
 
     private void addHalfMoves(){
-        fenString.append(board.getNumHalfMoves()).append(' ');
+        fenString.append(numHalfMoves).append(' ');
     }
 
     private void addFullMoves(){
-        fenString.append(board.getNumFullMoves());
+        fenString.append(numFullMoves);
     }
 }
 

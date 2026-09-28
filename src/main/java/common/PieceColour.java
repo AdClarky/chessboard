@@ -3,15 +3,15 @@ package common;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The colour of a piece.
+ * The colour of a promotionPiece.
  */
 public enum PieceColour {
     /**
-     * A White Chess piece.
+     * A White Chess promotionPiece.
      */
     WHITE,
     /**
-     * A Black Chess piece.
+     * A Black Chess promotionPiece.
      */
     BLACK;
 

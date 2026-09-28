@@ -1,0 +1,128 @@
+package chessboard;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+public class HashHistory {
+    private final Deque<HistoryEntry> moves;
+    private final Deque<HistoryEntry> redoMoves;
+    private int numFullMoves = 1;
+    private int numHalfMoves = 0;
+    private boolean isBlackFirst = false;
+
+    public HashHistory(long initialHash) {
+        moves = new ArrayDeque<>(40);
+        redoMoves = new ArrayDeque<>(40);
+        moves.push(new HistoryEntry(initialHash, 0));
+    }
+
+    public HashHistory(long intialHash, int numFullMoves, int numHalfMoves, boolean isBlackFirst) {
+        this(intialHash);
+        this.numFullMoves = numFullMoves;
+        this.numHalfMoves = numHalfMoves;
+        this.isBlackFirst = isBlackFirst;
+    }
+
+    private HashHistory(Deque<HistoryEntry> moves, Deque<HistoryEntry> redoMoves, int numFullMoves, int numHalfMoves, boolean isBlackFirst) {
+        this.moves = moves;
+        this.redoMoves = redoMoves;
+        this.numFullMoves = numFullMoves;
+        this.numHalfMoves = numHalfMoves;
+        this.isBlackFirst = isBlackFirst;
+    }
+
+    public void push(long hash, boolean isHalfMove) {
+        int nextHalfMove = isHalfMove ? 0 : getNumHalfMoves() + 1;
+        moves.push(new HistoryEntry(hash, nextHalfMove));
+        redoMoves.clear();
+    }
+
+    public @Nullable Long undo() {
+        if (moves.size() <= 1)
+            return null;
+        HistoryEntry entry = moves.pop();
+        redoMoves.push(entry);
+        return entry.hash();
+    }
+
+    public @Nullable Long redo() {
+        if (redoMoves.isEmpty())
+            return null;
+        HistoryEntry entry = redoMoves.pop();
+        moves.push(entry);
+        return entry.hash();
+    }
+
+    public void redoAllMoves() {
+        while (!redoMoves.isEmpty()) {
+            redo();
+        }
+    }
+
+    public void undoMultipleMoves(int numOfMoves) {
+        for (int i = 0; i < numOfMoves; i++) {
+            undo();
+        }
+    }
+
+    public boolean canUndoMove() {
+        return moves.size() > 1;
+    }
+
+    public boolean canRedoMove() {
+        return !redoMoves.isEmpty();
+    }
+
+    public int getNumHalfMoves() {
+        if(numHalfMoves != 0){
+            int temp = numHalfMoves;
+            numHalfMoves = 0;
+            return temp;
+        }
+        if (moves.isEmpty()) {
+            return 0;
+        }
+        return moves.peek().halfMoves();
+    }
+
+    public int getNumFullMoves() {
+        int singleMove = moves.size() - 1;
+        if (singleMove < 0)
+            singleMove = 0;
+        if (isBlackFirst)
+            singleMove++;
+
+        return (singleMove / 2) + numFullMoves;
+    }
+
+    public long getCurrentHash(){
+        if (moves.isEmpty())
+            throw new IllegalStateException("History is empty");
+        return moves.peek().hash();
+    }
+
+    public boolean isRepetition() {
+        if (moves.isEmpty()) {
+            return false;
+        }
+
+        long currentHash = getCurrentHash();
+        int occurences = 0;
+
+        for (HistoryEntry entry : moves) {
+            if (entry.hash() == currentHash)
+                occurences++;
+        }
+
+        return occurences >= 3;
+    }
+
+    public HashHistory copy(){
+        return new HashHistory(new ArrayDeque<>(moves), new ArrayDeque<>(redoMoves), numFullMoves, numHalfMoves, isBlackFirst);
+    }
+
+    private record HistoryEntry(long hash, int halfMoves) {
+    }
+}

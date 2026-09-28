@@ -9,7 +9,7 @@ import common.Coordinate;
  */
 public interface BoardListener {
     /**
-     * Called when a piece is moved on the board.
+     * Called when a promotionPiece is moved on the board.
      * After being called, getMoves() will return a list of individual moves which can make promotion,
      * en passant and castling easier to deal with.
      *
@@ -38,7 +38,5 @@ public interface BoardListener {
      * Called when the board has changed, i.e. undo or redo.
      * Works like {@link BoardListener#moveMade(Coordinate, Coordinate)}
      */
-    void boardChanged(Coordinate oldPos, Coordinate newPos);
-
-    void promotion();
+    void boardChanged();
 }

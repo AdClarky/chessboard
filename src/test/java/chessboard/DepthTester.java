@@ -5,19 +5,16 @@ import common.Pieces;
 import exception.InvalidMoveException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 
 public class DepthTester {
-    private final ChessGame game;
     private final int topDepth;
     private final ForkJoinPool pool = new ForkJoinPool();
 
-    public DepthTester(ChessGame game, int topDepth) {
-        this.game = game;
+    public DepthTester(int topDepth) {
         this.topDepth = topDepth;
         System.out.println("Testing depth " + topDepth);
     }
@@ -41,11 +38,11 @@ public class DepthTester {
         @Override
         protected Long compute() {
             long positions = 0;
-            Collection<Coordinate> pieces = chessGame.getAllColourPieces(chessGame.getCurrentTurn());
+            Bitboard pieces = chessGame.getAllColourPieces(chessGame.getCurrentTurn());
             List<DepthTask> tasks = new ArrayList<>();
             List<String> moves = new ArrayList<>();
             for (Coordinate piece : pieces) {
-                Collection<Coordinate> positionCoordinates = chessGame.getPossibleMoves(piece);
+                Bitboard positionCoordinates = chessGame.getPossibleMoves(piece);
                 if (currentDepth == 1) {
                     positions += positionCoordinates.size();
                     for(Coordinate move : positionCoordinates) {
@@ -53,13 +50,13 @@ public class DepthTester {
                             positions += 3;
 //                            if(topDepth == 1) {
 //                                for(Pieces promoPiece : PROMOTION_PIECES) {
-//                                    System.out.println("" + piece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
+//                                    System.out.println("" + promotionPiece + move + Character.toLowerCase(promoPiece.toCharacter()) + ": 1");
 //                                }
 //                                positionCoordinates.remove(move);
 //                            }
                         }
                     }
-//                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + piece + move + ": 1");
+//                    if(topDepth == 1) for (Coordinate move : positionCoordinates) System.out.println("" + promotionPiece + move + ": 1");
                     continue;
                 }
                 for (Coordinate newMove : positionCoordinates) {
@@ -68,13 +65,15 @@ public class DepthTester {
                             DepthTask task = testNewDepth(piece, newMove, currentPiece);
                             task.fork();
                             tasks.add(task);
-                            if(topDepth == currentDepth) moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
+                            if(topDepth == currentDepth)
+                                moves.add("" + piece + newMove + currentPiece.toCharacter() + ": ");
                         }
                     }else{
                         DepthTask task = testNewDepth(piece, newMove, Pieces.BLANK);
                         task.fork();
                         tasks.add(task);
-                        if(topDepth == currentDepth) moves.add("" + piece + newMove + ": ");
+                        if(topDepth == currentDepth)
+                            moves.add("" + piece + newMove + ": ");
                     }
                 }
             }
@@ -100,4 +99,3 @@ public class DepthTester {
         }
     }
 }
-
