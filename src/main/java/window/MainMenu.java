@@ -38,10 +38,10 @@ public class MainMenu extends JFrame {
         gbc.gridy = 1;
         mainMenuPanel.add(btnLocalVs, gbc);
 
-        JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
-        btnOnlineVs.addActionListener(e -> startVsOnline());
-        gbc.gridy = 2;
-        mainMenuPanel.add(btnOnlineVs, gbc);
+        // JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
+        // btnOnlineVs.addActionListener(e -> startVsOnline());
+        // gbc.gridy = 2;
+        // mainMenuPanel.add(btnOnlineVs, gbc);
 
         JButton btnQuit = createStyledButton("Quit", buttonFont, buttonSize);
         btnQuit.addActionListener(e -> {
