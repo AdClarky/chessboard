@@ -181,7 +181,7 @@ class ChessLogic {
     }
 
     private boolean isDraw50Move(){
-        return history.getNumHalfMoves() >= 50;
+        return history.getNumHalfMoves() >= 100;
     }
 
     public boolean isSquareBlank(int x, int y){
