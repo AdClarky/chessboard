@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
         Font buttonFont = new Font("Arial", Font.BOLD, 28);
         Dimension buttonSize = new Dimension(300, 70);
 
-        JButton btnComputer = createStyledButton("Against Computer", buttonFont, buttonSize);
+        JButton btnComputer = createStyledButton("CPU vs CPU", buttonFont, buttonSize);
         btnComputer.addActionListener(e -> startVsComputer());
         gbc.gridy = 0;
         mainMenuPanel.add(btnComputer, gbc);
@@ -38,10 +38,10 @@ public class MainMenu extends JFrame {
         gbc.gridy = 1;
         mainMenuPanel.add(btnLocalVs, gbc);
 
-        JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
-        btnOnlineVs.addActionListener(e -> startVsOnline());
-        gbc.gridy = 2;
-        mainMenuPanel.add(btnOnlineVs, gbc);
+        // JButton btnOnlineVs = createStyledButton("Online Vs", buttonFont, buttonSize);
+        // btnOnlineVs.addActionListener(e -> startVsOnline());
+        // gbc.gridy = 2;
+        // mainMenuPanel.add(btnOnlineVs, gbc);
 
         JButton btnQuit = createStyledButton("Quit", buttonFont, buttonSize);
         btnQuit.addActionListener(e -> {

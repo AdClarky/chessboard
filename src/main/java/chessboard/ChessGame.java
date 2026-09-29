@@ -7,6 +7,7 @@ import common.Pieces;
 import exception.InvalidFenStringException;
 import exception.InvalidMoveException;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,7 +52,23 @@ public class ChessGame implements Chess, Undoable {
     @Override
     public void makeMove(@NotNull String chessMove) throws InvalidMoveException {
         MoveValue move = chessToMove(chessMove);
-        makeMove(move.oldPos(), move.newPos());
+        Pieces promo = parsePromotionPiece(chessMove);
+        makeMove(move.oldPos(), move.newPos(), promo);
+    }
+
+    private @Nullable Pieces parsePromotionPiece(@NotNull String move) {
+        int equalsIndex = move.indexOf('=');
+        if (equalsIndex != -1 && equalsIndex + 1 < move.length()) {
+            char pieceChar = Character.toUpperCase(move.charAt(equalsIndex + 1));
+            return Pieces.fromCharacter(pieceChar);
+        }
+        if (move.length() >= 3 && Character.isUpperCase(move.charAt(move.length() - 1))) {
+            char lastChar = move.charAt(move.length() - 1);
+            if (lastChar != '+' && lastChar != '#') {
+                return Pieces.fromCharacter(lastChar);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -60,11 +77,8 @@ public class ChessGame implements Chess, Undoable {
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos) throws InvalidMoveException {
-        if (isMovePromotion(oldPos, newPos)) {
-            notifyPromotion();
-            return;
-        }
-        makeMove(oldPos, newPos, null);
+        Pieces promo = isMovePromotion(oldPos, newPos) ? Pieces.QUEEN : null;
+        makeMove(oldPos, newPos, promo);
     }
 
     public void makeMove(Coordinate oldPos, Coordinate newPos, Pieces promotionPiece) throws InvalidMoveException {

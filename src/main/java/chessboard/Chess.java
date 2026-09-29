@@ -115,4 +115,6 @@ public interface Chess {
      * @return a collection of the coordinates of the pieces.
      */
     Collection<Coordinate> getAllColourPieces(PieceColour colour);
+
+    boolean isMovePromotion(Coordinate oldPos, Coordinate newPos);
 }
