@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
         Font buttonFont = new Font("Arial", Font.BOLD, 28);
         Dimension buttonSize = new Dimension(300, 70);
 
-        JButton btnComputer = createStyledButton("Against Computer", buttonFont, buttonSize);
+        JButton btnComputer = createStyledButton("CPU vs CPU", buttonFont, buttonSize);
         btnComputer.addActionListener(e -> startVsComputer());
         gbc.gridy = 0;
         mainMenuPanel.add(btnComputer, gbc);
